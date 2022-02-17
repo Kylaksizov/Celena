@@ -1,0 +1,25 @@
+User-agent: *
+Disallow: /panel*
+
+User-agent: Googlebot
+Disallow: /panel*
+
+User-agent: YandexImages
+Disallow: /
+Allow: /uploads/
+
+User-agent: Yahoo
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: Mediapartners-Google
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+Host: https://site.com/
+
+Sitemap: /sitemap.xml

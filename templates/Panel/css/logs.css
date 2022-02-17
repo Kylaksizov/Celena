@@ -1,0 +1,24 @@
+#nex_logs{
+    background: #dfe4ef;
+    padding: 1px 15px;
+    border-radius: 2px;
+}
+#nex_logs p{
+    margin: 20px 0;
+}
+#nex_logs span{
+    display: inline-block;
+}
+.file_log_1{
+    background: #ffffff;
+    padding: 7px 8px 4px;
+    font-size: 13px;
+    margin-top: 2px;
+    border-radius: 8px 8px 0 0;
+}
+.file_log_2{
+    background: #ffffff;
+    padding: 4px 8px 7px;
+    font-size: 13px;
+    border-radius: 0 4px 8px 8px;
+}

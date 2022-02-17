@@ -1,0 +1,19 @@
+AddDefaultCharset UTF-8
+
+<Files PHP_errors.log>
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteRule ^(.*)$ index.php
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+
+#RewriteCond %{HTTPS} !=on
+#RewriteCond %{HTTP_HOST} !(.*)\.nex\.com
+#RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
