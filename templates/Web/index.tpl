@@ -14,7 +14,7 @@
 {include file="views/header.tpl"}
 {include file="views/menu.tpl"}
 {crumbs}
-
+Тут новое изменение 2
 <section class="flex content">
 
     {include file="views/include/sitebar.tpl"}
