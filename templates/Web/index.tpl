@@ -14,7 +14,7 @@
 {include file="views/header.tpl"}
 {include file="views/menu.tpl"}
 {crumbs}
-Последний коммит
+
 <section class="flex content">
 
     {include file="views/include/sitebar.tpl"}
