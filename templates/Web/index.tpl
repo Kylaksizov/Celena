@@ -14,7 +14,7 @@
 {include file="views/header.tpl"}
 {include file="views/menu.tpl"}
 {crumbs}
-Изменения после TMP
+Изменения после TMP 2
 <section class="flex content">
 
     {include file="views/include/sitebar.tpl"}
