@@ -1,5 +1,4 @@
 # Работа с шаблоном
-___
 
 ## Структура файлов
 Все шаблоны сайта находятся в папке **templates**.  
@@ -18,13 +17,25 @@ ___
 
 
 ### <a name="index_tpl">Глобальные теги</a>
+___
+Обязательные теги
+___
+`{SYSTEM}` - системный тег для правильной работы сайта, ставится в конец тела документа, перед `</body>`  
+`{META}` - выводит мета-теги сайта, ставится после `<head>`.
+`{STYLES}` - выводит стили, ставится перед `</head>`.
+`{SCRIPTS}` - выводит скрипты сайта, ставится перед `</head>`.
+___
+Второстепенные теги
+___
 `[show="index"]...[/show]` - выведет содержимое если контроллер[^*] *index* 
 
 `[show="plugins/Kylaksizov/Menu/Index"]...[/show]` - выведет содержимое если мы в плагине **plugins/Kylaksizov/Menu/Index**  
-`[not-show="index"]...[/not-show]` - выведет если мы не на контроллере *index*  
-`{include file="includes/inc.tpl"}` - подключаем файл *includes/inc.tpl*  
-`{{MenuModule}}` - выведет содержимое модуля Menu  
-`{SYSTEM}` - обязательный тег в конце index.tpl
+
+`[not-show="index"]...[/not-show]` - выведет если мы не находимся в контроллере *index*  
+
+`{include file="includes/inc.tpl"}` - подключит файл *includes/inc.tpl*  
+
+`{{Kylaksizov/MenuModule}}` - выведет содержимое модуля Menu
 
 
 ### <a name="products_tpl">products.tpl</a>
