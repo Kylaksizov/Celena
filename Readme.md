@@ -7,18 +7,19 @@ ___
 Папки начинающиеся с нижнего подчеркивания так же не рекомендуется трогать.  
 
 <font size="2">В папке вашего шаблона, например (Web), должна присутствовать такая структура файлов:</font>
-- _index.tpl_ - главный файл, который может включать в себя другие подключаемые файлы и плагины.
-- _[products.tpl](#products_tpl)_ - шаблон для одного товара в списке товаров.
-- _[product.tpl](#product_tpl)_ - шаблон товара с полным описанием.
-- _products_custom.tpl_ - шаблон одного товара, подключаемого через тег custom.
-- _cart.tpl_ - страницы оформления заказа.
-- _login.tpl_ - форма и регистрации.
+- _[index.tpl](#index_tpl)_ - главный файл, который может включать в себя другие подключаемые файлы и плагины.
+- _[products.tpl](#products_tpl)_ - превью товара.
+- _[product.tpl](#product_tpl)_ - карточка товара.
+- _[products_custom.tpl](#products_custom_tpl)_ - превью товара, подключаемого через тег custom.
+- _[cart.tpl](cart_tpl)_ - страницы оформления заказа.
+- _[login.tpl](login_tpl)_ - форма входа и регистрации.
 
 ## Теги
-___
 
-### Глобальные теги
-`[show="index"]...[/show]` - выведет содержимое если контроллер *index*  
+
+### <a name="index_tpl">Глобальные теги</a>
+`[show="index"]...[/show]` - выведет содержимое если контроллер[^*] *index* 
+
 `[show="plugins/Kylaksizov/Menu/Index"]...[/show]` - выведет содержимое если мы в плагине **plugins/Kylaksizov/Menu/Index**  
 `[not-show="index"]...[/not-show]` - выведет если мы не на контроллере *index*  
 `{include file="includes/inc.tpl"}` - подключаем файл *includes/inc.tpl*  
@@ -27,19 +28,23 @@ ___
 
 
 ### <a name="products_tpl">products.tpl</a>
-`[show="index"]...[/show]` - выведет содержимое если контроллер *index* 
+`{tag}` - описание тега. 
 
 ### <a name="product_tpl">product.tpl</a>
-`[show="index"]...[/show]` - выведет содержимое если контроллер *index* 
+`{tag}` - описание тега.
 
-## info
+### <a name="products_custom_tpl">products_custom.tpl</a>
+`{tag}` - описание тега.
 
-### --- пометки ---
+### <a name="cart_tpl">cart.tpl</a>
+`{tag}` - описание тега.
 
-### --- важное ---
+### <a name="login_tpl">login.tpl</a>
+`{tag}` - описание тега.
 
-1. Пользователи
-   - получение инфы о пользователе находится в конструкторе [Router.php](app/core/Router.php)
 
 ### Notes
 [^1]: Если роутер имеет контроллер
+
+### Notes 2
+[^*]: Если роутер имеет контроллер
