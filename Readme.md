@@ -39,18 +39,31 @@
 
 `{{Kylaksizov/MenuModule}}` - выведет содержимое модуля Menu
 
+<br>
 
 ### <a name="products_tpl">products.tpl</a>
-`{tag}` - описание тега. 
+`{tag}` - описание тега.  
+
+`{tag}` - описание тега.  
+
+`{tag}` - описание тега.
+
+<br>
 
 ### <a name="product_tpl">product.tpl</a>
 `{tag}` - описание тега.
 
+<br>
+
 ### <a name="products_custom_tpl">products_custom.tpl</a>
 `{tag}` - описание тега.
 
+<br>
+
 ### <a name="cart_tpl">cart.tpl</a>
 `{tag}` - описание тега.
+
+<br>
 
 ### <a name="login_tpl">login.tpl</a>
 `{tag}` - описание тега.
