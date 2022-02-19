@@ -450,7 +450,8 @@ class View{
 
         $dbLogs = Base::log();
 
-        $devContent .= '<li>DB соединение: <b>'.($dbLogs->connection?'установлено':'-').'</b></li>
+        $devContent .= '<li>Контроллер: <b>'.$this->route["controller"].'</b></li>
+            <li>DB соединение: <b>'.($dbLogs->connection?'установлено':'-').'</b></li>
             <li>DB запросов: <a href="#" class="dev_show_log">'.$dbLogs->countQuery.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->queries).'</span></li>
             <li'.($dbLogs->countErrors?' class="error"':'').'>DB ошибок: <a href="#" class="dev_show_log log_e">'.$dbLogs->countErrors.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->errors).'</span></li>
         </ul>';

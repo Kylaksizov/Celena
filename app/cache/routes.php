@@ -45,23 +45,12 @@ return [
     'web' => [
 
         '404/$' => ['controller' => 'NotFound'],
-        'balance/$' => ['controller' => 'balance'],
-
-        'leads/$' => ['controller' => 'leads'],
-
-        'action/login$' => [
-            'controller' => 'account',
-            'action' => 'login'
-        ],
+        '(.+?)([0-9]+/?|.html)$' => ['controller' => 'product'],
+        '(.+?)/?$' => ['controller' => 'category'],
 
         'news/shop$' => [
             'controller' => 'news',
             'action' => 'shop'
-        ],
-
-        'board/$' => [
-            'controller' => 'plugins\Kylaksizov\Board\Index',
-            'action' => 'index'
         ],
 
     ]

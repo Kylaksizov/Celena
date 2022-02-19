@@ -19,6 +19,11 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    letter-spacing: .5px;
+}
+.nex_dev_info ul li b{
+    color: #a2d94a;
+    letter-spacing: 1px;
 }
 .db_hidden{
     background: #242F3D;
