@@ -46,5 +46,5 @@ ___
 ### Notes
 [^1]: Если роутер имеет контроллер
 
-### Notes 2
-[^*]: Если роутер имеет контроллер
+### For developers
+[Panel](/app/controllers/panel/Readme.md#ajax)
