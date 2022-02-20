@@ -43,7 +43,10 @@ class ProductsController extends PanelController {
 
     public function categoriesAction(){
 
-        $content = '<h1>Категории товаров</h1>';
+        $content = '<div class="fx">
+            <h1>Категории товаров</h1>
+            <a href="/panel/products/categories/add/" class="btn">Добавить</a>
+        </div>';
 
         $content .= '<table>
             <tr>
@@ -109,6 +112,77 @@ class ProductsController extends PanelController {
         </table>';
 
         $this->view->render('Категории товаров', $content);
+    }
+
+
+
+
+    public function actionsAction(){
+
+        if(!empty($this->urls[3])){
+            if($this->urls[3] == 'add') $this->addCategory();
+            if($this->urls[3] == 'edit' && !empty($this->urls[4])) $this->addCategory($this->urls[4]);
+        }
+
+    }
+
+
+
+
+    private function addCategory($id = null){
+
+        $this->view->styles = ['css/addon/category.css'];
+
+        $title = 'Добавление категории для товаров';
+
+        if($id){
+
+            $id = intval($id);
+            $title = 'Редактирование категории для товаров';
+        }
+
+        $content = '<h1>'.$title.'</h1>';
+
+        $content .= '<form action method="POST" class="box_">
+            <div class="dg dg_auto">
+                <div>
+                    <label for="" class="rq">Название</label>
+                    <input type="text" name="title" autocomplete="off">
+                </div>
+                <div>
+                    <label for="" class="pr">URL категории <span class="q"><i>Для поисковых систем</i></span></label>
+                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" autocomplete="off">
+                </div>
+            </div>
+            <p class="title_box hr_d">Meta-данные</p>
+            <div class="dg dg_auto">
+                <div>
+                    <div class="category_icon">
+                        <img src="http://nexshop/templates/Web/img/ad.jpg" alt="">
+                    </div>
+                    <label for="icon" class="upload_files" data-toggle="tooltip" data-placement="top">
+                        <input type="file" name="icon" id="icon"> выбрать изображение
+                    </label>
+                    <div class="clr"></div>
+                    <div class="files_preload"></div>
+                </div>
+                <div>
+                    <label for="">Meta Title</label>
+                    <input type="text" name="meta[title]" autocomplete="off">
+                </div>
+                <div>
+                    <label for="">Meta Description</label>
+                    <input type="text" name="meta[description]" autocomplete="off">
+                </div>
+            </div>
+            <br>
+            <p class="title_box hr_d"></p>
+            <label for="" class="rq">Описание</label>
+            <textarea name="description" rows="5"></textarea>
+            <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
+        </form>';
+
+        $this->view->render($title, $content);
     }
 
 }
