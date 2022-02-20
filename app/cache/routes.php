@@ -6,8 +6,8 @@ return [
 
         '404/$' => ['controller' => 'NotFound'],
 
-        'goods/(page-[0-9]+/)?$' => ['controller' => 'goods'],
-        'goods/categories/(page-[0-9]+/)?$' => ['controller' => 'goods', 'action' => 'categories'],
+        'products/(page-[0-9]+/)?$' => ['controller' => 'products'],
+        'products/categories/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'categories'],
 
         'orders/(page-[0-9]+/)?$' => ['controller' => 'orders'],
         'orders/click/(page-[0-9]+/)?$' => ['controller' => 'orders', 'action' => 'click'],

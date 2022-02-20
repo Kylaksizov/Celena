@@ -38,12 +38,12 @@ abstract class PanelController{
          */
         $menu = [
             'Товары' => [
-                "link" => "{panel}/goods/",
-                "class" => "ico_goods",
+                "link" => "{panel}/products/",
+                "class" => "ico_products",
                 "icon" => "",
                 "submenu" => [
-                    "Товары" => "{panel}/goods/",
-                    "Категории товаров" => "{panel}/goods/categories/",
+                    "Товары" => "{panel}/products/",
+                    "Категории товаров" => "{panel}/products/categories/",
                 ]
             ],
             'Заказы и покупки <span data-informer="orders" class="informer_active">3</span>' => [
