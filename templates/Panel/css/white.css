@@ -22,10 +22,6 @@
     --shadow-big: -8px 12px 18px 0 #dadee8;
     --shadow: 0 2px 4px rgb(15 34 58 / 12%);
     --shadow-1: 0 2px 4px #0f223a2b;
-    --shadow-2: 0 3px 8px #0f223a2b;
-    --input-border: #d9deed;
-    --focus: #90cbff;
-    --placeholder: #b1b7c7;
 }
 a{
     color: #50A5F1;

@@ -1,3 +1,0 @@
-20.02.2022 19:18:11 | SQLSTATE[HY000] [2002] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
-<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\core\Model.php -> 18]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\traits\Users.php -> on line: 55]</span>
-

@@ -328,6 +328,22 @@ ul{
     stroke-dasharray: 200;
 }
 
+.box, .box_{
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #deebfd;
+    box-shadow: var(--shadow);
+}
+.box_{padding:15px}
+.box h3, .box_ h3{
+    font-size: 16px;
+    padding: 15px;
+    font-weight: 500;
+}
+.box_ h3{
+    padding: 0 0 15px 0;
+}
+
 .statics_top{
     grid-template-columns: repeat(4, 1fr);
 }
@@ -365,23 +381,16 @@ h1{
 .title_box:after{
     margin-right: -100%;
 }
-.hr_d:before, .hr_d:after{
-    background: #fff;
-    background-image: linear-gradient(90deg, #d6ddef, #d6ddef 75%, transparent 75%, transparent 100%);
-    background-size: 10px 1px;
-    border: solid #fff;
-    border-width: 0 10px;
-}
 
 .btn{
     background: var(--firma-color);
     color: var(--c-white);
     display: inline-block;
-    padding: 8px 15px;
+    padding: 7px 15px;
     font-size: 14px;
 }
 .btn:hover{
-    background-color: var(--firma-color-hover);
+    background: var(--firma-color-hover);
 }
 .btn_r{
     border-radius: 50px;
