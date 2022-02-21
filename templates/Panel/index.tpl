@@ -16,8 +16,13 @@
     {STYLES}
     <link rel="stylesheet" href="{THEME}/css/style.css">
     <link rel="stylesheet" href="{THEME}/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/templates/_system/css/froala/froala_editor.pkgd.min.css">
+    <link rel="stylesheet" href="/templates/_system/css/froala/themes/dark.css">
 
     {SCRIPTS}
+
+    <script type="text/javascript" src="/templates/_system/js/froala/froala_editor.pkgd.min.js"></script>
+
 </head>
 <body>
 
