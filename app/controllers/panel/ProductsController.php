@@ -4,6 +4,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
+use app\models\CategoryModel;
 
 
 class ProductsController extends PanelController {
@@ -139,6 +140,14 @@ class ProductsController extends PanelController {
 
             $id = intval($id);
             $title = 'Редактирование категории для товаров';
+
+            $CategoryModel = new CategoryModel();
+            $Category = $CategoryModel->get($id);
+            
+            echo "<pre>";
+            print_r($Category);
+            echo "</pre>";
+            exit;
         }
 
         $content = '<h1>'.$title.'</h1>';
@@ -178,14 +187,15 @@ class ProductsController extends PanelController {
             <br>
             <p class="title_box hr_d"></p>
             <label for="" class="rq">Описание</label>
-            <textarea name="description" id="editor" rows="5"></textarea>
+            <textarea name="description" rows="5"></textarea>
+            <!--<textarea name="description" id="editor" rows="5"></textarea>
             <br>
             <script>
                 let editor = new FroalaEditor("#editor", {
                     inlineMode: true,
                     countCharacters: false
                 });
-            </script>
+            </script>-->
             <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
         </form>';
 
