@@ -117,7 +117,7 @@ class System{
      * @param $path
      * @return false|int
      */
-    public static function getDirSize($path): bool|int
+    public static function getDirSize($path)
     {
         $fileSize = 0;
         if(file_exists($path)){
