@@ -15,16 +15,16 @@ class CategoryModel extends Model{
      * @name добавление категории
      * ==========================
      * @param $title
-     * @param $meta
+     * @param array $meta
      * @param $cont
      * @param $url
      * @param $icon
      * @param $pid
-     * @param $status
+     * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, $meta = [], $cont, $url, $icon, $pid, $status = 1){
+    public function create($title, array $meta = [], $cont, $url, $icon, $pid, int $status = 1){
 
         $params = [
             $title,
@@ -94,6 +94,38 @@ class CategoryModel extends Model{
         $result["pagination"] = $pagination['pagination'];
 
         return $result;
+    }
+
+
+    /**
+     * @name редактирование категории
+     * ==============================
+     * @param $id
+     * @param $title
+     * @param array $meta
+     * @param $cont
+     * @param $url
+     * @param $icon
+     * @param $pid
+     * @param int $status
+     * @return void
+     * @throws Exception
+     */
+    public function edit($id, $title, array $meta = [], $cont, $url, $icon, $pid, int $status = 1){
+
+        Base::run("
+            UPDATE " . PREFIX . "category SET
+                title = ?,
+                m_title = ?,
+                m_description = ?,
+                cont = ?,
+                url = ?,
+                icon = ?,
+                pid = ?,
+                status = ?
+            WHERE id = ?",
+
+            [$title, $meta["title"], $meta["description"], $cont, $url, $icon, $pid, $status, $id])->rowCount();
     }
 
 

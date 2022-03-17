@@ -1,3 +1,7 @@
 20.02.2022 19:18:11 | SQLSTATE[HY000] [2002] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
 <br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\core\Model.php -> 18]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\traits\Users.php -> on line: 55]</span>
 
+17.03.2022 19:09:48 | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'nexshop.nex_' doesn't exist<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\CategoryModel.php -> 68]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 144]</span>
+
+17.03.2022 19:36:29 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_category`.`pid` at row 1<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\CategoryModel.php -> 128]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\CategoryShop.php -> on line: 32]</span>
+

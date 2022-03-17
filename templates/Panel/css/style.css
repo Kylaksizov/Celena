@@ -335,6 +335,10 @@ ul{
 h1{
     font-size: 17px;
     margin-bottom: 20px;
+    font-weight: 500;
+}
+h1 b{
+    color: var(--firma-color);
 }
 .title_box{
     overflow: hidden;

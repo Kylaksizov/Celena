@@ -139,15 +139,11 @@ class ProductsController extends PanelController {
         if($id){
 
             $id = intval($id);
-            $title = 'Редактирование категории для товаров';
 
             $CategoryModel = new CategoryModel();
             $Category = $CategoryModel->get($id);
-            
-            echo "<pre>";
-            print_r($Category);
-            echo "</pre>";
-            exit;
+
+            $title = 'Редактирование категории для товаров: <b>'.$Category["title"].'</b>';
         }
 
         $content = '<h1>'.$title.'</h1>';
@@ -156,11 +152,11 @@ class ProductsController extends PanelController {
             <div class="dg dg_auto">
                 <div>
                     <label for="" class="rq">Название</label>
-                    <input type="text" name="title" autocomplete="off">
+                    <input type="text" name="title" value="'.(!empty($Category["title"])?$Category["title"]:'').'" autocomplete="off">
                 </div>
                 <div>
                     <label for="" class="pr">URL категории <span class="q"><i>Для поисковых систем</i></span></label>
-                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" autocomplete="off">
+                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Category["url"])?$Category["url"]:'').'" autocomplete="off">
                 </div>
             </div>
             <p class="title_box hr_d">Meta-данные</p>
@@ -177,17 +173,17 @@ class ProductsController extends PanelController {
                 </div>
                 <div>
                     <label for="">Meta Title</label>
-                    <input type="text" name="meta[title]" autocomplete="off">
+                    <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
                 </div>
                 <div>
                     <label for="">Meta Description</label>
-                    <input type="text" name="meta[description]" autocomplete="off">
+                    <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
                 </div>
             </div>
             <br>
             <p class="title_box hr_d"></p>
             <label for="" class="rq">Описание</label>
-            <textarea name="description" rows="5"></textarea>
+            <textarea name="description" rows="5">'.(!empty($Category["cont"])?$Category["cont"]:'').'</textarea>
             <!--<textarea name="description" id="editor" rows="5"></textarea>
             <br>
             <script>
