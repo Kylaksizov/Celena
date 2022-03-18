@@ -5,6 +5,7 @@ namespace app\models;
 
 use app\core\Base;
 use app\core\Model;
+use app\core\System;
 use Exception;
 use PDO;
 
@@ -72,23 +73,30 @@ class CategoryModel extends Model{
      * @return array
      * @throws Exception
      */
-    public function getAll(){
+    public function getAll($all = false){
 
-        $result = [];
-        $params = [];
+        if($all){
 
-        $pagination = [
-            "start" => 0,
-            "limit" => 25,
-            "pagination" => ""
-        ];
+            $result = Base::run("SELECT id, title FROM " . PREFIX . "category ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "category c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+        } else{
 
-        $result["categories"] = Base::run(
-            "SELECT * FROM " . PREFIX . "category ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+            $result = [];
+            $params = [];
 
-        $result["pagination"] = $pagination['pagination'];
+            $pagination = [
+                "start" => 0,
+                "limit" => 25,
+                "pagination" => ""
+            ];
+
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "category c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+
+            $result["categories"] = Base::run(
+                "SELECT * FROM " . PREFIX . "category ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+            $result["pagination"] = $pagination['pagination'];
+        }
 
         return $result;
     }

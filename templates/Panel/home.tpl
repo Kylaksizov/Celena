@@ -1,7 +1,7 @@
 <div class="fx">
     <h1>Рабочий стол</h1>
     <div class="min_bar">
-        <select name="" id="">
+        <select name="" id="" class="inp_min">
             <option value="">Фильтр</option>
             <option value="">Фильтр 2</option>
             <option value="">Фильтр 3</option>

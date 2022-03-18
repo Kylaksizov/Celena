@@ -90,19 +90,19 @@ select{
 }
 
 input[type="color"]{background:none}
-input[type="checkbox"]{
+input.ch{
     position: relative;
     width: 0;
     top: 5px;
     z-index: -1;
     opacity: 0;
 }
-input[type="checkbox"] + label{
+input.ch + label{
     position: relative;
     padding: 0 0 0 45px;
     cursor: pointer;
 }
-input[type="checkbox"] + label:before{
+input.ch + label:before{
     content: '';
     position: absolute;
     top: -1px;
@@ -114,7 +114,7 @@ input[type="checkbox"] + label:before{
     box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
     transition: .2s;
 }
-input[type="checkbox"] + label:after{
+input.ch + label:after{
     content: '';
     position: absolute;
     top: 1px;
@@ -126,10 +126,10 @@ input[type="checkbox"] + label:after{
     box-shadow: 0 2px 5px rgba(0,0,0,.3);
     transition: .2s;
 }
-input[type="checkbox"]:checked + label:before{
+input.ch:checked + label:before{
     background: #9FD468;
 }
-input[type="checkbox"]:checked + label:after{
+input.ch:checked + label:after{
     left: 17px;
 }
 

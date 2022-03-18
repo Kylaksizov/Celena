@@ -49,68 +49,44 @@ class ProductsController extends PanelController {
             <h1>Категории товаров</h1>
             <a href="/panel/products/categories/add/" class="btn">Добавить</a>
         </div>';
+        
+        $CategoryModel = new CategoryModel();
+        $Categories = $CategoryModel->getAll();
+
+        if($Categories){
+
+            $categoryContent = '';
+
+            foreach ($Categories["categories"] as $row) {
+
+                $status = $row["status"] ? ' checked' : '';
+
+                $categoryContent .= '<tr>
+                    <td>'.$row["id"].'</td>
+                    <!--<td><input type="checkbox" class="ch_box_min" name="cat['.$row["id"].']" id="cat['.$row["id"].']"><label for="cat['.$row["id"].']"></label></td>-->
+                    <td><a href="'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
+                    <td>'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'').'</td>
+                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min" id="status['.$row["id"].']"'.$status.'><label for="status['.$row["id"].']"></label></td>
+                    <td>
+                        <ul class="tc">
+                            <li><a href="#" class="remove"></a></li>
+                        </ul>
+                    </td>
+                </tr>';
+            }
+
+        } else $categoryContent = '<tr class="tc"><td colspan="6">Категорий нет</td></tr>';
 
         $content .= '<table>
             <tr>
                 <th width="20">ID</th>
-                <th width="20"></th>
+                <!--<th width="10"><input type="checkbox" class="ch_box_min" name="" id="cat_sel"><label for="cat_sel"></label></th>-->
                 <th>Название</th>
                 <th width="30">Иконка</th>
                 <th width="20">Статус</th>
                 <th width="50">Действия</th>
             </tr>
-            <tr>
-                <td>0001</td>
-                <td><input type="checkbox" class="ch_box" name="cat[1]" id="cat[1]"><label for="cat[1]"></label></td>
-                <td><a href="#">Детские товары</a></td>
-                <td><img src="" alt=""></td>
-                <td><input type="checkbox" name="cat[1]" id="cat[1]"><label for="cat[1]"></label></td>
-                <td>
-                    <ul>
-                        <li><a href="#">s</a></li>
-                        <li><a href="#" class="remove"></a></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>0001</td>
-                <td><input type="checkbox" class="ch_box" name="cat[1]" id="cat[4]" disabled><label for="cat[4]"></label></td>
-                <td><a href="#">Детские товары</a></td>
-                <td><img src="" alt=""></td>
-                <td><input type="checkbox" name="cat[1]" id="cat[1]" disabled><label for="cat[1]"></label></td>
-                <td>
-                    <ul>
-                        <li><a href="#">s</a></li>
-                        <li><a href="#" class="remove"></a></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>0001</td>
-                <td><input type="checkbox" class="ch_box" name="cat[1]" id="cat[2]" disabled checked><label for="cat[2]"></label></td>
-                <td><a href="#">Детские товары</a></td>
-                <td><img src="" alt=""></td>
-                <td><input type="checkbox" name="cat[1]" id="cat[1]" disabled checked><label for="cat[1]"></label></td>
-                <td>
-                    <ul>
-                        <li><a href="#">s</a></li>
-                        <li><a href="#" class="remove"></a></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>0001</td>
-                <td><input type="checkbox" class="ch_box" name="cat[1]" id="cat[3]" checked><label for="cat[3]"></label></td>
-                <td><a href="#">Детские товары</a></td>
-                <td><img src="" alt=""></td>
-                <td><input type="checkbox" name="cat[1]" id="cat[1]"><label for="cat[1]"></label></td>
-                <td>
-                    <ul>
-                        <li><a href="#">s</a></li>
-                        <li><a href="#" class="remove"></a></li>
-                    </ul>
-                </td>
-            </tr>
+            '.$categoryContent.'
         </table>';
 
         $this->view->render('Категории товаров', $content);
@@ -145,14 +121,27 @@ class ProductsController extends PanelController {
 
         $title = 'Добавление категории для товаров';
 
+        $CategoryModel = new CategoryModel();
+        $Categories = $CategoryModel->getAll(true);
+
         if($id){
 
             $id = intval($id);
-
-            $CategoryModel = new CategoryModel();
             $Category = $CategoryModel->get($id);
 
             $title = 'Редактирование категории для товаров: <b>'.$Category["title"].'</b>';
+        }
+
+        // родительская категория
+        $parents = '<option value="">-- не выбрано --</option>';
+        if(!empty($Categories)){
+            foreach ($Categories as $row) {
+
+                if(!empty($Category["title"]) && $Category["title"] == $row["title"]) continue;
+
+                $selected = (!empty($Category["pid"]) && $Category["pid"] == $row["id"]) ? ' selected' : '';
+                $parents .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
         }
 
         $content = '<h1>'.$title.'</h1>';
@@ -173,6 +162,18 @@ class ProductsController extends PanelController {
             <p class="title_box hr_d">Meta-данные</p>
             <div class="dg dg_auto">
                 <div>
+                    <label for="">Meta Title</label>
+                    <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
+                </div>
+                <div>
+                    <label for="">Meta Description</label>
+                    <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
+                </div>
+            </div>
+            <br>
+            <p class="title_box hr_d">Дополнительно</p>
+            <div class="dg dg_auto">
+                <div>
                     <div class="category_icon">
                         <!-- тут картинка -->
                         '.$icon.'
@@ -184,26 +185,22 @@ class ProductsController extends PanelController {
                     <div class="files_preload"></div>
                 </div>
                 <div>
-                    <label for="">Meta Title</label>
-                    <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
-                </div>
-                <div>
-                    <label for="">Meta Description</label>
-                    <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
+                    <label for="">Подкатегория</label>
+                    <select name="pid">
+                        '.$parents.'
+                    </select>
+                    <label for="description">Описание</label>
+                    <textarea name="description" rows="5" id="description">'.(!empty($Category["cont"])?$Category["cont"]:'').'</textarea>
+                    <!--<textarea name="description" id="editor" rows="5"></textarea>
+                    <br>
+                    <script>
+                        let editor = new FroalaEditor("#editor", {
+                            inlineMode: true,
+                            countCharacters: false
+                        });
+                    </script>-->
                 </div>
             </div>
-            <br>
-            <p class="title_box hr_d"></p>
-            <label for="" class="rq">Описание</label>
-            <textarea name="description" rows="5">'.(!empty($Category["cont"])?$Category["cont"]:'').'</textarea>
-            <!--<textarea name="description" id="editor" rows="5"></textarea>
-            <br>
-            <script>
-                let editor = new FroalaEditor("#editor", {
-                    inlineMode: true,
-                    countCharacters: false
-                });
-            </script>-->
             <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
         </form>';
 

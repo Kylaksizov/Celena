@@ -18,7 +18,7 @@ class CategoryShop{
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
-        $pid = null;
+        $pid = !empty($_POST["pid"]) ? intval($_POST["pid"]) : null;
         $addScript = '';
 
         $CategoryModel = new CategoryModel();
