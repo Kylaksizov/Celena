@@ -5,6 +5,7 @@ namespace app\controllers\panel;
 
 use app\core\PanelController;
 use app\models\CategoryModel;
+use Exception;
 
 
 class ProductsController extends PanelController {
@@ -130,9 +131,17 @@ class ProductsController extends PanelController {
 
 
 
+
+    /**
+     * @name добавление и редактирование категории
+     * ===========================================
+     * @param $id
+     * @return void
+     * @throws Exception
+     */
     private function addCategory($id = null){
 
-        $this->view->styles = ['css/addon/category.css'];
+        $this->view->styles = ['css/addon/product.css'];
 
         $title = 'Добавление категории для товаров';
 
@@ -147,6 +156,8 @@ class ProductsController extends PanelController {
         }
 
         $content = '<h1>'.$title.'</h1>';
+
+        $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Category["icon"].'" alt="">' : '';
 
         $content .= '<form action method="POST" class="box_">
             <div class="dg dg_auto">
@@ -163,7 +174,8 @@ class ProductsController extends PanelController {
             <div class="dg dg_auto">
                 <div>
                     <div class="category_icon">
-                        <img src="http://nexshop/templates/Web/img/ad.jpg" alt="">
+                        <!-- тут картинка -->
+                        '.$icon.'
                     </div>
                     <label for="icon" class="upload_files" data-toggle="tooltip" data-placement="top">
                         <input type="file" name="icon" id="icon"> выбрать изображение

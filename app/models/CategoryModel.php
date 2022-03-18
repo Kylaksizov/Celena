@@ -18,13 +18,12 @@ class CategoryModel extends Model{
      * @param array $meta
      * @param $cont
      * @param $url
-     * @param $icon
      * @param $pid
      * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, array $meta = [], $cont, $url, $icon, $pid, int $status = 1){
+    public function create($title, array $meta = [], $cont, $url, $pid, int $status = 1){
 
         $params = [
             $title,
@@ -32,7 +31,6 @@ class CategoryModel extends Model{
             $meta["description"],
             $cont,
             $url,
-            $icon,
             $pid,
             $status
         ];
@@ -43,11 +41,10 @@ class CategoryModel extends Model{
             m_description,
             cont,
             url,
-            icon,
             pid,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -105,13 +102,12 @@ class CategoryModel extends Model{
      * @param array $meta
      * @param $cont
      * @param $url
-     * @param $icon
      * @param $pid
      * @param int $status
      * @return void
      * @throws Exception
      */
-    public function edit($id, $title, array $meta = [], $cont, $url, $icon, $pid, int $status = 1){
+    public function edit($id, $title, array $meta = [], $cont, $url, $pid, int $status = 1){
 
         Base::run("
             UPDATE " . PREFIX . "category SET
@@ -120,12 +116,35 @@ class CategoryModel extends Model{
                 m_description = ?,
                 cont = ?,
                 url = ?,
-                icon = ?,
                 pid = ?,
                 status = ?
             WHERE id = ?",
 
-            [$title, $meta["title"], $meta["description"], $cont, $url, $icon, $pid, $status, $id])->rowCount();
+            [$title, $meta["title"], $meta["description"], $cont, $url, $pid, $status, $id])->rowCount();
+    }
+
+
+    /**
+     * @name изменение полей произвольно
+     * =================================
+     * @param $id
+     * @param array $fields
+     * @return void
+     * @throws Exception
+     */
+    public function editFields($id, array $fields){
+
+        $set = "";
+        $params = [];
+
+        foreach ($fields as $fieldName => $val) {
+            $set .= "$fieldName = ?, ";
+            array_push($params, $val);
+        }
+        $set = trim($set, ", ");
+        array_push($params, $id);
+
+        Base::run("UPDATE " . PREFIX . "category SET $set WHERE id = ?", $params)->rowCount();
     }
 
 
