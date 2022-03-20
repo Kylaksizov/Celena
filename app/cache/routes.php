@@ -7,6 +7,7 @@ return [
         '404/$' => ['controller' => 'NotFound'],
 
         'products/(page-[0-9]+/)?$' => ['controller' => 'products'],
+        'products/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
         'products/categories/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
         'products/categories/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'categories'],
 

@@ -349,6 +349,8 @@ $(function(){
         }
     })
 
+    if($(".multipleSelect").length) $('.multipleSelect').select2();
+
     // контекстное меню
     /*$(document).on("contextmenu", '.cxt', function(e){
         e.preventDefault()
@@ -370,7 +372,7 @@ $(function(){
         for (let i = 0; i < this.files.length; i++) {
             all_files += '<span>' + this.files[i]["name"] + '</span>';
         }
-        $(this).parent().next('.files_preload').fadeIn(300).html(all_files);
+        $(this).parent().next().next('.files_preload').fadeIn(300).html(all_files);
     })
 
 })

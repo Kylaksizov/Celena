@@ -9,43 +9,48 @@ use app\core\System;
 use Exception;
 use PDO;
 
-class CategoryModel extends Model{
+class ProductModel extends Model{
 
 
     /**
-     * @name добавление категории
-     * ==========================
+     * @name добавление товара
+     * =======================
      * @param $title
      * @param array $meta
      * @param $content
+     * @param $price
+     * @param $sale
      * @param $url
-     * @param $pid
      * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, array $meta = [], $content, $url, $pid, int $status = 1){
+    public function create($title, array $meta = [], $content, $price, $sale, $url, int $status = 1){
 
         $params = [
+            USER["id"],
             $title,
             $meta["title"],
             $meta["description"],
             $content,
+            $price,
+            $sale,
             $url,
-            $pid,
             $status
         ];
 
-        Base::run("INSERT INTO " . PREFIX . "category (
+        Base::run("INSERT INTO " . PREFIX . "products (
+            uid,
             title,
             m_title,
             m_description,
             content,
+            price,
+            sale,
             url,
-            pid,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -55,21 +60,21 @@ class CategoryModel extends Model{
 
 
     /**
-     * @name получение инфы одной категории
-     * ====================================
+     * @name получение одного товара
+     * =============================
      * @param $id
      * @return mixed|null
      * @throws Exception
      */
     public function get($id){
 
-        return Base::run("SELECT * FROM " . PREFIX . "category WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
     }
 
 
     /**
-     * @name получение всех категорий
-     * ==============================
+     * @name получение всех товаров
+     * ============================
      * @return array
      * @throws Exception
      */
@@ -77,7 +82,7 @@ class CategoryModel extends Model{
 
         if($all){
 
-            $result = Base::run("SELECT id, title FROM " . PREFIX . "category ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $result = Base::run("SELECT * FROM " . PREFIX . "products ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         } else{
 
@@ -90,45 +95,15 @@ class CategoryModel extends Model{
                 "pagination" => ""
             ];
 
-            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "category c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "products c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
 
-            $result["categories"] = Base::run(
-                "SELECT * FROM " . PREFIX . "category ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+            $result["products"] = Base::run(
+                "SELECT * FROM " . PREFIX . "products ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
 
             $result["pagination"] = $pagination['pagination'];
         }
 
         return $result;
-    }
-
-
-    /**
-     * @name редактирование категории
-     * ==============================
-     * @param $id
-     * @param $title
-     * @param array $meta
-     * @param $content
-     * @param $url
-     * @param $pid
-     * @param int $status
-     * @return void
-     * @throws Exception
-     */
-    public function edit($id, $title, array $meta = [], $content, $url, $pid, int $status = 1){
-
-        Base::run("
-            UPDATE " . PREFIX . "category SET
-                title = ?,
-                m_title = ?,
-                m_description = ?,
-                content = ?,
-                url = ?,
-                pid = ?,
-                status = ?
-            WHERE id = ?",
-
-            [$title, $meta["title"], $meta["description"], $content, $url, $pid, $status, $id])->rowCount();
     }
 
 
@@ -149,10 +124,11 @@ class CategoryModel extends Model{
             $set .= "$fieldName = ?, ";
             array_push($params, $val);
         }
-        $set = trim($set, ", ");
+        $set .= "last_modify = ?";
+        array_push($params, time());
         array_push($params, $id);
 
-        Base::run("UPDATE " . PREFIX . "category SET $set WHERE id = ?", $params)->rowCount();
+        Base::run("UPDATE " . PREFIX . "products SET $set WHERE id = ?", $params)->rowCount();
     }
 
 

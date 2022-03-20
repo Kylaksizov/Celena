@@ -1,5 +1,6 @@
 $(function(){
 
+    let url = window.location.href;
     let nexDev = localStorage.getItem('nexDev')
     let nexDevErrors = localStorage.getItem('nexDevErrors')
 
@@ -37,5 +38,16 @@ $(function(){
 
         return false
     })
+
+    // arrow backup
+    if(url.split("/").length >= 5){
+        
+        let back = url.split("/")
+        delete back[back.length-2]
+        back = back.join("/")
+        back = back.substring(0, back.length - 1)
+        
+        //$("h1").prepend(`<a href="`+back+`" class="back_page"></a>`)
+    }
 
 })

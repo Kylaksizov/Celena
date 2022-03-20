@@ -11,3 +11,23 @@
 .category_icon img{
     max-height: 100%;
 }
+#product_images{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    margin-top: 5px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.img_item{
+    background: #dbe1f1;
+    max-width: 100px;
+    border: 1px #bbc3dd dashed;
+    border-radius: 2px;
+    padding: 2px;
+}
+#product_images img{
+    max-height: 70px;
+    display: block;
+    margin: 0 auto;
+}

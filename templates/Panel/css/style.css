@@ -246,7 +246,7 @@ ul{
     background: #f6f7fb;
     font-weight: 700;
     font-size: 17px;
-    padding: 18px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -330,65 +330,6 @@ ul{
 
 .statics_top{
     grid-template-columns: repeat(4, 1fr);
-}
-
-h1{
-    font-size: 17px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-h1 b{
-    color: var(--firma-color);
-}
-.title_box{
-    overflow: hidden;
-    margin: 10px 0;
-    font-size: 13px;
-    font-weight: 400;
-    color: #9ca9cd;
-}
-.title_box:not(:first-of-type){
-    margin-top: 20px;
-}
-
-.title_box:before,
-.title_box:after {
-    content: '';
-    display: inline-block;
-    vertical-align: middle;
-    box-sizing: border-box;
-    width: 100%;
-    height: 1px;
-    background: #d0d7eb;
-    border: solid var(--main-bg);
-    border-width: 0 10px;
-}
-.title_box:before{
-    margin-left: -100%;
-}
-.title_box:after{
-    margin-right: -100%;
-}
-.hr_d:before, .hr_d:after{
-    background: #fff;
-    background-image: linear-gradient(90deg, #d6ddef, #d6ddef 75%, transparent 75%, transparent 100%);
-    background-size: 10px 1px;
-    border: solid #fff;
-    border-width: 0 10px;
-}
-
-.btn{
-    background: var(--firma-color);
-    color: var(--c-white);
-    display: inline-block;
-    padding: 8px 15px;
-    font-size: 14px;
-}
-.btn:hover{
-    background-color: var(--firma-color-hover);
-}
-.btn_r{
-    border-radius: 50px;
 }
 
 .box_1{
@@ -560,7 +501,7 @@ table.min th{
 .tabs_caption li{
     background: #dadfed;
     box-shadow: none !important;
-    padding: 10px 20px !important;
+    padding: 8px 10px !important;
     font-size: 15px;
     color: #4B5E6E;
 }

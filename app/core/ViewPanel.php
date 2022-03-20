@@ -160,12 +160,14 @@ class ViewPanel{
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
         $styles = '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/panel.css">
+    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/select2.min.css">
     <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/Panel/css/'.$style.'">';
 
         $scripts = '
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery.min.js"></script>
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/panel.js"></script>
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery-ui.min.js"></script>
+    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/select2.full.min.js"></script>
     <script src="{THEME}/js/script.js"></script>';
 
         #TODO тут нужно подумать что сначала что с конца, учитывая что стили и скрипты могут подключаться как в tpl так и в контроллере !!!!!!!!
