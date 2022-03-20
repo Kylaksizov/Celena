@@ -119,31 +119,14 @@ class ProductsController extends PanelController {
 
 
 
-    public function actionsAction(){
-
-        if(!empty($this->urls[2])){
-            if($this->urls[2] == 'add') $this->addProduct();
-            if($this->urls[2] == 'edit' && !empty($this->urls[3])) $this->addProduct($this->urls[3]);
-        }
-
-        if(!empty($this->urls[3])){
-            if($this->urls[3] == 'add') $this->addCategory();
-            if($this->urls[3] == 'edit' && !empty($this->urls[4])) $this->addCategory($this->urls[4]);
-        }
-    }
-
-
-
-
 
     /**
      * @name добавление и редактирование категории
      * ===========================================
-     * @param $id
      * @return void
      * @throws Exception
      */
-    private function addProduct($id = null){
+    public function addProductAction(){
 
         $this->view->styles = ['css/addon/product.css'];
 
@@ -152,9 +135,9 @@ class ProductsController extends PanelController {
         $CategoryModel = new CategoryModel();
         $Categories = $CategoryModel->getAll(true);
 
-        if($id){
+        if($this->urls[3]){
 
-            $id = intval($id);
+            $id = intval($this->urls[3]);
             $ProductModel = new ProductModel();
             $Product = $ProductModel->get($id);
 
@@ -180,6 +163,7 @@ class ProductsController extends PanelController {
                 <ul class="tabs_caption">
                     <li class="active">Товар</li>
                     <li>SEO</li>
+                    <li>Свойства</li>
                 </ul>
                 <div class="tabs_content active">
                     <div class="dg dg_auto">
@@ -218,11 +202,9 @@ class ProductsController extends PanelController {
                         <div>
                             <div class="dg dg-2">
                                 <div>
-                                    <label for="icon" class="upload_files" data-toggle="tooltip" data-placement="top">
-                                        <input type="file" name="icon" id="icon"> выбрать изображение
+                                    <label for="p_images" class="upload_files">
+                                        <input type="file" name="images" id="p_images" multiple> выбрать изображения
                                     </label>
-                                    <div class="clr"></div>
-                                    <div class="files_preload"></div>
                                 </div>
                                 <div class="tr">
                                     <input type="checkbox" name="status" id="p_status" value="1"><label for="p_status">Активен</label>
@@ -261,15 +243,31 @@ class ProductsController extends PanelController {
                             <label for="">Meta Title</label>
                             <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
                         </div>
+                    </div>
+                    <div class="dg dg_auto">
                         <div>
                             <label for="">Meta Description</label>
-                            <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
+                            <textarea name="meta[description]" rows="3">'.(!empty($Category["m_description"])?$Category["m_description"]:'').'</textarea>
                         </div>
                     </div>
                 </div>
+                
+                
+                <!-- tab Свойства -->
+                <div class="tabs_content">
+                    <div class="dg dg_auto">
+                        <div>
+                            
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
             </div>
             
-            <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
+            <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">
             
         </form>';
 
@@ -283,11 +281,10 @@ class ProductsController extends PanelController {
     /**
      * @name добавление и редактирование категории
      * ===========================================
-     * @param $id
      * @return void
      * @throws Exception
      */
-    private function addCategory($id = null){
+    public function addCategoryAction(){
 
         $this->view->styles = ['css/addon/product.css'];
 
@@ -296,9 +293,9 @@ class ProductsController extends PanelController {
         $CategoryModel = new CategoryModel();
         $Categories = $CategoryModel->getAll(true);
 
-        if($id){
+        if($this->urls[4]){
 
-            $id = intval($id);
+            $id = intval($this->urls[4]);
             $Category = $CategoryModel->get($id);
 
             $title = 'Редактирование категории для товаров: <b>'.$Category["title"].'</b>';
@@ -350,11 +347,9 @@ class ProductsController extends PanelController {
                         <!-- тут картинка -->
                         '.$icon.'
                     </div>
-                    <label for="icon" class="upload_files" data-toggle="tooltip" data-placement="top">
+                    <label for="icon" class="upload_files">
                         <input type="file" name="icon" id="icon"> выбрать изображение
                     </label>
-                    <div class="clr"></div>
-                    <div class="files_preload"></div>
                 </div>
                 <div>
                     <label for="">Подкатегория</label>

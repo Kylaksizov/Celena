@@ -7,9 +7,13 @@ return [
         '404/$' => ['controller' => 'NotFound'],
 
         'products/(page-[0-9]+/)?$' => ['controller' => 'products'],
-        'products/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
-        'products/categories/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
+        'products/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addProduct'],
         'products/categories/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'categories'],
+        'products/categories/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addCategory'],
+        'products/brands/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'brands'],
+        'products/brands/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
+        'products/options/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'options'],
+        'products/options/(add/|edit/[0-9]+/)$' => ['controller' => 'products', 'action' => 'actions'],
 
         'orders/(page-[0-9]+/)?$' => ['controller' => 'orders'],
         'orders/click/(page-[0-9]+/)?$' => ['controller' => 'orders', 'action' => 'click'],

@@ -372,7 +372,9 @@ $(function(){
         for (let i = 0; i < this.files.length; i++) {
             all_files += '<span>' + this.files[i]["name"] + '</span>';
         }
-        $(this).parent().next().next('.files_preload').fadeIn(300).html(all_files);
+        $(this).parent().next().next(".files_preload").remove();
+        $(this).parent().after(`<div class="clr"></div><div class="files_preload">`+all_files+`</div>`);
+        $(this).parent().next().next(".files_preload").fadeIn(300);
     })
 
 })
