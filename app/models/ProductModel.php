@@ -108,6 +108,41 @@ class ProductModel extends Model{
 
 
     /**
+     * @name получение всех свойств
+     * ============================
+     * @return array
+     * @throws Exception
+     */
+    public function getPropertiesAll($all = false){
+
+        if($all){
+
+            $result = System::setKeysArray(Base::run("SELECT p.*, v.val, v.def FROM " . PREFIX . "properties p LEFT JOIN " . PREFIX . "properties_v v ON v.pid = p.id ORDER BY p.position, v.position ASC")->fetchAll(PDO::FETCH_ASSOC), "title");
+
+        } else{
+
+            $result = [];
+            $params = [];
+
+            $pagination = [
+                "start" => 0,
+                "limit" => 25,
+                "pagination" => ""
+            ];
+
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "properties c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+
+            $result["properties"] = Base::run(
+                "SELECT * FROM " . PREFIX . "properties ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+            $result["pagination"] = $pagination['pagination'];
+        }
+
+        return $result;
+    }
+
+
+    /**
      * @name изменение полей произвольно
      * =================================
      * @param $id

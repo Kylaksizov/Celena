@@ -5,3 +5,7 @@
 
 17.03.2022 19:36:29 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_category`.`pid` at row 1<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\CategoryModel.php -> 128]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\CategoryShop.php -> on line: 32]</span>
 
+20.03.2022 15:18:09 | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'nexshop.nex_properties' doesn't exist<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\core\System.php -> 179]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> on line: 133]</span>
+
+20.03.2022 15:59:09 | SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'id' in order clause is ambiguous<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 120]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 191]</span>
+

@@ -31,3 +31,77 @@
     display: block;
     margin: 0 auto;
 }
+#propertiesAll{
+    background-color: #ecf0fa;
+    border: 1px #d1d9ed solid;
+}
+.properties_actions{
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-gap: 15px;
+    align-items: start;
+}
+.properties_actions .btn{
+    padding: 10px 15px;
+    text-align: center;
+}
+.prop_main{
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 100px 100px 100px 40px;
+    align-items: flex-end;
+}
+.prop_sub{
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 100px 100px 100px 40px;
+    align-items: flex-start;
+    margin-top: -14px;
+}
+.property_name{
+    border-left: 2px #d1d9ed solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 15px;
+    border-radius: 2px;
+}
+.add_sub_property{
+    background: var(--c-success);
+    color: var(--c-white);
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 3px;
+    font-size: 21px;
+    position: relative;
+    top: -20px;
+}
+.add_sub_property:hover{
+    background: var(--c-success-hover);
+}
+.remove_sub_property{
+    background: var(--c-red);
+    color: var(--c-white);
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 3px;
+    font-size: 26px;
+}
+.remove_sub_property:hover{
+    background: var(--c-red-hover);
+}
+.del_property{
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB4PSIwIiB5PSIwIiB2aWV3Qm94PSIwIDAgNTE1LjU1NiA1MTUuNTU2IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im0yNTcuNzc4IDBjLTE0Mi4xMzcgMC0yNTcuNzc4IDExNS42NDEtMjU3Ljc3OCAyNTcuNzc4czExNS42NDEgMjU3Ljc3OCAyNTcuNzc4IDI1Ny43NzggMjU3Ljc3OC0xMTUuNjQxIDI1Ny43NzgtMjU3Ljc3OC0xMTUuNjQyLTI1Ny43NzgtMjU3Ljc3OC0yNTcuNzc4em0xMjguODg5IDI5MGgtMjU3Ljc3OHYtNjQuNDQ0aDI1Ny43Nzh6IiBmaWxsPSIjZWYzOTM5IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIj48L3BhdGg+PC9nPjwvc3ZnPg==") no-repeat center center;
+    background-size: 18px;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    float: right;
+    opacity: .5;
+}
+.del_property:hover{
+    opacity: 1;
+}
+.prop label{
+    display: block;
+}

@@ -45,7 +45,7 @@ abstract class PanelController{
                     "Товары" => "{panel}/products/",
                     "Категории" => "{panel}/products/categories/",
                     "Бренды" => "{panel}/products/brands/",
-                    "Свойства" => "{panel}/products/options/",
+                    "Свойства" => "{panel}/products/properties/",
                 ]
             ],
             'Заказы и покупки <span data-informer="orders" class="informer_active">3</span>' => [

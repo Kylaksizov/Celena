@@ -33,6 +33,24 @@ class System{
     }
 
 
+    /**
+     * @name установка ключей с массивами
+     * ==================================
+     * @param $rows
+     * @param string $field_name
+     * @return array
+     */
+    public static function setKeysArray($rows, string $field_name = "id"){
+
+        $result = [];
+        foreach ($rows as $row){
+            if(!empty($result[$row[$field_name]])) array_push($result[$row[$field_name]], $row);
+            else $result[$row[$field_name]][] = $row;
+        }
+        return $result;
+    }
+
+
 
     /**
      * @name транслитерация
