@@ -105,3 +105,12 @@
 .prop label{
     display: block;
 }
+.prop .pr label{
+    background: linear-gradient(90deg, #e5ffc8, transparent);
+    padding: 4px 0 4px 5px;
+}
+[name="price"]{
+    font-weight: bold;
+    font-size: 17px;
+    padding: 8px 10px !important;
+}

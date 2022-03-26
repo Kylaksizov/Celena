@@ -35,7 +35,7 @@
 
     <a href="{panel}/balance/" id="balance">
         <span>Баланс</span>
-        <b>116923.5 ₽</b>
+        <b>116923.5 $</b>
     </a>
 
     <div id="notification">

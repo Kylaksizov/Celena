@@ -13,44 +13,56 @@ class ProductModel extends Model{
 
 
     /**
-     * @name добавление товара
-     * =======================
      * @param $title
+     * @param string $vendor
      * @param array $meta
      * @param $content
      * @param $price
-     * @param $sale
-     * @param $url
+     * @param string|null $sale
+     * @param null $stock
+     * @param null $url
+     * @param null $created
      * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, array $meta = [], $content, $price, $sale, $url, int $status = 1){
+    public function create($title, string $vendor = '', array $meta = [], $content, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
+
+        if($url === null) $url = System::translit($title);
+        if($created === null) $created = time();
 
         $params = [
             USER["id"],
+            $vendor,
             $title,
             $meta["title"],
             $meta["description"],
             $content,
             $price,
             $sale,
+            $stock,
             $url,
+            $created,
+            null,
             $status
         ];
 
         Base::run("INSERT INTO " . PREFIX . "products (
             uid,
+            vendor,
             title,
             m_title,
             m_description,
             content,
             price,
             sale,
+            stock,
             url,
+            created,
+            last_modify,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -68,7 +80,26 @@ class ProductModel extends Model{
      */
     public function get($id){
 
-        return Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        $result = [];
+
+        $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+
+        $result["props"] = Base::run("SELECT
+                p.id,
+                p.title,
+                pp.id AS pp_id,
+                pp.id_prop,
+                pp.vendor,
+                pp.price,
+                pp.stock,
+                pv.pid,
+                pv.val
+            FROM " . PREFIX . "product_prop pp
+                LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_prop
+                LEFT JOIN " . PREFIX . "properties p ON p.id = pv.pid
+            WHERE pp.pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
 
@@ -117,7 +148,7 @@ class ProductModel extends Model{
 
         if($all){
 
-            $result = System::setKeysArray(Base::run("SELECT p.*, v.val, v.def FROM " . PREFIX . "properties p LEFT JOIN " . PREFIX . "properties_v v ON v.pid = p.id ORDER BY p.position, v.position ASC")->fetchAll(PDO::FETCH_ASSOC), "title");
+            $result = System::setKeysArray(Base::run("SELECT p.*, v.id AS vid, v.val, v.def FROM " . PREFIX . "properties p LEFT JOIN " . PREFIX . "properties_v v ON v.pid = p.id ORDER BY p.position, v.position ASC")->fetchAll(PDO::FETCH_ASSOC), "title");
 
         } else{
 
@@ -164,6 +195,67 @@ class ProductModel extends Model{
         array_push($params, $id);
 
         Base::run("UPDATE " . PREFIX . "products SET $set WHERE id = ?", $params)->rowCount();
+    }
+
+
+
+
+
+    /**
+     * @name добавление свойств товару
+     * ===============================
+     * @param $pid
+     * @param $id_prop
+     * @param $vendor
+     * @param $price
+     * @param $stock
+     * @return bool|string
+     * @throws Exception
+     */
+    public function addProperty($pid, $id_prop, $vendor, $price, $stock = null){
+
+        $params = [
+            $pid,
+            $id_prop,
+            $vendor,
+            $price,
+            $stock
+        ];
+
+        Base::run("INSERT INTO " . PREFIX . "product_prop (
+            pid,
+            id_prop,
+            vendor,
+            price,
+            stock
+        ) VALUES (
+            ?, ?, ?, ?, ?
+        )", $params);
+
+        unset($params);
+
+        return Base::lastInsertId();
+    }
+
+
+
+
+
+    /**
+     * @name изменение свойств для товара
+     * ==================================
+     * @param $id
+     * @param $pid
+     * @param $id_prop
+     * @param $vendor
+     * @param $price
+     * @param $stock
+     * @return void
+     * @throws Exception
+     */
+    public function editProperty($id, $pid, $id_prop, $vendor, $price, $stock = null){
+
+        Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $vendor, $price, $stock, $id])->rowCount();
     }
 
 

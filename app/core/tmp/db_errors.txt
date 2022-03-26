@@ -1,11 +1,16 @@
-20.02.2022 19:18:11 | SQLSTATE[HY000] [2002] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
-<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\core\Model.php -> 18]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\traits\Users.php -> on line: 55]</span>
+25.03.2022 19:55:42 | SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'id' in where clause is ambiguous<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 83]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
 
-17.03.2022 19:09:48 | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'nexshop.nex_' doesn't exist<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\CategoryModel.php -> 68]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 144]</span>
+25.03.2022 20:06:50 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.val
+            FROM nex_product_prop pp
+                LEFT JOIN nex_pro...' at line 11<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 101]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
 
-17.03.2022 19:36:29 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_category`.`pid` at row 1<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\CategoryModel.php -> 128]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\CategoryShop.php -> on line: 32]</span>
+25.03.2022 20:07:10 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.val
+            FROM nex_product_prop pp
+                LEFT JOIN nex_pro...' at line 10<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 100]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
 
-20.03.2022 15:18:09 | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'nexshop.nex_properties' doesn't exist<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\core\System.php -> 179]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> on line: 133]</span>
+25.03.2022 20:07:49 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'pv.val
+            FROM nex_product_prop pp
+                LEFT JOIN nex_p...' at line 10<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 100]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
 
-20.03.2022 15:59:09 | SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'id' in order clause is ambiguous<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 120]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 191]</span>
+26.03.2022 13:31:44 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'meta' in 'field list'<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 197]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 82]</span>
 

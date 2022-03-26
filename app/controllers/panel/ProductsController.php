@@ -183,7 +183,7 @@ class ProductsController extends PanelController {
         $this->view->styles = ['css/addon/product.css'];
         $this->view->scripts = ['js/addon/product.js'];
 
-        $title = 'Добавление товара';
+        $title = $h1 = 'Добавление товара';
 
         $ProductModel = new ProductModel();
         $CategoryModel = new CategoryModel();
@@ -196,11 +196,22 @@ class ProductsController extends PanelController {
         // Property
         $propertiesSelect = '<select name="" id="propertiesAll">
             <option>-- выбрать свойство --</option>';
+        $propsOptions = [];
         if(!empty($Properties)){
 
             foreach ($Properties as $propertyTitle => $propertyRow) {
 
                 $propertiesSelect .= '<option value="'.$propertyRow[0]["id"].'" data-property=\''.json_encode($propertyRow, JSON_UNESCAPED_UNICODE).'\'>'.$propertyTitle.'</option>';
+
+                foreach ($propertyRow as $propItem) {
+
+                    if(empty($propsOptions[$propertyTitle]))
+                        $propsOptions[$propertyTitle] = '
+                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
+                    else
+                        $propsOptions[$propertyTitle] .= '
+                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
+                }
             }
         }
         $propertiesSelect .= '</select> <a href="#" class="btn" id="addPropertiy">Добавить</a>';
@@ -209,24 +220,90 @@ class ProductsController extends PanelController {
 
 
         if(!empty($this->urls[3])){
-
+            
             $id = intval($this->urls[3]);
             $Product = $ProductModel->get($id);
 
-            $title = 'Редактирование товара: <b>'.$Product["title"].'</b>';
+            $title = 'Редактирование товара';
+            $h1 = 'Редактирование товара: <b>'.$Product["product"]["title"].'</b>';
         }
 
         // категории
         $categoryOptions = '';
         if(!empty($Categories)){
+            $categoriesIsset = !empty($Product["product"]["category"]) ? explode(",", $Product["product"]["category"]) : [];
             foreach ($Categories as $row) {
 
-                $selected = (!empty($Product["cid"]) && $Product["cid"] == $row["cid"]) ? ' selected' : '';
+                $selected = in_array($row["id"], $categoriesIsset) ? ' selected' : '';
                 $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
             }
         }
+        
+        // свойства
+        $properties = '';
+        if(!empty($Product["props"])){
 
-        $content = '<h1>'.$title.'</h1>';
+            $propId = $Product["props"][0]["id"];
+
+            foreach ($Product["props"] as $propKey => $row) {
+
+                if($propKey == 0 || $propId != $row["id"]){
+
+                    $closeProp = true;
+
+                    $properties .= '<div class="prop">
+                            <div class="prop_main" data-prop-id="'.$row["id"].'">
+                                <div class="pr">
+                                    <input type="hidden" name="prop['.$row["id"].'][pp_id][]" value="'.$row["pp_id"].'">
+                                    <label for="">'.$row["title"].': <a href="#" class="del_property"></a></label>
+                                    <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
+                                        <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="">Артикул</label>
+                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
+                                </div>
+                                <div>
+                                    <label for="">Цена</label>
+                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                </div>
+                                <div>
+                                    <label for="">Кол-во</label>
+                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
+                                </div>
+                                <a href="#" class="add_sub_property">+</a>
+                            </div>
+                            <div class="prop_subs">';
+
+                } else{
+
+                    $closeProp = false;
+
+                            $properties .= '<div class="prop_sub">
+                                    <div class="pr">
+                                        <input type="hidden" name="prop['.$row["id"].'][pp_id][]" value="'.$row["pp_id"].'">
+                                        <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
+                                            <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
+                                        </select>
+                                    </div>
+                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
+                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
+                                    <a href="#" class="remove_sub_property" data-a="ProductShop:deleteProperty='.$row["pp_id"].'">-</a>
+                                </div>';
+                }
+
+                if(!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey)
+                            $properties .= '
+                            </div>
+                        </div>';
+
+                $propId = $row["id"];
+            }
+        }
+
+        $content = '<h1>'.$h1.'</h1>';
 
         $icon = (!empty($Product["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Product["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Product["icon"].'" alt="">' : '';
 
@@ -242,7 +319,11 @@ class ProductsController extends PanelController {
                         <div>
                             <div>
                                 <label for="" class="rq">Название</label>
-                                <input type="text" name="title" value="'.(!empty($Product["title"])?$Product["title"]:'').'" autocomplete="off">
+                                <input type="text" name="title" value="'.(!empty($Product["product"]["title"])?$Product["product"]["title"]:'').'" autocomplete="off">
+                            </div>
+                            <div>
+                                <label for="">Артикул</label>
+                                <input type="text" name="vendor" value="'.(!empty($Product["product"]["vendor"])?$Product["product"]["vendor"]:'').'" autocomplete="off">
                             </div>
                             <div>
                                 <label for="">Категория</label>
@@ -252,22 +333,22 @@ class ProductsController extends PanelController {
                             </div>
                             <div>
                                 <label for="">Дата публикации</label>
-                                <input type="date" name="created" value="'.(!empty($Product["created"])?$Product["created"]:'').'" autocomplete="off">
+                                <input type="text" name="created" class="dateTime" value="'.(!empty($Product["product"]["created"])?date("d.m.Y H:i", $Product["product"]["created"]):'').'" autocomplete="off">
                             </div>
                         </div>
                         <div>
                             <div>
                                 <div>
                                     <label for="" class="rq">Цена</label>
-                                    <input type="number" name="price" min="0" value="'.(!empty($Product["price"])?$Product["price"]:'').'" autocomplete="off">
+                                    <input type="number" name="price" min="0" value="'.(!empty($Product["product"]["price"])?$Product["product"]["price"]:'').'" autocomplete="off">
                                 </div>
                                 <div>
                                     <label for="">Скидка</label>
-                                    <input type="text" name="sale" value="'.(!empty($Product["sale"])?$Product["sale"]:'').'" autocomplete="off">
+                                    <input type="text" name="sale" value="'.(!empty($Product["product"]["sale"])?$Product["product"]["sale"]:'').'" autocomplete="off">
                                 </div>
                                 <div>
                                     <label for="">На складе</label>
-                                    <input type="number" name="stock" value="'.(!empty($Product["stock"])?$Product["stock"]:'').'" autocomplete="off">
+                                    <input type="number" name="stock" value="'.(!empty($Product["product"]["stock"])?$Product["product"]["stock"]:'').'" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -309,17 +390,17 @@ class ProductsController extends PanelController {
                     <div class="dg dg_auto">
                         <div>
                             <label for="" class="pr">URL <span class="q"><i>Для поисковых систем</i></span></label>
-                            <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Category["url"])?$Category["url"]:'').'" autocomplete="off">
+                            <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Product["product"]["url"])?$Product["product"]["url"]:'').'" autocomplete="off">
                         </div>
                         <div>
                             <label for="">Meta Title</label>
-                            <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
+                            <input type="text" name="meta[title]" value="'.(!empty($Product["product"]["m_title"])?$Product["product"]["m_title"]:'').'" autocomplete="off">
                         </div>
                     </div>
                     <div class="dg dg_auto">
                         <div>
                             <label for="">Meta Description</label>
-                            <textarea name="meta[description]" rows="3">'.(!empty($Category["m_description"])?$Category["m_description"]:'').'</textarea>
+                            <textarea name="meta[description]" rows="3">'.(!empty($Product["product"]["m_description"])?$Product["product"]["m_description"]:'').'</textarea>
                         </div>
                     </div>
                 </div>
@@ -331,72 +412,7 @@ class ProductsController extends PanelController {
                         '.$propertiesSelect.'
                     </div>
                     <div id="properties_product">
-                        <!--<div class="prop">
-                            <div class="prop_main">
-                                <div class="pr">
-                                    <label for="">Цвет: <a href="#" class="del_property"></a></label>
-                                    <select class="property_name" name="">
-                                        <option value="">&#45;&#45; не выбрано &#45;&#45;</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="">Артикул</label>
-                                    <input type="text" name="prop[vendor]" value="" placeholder="Артикул">
-                                </div>
-                                <div>
-                                    <label for="">Цена</label>
-                                    <input type="number" name="prop[price]" min="0" step=".1" value="" placeholder="Цена">
-                                </div>
-                                <div>
-                                    <label for="">Кол-во</label>
-                                    <input type="number" name="prop[stock]" min="0" step="1" value="" placeholder="Кол-во">
-                                </div>
-                                <a href="#" class="add_sub_property">+</a>
-                            </div>
-                            <div class="prop_subs">
-                                <div class="prop_sub">
-                                    <div class="pr">
-                                        <select class="property_name" name="">
-                                            <option value="">&#45;&#45; не выбрано &#45;&#45;</option>
-                                        </select>
-                                    </div>
-                                    <input type="text" name="prop[vendor]" value="" placeholder="Артикул">
-                                    <input type="number" name="prop[price]" min="0" step=".1" value="" placeholder="Цена">
-                                    <input type="number" name="prop[stock]" min="0" step="1" value="" placeholder="Кол-во">
-                                    <a href="#" class="remove_sub_property">-</a>
-                                </div>
-                                <div class="prop_sub">
-                                    <div></div>
-                                    <input type="text" name="prop[vendor]" value="" placeholder="Артикул">
-                                    <input type="number" name="prop[price]" min="0" step=".1" value="" placeholder="Цена">
-                                    <input type="number" name="prop[stock]" min="0" step="1" value="" placeholder="Кол-во">
-                                    <a href="#" class="remove_sub_property">-</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="prop">
-                            <div class="prop_main">
-                                <div class="pr">
-                                    <label for="">Размер: <a href="#" class="del_property"></a></label>
-                                    <select class="property_name" name="">
-                                        <option value="">&#45;&#45; не выбрано &#45;&#45;</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="">Артикул</label>
-                                    <input type="text" name="prop[vendor]" value="" placeholder="Артикул">
-                                </div>
-                                <div>
-                                    <label for="">Цена</label>
-                                    <input type="number" name="prop[price]" min="0" step=".1" value="" placeholder="Цена">
-                                </div>
-                                <div>
-                                    <label for="">Кол-во</label>
-                                    <input type="number" name="prop[stock]" min="0" step="1" value="" placeholder="Кол-во">
-                                </div>
-                                <a href="#" class="add_sub_property">+</a>
-                            </div>
-                        </div>-->
+                        '.$properties.'
                     </div>
                 </div>
                 

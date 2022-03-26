@@ -377,4 +377,12 @@ $(function(){
         $(this).parent().next().next(".files_preload").fadeIn(300);
     })
 
+    // https://air-datepicker.com/ru/docs
+    if($('.date').length) new AirDatepicker('.date');
+    if($('.dateTime').length) {
+        new AirDatepicker('.dateTime', {
+            timepicker: true,
+        });
+    }
+
 })
