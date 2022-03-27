@@ -17,4 +17,5 @@ Ajax должен содержать класс index.
 
 ### Other help
 [md info](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), [md info 2](https://github.com/GnuriaN/format-README#%D0%A1%D1%81%D1%8B%D0%BB%D0%BA%D0%B8)  - работа с md файлами   
-[Chart](https://www.amcharts.com/demos/) - графики
+[Chart](https://www.amcharts.com/demos/) - графики  
+[AIR DATEPICKER](https://air-datepicker.com/ru/docs) - календарь

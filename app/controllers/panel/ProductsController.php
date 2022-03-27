@@ -182,6 +182,7 @@ class ProductsController extends PanelController {
 
         $this->view->styles = ['css/addon/product.css'];
         $this->view->scripts = ['js/addon/product.js'];
+        $this->view->plugins = ['select2', 'datepicker', 'fancybox'];
 
         $title = $h1 = 'Добавление товара';
 
@@ -254,7 +255,7 @@ class ProductsController extends PanelController {
                     $properties .= '<div class="prop">
                             <div class="prop_main" data-prop-id="'.$row["id"].'">
                                 <div class="pr">
-                                    <input type="hidden" name="prop['.$row["id"].'][pp_id][]" value="'.$row["pp_id"].'">
+                                    <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
                                     <label for="">'.$row["title"].': <a href="#" class="del_property"></a></label>
                                     <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
                                         <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
@@ -282,7 +283,7 @@ class ProductsController extends PanelController {
 
                             $properties .= '<div class="prop_sub">
                                     <div class="pr">
-                                        <input type="hidden" name="prop['.$row["id"].'][pp_id][]" value="'.$row["pp_id"].'">
+                                        <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
                                         <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
                                             <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
                                         </select>
@@ -303,9 +304,19 @@ class ProductsController extends PanelController {
             }
         }
 
-        $content = '<h1>'.$h1.'</h1>';
 
-        $icon = (!empty($Product["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Product["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Product["icon"].'" alt="">' : '';
+        // изображения товара
+        $images = '';
+        if(!empty($Product["images"])){
+            foreach ($Product["images"] as $image) {
+                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
+                $images .= '<div class="img_item">
+                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery"><img src="'.$thumb.'" alt=""></a>
+                </div>';
+            }
+        }
+
+        $content = '<h1>'.$h1.'</h1>';
 
         $content .= '<form action method="POST">
             <div class="tabs">
@@ -353,22 +364,20 @@ class ProductsController extends PanelController {
                             </div>
                         </div>
                         <div>
-                            <div class="dg dg-2">
+                            <div>
+                                <div class="tr">
+                                    <input type="checkbox" name="status" id="p_status"'.(!empty($Product["product"]["status"])?' checked':'').' value="1"><label for="p_status">Активен</label>
+                                </div>
                                 <div>
                                     <label for="p_images" class="upload_files">
-                                        <input type="file" name="images" id="p_images" multiple> выбрать изображения
+                                        <input type="file" name="images[]" id="p_images" multiple> выбрать изображения
                                     </label>
-                                </div>
-                                <div class="tr">
-                                    <input type="checkbox" name="status" id="p_status" value="1"><label for="p_status">Активен</label>
                                 </div>
                             </div>
                             
                             <!-- изображения товара -->
                             <div id="product_images">
-                                <div class="img_item">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF-Gw0TCrdL9ahAfYKIg4B4pdu86EmvwBVpv-7P5uA0-E_vbNbWwNw94SMbOdaE6BSudo&usqp=CAU" alt="">
-                                </div>
+                                '.$images.'
                             </div>
                         </div>
                     </div>

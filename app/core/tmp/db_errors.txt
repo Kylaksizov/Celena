@@ -1,16 +1,6 @@
-25.03.2022 19:55:42 | SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'id' in where clause is ambiguous<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 83]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
+27.03.2022 10:51:55 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 193]</span>
 
-25.03.2022 20:06:50 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.val
-            FROM nex_product_prop pp
-                LEFT JOIN nex_pro...' at line 11<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 101]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
+27.03.2022 10:52:46 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 192]</span>
 
-25.03.2022 20:07:10 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.val
-            FROM nex_product_prop pp
-                LEFT JOIN nex_pro...' at line 10<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 100]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
-
-25.03.2022 20:07:49 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'pv.val
-            FROM nex_product_prop pp
-                LEFT JOIN nex_p...' at line 10<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 100]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 214]</span>
-
-26.03.2022 13:31:44 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'meta' in 'field list'<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 197]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 82]</span>
+27.03.2022 10:53:53 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 192]</span>
 

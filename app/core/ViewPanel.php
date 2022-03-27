@@ -4,14 +4,15 @@ namespace app\core;
 
 class ViewPanel{
 
-    public $route;
-    public $template;
-    public $tplIndex;
+    public  $route;
+    public  $template;
+    public  $tplIndex;
     private $includeSource = [];
-    public $include = [];
+    public  $include = [];
     private $lastInc; // имя файла последнего подгруженного
-    public $styles = [];
-    public $scripts = [];
+    public  $styles = [];
+    public  $scripts = [];
+    public  $plugins = [];
 
 
     public function __construct($route){
@@ -133,23 +134,6 @@ class ViewPanel{
     }
 
 
-
-
-
-
-
-    /*private function mainReplace(){
-
-
-    }*/
-
-
-
-
-
-
-
-
     /**
      * @name Обработка и вывод
      * =======================
@@ -159,20 +143,38 @@ class ViewPanel{
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
-        $styles = '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/panel.css">
-    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/select2.min.css">
-    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/air-datepicker.css">
-    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/Panel/css/'.$style.'">';
+        $styles = '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/panel.css">';
 
         // https://air-datepicker.com/ru/examples
 
         $scripts = '
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery.min.js"></script>
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/panel.js"></script>
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery-ui.min.js"></script>
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/select2.full.min.js"></script>
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/air-datepicker.js"></script>
+    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/panel.js"></script>';
+
+        if(!empty($this->plugins)){
+
+            if(in_array("jquery-ui", $this->plugins)){
+                $scripts .= '<script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery-ui.min.js"></script>';
+            }
+            if(in_array("select2", $this->plugins)){
+                $styles .= '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/select2.min.css">';
+                $scripts .= '<script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/select2.full.min.js"></script>';
+            }
+            if(in_array("datepicker", $this->plugins)){
+                $styles .= '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/air-datepicker.css">';
+                $scripts .= '<script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/air-datepicker.js"></script>';
+            }
+            if(in_array("fancybox", $this->plugins)){
+                $styles .= '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/fancybox.css">';
+                $scripts .= '<script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/fancybox.umd.js"></script>';
+            }
+        }
+
+        $scripts .= '
     <script src="{THEME}/js/script.js"></script>';
+
+        $styles .= '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/air-datepicker.css">
+    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/Panel/css/'.$style.'">';
 
         #TODO тут нужно подумать что сначала что с конца, учитывая что стили и скрипты могут подключаться как в tpl так и в контроллере !!!!!!!!
         if(!empty($this->styles)){

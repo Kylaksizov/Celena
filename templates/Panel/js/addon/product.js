@@ -17,9 +17,6 @@ $(function(){
         let propertySelectedTitle = $("#propertiesAll option:selected").text();
         propertySelected = JSON.parse(propertySelected);
 
-        console.log(propertySelected);
-        console.log(propertySelectedTitle);
-
         if($('[data-prop-id="'+propertySelected[0].id+'"]').length) $.server_say({say: "Свойство уже добавлено!", status: "error"});
         else{
 
@@ -64,8 +61,6 @@ $(function(){
         let propId = $(this).closest(".prop_main").attr("data-prop-id");
         let selectElement = $(this).closest(".prop").find(".property_name")[0].outerHTML;
 
-        console.log(selectElement);
-
         $(this).closest(".prop").find(".prop_subs").append(`<div class="prop_sub">
             <div class="pr">
                 `+selectElement+`
@@ -81,20 +76,21 @@ $(function(){
 
     // удаление свойства
     $(document).on("click", ".del_property", function(){
+        
+        let pp_id = [];
+        $(this).closest(".prop").find(".pp_id").each(function(){
+            pp_id.push($(this).val());
+        })
+        if(pp_id.length) $.ajaxSend($(this), {"ajax": "ProductShop", "pp_ids": pp_id});
+
         $(this).closest(".prop").remove();
         return false
     })
 
     // удаление элемента свойства
-    $(document).on("click", ".remove_sub_property", function(){
+    $(document).on("click", '.remove_sub_property:not([data-a])', function(){
         $(this).closest(".prop_sub").remove();
         return false
     })
-
-    // изменение свойств
-    /*$(document).on("click", "#properties_product", function(){
-        $("#editProp").remove();
-        $(this).append('<input type="hidden" name="editProp" id="editProp" value="1">');
-    })*/
 
 })

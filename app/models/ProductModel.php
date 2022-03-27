@@ -8,6 +8,7 @@ use app\core\Model;
 use app\core\System;
 use Exception;
 use PDO;
+use PDOStatement;
 
 class ProductModel extends Model{
 
@@ -83,6 +84,7 @@ class ProductModel extends Model{
         $result = [];
 
         $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
         $result["props"] = Base::run("SELECT
                 p.id,
@@ -198,6 +200,31 @@ class ProductModel extends Model{
     }
 
 
+    /**
+     * @name добавление картинок
+     * =========================
+     * @param $type
+     * @param $nid
+     * @param $crs
+     * @param string $alt
+     * @return bool|string
+     * @throws Exception
+     */
+    public function addImage($type, $nid, $crs, string $alt = ''){
+
+        Base::run("INSERT INTO " . PREFIX . "images (
+            itype,
+            nid,
+            src,
+            alt
+        ) VALUES (
+            ?, ?, ?, ?
+        )", [$type, $nid, $crs, $alt]);
+
+        return Base::lastInsertId();
+    }
+
+
 
 
 
@@ -250,12 +277,42 @@ class ProductModel extends Model{
      * @param $vendor
      * @param $price
      * @param $stock
-     * @return void
+     * @return int
      * @throws Exception
      */
     public function editProperty($id, $pid, $id_prop, $vendor, $price, $stock = null){
 
-        Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $vendor, $price, $stock, $id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $vendor, $price, $stock, $id])->rowCount();
+    }
+
+
+    /**
+     * @name удаление свойств из товара
+     * ================================
+     * @param $id
+     * @return bool|PDOStatement
+     * @throws Exception
+     */
+    public function deleteProperty($id){
+
+        if(is_array($id)){
+
+            $where = "";
+            $params = [];
+
+            foreach ($id as $item) {
+                $where .= "id = ? OR ";
+                array_push($params, $item);
+            }
+            $where = trim($where, " OR ");
+
+        } else{
+
+            $where = "id = ?";
+            $params = [$id];
+        }
+
+        return Base::run("DELETE FROM " . PREFIX . "product_prop WHERE " . $where, $params);
     }
 
 

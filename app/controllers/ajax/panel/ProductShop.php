@@ -5,15 +5,16 @@ namespace app\controllers\ajax\panel;
 use app\core\System;
 use app\models\ProductModel;
 use Exception;
+use Intervention\Image\ImageManager;
 
 
 class ProductShop{
 
     public function index(){
 
-
         if(!empty($_POST["title"])) self::createEditProduct(); // создание редактирование товара
-        if(!empty($_POST["deleteProperty"])) self::deleteProperty(); // удаление одного свойства товара
+        if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
+        if(!empty($_POST["pp_ids"])) self::deleteProperties($_POST["pp_ids"]); // удаление нескольких свойств товара
     }
 
 
@@ -49,17 +50,21 @@ class ProductShop{
 
             $id = $ProductModel->create($title, $vendor, $meta, $content, $price, $sale, $stock, $url, $created, $status);
 
-            if(!empty($_FILES["icon"])){
-                $icon = $this->uploadIcon($id);
-                $ProductModel->editFields($id, ['icon' => $icon]);
-                $addScript = '$(".category_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$icon.'">`);';
+            if(!empty($_FILES["images"])){
+                $images = $this->uploadImages($id);
+                $addScript = '$("#product_images").append(`';
+                foreach ($images as $image) {
+                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a></div>';
+                    $ProductModel->addImage(1, $id, $image);
+                }
+                $addScript .= '`);$(".files_preload").html("").hide();';
             }
 
 
             // если были заданы свойства
             if(!empty($_POST["prop"])){
 
-                foreach ($_POST["prop"] as $prod_id => $propArray) {
+                foreach ($_POST["prop"] as $propArray) {
 
                     foreach ($propArray["id"] as $prop_key => $id_prop) {
 
@@ -98,16 +103,20 @@ class ProductShop{
                 'status' => $status
             ]);
 
-            if(!empty($_FILES["icon"])){
-                $icon = $this->uploadIcon($id);
-                $ProductModel->editFields($id, ['icon' => $icon]);
-                $addScript = '$(".category_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$icon.'">`);';
+            if(!empty($_FILES["images"])){
+                $images = $this->uploadImages($id);
+                $addScript = '$("#product_images").append(`';
+                foreach ($images as $image) {
+                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a></div>';
+                    $ProductModel->addImage(1, $id, $image);
+                }
+                $addScript .= '`);$(".files_preload").html("").hide();';
             }
 
             // если были заданы свойства
             if(!empty($_POST["prop"])){
 
-                foreach ($_POST["prop"] as $prod_id => $propArray) {
+                foreach ($_POST["prop"] as $propArray) {
 
                     foreach ($propArray["id"] as $prop_key => $id_prop) {
 
@@ -139,7 +148,7 @@ class ProductShop{
             $script = '<script>
                 '.$addScript.'
                 $("h1 b").text(`'.$title.'`);
-                $.server_say({say: "Категория изменена!", status: "success"});
+                $.server_say({say: "Изменения сохранены!", status: "success"});
             </script>';
         }
 
@@ -150,7 +159,127 @@ class ProductShop{
 
 
 
-    private function deleteProperty(){}
+    /**
+     * @name удаление свойства в товаре
+     * ================================
+     * @param $property_id
+     * @return void
+     * @throws Exception
+     */
+    private function deleteProperty($property_id){
+
+        $ProductModel = new ProductModel();
+        $result = $ProductModel->deleteProperty($property_id);
+        
+        if($result){
+
+            $script = '<script>
+                $(".nex_tmp").closest(".prop_sub").remove();
+                $.server_say({say: "Удалено!", status: "success"});
+            </script>';
+            System::script($script);
+
+        } else{
+
+            die("info::error::Не удалось удалить свойство!");
+        }
+    }
+
+
+
+
+
+    /**
+     * @name удаление свойств в товаре
+     * ===============================
+     * @param $properties_ids
+     * @return void
+     * @throws Exception
+     */
+    private function deleteProperties($properties_ids){
+        $ProductModel = new ProductModel();
+        $ProductModel->deleteProperty($properties_ids);
+        die("info::success::Не удалось удалить свойство!");
+    }
+
+
+
+
+
+    /**
+     * @name загрузка картинок
+     * =======================
+     * @return array|void
+     */
+    private function uploadImages($id){
+
+        $images = [];
+
+        foreach ($_FILES["images"]["name"] as $imageKey => $image) {
+
+            $ext = mb_strtolower(pathinfo($image, PATHINFO_EXTENSION), 'UTF-8'); // расширение файла
+
+            if(
+                $ext == 'png' ||
+                $ext == 'jpeg' ||
+                $ext == 'jpg' ||
+                $ext == 'webp' ||
+                $ext == 'bmp' ||
+                $ext == 'gif'
+            ) {
+
+                $dir = ROOT . '/uploads/products'; // если директория не создана
+                $dir_rel = date("Y-m", time());
+
+                if(!file_exists($dir)) mkdir($dir, 0777, true);
+
+                $dir .= '/'.$dir_rel;
+                if(!file_exists($dir)) mkdir($dir, 0777, true);
+
+                //$milliseconds = round(microtime(true) * 1000);
+                $image_name = $id.'_'.time().'_'.System::translit($image).'.'.$ext;
+
+
+
+                if(!empty(CONFIG_SYSTEM["origin_image"])){
+
+                    $image = new ImageManager();
+                    $img = $image->make($_FILES["images"]["tmp_name"][$imageKey])->resize(
+                        intval(CONFIG_SYSTEM["origin_image"]),
+                        null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                    });
+                    $img->orientate();
+                    $img->save($dir . '/' . $image_name, (!empty(CONFIG_SYSTEM["quality_image"]) ? intval(CONFIG_SYSTEM["quality_image"]) : 100));
+
+                } else move_uploaded_file($_FILES["images"]["tmp_name"][$imageKey], $dir . '/' . $image_name);
+
+
+
+                if(CONFIG_SYSTEM["thumb"]){ // если требуется создание миниатюру
+
+                    if(!file_exists($dir.'/thumbs')) mkdir($dir.'/thumbs', 0777, true);
+
+                    $image = new ImageManager();
+                    $img = $image->make($dir . '/' . $image_name)->resize(
+                        intval(CONFIG_SYSTEM["thumb"]),
+                        null,
+                        function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                    });
+                    $img->orientate();
+                    $img->save($dir . '/thumbs/' . $image_name, (!empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100));
+                }
+
+                array_push($images, $dir_rel.'/'.$image_name);
+
+            } else die("info::error::Изображение имеет неверное расширение!");
+        }
+
+        return $images;
+    }
 
 
 
