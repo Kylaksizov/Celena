@@ -8,6 +8,7 @@ use app\core\Model;
 use app\core\System;
 use Exception;
 use PDO;
+use PDOStatement;
 
 class CategoryModel extends Model{
 
@@ -58,12 +59,13 @@ class CategoryModel extends Model{
      * @name получение инфы одной категории
      * ====================================
      * @param $id
+     * @param string $fields
      * @return mixed|null
      * @throws Exception
      */
-    public function get($id){
+    public function get($id, string $fields = "*"){
 
-        return Base::run("SELECT * FROM " . PREFIX . "category WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return Base::run("SELECT $fields FROM " . PREFIX . "category WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -117,7 +119,7 @@ class CategoryModel extends Model{
      */
     public function edit($id, $title, array $meta = [], $content, $url, $pid, int $status = 1){
 
-        Base::run("
+        return Base::run("
             UPDATE " . PREFIX . "category SET
                 title = ?,
                 m_title = ?,
@@ -152,7 +154,20 @@ class CategoryModel extends Model{
         $set = trim($set, ", ");
         array_push($params, $id);
 
-        Base::run("UPDATE " . PREFIX . "category SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "category SET $set WHERE id = ?", $params)->rowCount();
+    }
+
+
+    /**
+     * @name удаление категории
+     * ========================
+     * @param $id
+     * @return bool|PDOStatement
+     * @throws Exception
+     */
+    public function delete($id){
+
+        return Base::run("DELETE FROM " . PREFIX . "category WHERE id = ?", [$id]);
     }
 
 

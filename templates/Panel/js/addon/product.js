@@ -113,4 +113,11 @@ $(function(){
         $.ajaxSend($(this), {"ajax": "ProductShop", "productId": productId, "statusProduct": statusProduct});
     })
 
+    // активация дезактивация категории
+    $(document).on("change", ".status_category", function(){
+        let categoryId = $(this).attr("data-id");
+        let statusCategory = $(this).prop("checked");
+        $.ajaxSend($(this), {"ajax": "CategoryShop", "categoryId": categoryId, "statusCategory": statusCategory});
+    })
+
 })

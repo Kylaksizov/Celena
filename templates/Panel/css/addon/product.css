@@ -1,7 +1,4 @@
 .category_icon{
-    background: #f0f3fb;
-    padding: 3px;
-    border: 1px #d6ddef dashed;
     width: 100px;
     height: 100px;
     text-align: center;
@@ -159,4 +156,7 @@
 }
 .no_image{
     height: 50px;
+}
+.category_icon .no_image{
+    height: 100px;
 }

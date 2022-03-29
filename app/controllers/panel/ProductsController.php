@@ -93,6 +93,9 @@ class ProductsController extends PanelController {
 
     public function categoriesAction(){
 
+        $this->view->styles = ['css/addon/product.css'];
+        $this->view->scripts = ['js/addon/product.js'];
+
         $content = '<div class="fx">
             <h1>Категории товаров</h1>
             <a href="/panel/products/categories/add/" class="btn">Добавить</a>
@@ -111,13 +114,14 @@ class ProductsController extends PanelController {
 
                 $categoryContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <!--<td><input type="checkbox" class="ch_box_min" name="cat['.$row["id"].']" id="cat['.$row["id"].']"><label for="cat['.$row["id"].']"></label></td>-->
+                    <td>
+                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
+                    </td>
                     <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
-                    <td>'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'').'</td>
-                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min" id="status['.$row["id"].']"'.$status.'><label for="status['.$row["id"].']"></label></td>
+                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_category" data-id="'.$row["id"].'" id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>
                     <td>
                         <ul class="tc">
-                            <li><a href="#" class="remove"></a></li>
+                            <li><a href="#" class="remove" data-a="CategoryShop:deleteCategory='.$row["id"].'"></a></li>
                         </ul>
                     </td>
                 </tr>';
@@ -128,9 +132,9 @@ class ProductsController extends PanelController {
         $content .= '<table>
             <tr>
                 <th width="20">ID</th>
+                <th width="30">Иконка</th>
                 <!--<th width="10"><input type="checkbox" class="ch_box_min" name="" id="cat_sel"><label for="cat_sel"></label></th>-->
                 <th>Название</th>
-                <th width="30">Иконка</th>
                 <th width="20">Статус</th>
                 <th width="50">Действия</th>
             </tr>
@@ -138,6 +142,107 @@ class ProductsController extends PanelController {
         </table>';
 
         $this->view->render('Категории товаров', $content);
+    }
+
+
+
+
+
+    /**
+     * @name добавление и редактирование категории
+     * ===========================================
+     * @return void
+     * @throws Exception
+     */
+    public function addCategoryAction(){
+
+        $this->view->styles = ['css/addon/product.css'];
+
+        $title = 'Добавление категории для товаров';
+
+        $CategoryModel = new CategoryModel();
+        $Categories = $CategoryModel->getAll(true);
+
+        if(!empty($this->urls[4])){
+
+            $id = intval($this->urls[4]);
+            $Category = $CategoryModel->get($id);
+
+            $title = 'Редактирование категории для товаров: <b>'.$Category["title"].'</b>';
+        }
+
+        // родительская категория
+        $parents = '<option value="">-- не выбрано --</option>';
+        if(!empty($Categories)){
+            foreach ($Categories as $row) {
+
+                if(!empty($Category["title"]) && $Category["title"] == $row["title"]) continue;
+
+                $selected = (!empty($Category["pid"]) && $Category["pid"] == $row["id"]) ? ' selected' : '';
+                $parents .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
+        }
+
+        $content = '<h1>'.$title.'</h1>';
+
+        $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Category["icon"].'" alt="">' : '<span class="no_image"></span>';
+
+        $content .= '<form action method="POST" class="box_">
+            <div class="dg dg_auto">
+                <div>
+                    <label for="" class="rq">Название</label>
+                    <input type="text" name="title" value="'.(!empty($Category["title"])?$Category["title"]:'').'" autocomplete="off">
+                </div>
+                <div>
+                    <label for="" class="pr">URL категории <span class="q"><i>Для поисковых систем</i></span></label>
+                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Category["url"])?$Category["url"]:'').'" autocomplete="off">
+                </div>
+            </div>
+            <p class="title_box hr_d">Meta-данные</p>
+            <div class="dg dg_auto">
+                <div>
+                    <label for="">Meta Title</label>
+                    <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
+                </div>
+                <div>
+                    <label for="">Meta Description</label>
+                    <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
+                </div>
+            </div>
+            <input type="checkbox" name="status" class="ch_min status_product" id="category_status"'.(!empty($Category["status"])?' checked':'').'><label for="category_status">Активна</label>
+            <br>
+            <p class="title_box hr_d">Дополнительно</p>
+            <div class="dg dg_auto">
+                <div>
+                    <div class="category_icon">
+                        <!-- тут картинка -->
+                        '.$icon.'
+                    </div>
+                    <label for="icon" class="upload_files">
+                        <input type="file" name="icon" id="icon"> выбрать изображение
+                    </label>
+                </div>
+                <div>
+                    <label for="">Подкатегория</label>
+                    <select name="pid">
+                        '.$parents.'
+                    </select>
+                    <label for="description">Описание</label>
+                    <textarea name="description" rows="5" id="description">'.(!empty($Category["cont"])?$Category["cont"]:'').'</textarea>
+                    <!--<textarea name="description" id="editor" rows="5"></textarea>
+                    <br>
+                    <script>
+                        let editor = new FroalaEditor("#editor", {
+                            inlineMode: true,
+                            countCharacters: false
+                        });
+                    </script>-->
+                </div>
+            </div>
+            <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
+        </form>';
+
+        $this->view->render($title, $content);
     }
 
 
@@ -163,7 +268,6 @@ class ProductsController extends PanelController {
 
                 $propertiesContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <!--<td><input type="checkbox" class="ch_box_min" name="cat['.$row["id"].']" id="cat['.$row["id"].']"><label for="cat['.$row["id"].']"></label></td>-->
                     <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td>'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'').'</td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min" id="status['.$row["id"].']"'.$status.'><label for="status['.$row["id"].']"></label></td>
@@ -466,106 +570,6 @@ class ProductsController extends PanelController {
                 <a href="#" class="btn cancel">Отмена</a>
             </div>
             <a href="#" class="close"></a>
-        </form>';
-
-        $this->view->render($title, $content);
-    }
-
-
-
-
-
-    /**
-     * @name добавление и редактирование категории
-     * ===========================================
-     * @return void
-     * @throws Exception
-     */
-    public function addCategoryAction(){
-
-        $this->view->styles = ['css/addon/product.css'];
-
-        $title = 'Добавление категории для товаров';
-
-        $CategoryModel = new CategoryModel();
-        $Categories = $CategoryModel->getAll(true);
-
-        if($this->urls[4]){
-
-            $id = intval($this->urls[4]);
-            $Category = $CategoryModel->get($id);
-
-            $title = 'Редактирование категории для товаров: <b>'.$Category["title"].'</b>';
-        }
-
-        // родительская категория
-        $parents = '<option value="">-- не выбрано --</option>';
-        if(!empty($Categories)){
-            foreach ($Categories as $row) {
-
-                if(!empty($Category["title"]) && $Category["title"] == $row["title"]) continue;
-
-                $selected = (!empty($Category["pid"]) && $Category["pid"] == $row["id"]) ? ' selected' : '';
-                $parents .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
-            }
-        }
-
-        $content = '<h1>'.$title.'</h1>';
-
-        $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Category["icon"].'" alt="">' : '';
-
-        $content .= '<form action method="POST" class="box_">
-            <div class="dg dg_auto">
-                <div>
-                    <label for="" class="rq">Название</label>
-                    <input type="text" name="title" value="'.(!empty($Category["title"])?$Category["title"]:'').'" autocomplete="off">
-                </div>
-                <div>
-                    <label for="" class="pr">URL категории <span class="q"><i>Для поисковых систем</i></span></label>
-                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Category["url"])?$Category["url"]:'').'" autocomplete="off">
-                </div>
-            </div>
-            <p class="title_box hr_d">Meta-данные</p>
-            <div class="dg dg_auto">
-                <div>
-                    <label for="">Meta Title</label>
-                    <input type="text" name="meta[title]" value="'.(!empty($Category["m_title"])?$Category["m_title"]:'').'" autocomplete="off">
-                </div>
-                <div>
-                    <label for="">Meta Description</label>
-                    <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
-                </div>
-            </div>
-            <br>
-            <p class="title_box hr_d">Дополнительно</p>
-            <div class="dg dg_auto">
-                <div>
-                    <div class="category_icon">
-                        <!-- тут картинка -->
-                        '.$icon.'
-                    </div>
-                    <label for="icon" class="upload_files">
-                        <input type="file" name="icon" id="icon"> выбрать изображение
-                    </label>
-                </div>
-                <div>
-                    <label for="">Подкатегория</label>
-                    <select name="pid">
-                        '.$parents.'
-                    </select>
-                    <label for="description">Описание</label>
-                    <textarea name="description" rows="5" id="description">'.(!empty($Category["cont"])?$Category["cont"]:'').'</textarea>
-                    <!--<textarea name="description" id="editor" rows="5"></textarea>
-                    <br>
-                    <script>
-                        let editor = new FroalaEditor("#editor", {
-                            inlineMode: true,
-                            countCharacters: false
-                        });
-                    </script>-->
-                </div>
-            </div>
-            <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
         </form>';
 
         $this->view->render($title, $content);
