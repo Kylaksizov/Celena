@@ -1,6 +1,0 @@
-27.03.2022 10:51:55 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 193]</span>
-
-27.03.2022 10:52:46 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 192]</span>
-
-27.03.2022 10:53:53 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\ProductModel.php -> 289]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\ProductShop.php -> on line: 192]</span>
-

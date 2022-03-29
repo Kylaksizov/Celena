@@ -433,7 +433,7 @@ table:not(.table-condensed) td {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9990;
+    z-index: 1000;
     display: none;
 }
 .modal, .modal_big{
@@ -448,7 +448,7 @@ table:not(.table-condensed) td {
     max-height: calc(100vh - 18%);
     overflow-y: auto;
     margin-left: -245px;
-    z-index: 9999;
+    z-index: 1000;
     display: none;
     transform: scale(1);
     box-shadow: 0 5px 10px #414f6dc2;

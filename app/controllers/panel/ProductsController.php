@@ -15,13 +15,18 @@ class ProductsController extends PanelController {
 
     public function indexAction(){
 
+        $this->view->styles = ['css/addon/product.css'];
+        $this->view->scripts = ['js/addon/product.js'];
+
         $content = '<div class="fx">
             <h1>Товары</h1>
             <a href="/panel/products/add/" class="btn">Добавить</a>
         </div>';
 
         $ProductsModel = new ProductModel();
+        $CategoryModel = new CategoryModel();
         $Products = $ProductsModel->getAll();
+        $Categories = $CategoryModel->getAll(true);
 
         if($Products){
 
@@ -29,17 +34,34 @@ class ProductsController extends PanelController {
 
             foreach ($Products["products"] as $row) {
 
+                $img = !empty($row["src"]) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.$row["src"].'" alt="">' : '<span class="no_image"></span>';
+
+                $category = '';
+                if(!empty($row["category"])){
+                    $categoryArr = explode(",", $row["category"]);
+                    $category = !empty($Categories[$categoryArr[0]]["title"]) ? $Categories[$categoryArr[0]]["title"].'...' : '';
+                }
+
+                $stock = !empty($row["stock"]) ? $row["stock"] : '<span class="infinity">∞</span>';
+
                 $status = $row["status"] ? ' checked' : '';
 
                 $productsContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <!--<td><input type="checkbox" class="ch_box_min" name="cat['.$row["id"].']" id="cat['.$row["id"].']"><label for="cat['.$row["id"].']"></label></td>-->
-                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
-                    <td>'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'').'</td>
-                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min" id="status['.$row["id"].']"'.$status.'><label for="status['.$row["id"].']"></label></td>
+                    <td>
+                        '.$img.'
+                    </td>
+                    <td>
+                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$row["id"].'/">'.$row["title"].'</a>
+                        <span class="br_min">'.$category.'</span>
+                    </td>
+                    <td><b>'.$row["price"].' $</b></td>
+                    <td class="fs12">'.date("d.m.Y H:i", $row["created"]).'</td>
+                    <td>'.$stock.'</td>
+                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_product" data-id="'.$row["id"].'"  id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>
                     <td>
                         <ul class="tc">
-                            <li><a href="#" class="remove"></a></li>
+                            <li><a href="#" class="remove" data-a="ProductShop:deleteProduct='.$row["id"].'"></a></li>
                         </ul>
                     </td>
                 </tr>';
@@ -50,12 +72,14 @@ class ProductsController extends PanelController {
         $content .= '<div class="">
             <table>
                 <tr>
-                    <th>#</th>
-                    <th>Изображение<br>категория</th>
-                    <th>Наименование</th>
-                    <th>Цена</th>
-                    <th>Дата публикации</th>
-                    <th>Кол-во</th>
+                    <th width="20">#</th>
+                    <th width="100">Изображение</th>
+                    <th>Наименование<span class="br_min">категория</span></th>
+                    <th width="100">Цена</th>
+                    <th width="130">Дата публикации</th>
+                    <th width="70">Кол-во</th>
+                    <th width="30">Статус</th>
+                    <th width="50"></th>
                 </tr>
                 '.$productsContent.'
             </table>
@@ -311,7 +335,9 @@ class ProductsController extends PanelController {
             foreach ($Product["images"] as $image) {
                 $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
                 $images .= '<div class="img_item">
-                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery"><img src="'.$thumb.'" alt=""></a>
+                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
+                    <a href="#editPhoto" class="edit_image open_modal" data-img-id="'.$image["id"].'"></a>
+                    <a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$image["id"].'&link='.$image["src"].'"></a>
                 </div>';
             }
         }
@@ -338,7 +364,7 @@ class ProductsController extends PanelController {
                             </div>
                             <div>
                                 <label for="">Категория</label>
-                                <select name="pid" id="categoryOptions" class="multipleSelect" multiple>
+                                <select name="category[]" id="categoryOptions" class="multipleSelect" multiple>
                                     '.$categoryOptions.'
                                 </select>
                             </div>
@@ -429,6 +455,17 @@ class ProductsController extends PanelController {
             
             <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">
             
+        </form>';
+
+
+        $content .= '<form action method="POST" class="modal_big" id="editPhoto">
+            <div class="modal_title">Редактор фото</div>
+            <div class="modal_body dg dg-2" id="photoEditor"></div>
+            <div class="fx jc_c">
+                <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">&nbsp;&nbsp;
+                <a href="#" class="btn cancel">Отмена</a>
+            </div>
+            <a href="#" class="close"></a>
         </form>';
 
         $this->view->render($title, $content);

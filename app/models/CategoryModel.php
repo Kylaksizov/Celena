@@ -77,7 +77,7 @@ class CategoryModel extends Model{
 
         if($all){
 
-            $result = Base::run("SELECT id, title FROM " . PREFIX . "category ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $result = System::setKeys(Base::run("SELECT id, title FROM " . PREFIX . "category ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
 
         } else{
 

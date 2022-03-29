@@ -93,4 +93,24 @@ $(function(){
         return false
     })
 
+    // редактирование фото
+    $(document).on("click", '.edit_image', function(){
+        let photoId = $(this).attr('data-img-id');
+        let photoSrc = $(this).parent(".img_item").find('img').attr('src');
+        $("#photoEditor").html(`<img src="`+photoSrc+`" alt="">
+            <div id="editorOptions">
+                <input type="hidden" name="photo[id]" value="`+photoId+`">
+                <label for="">Описание изображения</label>
+                <input type="text" name="photo[alt]" value="" autocomplete="off">
+            </div>`);
+        return false
+    })
+
+    // активация дезактивация товара
+    $(document).on("change", ".status_product", function(){
+        let productId = $(this).attr("data-id");
+        let statusProduct = $(this).prop("checked");
+        $.ajaxSend($(this), {"ajax": "ProductShop", "productId": productId, "statusProduct": statusProduct});
+    })
+
 })

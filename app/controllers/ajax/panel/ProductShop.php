@@ -13,8 +13,12 @@ class ProductShop{
     public function index(){
 
         if(!empty($_POST["title"])) self::createEditProduct(); // создание редактирование товара
+        if(!empty($_POST["deleteProduct"])) self::deleteProduct(); // удаление товара
+        if(!empty($_POST["statusProduct"])) self::editStatus(); // изменение активности
         if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
         if(!empty($_POST["pp_ids"])) self::deleteProperties($_POST["pp_ids"]); // удаление нескольких свойств товара
+        if(!empty($_POST["deleteImage"])) self::deleteImage(); // удаление фото товара
+        if(!empty($_POST["photo"])) self::editImage(); // редактирование фото товара
     }
 
 
@@ -35,6 +39,7 @@ class ProductShop{
         $stock = !empty($_POST["stock"]) ? intval($_POST["stock"]) : null;
         $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
+        $category = !empty($_POST["category"]) ? trim(implode(",", $_POST["category"])) : '';
         $status = !empty($_POST["status"]) ? 1 : 0;
 
         $content = str_replace('<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>', '', $content);
@@ -48,14 +53,14 @@ class ProductShop{
 
         if(empty($edit_id[1])){ // если это добавление новой категории
 
-            $id = $ProductModel->create($title, $vendor, $meta, $content, $price, $sale, $stock, $url, $created, $status);
+            $id = $ProductModel->create($title, $vendor, $meta, $content, $category, $price, $sale, $stock, $url, $created, $status);
 
             if(!empty($_FILES["images"])){
                 $images = $this->uploadImages($id);
                 $addScript = '$("#product_images").append(`';
                 foreach ($images as $image) {
-                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a></div>';
-                    $ProductModel->addImage(1, $id, $image);
+                    $imgId = $ProductModel->addImage(1, $id, $image);
+                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -95,6 +100,7 @@ class ProductShop{
                 'm_title' => $meta["title"],
                 'm_description' => $meta["description"],
                 'content' => $content,
+                'category' => $category,
                 'price' => $price,
                 'sale' => $sale,
                 'stock' => $stock,
@@ -107,8 +113,8 @@ class ProductShop{
                 $images = $this->uploadImages($id);
                 $addScript = '$("#product_images").append(`';
                 foreach ($images as $image) {
-                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a></div>';
-                    $ProductModel->addImage(1, $id, $image);
+                    $imgId = $ProductModel->addImage(1, $id, $image);
+                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -160,6 +166,90 @@ class ProductShop{
 
 
     /**
+     * @name удаление товара
+     * =====================
+     * @return void
+     * @throws Exception
+     */
+    private function deleteProduct(){
+
+        $productId = intval($_POST["deleteProduct"]);
+
+        if(empty($_POST['confirm'])){
+            $script = '<script>
+                $.confirm("Вы уверены, что хотите удалить?", function(e){
+                    if(e) $.ajaxSend($(this), {"ajax": "ProductShop", "deleteProduct": "'.$productId.'", "confirm": 1});
+                })
+            </script>';
+
+            die(System::script($script));
+        }
+
+        if(!empty($_POST['confirm'])){
+
+            $ProductModel = new ProductModel();
+            $images = $ProductModel->getImages($productId);
+            
+            if(!empty($images)){
+                foreach ($images as $image) {
+                    @unlink(ROOT . '/uploads/products/'.$image["src"]);
+                    @unlink(ROOT . '/uploads/products/'.str_replace("/", "/thumbs/", $image["src"]));
+                }
+            }
+            
+            $result = $ProductModel->delete($productId);
+
+            if($result){
+
+                $script = '<script>
+                    $(\'[data-a="ProductShop:deleteProduct='.$productId.'"]\').closest("tr").remove();
+                    $.server_say({say: "Удалено!", status: "success"});
+                </script>';
+                System::script($script);
+
+            } else{
+
+                die("info::error::Не удалось удалить товар!");
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * @name изменение статуса товара
+     * ==============================
+     * @return void
+     * @throws Exception
+     */
+    private function editStatus(){
+
+        $productId = intval($_POST["productId"]);
+        $statusProduct = ($_POST["statusProduct"] == 'true') ? 1 : 0;
+
+        $ProductModel = new ProductModel();
+        $result = $ProductModel->editFields($productId, ["status" => $statusProduct]);
+
+        if($result){
+
+            $script = '<script>
+                $.server_say({say: "Изменено!", status: "success"});
+            </script>';
+            System::script($script);
+
+        } else{
+
+            die("info::error::Не удалось внести изменения!");
+        }
+    }
+
+
+
+
+
+    /**
      * @name удаление свойства в товаре
      * ================================
      * @param $property_id
@@ -170,7 +260,7 @@ class ProductShop{
 
         $ProductModel = new ProductModel();
         $result = $ProductModel->deleteProperty($property_id);
-        
+
         if($result){
 
             $script = '<script>
@@ -200,6 +290,58 @@ class ProductShop{
         $ProductModel = new ProductModel();
         $ProductModel->deleteProperty($properties_ids);
         die("info::success::Не удалось удалить свойство!");
+    }
+
+
+
+
+
+    /**
+     * @name редактирование фото товара
+     * =================================
+     * @return void
+     * @throws Exception
+     */
+    private function editImage(){
+
+        $id = intval($_POST["photo"]["id"]);
+        $alt = trim(htmlspecialchars(strip_tags($_POST["photo"]["alt"])));
+
+        $ProductModel = new ProductModel();
+        $ProductModel->editFieldsImages($id, ["alt" => $alt]);
+
+        $script = '<script>
+            $("#editPhoto, .bg_0").fadeOut(300);
+            $.server_say({say: "Изменил!", status: "success"});
+        </script>';
+        System::script($script);
+    }
+
+
+
+
+
+    /**
+     * @name удаление свойств в товаре
+     * ===============================
+     * @return void
+     * @throws Exception
+     */
+    private function deleteImage(){
+
+        $deleteImage = intval($_POST["deleteImage"]);
+        $link = trim(htmlspecialchars(strip_tags($_POST["link"])));
+
+        unlink(ROOT . "/uploads/products/".$link);
+
+        $ProductModel = new ProductModel();
+        $ProductModel->deleteImage($deleteImage);
+
+        $script = '<script>
+            $(".nex_tmp").closest(".img_item").remove();
+            $.server_say({say: "Удалено!", status: "success"});
+        </script>';
+        System::script($script);
     }
 
 
