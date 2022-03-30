@@ -13,7 +13,7 @@ return [
         'products/brands/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'brands'],
         'products/brands/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addBrand'],
         'products/properties/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'properties'],
-        'products/properties/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addProperties'],
+        'products/properties/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addProperty'],
 
         'orders/(page-[0-9]+/)?$' => ['controller' => 'orders'],
         'orders/click/(page-[0-9]+/)?$' => ['controller' => 'orders', 'action' => 'click'],

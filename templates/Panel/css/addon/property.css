@@ -1,0 +1,24 @@
+.p_val{
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 40px 40px;
+    align-items: flex-start;
+}
+.add_val, .remove_val{
+    background: var(--c-success);
+    color: var(--c-white);
+    display: inline-block;
+    text-align: center;
+    padding: 7px 14px;
+    border-radius: 3px;
+    font-size: 21px;
+}
+.remove_val{
+    background: var(--c-red);
+}
+.add_val:hover {
+    background: var(--c-success-hover);
+}
+.remove_val:hover {
+    background: var(--c-red-hover);
+}

@@ -6,6 +6,7 @@ namespace app\controllers\panel;
 use app\core\PanelController;
 use app\models\CategoryModel;
 use app\models\ProductModel;
+use app\models\PropertyModel;
 use Exception;
 
 
@@ -264,13 +265,9 @@ class ProductsController extends PanelController {
 
             foreach ($Properties["properties"] as $row) {
 
-                //$status = $row["status"] ? ' checked' : '';
-
                 $propertiesContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
-                    <td>'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'').'</td>
-                    <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min" id="status['.$row["id"].']"'.$status.'><label for="status['.$row["id"].']"></label></td>
+                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td>
                         <ul class="tc">
                             <li><a href="#" class="remove"></a></li>
@@ -286,14 +283,107 @@ class ProductsController extends PanelController {
                 <th width="20">ID</th>
                 <!--<th width="10"><input type="checkbox" class="ch_box_min" name="" id="cat_sel"><label for="cat_sel"></label></th>-->
                 <th>Название</th>
-                <th width="200">Тип</th>
-                <th width="20">Статус</th>
                 <th width="50">Действия</th>
             </tr>
             '.$propertiesContent.'
         </table>';
 
         $this->view->render('Категории товаров', $content);
+    }
+
+
+
+
+
+
+
+    public function addPropertyAction(){
+
+        $this->view->styles = ['css/addon/property.css'];
+        $this->view->scripts = ['js/addon/property.js'];
+        $this->view->plugins = ['select2'];
+
+        $title = 'Добавление свойства';
+        $content = '';
+
+        $CategoryModel = new CategoryModel();
+        $Categories = $CategoryModel->getAll(true);
+        
+        $pVals = '<div class="p_val">
+            <input type="text" name="val[]" value="">
+            <a href="#" class="add_val">+</a>
+            <a href="#" class="remove_val">-</a>
+        </div>';
+
+        if(!empty($this->urls[4])){
+
+            $id = intval($this->urls[4]);
+            $PropertyModel = new PropertyModel();
+            $Property = $PropertyModel->get($id);
+
+            $title = 'Редактирование свойства для товаров: <b>'.$Property[0]["title"].'</b>';
+
+            $pVals = '';
+            foreach ($Property as $item) {
+                $pVals .= '<div class="p_val">
+                    <input type="hidden" name="id[]" value="'.$item["pv_id"].'">
+                    <input type="text" name="val[]" value="'.$item["val"].'">
+                    <a href="#" class="add_val">+</a>
+                    <a href="#" class="remove_val">-</a>
+                </div>';
+            }
+        }
+
+        // родительская категория
+        $categoryOptions = '';
+        if(!empty($Categories)){
+
+            $catIsset = !empty($Property[0]["cid"]) ? explode(",", $Property[0]["cid"]) : [];
+
+            foreach ($Categories as $row) {
+
+                $selected = in_array($row["id"], $catIsset) ? ' selected' : '';
+                $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
+        }
+
+        $content .= '<h1>'.$title.'</h1>
+        <form action method="POST" class="box_">
+            <div class="dg dg_auto">
+                <div>
+                    <label for="" class="rq">Название свойства</label>
+                    <input type="text" name="title" value="'.(!empty($Property[0]["title"])?$Property[0]["title"]:'').'" autocomplete="off">
+                </div>
+                <div>
+                    <label for="" class="pr">URL для фильтра <span class="q"><i>Если указано, то по этому свойству будет возможность произвести фильтрацию товаров в указанных категориях соответственно.</i></span></label>
+                    <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Property[0]["url"])?$Property[0]["url"]:'').'" autocomplete="off">
+                </div>
+                <div>
+                    <input type="checkbox" name="display" class="ch_min" id="display"'.(!empty($Property[0]["option"])?' checked':'').'><label for="display">Выводить сразу</label>
+                    <br>
+                    <br>
+                    <input type="checkbox" name="sep" class="ch_min" id="sep"'.(!empty($Property[0]["sep"])?' checked':'').'><label for="sep">Разрешить произвольный вариант</label>
+                </div>
+            </div>
+            <div class="dg dg_auto">
+                <div>
+                    <label for="" class="pr">Категории <span class="q"><i>Выберите категории, в котрых отображать это свойство.<br>Или оставьте пустым, для вывода для любых категорий.</i></span></label>
+                    <select name="cid[]" class="multipleSelect" multiple>
+                        '.$categoryOptions.'
+                    </select>
+                </div>
+            </div>
+            <p class="title_box hr_d">Значения</p>
+            <div id="propertyVals">
+                '.$pVals.'
+            </div>
+            
+            <input type="submit" class="btn" data-a="PropertyShop" value="Сохранить">
+        </form>';
+
+        
+
+        $this->view->render($title, $content);
     }
 
 

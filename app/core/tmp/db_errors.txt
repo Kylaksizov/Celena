@@ -1,0 +1,13 @@
+29.03.2022 20:33:02 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE id = '4'' at line 1<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\PropertyModel.php -> 179]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\PropertyShop.php -> on line: 55]</span>
+
+29.03.2022 20:35:00 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE id = '4'' at line 1<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\PropertyModel.php -> 179]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\PropertyShop.php -> on line: 60]</span>
+
+29.03.2022 21:08:58 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM nex_properties p
+                LEFT JOIN nex_properties_v pv ON pv.pi...' at line 11<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\PropertyModel.php -> 115]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 324]</span>
+
+29.03.2022 21:10:20 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM nex_properties p
+                LEFT JOIN nex_properties_v v ON v.pid ...' at line 12<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\PropertyModel.php -> 116]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 324]</span>
+
+29.03.2022 21:11:00 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM nex_properties p
+                LEFT JOIN nex_properties_v v ON v.pid ...' at line 12<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\PropertyModel.php -> 116]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\panel\ProductsController.php -> on line: 324]</span>
+

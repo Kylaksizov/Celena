@@ -149,6 +149,7 @@ class ViewPanel{
 
         $scripts = '
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery.min.js"></script>
+    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/prevent.js"></script>
     <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/panel.js"></script>';
 
         if(!empty($this->plugins)){

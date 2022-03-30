@@ -160,7 +160,7 @@ ul{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 0;
 }
 #menu nav > ul > li{
     display: block;
