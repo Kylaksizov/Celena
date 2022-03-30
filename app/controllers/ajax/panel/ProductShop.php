@@ -40,6 +40,7 @@ class ProductShop{
         $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
         $category = !empty($_POST["category"]) ? trim(implode(",", $_POST["category"])) : '';
+        $brand = !empty($_POST["brand"]) ? intval($_POST["brand"]) : null;
         $status = !empty($_POST["status"]) ? 1 : 0;
 
         $content = str_replace('<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>', '', $content);
@@ -53,7 +54,7 @@ class ProductShop{
 
         if(empty($edit_id[1])){ // если это добавление новой категории
 
-            $id = $ProductModel->create($title, $vendor, $meta, $content, $category, $price, $sale, $stock, $url, $created, $status);
+            $id = $ProductModel->create($title, $vendor, $meta, $content, $category, $brand, $price, $sale, $stock, $url, $created, $status);
 
             if(!empty($_FILES["images"])){
                 $images = $this->uploadImages($id);
@@ -73,9 +74,18 @@ class ProductShop{
 
                     foreach ($propArray["id"] as $prop_key => $id_prop) {
 
+                        if(is_numeric($id_prop)){
+                            $sep = '';
+                            $id_prop = intval($id_prop);
+                        } else{
+                            $sep = trim(htmlspecialchars(strip_tags($id_prop)));
+                            $id_prop = 0;
+                        }
+
                         $ProductModel->addProperty(
                             $id,
-                            intval($id_prop),
+                            $id_prop,
+                            $sep,
                             trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                             floatval($propArray["price"][$prop_key]),
                             !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null
@@ -101,6 +111,7 @@ class ProductShop{
                 'm_description' => $meta["description"],
                 'content' => $content,
                 'category' => $category,
+                'brand' => $brand,
                 'price' => $price,
                 'sale' => $sale,
                 'stock' => $stock,
@@ -126,12 +137,21 @@ class ProductShop{
 
                     foreach ($propArray["id"] as $prop_key => $id_prop) {
 
+                        if(is_numeric($id_prop)){
+                            $sep = '';
+                            $id_prop = intval($id_prop);
+                        } else{
+                            $sep = trim(htmlspecialchars(strip_tags($id_prop)));
+                            $id_prop = 0;
+                        }
+
                         if(!empty($propArray["pp_id"][$prop_key])){
 
                             $ProductModel->editProperty(
                                 intval($propArray["pp_id"][$prop_key]),
                                 $id,
-                                intval($id_prop),
+                                $id_prop,
+                                $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
                                 !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null
@@ -141,7 +161,8 @@ class ProductShop{
 
                             $ProductModel->addProperty(
                                 $id,
-                                intval($id_prop),
+                                $id_prop,
+                                $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
                                 !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null

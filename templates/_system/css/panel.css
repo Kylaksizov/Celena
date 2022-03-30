@@ -52,7 +52,7 @@ img{max-width:100%}
 }
 .dg-2{grid-template-columns:repeat(2,1fr)}
 .dg_auto{grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));}
-
+.dn{display:none}
 .ai_c{align-items:center}
 .ai_s{align-items:stretch}
 .jc_c{justify-content:center}

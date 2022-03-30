@@ -5,22 +5,30 @@ $(function(){
         $(this).find('option[value="'+$(this).attr('data-prop-sel')+'"]').prop('selected', true);
     })
 
-    // выбор свойства
-    $(document).on("click", "#addPropertiy", function(){
-        let propertySelected = $("#propertiesAll option:selected").attr("data-property");
 
-        if(!propertySelected){
+    // добавление поля
+    function addField(element = null){
+
+        let thisElement;
+        if(element === null) thisElement = $("#propertiesAll option:selected");
+        else thisElement = element;
+
+        let propertySelected = thisElement.attr("data-property");
+
+        if(element === null && !propertySelected){
             $.server_say({say: "Выберите свойство!", status: "error"});
             return false;
         }
 
-        let propertySelectedTitle = $("#propertiesAll option:selected").text();
+        let propertySelectedTitle = thisElement.text();
         propertySelected = JSON.parse(propertySelected);
 
-        if($('[data-prop-id="'+propertySelected[0].id+'"]').length) $.server_say({say: "Свойство уже добавлено!", status: "error"});
+        if(element === null && $('[data-prop-id="'+propertySelected[0].id+'"]').length) $.server_say({say: "Свойство уже добавлено!", status: "error"});
         else{
 
-            let optionsSelect = '';
+            if(element != null && $('[data-prop-id="'+propertySelected[0].id+'"]').length) return;
+
+            let optionsSelect = (propertySelected[0]["sep"] == '1') ? '<option value="sep" class="sep_field">ПРОИЗВОЛЬНОЕ ПОЛЕ</option>' : '';
             for (let key in propertySelected) {
                 optionsSelect += `<option value="`+propertySelected[key]["vid"]+`">`+propertySelected[key].val+`</option>`;
             }
@@ -47,27 +55,90 @@ $(function(){
                         <input type="number" name="prop[`+propertySelected[0].id+`][stock][]" min="0" step="1" value="" placeholder="Кол-во">
                     </div>
                     <a href="#" class="add_sub_property">+</a>
+                    <a href="#" class="remove_sub_property">-</a>
                 </div>
                 <div class="prop_subs"></div>
             </div>`);
         }
+    }
 
+
+    // выбор свойства
+    $(document).on("click", "#addPropertiy", function(){
+        addField();
         return false
+    })
+    
+    // при выборе категории, выводим нужные свойства
+    $(document).on("change", "#categoryOptions", function(){
+
+        let categorySelected = [];
+        $("#categoryOptions option:selected").each(function(){
+            categorySelected.push($(this).val());
+        })
+
+        // чистим то что не заполнено
+        $(".prop").each(function(){
+
+            let deleteElement = true;
+            $(this).find("select option:selected, input").each(function(){
+                if($(this).val() != ''){
+                    deleteElement = false;
+                    return false;
+                }
+            })
+
+            if(deleteElement) $(this).remove();
+        })
+
+        // перебираем options in properties
+        $("#propertiesAll option:not(:first)").each(function(){
+
+            let thisElement = $(this);
+
+            thisElement.addClass("dn");
+            let categories = thisElement.attr("data-category");
+            let display = thisElement.attr("data-display");
+
+            if(categories == "" && display == '1'){ // если не заданы категории и включен вывод
+                thisElement.removeClass("dn");
+                addField(thisElement);
+            }
+
+            if(categories != ""){ // если категории заданы в option
+                categories = categories.split(",");
+                categorySelected.forEach(function(item) {
+                    if(categories.includes(item)){
+                        thisElement.removeClass("dn");
+                        if(display == '1') addField(thisElement);
+                        else{
+
+                        }
+                    }
+                });
+            }
+        })
     })
 
     // добавление свойства
     $(document).on("click", ".add_sub_property", function(){
 
         let propId = $(this).closest(".prop_main").attr("data-prop-id");
-        let selectElement = $(this).closest(".prop").find(".property_name")[0].outerHTML;
+        let selectElement = $(this).parent().find(".property_name")[0].outerHTML;
 
-        $(this).closest(".prop").find(".prop_subs").append(`<div class="prop_sub">
+        if(
+            $(this).parent().find(".property_name")[0].nodeName != 'SELECT' &&
+            $(this).parent().find(".callback_select").length
+        ) selectElement += $(this).closest(".prop").find(".callback_select")[0].outerHTML;
+
+        $(this).parent().after(`<div class="prop_sub">
             <div class="pr">
                 `+selectElement+`
             </div>
             <input type="text" name="prop[`+propId+`][vendor][]" value="" placeholder="Артикул">
             <input type="number" name="prop[`+propId+`][price][]" min="0" step=".1" value="" placeholder="Цена">
             <input type="number" name="prop[`+propId+`][stock][]" min="0" step="1" value="" placeholder="Кол-во">
+            <a href="#" class="add_sub_property">+</a>
             <a href="#" class="remove_sub_property">-</a>
         </div>`);
 
@@ -118,6 +189,34 @@ $(function(){
         let categoryId = $(this).attr("data-id");
         let statusCategory = $(this).prop("checked");
         $.ajaxSend($(this), {"ajax": "CategoryShop", "categoryId": categoryId, "statusCategory": statusCategory});
+    })
+
+    // произвольное поле
+    $(document).on("change", ".property_name", function(){
+        if($(this).find("option:selected").val() == 'sep'){
+            let elementAttrName = $(this).attr("name");
+            $(this).replaceWith('<input name="'+elementAttrName+'" class="property_name inFocus" placeholder="Введите значение"><span class="callback_select"></span>');
+            $(".inFocus").focus().removeClass("inFocus");
+        }
+    })
+
+    // произвольное поле CALLBACK
+    $(document).on("click", ".callback_select", function(){
+        let propId = $(this).closest(".prop").attr("data-prop-id");
+
+        let propertySelected = $('#propertiesAll option[value="'+propId+'"]').attr("data-property");
+        propertySelected = JSON.parse(propertySelected);
+
+        let optionsSelect = (propertySelected[0]["sep"] == '1') ? '<option value="sep" class="sep_field">ПРОИЗВОЛЬНОЕ ПОЛЕ</option>' : '';
+        for (let key in propertySelected) {
+            optionsSelect += `<option value="`+propertySelected[key]["vid"]+`">`+propertySelected[key].val+`</option>`;
+        }
+
+        $(this).prev().replaceWith(`<select class="property_name" name="prop[`+propId+`][id][]">
+            <option value="">-- не выбрано --</option>
+            `+optionsSelect+`
+        </select>`);
+        $(this).remove();
     })
 
 })

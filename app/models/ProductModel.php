@@ -19,6 +19,7 @@ class ProductModel extends Model{
      * @param array $meta
      * @param $content
      * @param $category
+     * @param $brand
      * @param $price
      * @param string|null $sale
      * @param null $stock
@@ -28,7 +29,7 @@ class ProductModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, string $vendor = '', array $meta = [], $content, $category, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
+    public function create($title, string $vendor = '', array $meta = [], $content, $category, $brand = null, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
 
         if($url === null) $url = System::translit($title);
         if($created === null) $created = time();
@@ -41,6 +42,7 @@ class ProductModel extends Model{
             $meta["description"],
             $content,
             $category,
+            $brand,
             $price,
             $sale,
             $stock,
@@ -58,6 +60,7 @@ class ProductModel extends Model{
             m_description,
             content,
             category,
+            brand,
             price,
             sale,
             stock,
@@ -66,7 +69,7 @@ class ProductModel extends Model{
             last_modify,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -79,7 +82,7 @@ class ProductModel extends Model{
      * @name получение одного товара
      * =============================
      * @param $id
-     * @return mixed|null
+     * @return array
      * @throws Exception
      */
     public function get($id){
@@ -94,6 +97,7 @@ class ProductModel extends Model{
                 p.title,
                 pp.id AS pp_id,
                 pp.id_prop,
+                pp.sep,
                 pp.vendor,
                 pp.price,
                 pp.stock,
@@ -291,17 +295,19 @@ class ProductModel extends Model{
      * ===============================
      * @param $pid
      * @param $id_prop
+     * @param $sep
      * @param $vendor
      * @param $price
      * @param $stock
      * @return bool|string
      * @throws Exception
      */
-    public function addProperty($pid, $id_prop, $vendor, $price, $stock = null){
+    public function addProperty($pid, $id_prop, $sep, $vendor, $price, $stock = null){
 
         $params = [
             $pid,
             $id_prop,
+            $sep,
             $vendor,
             $price,
             $stock
@@ -310,11 +316,12 @@ class ProductModel extends Model{
         Base::run("INSERT INTO " . PREFIX . "product_prop (
             pid,
             id_prop,
+            sep,
             vendor,
             price,
             stock
         ) VALUES (
-            ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -332,15 +339,16 @@ class ProductModel extends Model{
      * @param $id
      * @param $pid
      * @param $id_prop
+     * @param $sep
      * @param $vendor
      * @param $price
      * @param $stock
      * @return int
      * @throws Exception
      */
-    public function editProperty($id, $pid, $id_prop, $vendor, $price, $stock = null){
+    public function editProperty($id, $pid, $id_prop, $sep, $vendor, $price, $stock = null){
 
-        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $vendor, $price, $stock, $id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, sep = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $sep, $vendor, $price, $stock, $id])->rowCount();
     }
 
 

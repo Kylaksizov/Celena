@@ -13,7 +13,12 @@ use Exception;
 class ProductsController extends PanelController {
 
 
-
+    /**
+     * @name товары
+     * ============
+     * @return void
+     * @throws Exception
+     */
     public function indexAction(){
 
         $this->view->styles = ['css/addon/product.css'];
@@ -92,6 +97,302 @@ class ProductsController extends PanelController {
 
 
 
+    /**
+     * @name добавление и редактирование товара
+     * ========================================
+     * @return void
+     * @throws Exception
+     */
+    public function addProductAction(){
+
+        $this->view->styles = ['css/addon/product.css'];
+        $this->view->scripts = ['js/addon/product.js'];
+        $this->view->plugins = ['select2', 'datepicker', 'fancybox'];
+
+        $title = $h1 = 'Добавление товара';
+
+        $ProductModel = new ProductModel();
+        $CategoryModel = new CategoryModel();
+
+        $Categories = $CategoryModel->getAll(true);
+        $Properties = $ProductModel->getPropertiesAll(true);
+
+
+        // Property
+        $propertiesSelect = '<select name="" id="propertiesAll">
+            <option>-- выбрать свойство --</option>';
+        $propsOptions = [];
+        if(!empty($Properties)){
+
+            foreach ($Properties as $propertyTitle => $propertyRow) {
+
+                $propertiesSelect .= '<option value="'.$propertyRow[0]["id"].'" data-category="'.$propertyRow[0]["cid"].'" data-display="'.$propertyRow[0]["option"].'" data-property=\''.json_encode($propertyRow, JSON_UNESCAPED_UNICODE).'\'>'.$propertyTitle.'</option>';
+
+                foreach ($propertyRow as $propItem) {
+
+                    if(empty($propsOptions[$propertyTitle]))
+                        $propsOptions[$propertyTitle] = '
+                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
+                    else
+                        $propsOptions[$propertyTitle] .= '
+                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
+                }
+            }
+        }
+        $propertiesSelect .= '</select> <a href="#" class="btn" id="addPropertiy">Добавить</a>';
+        // Property END
+
+
+
+        if(!empty($this->urls[3])){
+
+            $id = intval($this->urls[3]);
+            $Product = $ProductModel->get($id);
+
+            $title = 'Редактирование товара';
+            $h1 = 'Редактирование товара: <b>'.$Product["product"]["title"].'</b>';
+        }
+
+        // категории
+        $categoryOptions = '';
+        if(!empty($Categories)){
+            $categoriesIsset = !empty($Product["product"]["category"]) ? explode(",", $Product["product"]["category"]) : [];
+            foreach ($Categories as $row) {
+
+                $selected = in_array($row["id"], $categoriesIsset) ? ' selected' : '';
+                $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
+        }
+
+        // свойства
+        $properties = '';
+        if(!empty($Product["props"])){
+
+            $propId = $Product["props"][0]["id"];
+
+            foreach ($Product["props"] as $propKey => $row) {
+
+                if($propKey == 0 || $propId != $row["id"]){
+
+                    $closeProp = true;
+
+                    if($row["sep"] == ''){
+                        $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
+                                        <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
+                                    </select>';
+                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" value="'.$row["sep"].'">';
+
+                    $properties .= '<div class="prop">
+                            <div class="prop_main" data-prop-id="'.$row["id"].'">
+                                <div class="pr">
+                                    <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
+                                    <label for="">'.$row["title"].': <a href="#" class="del_property"></a></label>
+                                    '.$element.'
+                                </div>
+                                <div>
+                                    <label for="">Артикул</label>
+                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
+                                </div>
+                                <div>
+                                    <label for="">Цена</label>
+                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                </div>
+                                <div>
+                                    <label for="">Кол-во</label>
+                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
+                                </div>
+                                <a href="#" class="add_sub_property">+</a>
+                            </div>
+                            <div class="prop_subs">';
+
+                } else{
+
+                    $closeProp = false;
+
+                    if($row["sep"] == ''){
+                        $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
+                                            <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
+                                        </select>';
+                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" value="'.$row["sep"].'">';
+
+                    $properties .= '<div class="prop_sub">
+                                    <div class="pr">
+                                        <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
+                                        '.$element.'
+                                    </div>
+                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
+                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
+                                    <a href="#" class="remove_sub_property" data-a="ProductShop:deleteProperty='.$row["pp_id"].'">-</a>
+                                </div>';
+                }
+
+                if(!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey)
+                    $properties .= '
+                            </div>
+                        </div>';
+
+                $propId = $row["id"];
+            }
+        }
+
+
+        // изображения товара
+        $images = '';
+        if(!empty($Product["images"])){
+            foreach ($Product["images"] as $image) {
+                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
+                $images .= '<div class="img_item">
+                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
+                    <a href="#editPhoto" class="edit_image open_modal" data-img-id="'.$image["id"].'"></a>
+                    <a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$image["id"].'&link='.$image["src"].'"></a>
+                </div>';
+            }
+        }
+
+        $content = '<h1>'.$h1.'</h1>';
+
+        $content .= '<form action method="POST">
+            <div class="tabs">
+                <ul class="tabs_caption">
+                    <li class="active">Товар</li>
+                    <li>SEO</li>
+                    <li>Свойства</li>
+                </ul>
+                <div class="tabs_content active">
+                    <div class="dg dg_auto">
+                        <div>
+                            <div>
+                                <label for="" class="rq">Название</label>
+                                <input type="text" name="title" value="'.(!empty($Product["product"]["title"])?$Product["product"]["title"]:'').'" autocomplete="off">
+                            </div>
+                            <div>
+                                <label for="">Артикул</label>
+                                <input type="text" name="vendor" value="'.(!empty($Product["product"]["vendor"])?$Product["product"]["vendor"]:'').'" autocomplete="off">
+                            </div>
+                            <div>
+                                <label for="">Категория</label>
+                                <select name="category[]" id="categoryOptions" class="multipleSelect" multiple>
+                                    '.$categoryOptions.'
+                                </select>
+                            </div>
+                            <div>
+                                <label for="">Бренд</label>
+                                <select name="brand">
+                                    <option value="">-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <div>
+                                    <label for="" class="rq">Цена</label>
+                                    <input type="number" name="price" min="0" value="'.(!empty($Product["product"]["price"])?$Product["product"]["price"]:'').'" autocomplete="off">
+                                </div>
+                                <div>
+                                    <label for="">Скидка</label>
+                                    <input type="text" name="sale" value="'.(!empty($Product["product"]["sale"])?$Product["product"]["sale"]:'').'" autocomplete="off">
+                                </div>
+                                <div>
+                                    <label for="">На складе</label>
+                                    <input type="number" name="stock" value="'.(!empty($Product["product"]["stock"])?$Product["product"]["stock"]:'').'" autocomplete="off">
+                                </div>
+                                <div>
+                                    <label for="">Дата публикации</label>
+                                    <input type="text" name="created" class="dateTime" value="'.(!empty($Product["product"]["created"])?date("d.m.Y H:i", $Product["product"]["created"]):'').'" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <div class="tr">
+                                    <input type="checkbox" name="status" id="p_status"'.(!empty($Product["product"]["status"])?' checked':'').' value="1"><label for="p_status">Активен</label>
+                                </div>
+                                <div>
+                                    <label for="p_images" class="upload_files">
+                                        <input type="file" name="images[]" id="p_images" multiple> выбрать изображения
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- изображения товара -->
+                            <div id="product_images">
+                                '.$images.'
+                            </div>
+                        </div>
+                    </div>
+                    <p class="title_box hr_d">Описание</p>
+                    <div>
+                        <textarea name="content" id="product_content" rows="5"></textarea>
+                        <br>
+                        <script>
+                            let editor = new FroalaEditor("#product_content", {
+                                inlineMode: true,
+                                countCharacters: false
+                            });
+                        </script>
+                    </div>
+                </div>
+                
+                <!-- tab SEO -->
+                <div class="tabs_content">
+                    <div class="dg dg_auto">
+                        <div>
+                            <label for="" class="pr">URL <span class="q"><i>Для поисковых систем</i></span></label>
+                            <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Product["product"]["url"])?$Product["product"]["url"]:'').'" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="">Meta Title</label>
+                            <input type="text" name="meta[title]" value="'.(!empty($Product["product"]["m_title"])?$Product["product"]["m_title"]:'').'" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="dg dg_auto">
+                        <div>
+                            <label for="">Meta Description</label>
+                            <textarea name="meta[description]" rows="3">'.(!empty($Product["product"]["m_description"])?$Product["product"]["m_description"]:'').'</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- tab Свойства -->
+                <div class="tabs_content">
+                    <div class="properties_actions">
+                        '.$propertiesSelect.'
+                    </div>
+                    <div id="properties_product">
+                        '.$properties.'
+                    </div>
+                </div>
+                
+            </div>
+            
+            <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">
+            
+        </form>';
+
+
+        $content .= '<form action method="POST" class="modal_big" id="editPhoto">
+            <div class="modal_title">Редактор фото</div>
+            <div class="modal_body dg dg-2" id="photoEditor"></div>
+            <div class="fx jc_c">
+                <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">&nbsp;&nbsp;
+                <a href="#" class="btn cancel">Отмена</a>
+            </div>
+            <a href="#" class="close"></a>
+        </form>';
+
+        $this->view->render($title, $content);
+    }
+
+
+
+    /**
+     * @name категории товара
+     * ======================
+     * @return void
+     * @throws Exception
+     */
     public function categoriesAction(){
 
         $this->view->styles = ['css/addon/product.css'];
@@ -247,8 +548,12 @@ class ProductsController extends PanelController {
     }
 
 
-
-
+    /**
+     * @name свойства товара
+     * =====================
+     * @return void
+     * @throws Exception
+     */
     public function propertiesAction(){
 
         $content = '<div class="fx">
@@ -295,8 +600,12 @@ class ProductsController extends PanelController {
 
 
 
-
-
+    /**
+     * @name добавление свойства
+     * =========================
+     * @return void
+     * @throws Exception
+     */
     public function addPropertyAction(){
 
         $this->view->styles = ['css/addon/property.css'];
@@ -382,285 +691,6 @@ class ProductsController extends PanelController {
         </form>';
 
         
-
-        $this->view->render($title, $content);
-    }
-
-
-
-
-
-    /**
-     * @name добавление и редактирование категории
-     * ===========================================
-     * @return void
-     * @throws Exception
-     */
-    public function addProductAction(){
-
-        $this->view->styles = ['css/addon/product.css'];
-        $this->view->scripts = ['js/addon/product.js'];
-        $this->view->plugins = ['select2', 'datepicker', 'fancybox'];
-
-        $title = $h1 = 'Добавление товара';
-
-        $ProductModel = new ProductModel();
-        $CategoryModel = new CategoryModel();
-
-        $Categories = $CategoryModel->getAll(true);
-        $Properties = $ProductModel->getPropertiesAll(true);
-
-
-
-        // Property
-        $propertiesSelect = '<select name="" id="propertiesAll">
-            <option>-- выбрать свойство --</option>';
-        $propsOptions = [];
-        if(!empty($Properties)){
-
-            foreach ($Properties as $propertyTitle => $propertyRow) {
-
-                $propertiesSelect .= '<option value="'.$propertyRow[0]["id"].'" data-property=\''.json_encode($propertyRow, JSON_UNESCAPED_UNICODE).'\'>'.$propertyTitle.'</option>';
-
-                foreach ($propertyRow as $propItem) {
-
-                    if(empty($propsOptions[$propertyTitle]))
-                        $propsOptions[$propertyTitle] = '
-                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
-                    else
-                        $propsOptions[$propertyTitle] .= '
-                                            <option value="'.$propItem["vid"].'">'.$propItem["val"].'</option>';
-                }
-            }
-        }
-        $propertiesSelect .= '</select> <a href="#" class="btn" id="addPropertiy">Добавить</a>';
-        // Property END
-
-
-
-        if(!empty($this->urls[3])){
-            
-            $id = intval($this->urls[3]);
-            $Product = $ProductModel->get($id);
-
-            $title = 'Редактирование товара';
-            $h1 = 'Редактирование товара: <b>'.$Product["product"]["title"].'</b>';
-        }
-
-        // категории
-        $categoryOptions = '';
-        if(!empty($Categories)){
-            $categoriesIsset = !empty($Product["product"]["category"]) ? explode(",", $Product["product"]["category"]) : [];
-            foreach ($Categories as $row) {
-
-                $selected = in_array($row["id"], $categoriesIsset) ? ' selected' : '';
-                $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
-            }
-        }
-        
-        // свойства
-        $properties = '';
-        if(!empty($Product["props"])){
-
-            $propId = $Product["props"][0]["id"];
-
-            foreach ($Product["props"] as $propKey => $row) {
-
-                if($propKey == 0 || $propId != $row["id"]){
-
-                    $closeProp = true;
-
-                    $properties .= '<div class="prop">
-                            <div class="prop_main" data-prop-id="'.$row["id"].'">
-                                <div class="pr">
-                                    <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
-                                    <label for="">'.$row["title"].': <a href="#" class="del_property"></a></label>
-                                    <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
-                                        <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="">Артикул</label>
-                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
-                                </div>
-                                <div>
-                                    <label for="">Цена</label>
-                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
-                                </div>
-                                <div>
-                                    <label for="">Кол-во</label>
-                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
-                                </div>
-                                <a href="#" class="add_sub_property">+</a>
-                            </div>
-                            <div class="prop_subs">';
-
-                } else{
-
-                    $closeProp = false;
-
-                            $properties .= '<div class="prop_sub">
-                                    <div class="pr">
-                                        <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
-                                        <select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_prop"].'">
-                                            <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
-                                        </select>
-                                    </div>
-                                    <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
-                                    <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
-                                    <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
-                                    <a href="#" class="remove_sub_property" data-a="ProductShop:deleteProperty='.$row["pp_id"].'">-</a>
-                                </div>';
-                }
-
-                if(!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey)
-                            $properties .= '
-                            </div>
-                        </div>';
-
-                $propId = $row["id"];
-            }
-        }
-
-
-        // изображения товара
-        $images = '';
-        if(!empty($Product["images"])){
-            foreach ($Product["images"] as $image) {
-                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
-                $images .= '<div class="img_item">
-                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
-                    <a href="#editPhoto" class="edit_image open_modal" data-img-id="'.$image["id"].'"></a>
-                    <a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$image["id"].'&link='.$image["src"].'"></a>
-                </div>';
-            }
-        }
-
-        $content = '<h1>'.$h1.'</h1>';
-
-        $content .= '<form action method="POST">
-            <div class="tabs">
-                <ul class="tabs_caption">
-                    <li class="active">Товар</li>
-                    <li>SEO</li>
-                    <li>Свойства</li>
-                </ul>
-                <div class="tabs_content active">
-                    <div class="dg dg_auto">
-                        <div>
-                            <div>
-                                <label for="" class="rq">Название</label>
-                                <input type="text" name="title" value="'.(!empty($Product["product"]["title"])?$Product["product"]["title"]:'').'" autocomplete="off">
-                            </div>
-                            <div>
-                                <label for="">Артикул</label>
-                                <input type="text" name="vendor" value="'.(!empty($Product["product"]["vendor"])?$Product["product"]["vendor"]:'').'" autocomplete="off">
-                            </div>
-                            <div>
-                                <label for="">Категория</label>
-                                <select name="category[]" id="categoryOptions" class="multipleSelect" multiple>
-                                    '.$categoryOptions.'
-                                </select>
-                            </div>
-                            <div>
-                                <label for="">Дата публикации</label>
-                                <input type="text" name="created" class="dateTime" value="'.(!empty($Product["product"]["created"])?date("d.m.Y H:i", $Product["product"]["created"]):'').'" autocomplete="off">
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div>
-                                    <label for="" class="rq">Цена</label>
-                                    <input type="number" name="price" min="0" value="'.(!empty($Product["product"]["price"])?$Product["product"]["price"]:'').'" autocomplete="off">
-                                </div>
-                                <div>
-                                    <label for="">Скидка</label>
-                                    <input type="text" name="sale" value="'.(!empty($Product["product"]["sale"])?$Product["product"]["sale"]:'').'" autocomplete="off">
-                                </div>
-                                <div>
-                                    <label for="">На складе</label>
-                                    <input type="number" name="stock" value="'.(!empty($Product["product"]["stock"])?$Product["product"]["stock"]:'').'" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div class="tr">
-                                    <input type="checkbox" name="status" id="p_status"'.(!empty($Product["product"]["status"])?' checked':'').' value="1"><label for="p_status">Активен</label>
-                                </div>
-                                <div>
-                                    <label for="p_images" class="upload_files">
-                                        <input type="file" name="images[]" id="p_images" multiple> выбрать изображения
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- изображения товара -->
-                            <div id="product_images">
-                                '.$images.'
-                            </div>
-                        </div>
-                    </div>
-                    <p class="title_box hr_d">Описание</p>
-                    <div>
-                        <textarea name="content" id="product_content" rows="5"></textarea>
-                        <br>
-                        <script>
-                            let editor = new FroalaEditor("#product_content", {
-                                inlineMode: true,
-                                countCharacters: false
-                            });
-                        </script>
-                    </div>
-                </div>
-                
-                <!-- tab SEO -->
-                <div class="tabs_content">
-                    <div class="dg dg_auto">
-                        <div>
-                            <label for="" class="pr">URL <span class="q"><i>Для поисковых систем</i></span></label>
-                            <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Product["product"]["url"])?$Product["product"]["url"]:'').'" autocomplete="off">
-                        </div>
-                        <div>
-                            <label for="">Meta Title</label>
-                            <input type="text" name="meta[title]" value="'.(!empty($Product["product"]["m_title"])?$Product["product"]["m_title"]:'').'" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="dg dg_auto">
-                        <div>
-                            <label for="">Meta Description</label>
-                            <textarea name="meta[description]" rows="3">'.(!empty($Product["product"]["m_description"])?$Product["product"]["m_description"]:'').'</textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <!-- tab Свойства -->
-                <div class="tabs_content">
-                    <div class="properties_actions">
-                        '.$propertiesSelect.'
-                    </div>
-                    <div id="properties_product">
-                        '.$properties.'
-                    </div>
-                </div>
-                
-            </div>
-            
-            <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">
-            
-        </form>';
-
-
-        $content .= '<form action method="POST" class="modal_big" id="editPhoto">
-            <div class="modal_title">Редактор фото</div>
-            <div class="modal_body dg dg-2" id="photoEditor"></div>
-            <div class="fx jc_c">
-                <input type="submit" class="btn" data-a="ProductShop" value="Сохранить">&nbsp;&nbsp;
-                <a href="#" class="btn cancel">Отмена</a>
-            </div>
-            <a href="#" class="close"></a>
-        </form>';
 
         $this->view->render($title, $content);
     }

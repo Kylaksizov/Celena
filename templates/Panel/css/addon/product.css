@@ -65,6 +65,9 @@
     background-color: #ecf0fa;
     border: 1px #d1d9ed solid;
 }
+#propertiesAll option{
+    font-size: 15px;
+}
 .properties_actions{
     display: grid;
     grid-template-columns: 1fr 200px;
@@ -78,23 +81,29 @@
 .prop_main{
     display: grid;
     grid-gap: 15px;
-    grid-template-columns: 1fr 100px 100px 100px 40px;
+    grid-template-columns: 1fr 100px 100px 100px 40px 40px;
     align-items: flex-end;
 }
 .prop_sub{
     display: grid;
     grid-gap: 15px;
-    grid-template-columns: 1fr 100px 100px 100px 40px;
-    align-items: flex-start;
+    grid-template-columns: 1fr 100px 100px 100px 40px 40px;
+    align-items: flex-end;
     margin-top: -14px;
 }
 .property_name{
+    border: 1px var(--input-border) solid;
     border-left: 2px #d1d9ed solid;
     display: flex;
     justify-content: space-between;
+    width: 100%;
     align-items: center;
     padding: 11px 15px;
+    margin-bottom: 20px;
     border-radius: 2px;
+}
+.property_name option{
+    font-size: 15px;
 }
 .add_sub_property{
     background: var(--c-success);
@@ -116,6 +125,8 @@
     padding: 4px 16px;
     border-radius: 3px;
     font-size: 26px;
+    position: relative;
+    top: -20px;
 }
 .remove_sub_property:hover{
     background: var(--c-red-hover);
@@ -159,4 +170,22 @@
 }
 .category_icon .no_image{
     height: 100px;
+}
+.sep_field{
+    background-color: var(--c-success);
+    color: #fff;
+    height: 20px;
+}
+.callback_select{
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB4PSIwIiB5PSIwIiB2aWV3Qm94PSIwIDAgNTExLjk5OSA1MTEuOTk5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im0zNDYuOTk5IDQ1Ny41MTZoLTE5NnYtOTBoMTk2YzQxLjM1NSAwIDc1LTMzLjY0NSA3NS03NXMtMzMuNjQ1LTc1LTc1LTc1aC0xNzB2NzMuMDMybC0xNzYuOTk5LTExOC4wMzIgMTc2Ljk5OS0xMTguMDMydjczLjAzMmgxNzBjOTAuOTgxIDAgMTY1IDc0LjAxOSAxNjUgMTY1cy03NC4wMTkgMTY1LTE2NSAxNjV6IiBmaWxsPSIjQjdCRUQ0IiBkYXRhLW9yaWdpbmFsPSIjQjdCRUQ0Ij48L3BhdGg+PC9nPjwvc3ZnPg==") no-repeat center center;
+    background-size: 18px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 30px;
+    right: 10px;
+    cursor: pointer;
+}
+.callback_select:hover{
+    opacity: .5;
 }
