@@ -96,7 +96,8 @@ class ProductModel extends Model{
                 p.id,
                 p.title,
                 pp.id AS pp_id,
-                pp.id_prop,
+                pp.id_p,
+                pp.id_pv,
                 pp.sep,
                 pp.vendor,
                 pp.price,
@@ -104,8 +105,8 @@ class ProductModel extends Model{
                 pv.pid,
                 pv.val
             FROM " . PREFIX . "product_prop pp
-                LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_prop
-                LEFT JOIN " . PREFIX . "properties p ON p.id = pv.pid
+                LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_pv
+                LEFT JOIN " . PREFIX . "properties p ON p.id = pp.id_p
             WHERE pp.pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
