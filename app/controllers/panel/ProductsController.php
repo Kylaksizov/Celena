@@ -126,6 +126,9 @@ class ProductsController extends PanelController {
 
             foreach ($Properties as $propertyTitle => $propertyRow) {
 
+                if(!empty($propertyRow[0]["sep"]))
+                    $propsOptions[$propertyTitle] = '<option value="sep" class="sep_field">ПРОИЗВОЛЬНОЕ ПОЛЕ</option>';
+                
                 $propertiesSelect .= '<option value="'.$propertyRow[0]["id"].'" data-category="'.$propertyRow[0]["cid"].'" data-display="'.$propertyRow[0]["option"].'" data-property=\''.json_encode($propertyRow, JSON_UNESCAPED_UNICODE).'\'>'.$propertyTitle.'</option>';
 
                 foreach ($propertyRow as $propItem) {
@@ -180,9 +183,9 @@ class ProductsController extends PanelController {
                         $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_pv"].'">
                                         <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
                                     </select>';
-                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" value="'.$row["sep"].'"><span class="callback_select"></span>';
+                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
-                    $properties .= '<div class="prop">
+                    $properties .= '<div class="prop" data-prop-id="'.$row["id"].'">
                             <div class="prop_main" data-prop-id="'.$row["id"].'">
                                 <div class="pr">
                                     <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
@@ -214,7 +217,7 @@ class ProductsController extends PanelController {
                         $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_pv"].'">
                                             <option value="">-- не выбрано --</option>'.$propsOptions[$row["title"]].'
                                         </select>';
-                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" value="'.$row["sep"].'"><span class="callback_select"></span>';
+                    } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
                     $properties .= '<div class="prop_sub">
                                     <div class="pr">
@@ -366,6 +369,8 @@ class ProductsController extends PanelController {
                         '.$properties.'
                     </div>
                 </div>
+                
+                <input type="hidden" name="product" value="1">
                 
             </div>
             

@@ -62,15 +62,8 @@ $(function(){
         }
     }
 
-
-    // выбор свойства
-    $(document).on("click", "#addPropertiy", function(){
-        addField();
-        return false
-    })
-    
-    // при выборе категории, выводим нужные свойства
-    $(document).on("change", "#categoryOptions", function(){
+    // выводим нужные свойства исходя из выбранных категорий
+    function parseCategory(){
 
         let categorySelected = [];
         $("#categoryOptions option:selected").each(function(){
@@ -112,18 +105,31 @@ $(function(){
                         thisElement.removeClass("dn");
                         if(display == '1') addField(thisElement);
                         else{
-
+                            // ???
                         }
                     }
                 });
             }
         })
+    }
+    parseCategory();
+
+
+    // выбор свойства
+    $(document).on("click", "#addPropertiy", function(){
+        addField();
+        return false
+    })
+    
+    // при выборе категории, выводим нужные свойства
+    $(document).on("change", "#categoryOptions", function(){
+        parseCategory();
     })
 
     // добавление свойства
     $(document).on("click", ".add_sub_property", function(){
 
-        let propId = $(this).closest(".prop_main").attr("data-prop-id");
+        let propId = $(this).closest(".prop").attr("data-prop-id");
         let selectElement = $(this).parent().find(".property_name")[0].outerHTML;
 
         if(
@@ -132,7 +138,7 @@ $(function(){
         ) selectElement += $(this).closest(".prop").find(".callback_select")[0].outerHTML;
 
         $(this).parent().after(`<div class="prop_sub">
-            <div class="pr">
+            <div class="pr inFocus">
                 `+selectElement+`
             </div>
             <input type="text" name="prop[`+propId+`][vendor][]" value="" placeholder="Артикул">
@@ -141,6 +147,8 @@ $(function(){
             <a href="#" class="add_sub_property">+</a>
             <a href="#" class="remove_sub_property">-</a>
         </div>`);
+        $(".inFocus input").val("").attr("placeholder", "Введите значение").focus();
+        $(".inFocus").removeClass("inFocus");
 
         return false
     })

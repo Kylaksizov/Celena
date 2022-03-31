@@ -107,7 +107,7 @@ class ProductModel extends Model{
             FROM " . PREFIX . "product_prop pp
                 LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_pv
                 LEFT JOIN " . PREFIX . "properties p ON p.id = pp.id_p
-            WHERE pp.pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
+            WHERE pp.pid = ? ORDER BY pp.id_p DESC", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
     }
@@ -294,8 +294,9 @@ class ProductModel extends Model{
     /**
      * @name добавление свойств товару
      * ===============================
-     * @param $pid
-     * @param $id_prop
+     * @param $product_id
+     * @param $property_id
+     * @param $property_v_id
      * @param $sep
      * @param $vendor
      * @param $price
@@ -303,11 +304,12 @@ class ProductModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function addProperty($pid, $id_prop, $sep, $vendor, $price, $stock = null){
+    public function addProperty($product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock = null){
 
         $params = [
-            $pid,
-            $id_prop,
+            $product_id,
+            $property_id,
+            $property_v_id,
             $sep,
             $vendor,
             $price,
@@ -316,13 +318,14 @@ class ProductModel extends Model{
 
         Base::run("INSERT INTO " . PREFIX . "product_prop (
             pid,
-            id_prop,
+            id_p,
+            id_pv,
             sep,
             vendor,
             price,
             stock
         ) VALUES (
-            ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -338,8 +341,9 @@ class ProductModel extends Model{
      * @name изменение свойств для товара
      * ==================================
      * @param $id
-     * @param $pid
-     * @param $id_prop
+     * @param $product_id
+     * @param $property_id
+     * @param $property_v_id
      * @param $sep
      * @param $vendor
      * @param $price
@@ -347,9 +351,9 @@ class ProductModel extends Model{
      * @return int
      * @throws Exception
      */
-    public function editProperty($id, $pid, $id_prop, $sep, $vendor, $price, $stock = null){
+    public function editProperty($id, $product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock = null){
 
-        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_prop = ?, sep = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$pid, $id_prop, $sep, $vendor, $price, $stock, $id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_p = ?, id_pv = ?, sep = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock, $id])->rowCount();
     }
 
 

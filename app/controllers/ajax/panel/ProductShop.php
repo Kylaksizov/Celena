@@ -12,7 +12,7 @@ class ProductShop{
 
     public function index(){
 
-        if(!empty($_POST["title"])) self::createEditProduct(); // создание редактирование товара
+        if(!empty($_POST["product"])) self::createEditProduct(); // создание редактирование товара
         if(!empty($_POST["deleteProduct"])) self::deleteProduct(); // удаление товара
         if(!empty($_POST["statusProduct"])) self::editStatus(); // изменение активности
         if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
@@ -70,21 +70,22 @@ class ProductShop{
             // если были заданы свойства
             if(!empty($_POST["prop"])){
 
-                foreach ($_POST["prop"] as $propArray) {
+                foreach ($_POST["prop"] as $property_id => $propArray) {
 
-                    foreach ($propArray["id"] as $prop_key => $id_prop) {
+                    foreach ($propArray["id"] as $prop_key => $id_pv) {
 
-                        if(is_numeric($id_prop)){
+                        if(is_numeric($id_pv)){
                             $sep = '';
-                            $id_prop = intval($id_prop);
+                            $id_pv = intval($id_pv);
                         } else{
-                            $sep = trim(htmlspecialchars(strip_tags($id_prop)));
-                            $id_prop = 0;
+                            $sep = trim(htmlspecialchars(strip_tags($id_pv)));
+                            $id_pv = 0;
                         }
 
                         $ProductModel->addProperty(
                             $id,
-                            $id_prop,
+                            $property_id,
+                            $id_pv,
                             $sep,
                             trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                             floatval($propArray["price"][$prop_key]),
@@ -116,7 +117,6 @@ class ProductShop{
                 'sale' => $sale,
                 'stock' => $stock,
                 'url' => $url,
-                'created' => $created,
                 'status' => $status
             ]);
 
@@ -133,16 +133,16 @@ class ProductShop{
             // если были заданы свойства
             if(!empty($_POST["prop"])){
 
-                foreach ($_POST["prop"] as $propArray) {
+                foreach ($_POST["prop"] as $property_id => $propArray) {
 
-                    foreach ($propArray["id"] as $prop_key => $id_prop) {
+                    foreach ($propArray["id"] as $prop_key => $id_pv) {
 
-                        if(is_numeric($id_prop)){
+                        if(is_numeric($id_pv)){
                             $sep = '';
-                            $id_prop = intval($id_prop);
+                            $id_pv = intval($id_pv);
                         } else{
-                            $sep = trim(htmlspecialchars(strip_tags($id_prop)));
-                            $id_prop = 0;
+                            $sep = trim(htmlspecialchars(strip_tags($id_pv)));
+                            $id_pv = 0;
                         }
 
                         if(!empty($propArray["pp_id"][$prop_key])){
@@ -150,7 +150,8 @@ class ProductShop{
                             $ProductModel->editProperty(
                                 intval($propArray["pp_id"][$prop_key]),
                                 $id,
-                                $id_prop,
+                                $property_id,
+                                $id_pv,
                                 $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
@@ -161,7 +162,8 @@ class ProductShop{
 
                             $ProductModel->addProperty(
                                 $id,
-                                $id_prop,
+                                $property_id,
+                                $id_pv,
                                 $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
@@ -176,7 +178,11 @@ class ProductShop{
                 '.$addScript.'
                 $("h1 b").text(`'.$title.'`);
                 $.server_say({say: "Изменения сохранены!", status: "success"});
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000)
             </script>';
+            #TODO из-за свойств временно сделал автообновление страницы после сохранения - исправить...
         }
 
         System::script($script);
