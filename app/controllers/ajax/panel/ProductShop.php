@@ -39,7 +39,7 @@ class ProductShop{
         $stock = !empty($_POST["stock"]) ? intval($_POST["stock"]) : null;
         $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
-        $category = !empty($_POST["category"]) ? trim(implode(",", $_POST["category"])) : '';
+        $category = !empty($_POST["category"]) ? $_POST["category"] : '';
         $brand = !empty($_POST["brand"]) ? intval($_POST["brand"]) : null;
         $status = !empty($_POST["status"]) ? 1 : 0;
 
@@ -111,7 +111,7 @@ class ProductShop{
                 'm_title' => $meta["title"],
                 'm_description' => $meta["description"],
                 'content' => $content,
-                'category' => $category,
+                'category' => implode(",", $category),
                 'brand' => $brand,
                 'price' => $price,
                 'sale' => $sale,

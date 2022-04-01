@@ -18,7 +18,7 @@ class ProductModel extends Model{
      * @param string $vendor
      * @param array $meta
      * @param $content
-     * @param $category
+     * @param array $categories
      * @param $brand
      * @param $price
      * @param string|null $sale
@@ -29,8 +29,8 @@ class ProductModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, string $vendor = '', array $meta = [], $content, $category, $brand = null, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
-
+    public function create($title, string $vendor = '', array $meta = [], $content, array $categories = [], $brand = null, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
+        
         if($url === null) $url = System::translit($title);
         if($created === null) $created = time();
 
@@ -41,7 +41,7 @@ class ProductModel extends Model{
             $meta["title"],
             $meta["description"],
             $content,
-            $category,
+            implode(",", $categories),
             $brand,
             $price,
             $sale,
@@ -74,7 +74,15 @@ class ProductModel extends Model{
 
         unset($params);
 
-        return Base::lastInsertId();
+        $product_id =  Base::lastInsertId();
+
+        if(!empty($categories)){
+            foreach ($categories as $categoryId) {
+                Base::run("INSERT INTO " . PREFIX . "products_cat (pid, cid) VALUES (?, ?)", [$product_id, $categoryId]);
+            }
+        }
+
+        return $product_id;
     }
 
 
@@ -234,6 +242,32 @@ class ProductModel extends Model{
         $set .= "last_modify = ?";
         array_push($params, time());
         array_push($params, $id);
+
+
+        // изменяем привязку продуктов и категорий
+        if(!empty($fields["category"])){
+
+            $cats = explode(",", $fields["category"]);
+
+            $Products_cat = System::setKeys(Base::run("SELECT id, cid FROM " . PREFIX . "products_cat WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "cid");
+
+            foreach ($cats as $catId) {
+
+                if(!empty($Products_cat[$catId])){
+
+                    Base::run("UPDATE " . PREFIX . "products_cat SET cid = ? WHERE id = ?", [$catId, $Products_cat[$catId]["id"]])->rowCount();
+                    unset($Products_cat[$catId]);
+
+                } else Base::run("INSERT INTO " . PREFIX . "products_cat (pid, cid) VALUES (?, ?)", [$id, $catId]);
+            }
+
+            if(!empty($Products_cat)){ // если остались лишние, удаляем
+                foreach ($Products_cat as $pc) {
+                    Base::run("DELETE FROM " . PREFIX . "products_cat WHERE id = ?", [$pc["id"]]);
+                }
+            }
+        }
+
 
         return Base::run("UPDATE " . PREFIX . "products SET $set WHERE id = ?", $params)->rowCount();
     }

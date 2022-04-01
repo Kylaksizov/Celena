@@ -1,2 +1,0 @@
-01.04.2022 08:23:11 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'categories' cannot be null<br><span class="file_log_1">[1: C:\OpenServer\domains\nexshop\app\models\BrandModel.php -> 119]</span><br><span class="file_log_2">[2: C:\OpenServer\domains\nexshop\app\controllers\ajax\panel\Brand.php -> on line: 41]</span>
-
