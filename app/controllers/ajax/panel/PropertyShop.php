@@ -3,7 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\PropertyModel;
+use app\models\panel\PropertyModel;
 use Exception;
 
 class PropertyShop{

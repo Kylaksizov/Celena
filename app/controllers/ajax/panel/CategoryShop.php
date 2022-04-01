@@ -3,7 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\CategoryModel;
+use app\models\panel\CategoryModel;
 use Exception;
 
 class CategoryShop{

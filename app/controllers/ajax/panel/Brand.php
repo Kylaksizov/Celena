@@ -3,7 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\BrandModel;
+use app\models\panel\BrandModel;
 use Exception;
 
 class Brand{

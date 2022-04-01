@@ -4,10 +4,10 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
-use app\models\BrandModel;
-use app\models\CategoryModel;
-use app\models\ProductModel;
-use app\models\PropertyModel;
+use app\models\panel\BrandModel;
+use app\models\panel\CategoryModel;
+use app\models\panel\ProductModel;
+use app\models\panel\PropertyModel;
 use Exception;
 
 

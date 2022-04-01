@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\core\Controller;
+use app\models\PropertyModel;
 
 
 class CategoryController extends Controller {
@@ -13,9 +14,9 @@ class CategoryController extends Controller {
 
         //$this->view->load('Nex');
 
+        $ProductModel = new PropertyModel();
+
         $this->view->include('products');
-        $this->view->set('{menu-title}', 'Главная');
-        $this->view->setMain('{menu}', $this->view->get());
 
         $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
             [

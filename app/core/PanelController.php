@@ -5,7 +5,7 @@
 
 namespace app\core;
 
-use app\models\SystemModel;
+use app\models\panel\SystemModel;
 
 abstract class PanelController{
 

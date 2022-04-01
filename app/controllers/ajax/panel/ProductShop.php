@@ -3,7 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\ProductModel;
+use app\models\panel\ProductModel;
 use Exception;
 use Intervention\Image\ImageManager;
 
