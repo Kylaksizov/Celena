@@ -112,7 +112,34 @@ $(function(){
             }
         })
     }
+
+    // показываем бренды исходя из выбранных категорий
+    function parseBrands(){
+
+        let categorySelected = [];
+        $("#categoryOptions option:selected").each(function(){
+            categorySelected.push($(this).val());
+        })
+
+        // перебираем options brands
+        $("#productBrand option").each(function(){
+
+            let thisElement = $(this);
+            let categories = thisElement.attr("data-brand-categories");
+
+            if(thisElement.val() != '' && categories != ""){ // если категории заданы в option
+                thisElement.addClass("dn");
+                categories = categories.split(",");
+                categorySelected.forEach(function(item) {
+                    if(categories.includes(item)){
+                        thisElement.removeClass("dn");
+                    }
+                });
+            }
+        })
+    }
     parseCategory();
+    parseBrands();
 
 
     // выбор свойства
@@ -124,6 +151,7 @@ $(function(){
     // при выборе категории, выводим нужные свойства
     $(document).on("change", "#categoryOptions", function(){
         parseCategory();
+        parseBrands();
     })
 
     // добавление свойства
@@ -176,11 +204,12 @@ $(function(){
     $(document).on("click", '.edit_image', function(){
         let photoId = $(this).attr('data-img-id');
         let photoSrc = $(this).parent(".img_item").find('img').attr('src');
+        let photoAlt = $(this).prev().attr('data-caption');
         $("#photoEditor").html(`<img src="`+photoSrc+`" alt="">
             <div id="editorOptions">
                 <input type="hidden" name="photo[id]" value="`+photoId+`">
                 <label for="">Описание изображения</label>
-                <input type="text" name="photo[alt]" value="" autocomplete="off">
+                <input type="text" name="photo[alt]" value="`+photoAlt+`" autocomplete="off">
             </div>`);
         return false
     })

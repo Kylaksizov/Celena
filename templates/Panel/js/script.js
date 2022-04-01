@@ -1,6 +1,7 @@
 $(function(){
 
     let url = document.location.href;
+    let urlExplode = url.split('/');
     let pathLink = document.location.pathname;
 
     $.each($('#menu a'), function() {
@@ -13,7 +14,12 @@ $(function(){
                     $(this).next('ul').show();
                 }
             }
-            if(url.indexOf(hrefLink) + 1 && pathLink == hrefLink){
+            if('/'+urlExplode[3]+'/'+urlExplode[4]+'/' == hrefLink){
+                $(this).addClass("active");
+                $(this).parent().parent().parent().addClass("active");
+                $(this).parent().parent().show();
+            }
+            if(url.indexOf(hrefLink) + 1){
                 $(this).addClass("active");
                 $(this).parent().parent().parent().addClass("active");
                 $(this).parent().parent().show();

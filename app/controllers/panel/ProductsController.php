@@ -4,6 +4,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
+use app\models\BrandModel;
 use app\models\CategoryModel;
 use app\models\ProductModel;
 use app\models\PropertyModel;
@@ -151,19 +152,38 @@ class ProductsController extends PanelController {
 
             $id = intval($this->urls[3]);
             $Product = $ProductModel->get($id);
+            $Brands = $Product["brands"];
 
-            $title = 'Редактирование товара';
+            $title = $Product["product"]["title"];
             $h1 = 'Редактирование товара: <b>'.$Product["product"]["title"].'</b>';
+            
+        } else{
+            
+            $BrandModel = new BrandModel();
+            $Brands = $BrandModel->getAll(true);
         }
 
         // категории
+        $categoriesIsset = !empty($Product["product"]["category"]) ? explode(",", $Product["product"]["category"]) : [];
         $categoryOptions = '';
         if(!empty($Categories)){
-            $categoriesIsset = !empty($Product["product"]["category"]) ? explode(",", $Product["product"]["category"]) : [];
             foreach ($Categories as $row) {
 
                 $selected = in_array($row["id"], $categoriesIsset) ? ' selected' : '';
                 $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
+        }
+
+        // бренды
+        $brandsOptions = '<option value="">-- не выбрано --</option>';
+        if(!empty($Brands)){
+            foreach ($Brands as $row) {
+
+                # TODO потом сделать
+                $bgOption = /*(!empty($row["icon"])) ? ' style=\'background-image:url("'.CONFIG_SYSTEM["home"].'uploads/brands/'.$row["icon"].'");\'' : */'';
+
+                $selected = (!empty($Product["product"]["brand"]) && $row["id"] == $Product["product"]["brand"]) ? ' selected' : '';
+                $brandsOptions .= '<option value="'.$row["id"].'" data-brand-categories="'.$row["categories"].'"'.$bgOption.$selected.'>'.$row["name"].'</option>';
             }
         }
 
@@ -175,9 +195,13 @@ class ProductsController extends PanelController {
 
             foreach ($Product["props"] as $propKey => $row) {
 
+                if($propId != $row["id"])
+                    $properties .= '</div>
+                        </div>';
+
                 if($propKey == 0 || (!empty($row["id"]) && $propId != $row["id"])){
 
-                    $closeProp = true;
+                    //$closeProp = true;
 
                     if($row["sep"] == ''){
                         $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_pv"].'">
@@ -185,7 +209,8 @@ class ProductsController extends PanelController {
                                     </select>';
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
-                    $properties .= '<div class="prop" data-prop-id="'.$row["id"].'">
+                    $properties .= '
+                        <div class="prop" data-prop-id="'.$row["id"].'">
                             <div class="prop_main" data-prop-id="'.$row["id"].'">
                                 <div class="pr">
                                     <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
@@ -211,7 +236,7 @@ class ProductsController extends PanelController {
 
                 } else{
 
-                    $closeProp = false;
+                    //$closeProp = false;
 
                     if($row["sep"] == ''){
                         $element = '<select class="property_name" name="prop['.$row["id"].'][id][]" data-prop-sel="'.$row["id_pv"].'">
@@ -219,7 +244,8 @@ class ProductsController extends PanelController {
                                         </select>';
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
-                    $properties .= '<div class="prop_sub">
+                    $properties .= '
+                                <div class="prop_sub">
                                     <div class="pr">
                                         <input type="hidden" name="prop['.$row["id"].'][pp_id][]" class="pp_id" value="'.$row["pp_id"].'">
                                         '.$element.'
@@ -232,14 +258,22 @@ class ProductsController extends PanelController {
                                 </div>';
                 }
 
-                if(!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey)
+                #TODO чето запутался я !!!!!!!!!!!!!!!!!!!!!
+                /*if((!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey) || (!empty($row["id"]) && $propId != $row["id"]))
                     $properties .= '
                             </div>
+                        </div>';*/
+
+                if(count($Product["props"])-1 == $propKey)
+                    $properties .= '</div>
                         </div>';
 
                 $propId = $row["id"];
             }
         }
+
+        /*print_r($properties);
+        exit;*/
 
 
         // изображения товара
@@ -283,8 +317,8 @@ class ProductsController extends PanelController {
                             </div>
                             <div>
                                 <label for="">Бренд</label>
-                                <select name="brand">
-                                    <option value="">-</option>
+                                <select name="brand" id="productBrand">
+                                    '.$brandsOptions.'
                                 </select>
                             </div>
                         </div>
@@ -549,6 +583,135 @@ class ProductsController extends PanelController {
                 </div>
             </div>
             <input type="submit" class="btn" data-a="CategoryShop" value="Сохранить">
+        </form>';
+
+        $this->view->render($title, $content);
+    }
+
+
+
+    /**
+     * @name категории товара
+     * ======================
+     * @return void
+     * @throws Exception
+     */
+    public function brandsAction(){
+
+        $this->view->styles = ['css/addon/product.css'];
+        $this->view->scripts = ['js/addon/product.js'];
+
+        $content = '<div class="fx">
+            <h1>Бренды</h1>
+            <a href="/panel/products/brands/add/" class="btn">Добавить</a>
+        </div>';
+
+        $BrandModel = new BrandModel();
+        $Brands = $BrandModel->getAll();
+
+        if($Brands){
+
+            $categoryContent = '';
+
+            foreach ($Brands["brands"] as $row) {
+
+                $categoryContent .= '<tr>
+                    <td>'.$row["id"].'</td>
+                    <td>
+                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
+                    </td>
+                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.$row["name"].'</a></td>
+                    <td>
+                        <ul class="tc">
+                            <li><a href="#" class="remove" data-a="Brand:deleteBrand='.$row["id"].'"></a></li>
+                        </ul>
+                    </td>
+                </tr>';
+            }
+
+        } else $categoryContent = '<tr class="tc"><td colspan="6">Брендов нет</td></tr>';
+
+        $content .= '<table>
+            <tr>
+                <th width="20">ID</th>
+                <th width="30">Иконка</th>
+                <th>Название</th>
+                <th width="50">Действия</th>
+            </tr>
+            '.$categoryContent.'
+        </table>';
+
+        $this->view->render('Бренды', $content);
+    }
+
+
+
+
+
+    /**
+     * @name добавление и редактирование категории
+     * ===========================================
+     * @return void
+     * @throws Exception
+     */
+    public function addBrandAction(){
+
+        $this->view->styles = ['css/addon/product.css'];
+        $this->view->plugins = ['select2'];
+
+        $title = 'Добавление бренда';
+
+        $CategoryModel = new CategoryModel();
+        $Categories = $CategoryModel->getAll(true);
+
+        if(!empty($this->urls[4])){
+
+            $id = intval($this->urls[4]);
+            $BrandModel = new BrandModel();
+            $Brand = $BrandModel->get($id);
+
+            $title = $Brand["name"];
+        }
+
+        // родительская категория
+        $categoryOptions = '';
+        if(!empty($Categories)){
+            $categoriesIsset = !empty($Brand["categories"]) ? explode(",", $Brand["categories"]) : [];
+            foreach ($Categories as $row) {
+
+                $selected = in_array($row["id"], $categoriesIsset) ? ' selected' : '';
+                $categoryOptions .= '<option value="'.$row["id"].'"'.$selected.'>'.$row["title"].'</option>';
+            }
+        }
+
+        $content = '<h1>'.$title.'</h1>';
+
+        $icon = (!empty($Brand["icon"]) && file_exists(ROOT . '/uploads/brands/'.$Brand["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$Brand["icon"].'" alt="">' : '<span class="no_image"></span>';
+
+        $content .= '<form action method="POST" class="box_">
+            <div class="dg dg_auto">
+                <div>
+                    <div class="brand_icon">
+                        '.$icon.'
+                    </div>
+                    <label for="icon" class="upload_files">
+                        <input type="file" name="icon" id="icon"> выбрать изображение
+                    </label>
+                </div>
+                <div>
+                    <label for="" class="rq">Название</label>
+                    <input type="text" name="name" value="'.(!empty($Brand["name"])?$Brand["name"]:'').'" autocomplete="off">
+                    <br>
+                    <label for="">URL</label>
+                    <input type="text" name="url" value="'.(!empty($Brand["url"])?$Brand["url"]:'').'" autocomplete="off">
+                    <br>
+                    <label for="">Привязка к категориям</label>
+                    <select name="categories[]" class="multipleSelect" multiple>
+                        '.$categoryOptions.'
+                    </select>
+                </div>
+            </div>
+            <input type="submit" class="btn" data-a="Brand" value="Сохранить">
         </form>';
 
         $this->view->render($title, $content);

@@ -1,11 +1,11 @@
-.category_icon{
+.category_icon, .brand_icon{
     width: 100px;
     height: 100px;
     text-align: center;
     border-radius: 2px;
     margin-bottom: 10px;
 }
-.category_icon img{
+.category_icon img, .brand_icon img{
     max-height: 100%;
 }
 #product_images{
@@ -168,7 +168,7 @@
 .no_image{
     height: 50px;
 }
-.category_icon .no_image{
+.category_icon .no_image, .brand_icon .no_image{
     height: 100px;
 }
 .sep_field{
