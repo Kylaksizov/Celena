@@ -1,6 +1,7 @@
 <article class="goods_box">
     <a href="{link}" class="g_preview">
-        <img src="{image-thumb-1}" alt="">
+        <img src="{poster}" alt="">
+        {images}
         <span class="g_id">{sid}</span>
         [sale]<span class="g_label sale">-{sale}</span>[/sale]
     </a>

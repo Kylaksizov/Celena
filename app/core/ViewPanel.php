@@ -253,10 +253,13 @@ class ViewPanel{
 
         $dbLogs = Base::log();
 
+        global $mem_start;
+
         $devContent .= '<li>Контроллер: <b>'.$this->route["controller"].'</b></li>
             <li>DB соединение: <b>'.($dbLogs->connection?'установлено':'-').'</b></li>
             <li>DB запросов: <a href="#" class="dev_show_log">'.$dbLogs->countQuery.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->queries).'</span></li>
             <li'.($dbLogs->countErrors?' class="error"':'').'>DB ошибок: <a href="#" class="dev_show_log log_e">'.$dbLogs->countErrors.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->errors).'</span></li>
+            <li>Время обработки: '.round(microtime(true) - $mem_start, 3).'</li>
         </ul>';
 
         return '<div id="nex_dev">

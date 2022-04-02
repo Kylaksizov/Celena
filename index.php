@@ -29,4 +29,4 @@ $router->run();
 
 //ob_end_flush();
 
-//echo memory_get_usage() - $mem_start;
+//echo round(microtime(true) - $mem_start, 3);

@@ -65,17 +65,50 @@ class View{
 
 
     /**
+     * @name поиск тегов в шаблоне
+     * ===========================
+     * @param $tagName
+     * @param bool $viewType
+     * @return int
+     */
+    public function findTag($tagName, bool $viewType = false){
+
+        if($viewType) return substr_count($this->tplIndex, $tagName);
+        else return substr_count($this->include[$this->lastInc], $tagName);
+    }
+
+
+
+    /**
      * @name поиск тегов в подключаемом файле
      * ======================================
-     * @param $searchArray
-     * @return array
+     * @param array $searchAssocArray
+     * @return string
+     * @example :
+     * --------------------------------------
+     * $this->findTags([
+     *      'title, url',
+     *      '{tagName}' => 'fieldName',
+     *      '{tagName2}' => 'fieldName2'
+     * ]);
      */
-    public function findTags($searchArray = []){
+    public function findTags(array $searchAssocArray = []){
 
         $result = [];
 
+        if(!empty($searchAssocArray[0])){
+            array_push($result, $searchAssocArray[0]);
+            unset($searchAssocArray[0]);
+        }
+
         if(!empty($this->include[$this->lastInc])){
-            foreach ($searchArray as $tag) if(strripos($this->include[$this->lastInc], $tag) !== false) $result[] = $tag;
+
+            foreach ($searchAssocArray as $tag => $strField){
+
+                if(strripos($this->include[$this->lastInc], $tag) !== false){
+                    $result[$tag] = $strField;
+                }
+            }
         }
 
         return $result;
@@ -472,10 +505,13 @@ class View{
 
         $dbLogs = Base::log();
 
+        global $mem_start;
+
         $devContent .= '<li>Контроллер: <b>'.$this->route["controller"].'</b></li>
             <li>DB соединение: <b>'.($dbLogs->connection?'установлено':'-').'</b></li>
             <li>DB запросов: <a href="#" class="dev_show_log">'.$dbLogs->countQuery.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->queries).'</span></li>
             <li'.($dbLogs->countErrors?' class="error"':'').'>DB ошибок: <a href="#" class="dev_show_log log_e">'.$dbLogs->countErrors.'</a><span class="db_hidden">'.implode('<br>', $dbLogs->errors).'</span></li>
+            <li>Время обработки: '.round(microtime(true) - $mem_start, 3).'</li>
         </ul>';
 
         return '<div id="nex_dev">
