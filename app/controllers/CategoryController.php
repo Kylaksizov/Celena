@@ -44,10 +44,7 @@ class CategoryController extends Controller {
 
         $Products = $ProductModel->getProducts($this->urls, $findTags);
         
-        echo "<pre>";
-        print_r($Products);
-        echo "</pre>";
-        exit;
+
 
 
 
