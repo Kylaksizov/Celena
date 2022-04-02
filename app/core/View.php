@@ -36,8 +36,12 @@ class View{
     }
 
 
-
-
+    /**
+     * @name подключаем другие файлы
+     * =============================
+     * @param $view
+     * @return false|string|void
+     */
     public function include($view){
 
         $viewPrev = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["author"].'/' : '';
@@ -57,6 +61,24 @@ class View{
 
             $this->include[$view] = $this->includeSource[$view];
         }
+    }
+
+
+    /**
+     * @name поиск тегов в подключаемом файле
+     * ======================================
+     * @param $searchArray
+     * @return array
+     */
+    public function findTags($searchArray = []){
+
+        $result = [];
+
+        if(!empty($this->include[$this->lastInc])){
+            foreach ($searchArray as $tag) if(strripos($this->include[$this->lastInc], $tag) !== false) $result[] = $tag;
+        }
+
+        return $result;
     }
 
 

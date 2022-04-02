@@ -18,14 +18,28 @@ class CategoryController extends Controller {
         //$this->view->load('Nex');
 
         $ProductModel = new ProductModel();
-        $Products = $ProductModel->getProducts($this->urls);
 
+        $this->view->include('products');
+
+        // подбор полей из таблиц в зависимости от заданных тегов - эффективно, если большая база
+        #TODO потом можно сделать проверку из конфига
+        $findTags = $this->view->findTags([
+            '{sid}',
+            '{rating}',
+            '{test}'
+        ]);
+
+        $Products = $ProductModel->getProducts($this->urls);
+        
         echo "<pre>";
         print_r($Products);
         echo "</pre>";
         exit;
 
-        $this->view->include('products');
+        /*echo "<pre>";
+        print_r($this->view->include["products"]);
+        echo "</pre>";
+        exit;*/
 
         $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
             [

@@ -68,20 +68,25 @@ class ProductModel extends Model{
      * @return array
      * @throws Exception
      */
-    public function getProducts($categories = []){
+    public function getProducts($categories = [], $fields = "*"){
 
+        $result = [];
+
+        // если был передан параметр с категориями
         if(!empty($categories)){
 
             $where = "";
-            foreach ($categories as $category) {
+            $params = [];
 
+            foreach ($categories as $categoryUrl) {
+                $where .= "url = ? OR ";
+                array_push($params, $categoryUrl);
             }
+            $where = trim($where, " OR ");
 
-
+            $result["categories"] = System::setKeys(Base::run("SELECT id, title, m_title, m_description, content, icon, url, pid FROM " . PREFIX . "category WHERE " . $where, $params)->fetchAll(PDO::FETCH_ASSOC), "id");
         }
 
-        $result = [];
-        $params = [];
 
         $pagination = [
             "start" => 0,

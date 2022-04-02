@@ -446,6 +446,7 @@ class ProductModel extends Model{
 
         Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id]);
         Base::run("DELETE FROM " . PREFIX . "product_prop WHERE pid = ?", [$id]);
+        Base::run("DELETE FROM " . PREFIX . "products_cat WHERE pid = ?", [$id]);
         return Base::run("DELETE FROM " . PREFIX . "products WHERE id = ?", [$id]);
     }
 
