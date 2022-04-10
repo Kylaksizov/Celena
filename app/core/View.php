@@ -408,6 +408,8 @@ class View{
         $this->tplIndex = preg_replace('/\[role(.+?)role\]/is', "", $this->tplIndex);
         $this->tplIndex = preg_replace('/\[not-role(.+?)not-role\]/is', "", $this->tplIndex);
 
+        //$this->tplIndex = str_replace('{currency}', '$', $this->tplIndex);
+
     }
 
 

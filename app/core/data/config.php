@@ -15,7 +15,21 @@ return [
 
     "home" => "http://nexshop/",
 
+    "site_title" => "Мой магазин",
+
     "panel" => "panel",
+
+    // ЧПУ: 1 - link
+    // ЧПУ: 2 - ID-link
+    // ЧПУ: 3 - /category/link
+    // ЧПУ: 4 - /category/ID-link
+    "seo_type" => 1,
+
+    // концовка URL товара
+    "seo_type_end" => ".html",
+
+    // разделитель чпу
+    "separator" => " &#10148; ",
 
     // количество товаров в категориях
     "count_prod_by_cat" => 25,

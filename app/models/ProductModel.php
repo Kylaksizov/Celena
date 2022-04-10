@@ -179,8 +179,9 @@ class ProductModel extends Model{
             }
             $where = trim($where, " OR ");
 
-            $result["images"] = Base::run(
-                "SELECT
+            $result["images"] = System::setKeysArray(
+                Base::run(
+                    "SELECT
                     nid,
                     src,
                     alt
@@ -188,7 +189,9 @@ class ProductModel extends Model{
                 WHERE
                     $where AND itype = 1
                     ORDER BY id DESC
-                ", $params)->fetchAll(PDO::FETCH_ASSOC);
+                ", $params)->fetchAll(PDO::FETCH_ASSOC),
+                "nid"
+            );
         }
 
         $result["pagination"] = $pagination['pagination'];
