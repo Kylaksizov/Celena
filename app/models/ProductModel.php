@@ -25,7 +25,7 @@ class ProductModel extends Model{
         $result = [];
 
         $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
+        $result["images"] = Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
         $result["brands"] = Base::run("SELECT id, name, icon, categories FROM " . PREFIX . "brands ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         $result["props"] = Base::run("SELECT
@@ -58,7 +58,7 @@ class ProductModel extends Model{
      */
     public function getImages($product_id){
 
-        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
+        return Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position DESC", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -188,7 +188,7 @@ class ProductModel extends Model{
                 FROM " . PREFIX . "images
                 WHERE
                     $where AND itype = 1
-                    ORDER BY id DESC
+                    ORDER BY position ASC
                 ", $params)->fetchAll(PDO::FETCH_ASSOC),
                 "nid"
             );
@@ -231,7 +231,8 @@ class ProductModel extends Model{
                     p.url,
                     p.created,
                     p.status,
-                    i.src
+                    i.src,
+                    i.position
                 FROM " . PREFIX . "products p
                     LEFT JOIN " . PREFIX . "images i ON i.nid = p.id
                 GROUP BY p.id

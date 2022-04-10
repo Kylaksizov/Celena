@@ -256,4 +256,19 @@ $(function(){
         $(this).remove();
     })
 
+    // сортировка изображений товаров
+    if($("#product_images").length){
+        $("#product_images").sortable({
+            placeholder: "ui-state-highlight",
+            stop: function() {
+                let newSortImages = [];
+                $("#product_images .img_item").each(function(){
+                    newSortImages.push($(this).attr('data-img-id'));
+                })
+                $.ajaxSend($(this), {"ajax": "ProductShop", "newSortImages": newSortImages});
+            }
+        });
+        $("#product_images").disableSelection();
+    }
+
 })

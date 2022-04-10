@@ -12,10 +12,16 @@ class ProductShop{
 
     public function index(){
 
+        preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $product);
+        $productId = !empty($product[1]) ? $product[1] : null;
+
         if(!empty($_POST["product"])) self::createEditProduct(); // создание редактирование товара
         if(!empty($_POST["deleteProduct"])) self::deleteProduct(); // удаление товара
         if(!empty($_POST["statusProduct"])) self::editStatus(); // изменение активности
         if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
+        if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения товаров
+        if(!empty($_POST["setMainImage"])) self::setMainImage($productId); // установка постера
+        if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения товаров
         if(!empty($_POST["pp_ids"])) self::deleteProperties($_POST["pp_ids"]); // удаление нескольких свойств товара
         if(!empty($_POST["deleteImage"])) self::deleteImage(); // удаление фото товара
         if(!empty($_POST["photo"])) self::editImage(); // редактирование фото товара
@@ -239,6 +245,48 @@ class ProductShop{
                 die("info::error::Не удалось удалить товар!");
             }
         }
+    }
+
+
+    /**
+     * @name сортировка изображений
+     * ============================
+     * @return void
+     * @throws Exception
+     */
+    private function sortImages(){
+
+        if(!empty($_POST["newSortImages"])){
+
+            $ProductModel = new ProductModel();
+            foreach ($_POST["newSortImages"] as $position => $imageId) {
+
+                $ProductModel->editPositionImage($imageId, $position);
+            }
+        }
+
+        die("info::success::Сортировка изменена!");
+    }
+
+
+
+
+    /**
+     * @name установка постера
+     * =======================
+     * @return void
+     * @throws Exception
+     */
+    private function setMainImage($productId){
+
+        $ProductModel = new ProductModel();
+        $ProductModel->setPoster($productId, intval($_POST["setMainImage"]));
+        $script = '<script>
+                $(".is_main").removeClass("is_main");
+                $(".nex_tmp").addClass("is_main");
+                $.server_say({say: "Постер установлен!", status: "success"});
+            </script>';
+        System::script($script);
     }
 
 

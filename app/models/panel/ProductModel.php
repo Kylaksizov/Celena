@@ -98,7 +98,7 @@ class ProductModel extends Model{
         $result = [];
 
         $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
+        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
         $result["brands"] = Base::run("SELECT id, name, icon, categories FROM " . PREFIX . "brands ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         $result["props"] = Base::run("SELECT
@@ -170,11 +170,12 @@ class ProductModel extends Model{
                         p.sale,
                         p.stock,
                         p.url,
+                        p.poster,
                         p.created,
                         p.status,
                         i.src
                     FROM " . PREFIX . "products p
-                        LEFT JOIN " . PREFIX . "images i ON i.nid = p.id
+                        LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
                     GROUP BY p.id
                     ORDER BY p.id DESC
                     LIMIT {$pagination["start"]}, {$pagination["limit"]}
@@ -295,6 +296,34 @@ class ProductModel extends Model{
         array_push($params, $id);
 
         Base::run("UPDATE " . PREFIX . "images SET $set WHERE id = ?", $params)->rowCount();
+    }
+
+
+    /**
+     * @name изменение позиции изображений
+     * ===================================
+     * @param $id
+     * @param $position
+     * @return void
+     * @throws Exception
+     */
+    public function editPositionImage($id, $position){
+
+        return Base::run("UPDATE " . PREFIX . "images SET position = ? WHERE id = ?", [$position, $id])->rowCount();
+    }
+
+
+    /**
+     * @name установка постера
+     * =======================
+     * @param $productId
+     * @param $imageId
+     * @return int
+     * @throws Exception
+     */
+    public function setPoster($productId, $imageId){
+
+        return Base::run("UPDATE " . PREFIX . "products SET poster = ? WHERE id = ?", [$imageId, $productId])->rowCount();
     }
 
 

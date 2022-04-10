@@ -108,7 +108,7 @@ class ProductsController extends PanelController {
 
         $this->view->styles = ['css/addon/product.css'];
         $this->view->scripts = ['js/addon/product.js'];
-        $this->view->plugins = ['select2', 'datepicker', 'fancybox'];
+        $this->view->plugins = ['jquery-ui', 'select2', 'datepicker', 'fancybox'];
 
         $title = $h1 = 'Добавление товара';
 
@@ -280,9 +280,14 @@ class ProductsController extends PanelController {
         $images = '';
         if(!empty($Product["images"])){
             foreach ($Product["images"] as $image) {
+
                 $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
-                $images .= '<div class="img_item">
+
+                $is_main = ($Product["product"]["poster"] == $image["id"]) ? ' is_main' : '';
+
+                $images .= '<div class="img_item" data-img-id="'.$image["id"].'">
                     <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
+                    <a href="#" class="main_image'.$is_main.'" data-a="ProductShop:setMainImage='.$image["id"].'"></a>
                     <a href="#editPhoto" class="edit_image open_modal" data-img-id="'.$image["id"].'"></a>
                     <a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$image["id"].'&link='.$image["src"].'"></a>
                 </div>';

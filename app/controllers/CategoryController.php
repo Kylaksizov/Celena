@@ -38,7 +38,7 @@ class CategoryController extends Controller {
             '{brand-icon}' => 'b.icon AS brand_icon'
         ];
 
-        if($this->view->findTag('{poster}')) $fieldsQuery['{poster}'] = 'i.src, i.alt';
+        if($this->view->findTag('{poster}')) $fieldsQuery['{poster}'] = 'i.src, i.alt, i.position';
         if($this->view->findTag('{images}')) $fieldsQuery['{images}'] = '1';
 
         $findTags = $this->view->findTags($fieldsQuery);
@@ -107,6 +107,7 @@ class CategoryController extends Controller {
             $this->view->set('[/no-sale]', '');
             $this->view->push();
         }
+
         $this->view->clearPush();
 
 
