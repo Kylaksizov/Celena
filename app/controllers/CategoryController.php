@@ -44,7 +44,7 @@ class CategoryController extends Controller {
         $findTags = $this->view->findTags($fieldsQuery);
 
         $Products = $ProductModel->getProducts($this->urls, $findTags);
-
+        
         $CategoryStep = System::setKeys($Products["categories"], "url");
         $categoryLink = implode("/", $this->urls);
 
@@ -79,10 +79,15 @@ class CategoryController extends Controller {
         $categoryName = $CategoryStep[end($this->urls)]["title"];
         $this->view->setMain('{category-name}', $categoryName);
 
+        // проверяем теги тут, что бы меньше было поиска в цикле
+        $tagPrice = $this->view->findTag('{price}');
+        $tagOldPrice = $this->view->findTag('{old-price}');
+        $tagStock = $this->view->findTag('{stock}');
+
         foreach ($Products["products"] as $row) {
 
 
-            // LINK PRODUCT
+            // FULL LINK
             $link = $row["url"].CONFIG_SYSTEM["seo_type_end"];
             if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4')
                 $link = $row["id"] . '-' . $link;
@@ -90,26 +95,75 @@ class CategoryController extends Controller {
                 $link = $categoryLink . '/' . $link;
             $link = CONFIG_SYSTEM["home"].$link;
 
+            
+            $poster = !empty($row["src"]) ? $row["src"] : 'no-image.png';
+
+
+            $this->view->set('{id}', !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"]);
+
+            if($this->view->findTag('{vendor}'))
+                $this->view->set('{vendor}', !empty(CONFIG_SYSTEM["str_pad_vendor"]) ? str_pad($row["vendor"], CONFIG_SYSTEM["str_pad_vendor"], '0', STR_PAD_LEFT) : $row["vendor"]);
 
             $this->view->set('{link}', $link);
             $this->view->set('{title}', $row["title"]);
-            $this->view->set('{price}', $row["price"]);
-            $this->view->set('{old-price}', $row["price"]);
-            $this->view->set('{currency}', '$');
-            $this->view->set('{sid}', '');
-            $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$Products["images"][$row["id"]][0]["src"]);
+
+            $row["price"] = $price = round($row["price"]);
+
+            if(!empty($row["sale"])){
+
+                if(is_numeric($row["sale"])){
+
+                    $price = round($price - intval($row["sale"]), 2);
+                    $row["sale"] .= CONFIG_SYSTEM["currency"];
+
+                } else if(strripos($row["sale"], "%") !== false){
+
+                    $price = round($price - (($price / 100) * trim($row["sale"], "%")));
+                }
+            }
+
+            if($tagPrice)    $this->view->set('{price}', $price);
+            if($tagOldPrice) $this->view->set('{old-price}', $row["price"]);
+            if($tagStock)    $this->view->set('{stock}', $row["stock"]);
+
+            $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
+            $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$poster);
+
+
+            $data_goods = [
+                "id" => $row["id"],
+                "title" => $row["title"],
+                "link"  => $link,
+                "price" => $row["price"],
+                "image" => $poster,
+            ];
+            $data_goods = json_encode($data_goods, JSON_UNESCAPED_UNICODE);
+
             $this->view->set('{images}', '');
             $this->view->set('{rating}', '');
-            $this->view->set('{sale}', '');
-            $this->view->set('[sale]', '');
-            $this->view->set('[/sale]', '');
-            $this->view->set('[no-sale]', '');
-            $this->view->set('[/no-sale]', '');
+            $this->view->set('{description}', '');
+            $this->view->set('{buy}', '<a href="/cart.html" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+            $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
+
+            if(!empty($row["sale"])){
+
+                $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
+                $this->view->set('{sale}', $row["sale"]);
+                $this->view->set('[sale]', '');
+                $this->view->set('[/sale]', '');
+
+            } else{
+
+                $this->view->setPreg('/\[sale\](.*?)\[\/sale\]/is', '');
+                $this->view->set('{sale}', '');
+                $this->view->set('[no-sale]', '');
+                $this->view->set('[/no-sale]', '');
+            }
+
             $this->view->push();
         }
 
         $this->view->clearPush();
-
 
 
 

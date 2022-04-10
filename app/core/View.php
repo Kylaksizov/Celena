@@ -133,6 +133,21 @@ class View{
 
 
     /**
+     * @name заменяем в include
+     * ========================
+     * @param $search
+     * @param $replace
+     * @return void
+     */
+    public function setPreg($search, $replace){
+        if(isset($this->include[$this->lastInc]))
+            $this->include[$this->lastInc] = preg_replace($search, $replace, $this->include[$this->lastInc]);
+    }
+
+
+
+
+    /**
      * @name заменяем в index
      * ======================
      * @param $search

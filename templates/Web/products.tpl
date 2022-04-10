@@ -2,7 +2,7 @@
     <a href="{link}" class="g_preview">
         <img src="{poster}" alt="">
         {images}
-        <span class="g_id">{sid}</span>
+        <span class="g_id">{id}</span>
         [sale]<span class="g_label sale">-{sale}</span>[/sale]
     </a>
     <div class="flex goods_info">
@@ -17,7 +17,7 @@
             <div class="description">{description}</div>
             <div class="btn-cart">
                 {buy}
-                <a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>
+                {*<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>*}
                 {add-cart}
             </div>
         </div>

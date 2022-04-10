@@ -13,10 +13,10 @@ class ProductShop{
     public function index(){
 
         preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $product);
-        $productId = !empty($product[1]) ? $product[1] : null;
+        $productId = !empty($product[1]) ? intval($product[1]) : null;
 
-        if(!empty($_POST["product"])) self::createEditProduct(); // создание редактирование товара
-        if(!empty($_POST["deleteProduct"])) self::deleteProduct(); // удаление товара
+        if(!empty($_POST["product"])) self::createEditProduct($productId); // создание редактирование товара
+        if(!empty($_POST["deleteProduct"])) self::deleteProduct($productId); // удаление товара
         if(!empty($_POST["statusProduct"])) self::editStatus(); // изменение активности
         if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
         if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения товаров
@@ -33,9 +33,7 @@ class ProductShop{
      * @return void
      * @throws Exception
      */
-    private function createEditProduct(){
-
-        preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $edit_id);
+    private function createEditProduct($productId){
 
         $title = !empty($_POST["title"]) ? trim(htmlspecialchars(strip_tags($_POST["title"]))) : die("info::error::Укажите название!");
         $price = !empty($_POST["price"]) ? floatval($_POST["price"]) : die("info::error::Укажите цену!");
@@ -58,7 +56,7 @@ class ProductShop{
 
         $ProductModel = new ProductModel();
 
-        if(empty($edit_id[1])){ // если это добавление новой категории
+        if(!$productId){ // если это добавление новой категории
 
             $id = $ProductModel->create($title, $vendor, $meta, $content, $category, $brand, $price, $sale, $stock, $url, $created, $status);
 
@@ -110,8 +108,7 @@ class ProductShop{
 
         } else{ // если редактирование
 
-            $id = intval($edit_id[1]);
-            $ProductModel->editFields($id, [
+            $ProductModel->editFields($productId, [
                 'title' => $title,
                 'vendor' => $vendor,
                 'm_title' => $meta["title"],
@@ -127,10 +124,10 @@ class ProductShop{
             ]);
 
             if(!empty($_FILES["images"])){
-                $images = $this->uploadImages($id);
+                $images = $this->uploadImages($productId);
                 $addScript = '$("#product_images").append(`';
                 foreach ($images as $image) {
-                    $imgId = $ProductModel->addImage(1, $id, $image);
+                    $imgId = $ProductModel->addImage(1, $productId, $image);
                     $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
@@ -155,7 +152,7 @@ class ProductShop{
 
                             $ProductModel->editProperty(
                                 intval($propArray["pp_id"][$prop_key]),
-                                $id,
+                                $productId,
                                 $property_id,
                                 $id_pv,
                                 $sep,
@@ -167,7 +164,7 @@ class ProductShop{
                         } else{
 
                             $ProductModel->addProperty(
-                                $id,
+                                $productId,
                                 $property_id,
                                 $id_pv,
                                 $sep,

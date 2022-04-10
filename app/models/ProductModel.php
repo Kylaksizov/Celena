@@ -132,10 +132,11 @@ class ProductModel extends Model{
             $leftJoin .= " LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand";
         }
 
-        if(isset($fields["{poster}"])){
-            if(!isset($fields["{images}"])) $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.nid = p.id";
+        /*if(isset($fields["{poster}"])){
+            if(!isset($fields["{images}"])) $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
             else unset($fields['{poster}']);
-        }
+        }*/
+        $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
 
         $fieldsString = implode(", ", $fields);
 
