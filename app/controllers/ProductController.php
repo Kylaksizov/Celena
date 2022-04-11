@@ -54,10 +54,6 @@ class ProductController extends Controller {
 
         $Product = $ProductModel->get($url, $findTags);
 
-        echo "<pre>";
-        print_r($Product);
-        echo "</pre>";
-        exit;
 
 
         /*$CategoryStep = System::setKeys($Product["categories"], "url");
@@ -77,6 +73,76 @@ class ProductController extends Controller {
         } else $crumbs = '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
 
         $this->view->setMain('{crumbs}', $crumbs);*/
+
+
+        $poster = 'no-image.png';
+        if(!empty($Product["product"]["src"])){
+            $poster = $Product["product"]["src"];
+        } else if(!empty($Product["images"][$Product["product"]["poster"]]["src"])){
+            $poster = $Product["images"][$Product["product"]["poster"]]["src"];
+        }
+
+
+        $this->view->set('{id}', !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($Product["product"]["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $Product["product"]["id"]);
+
+        if($this->view->findTag('{vendor}'))
+            $this->view->set('{vendor}', !empty(CONFIG_SYSTEM["str_pad_vendor"]) ? str_pad($Product["product"]["vendor"], CONFIG_SYSTEM["str_pad_vendor"], '0', STR_PAD_LEFT) : $Product["product"]["vendor"]);
+
+        //$this->view->set('{link}', $link);
+        $this->view->set('{title}', $Product["product"]["title"]);
+
+        $Product["product"]["price"] = $price = round($Product["product"]["price"]);
+
+        if(!empty($Product["product"]["sale"])){
+
+            if(is_numeric($Product["product"]["sale"])){
+
+                $price = round($price - intval($Product["product"]["sale"]), 2);
+                $Product["product"]["sale"] .= CONFIG_SYSTEM["currency"];
+
+            } else if(strripos($Product["product"]["sale"], "%") !== false){
+
+                $price = round($price - (($price / 100) * trim($Product["product"]["sale"], "%")));
+            }
+        }
+
+        $this->view->set('{price}', $price);
+        $this->view->set('{old-price}', $Product["product"]["price"]);
+        $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
+
+        $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
+        $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$poster);
+
+
+        $data_goods = [
+            "id" => $Product["product"]["id"],
+            "title" => $Product["product"]["title"],
+            //"link"  => $link,
+            "price" => $Product["product"]["price"],
+            "image" => $poster,
+        ];
+        $data_goods = json_encode($data_goods, JSON_UNESCAPED_UNICODE);
+
+        $this->view->set('{images}', '');
+        $this->view->set('{rating}', '');
+        $this->view->set('{description}', '');
+        $this->view->set('{buy}', '<a href="/cart.html" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+        $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
+
+        if(!empty($Product["product"]["sale"])){
+
+            $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
+            $this->view->set('{sale}', $Product["product"]["sale"]);
+            $this->view->set('[sale]', '');
+            $this->view->set('[/sale]', '');
+
+        } else{
+
+            $this->view->setPreg('/\[sale\](.*?)\[\/sale\]/is', '');
+            $this->view->set('{sale}', '');
+            $this->view->set('[no-sale]', '');
+            $this->view->set('[/no-sale]', '');
+        }
 
 
 

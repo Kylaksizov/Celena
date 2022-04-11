@@ -117,6 +117,7 @@ class ProductModel extends Model{
                     pp.sep,
                     pp.vendor,
                     pp.price,
+                    pp.pv,
                     pp.stock,
                     pv.val
                 FROM " . PREFIX . "product_prop pp
