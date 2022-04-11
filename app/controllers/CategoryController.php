@@ -17,7 +17,10 @@ class CategoryController extends Controller {
     public function indexAction(){
 
         //$this->view->load('Nex');
-
+/*echo "<pre>";
+print_r("Блять!");
+echo "</pre>";
+exit;*/
         $ProductModel = new ProductModel();
 
         $this->view->include('products');
@@ -44,7 +47,7 @@ class CategoryController extends Controller {
         $findTags = $this->view->findTags($fieldsQuery);
 
         $Products = $ProductModel->getProducts($this->urls, $findTags);
-        
+
         $CategoryStep = System::setKeys($Products["categories"], "url");
         $categoryLink = implode("/", $this->urls);
 

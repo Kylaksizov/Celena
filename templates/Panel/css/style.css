@@ -528,6 +528,9 @@ table.min th{
     padding: 10px 15px;
     height: fit-content;
 }
+.contextmenu{
+    display: none;
+}
 
 
 

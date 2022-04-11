@@ -16,49 +16,54 @@ class ProductModel extends Model{
     /**
      * @name получение одного товара
      * =============================
-     * @param $id
+     * @param string|array $urlOrArray
+     * @param $fields
      * @return array
      * @throws Exception
      */
-    public function get($id){
+    public function get($urlOrArray, $fields = null){
 
         $result = [];
+        
+        if(is_array($urlOrArray)){
 
-        $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["images"] = Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
-        $result["brands"] = Base::run("SELECT id, name, icon, categories FROM " . PREFIX . "brands ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $where = "p.id = ?";
+            $params = [$urlOrArray["id"]];
 
-        $result["props"] = Base::run("SELECT
+        } else{
+
+            $where = "p.url = ?";
+            $params = [$urlOrArray];
+        }
+
+        if(!$fields){ // поля по умолчанию
+
+            $fields = "
                 p.id,
+                p.uid,
                 p.title,
-                pp.id AS pp_id,
-                pp.id_p,
-                pp.id_pv,
-                pp.sep,
-                pp.vendor,
-                pp.price,
-                pp.stock,
-                pv.pid,
-                pv.val
-            FROM " . PREFIX . "product_prop pp
-                LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_pv
-                LEFT JOIN " . PREFIX . "properties p ON p.id = pp.id_p
-            WHERE pp.pid = ? ORDER BY pp.id_p DESC", [$id])->fetchAll(PDO::FETCH_ASSOC);
+                p.m_title,
+                p.m_description,
+                p.content,
+                p.category,
+                p.vendor,
+                p.price,
+                p.sale,
+                p.stock,
+                p.created,
+                p.last_modify,
+                b.name AS brand_name";
+        }
+
+        $result["product"] = Base::run("
+            SELECT
+                $fields
+            FROM " . PREFIX . "products p
+                LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand
+            WHERE $where
+            ", $params)->fetch(PDO::FETCH_ASSOC);
 
         return $result;
-    }
-
-
-    /**
-     * @name получение изображений товара
-     * ==================================
-     * @param $product_id
-     * @return array|false
-     * @throws Exception
-     */
-    public function getImages($product_id){
-
-        return Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position DESC", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -199,6 +204,20 @@ class ProductModel extends Model{
 
         return $result;
     }
+
+
+    /**
+     * @name получение изображений товара
+     * ==================================
+     * @param $product_id
+     * @return array|false
+     * @throws Exception
+     */
+    public function getImages($product_id){
+
+        return Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position DESC", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 
     /**

@@ -8,9 +8,9 @@
                 {images}
             </div>
             <div id="goods_carousel2" class="owl-carousel">
-                {images-owl}
+                {images}
             </div>
-            <span class="g_id">{sid}</span>
+            <span class="g_id">{id}</span>
             [sale]<span class="g_label sale">-{sale}</span>[/sale]
         </div>
 

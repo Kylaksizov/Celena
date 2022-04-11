@@ -51,8 +51,8 @@ return [
     'web' => [
 
         '404/$' => ['controller' => 'NotFound'],
-        '(.+?)([0-9]+/?|.html)$' => ['controller' => 'product'],
-        '(.+?)/?$' => ['controller' => 'category'],
+        '(.+?).html$' => ['controller' => 'product'],
+        '(.+?)/$' => ['controller' => 'category'],
 
         'news/shop$' => [
             'controller' => 'news',

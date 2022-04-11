@@ -3,7 +3,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
-use app\models\SystemModel;
+use app\models\panel\SystemModel;
 use Exception;
 
 class SystemController extends PanelController {
@@ -78,13 +78,16 @@ class SystemController extends PanelController {
         $content = '<h1>Ошибки запросов в БД</h1>
         <div id="nex_logs">';
 
-        $file = file_get_contents(CORE . '/tmp/db_errors.txt', FILE_USE_INCLUDE_PATH);
+        if(file_exists(CORE . '/tmp/db_errors.txt')){
 
-        $file = explode("\r\n", $file);
-        $file = array_reverse($file);
+            $file = file_get_contents(CORE . '/tmp/db_errors.txt', FILE_USE_INCLUDE_PATH);
 
-        foreach ($file as $line) {
-            if(!empty($line)) $content .= '<p>'.$line.'</p>';
+            $file = explode("\r\n", $file);
+            $file = array_reverse($file);
+
+            foreach ($file as $line) {
+                if(!empty($line)) $content .= '<p>'.$line.'</p>';
+            }
         }
 
         $this->view->render('Логи', $content.'</div>');

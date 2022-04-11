@@ -23,7 +23,7 @@ return [
     // ЧПУ: 2 - ID-link
     // ЧПУ: 3 - /category/link
     // ЧПУ: 4 - /category/ID-link
-    "seo_type" => 1,
+    "seo_type" => 4,
 
     // концовка URL товара
     "seo_type_end" => ".html",

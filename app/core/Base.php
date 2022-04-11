@@ -110,10 +110,27 @@ class Base {
 
         $file_info = debug_backtrace();
 
-        $content = date("d.m.Y H:i:s", time()) . " | " . $errors . '<br><span class="file_log_1">[1: '.$file_info[1]['file'].' -> '.$file_info[1]['line'].']</span><br>' . '<span class="file_log_2">[2: '.$file_info[2]['file'].' -> on line: '.$file_info[2]['line'].']</span>' . PHP_EOL.PHP_EOL;
+        $relPath_1 = strstr($file_info[1]['file'], "app\\");
+        $relPath_2 = strstr($file_info[2]['file'], "app\\");
+        $relPath_3 = strstr($file_info[3]['file'], "app\\");
+        $relPath_4 = strstr($file_info[4]['file'], "app\\");
+        $relPath_5 = strstr($file_info[5]['file'], "app\\");
+
+        $content = date("d.m.Y H:i:s", time()) . " | " . $errors . '<br><span class="file_log">1: '.$relPath_1.' &#10148; '.$file_info[1]['line'].'</span><br>' . '<span class="file_log">2: '.$relPath_2.' &#10148; '.$file_info[2]['line'].'</span>';
+
+        if($relPath_3)
+            $content .= '<br>' . '<span class="file_log">3: '.$relPath_3.' &#10148; '.$file_info[3]['line'].'</span>';
+
+        if($relPath_4)
+            $content .= '<br>' . '<span class="file_log">4: '.$relPath_4.' &#10148; '.$file_info[4]['line'].'</span>';
+
+        if($relPath_5)
+            $content .= '<br>' . '<span class="file_log">5: '.$relPath_5.' &#10148; '.$file_info[5]['line'].'</span>';
+
+        $content .= PHP_EOL.PHP_EOL;
 
         self::$countErrors++;
-        self::$errors[] = $file_info[2]['file'].' -> on line: '.$file_info[2]['line'];
+        self::$errors[] = $relPath_2.' &#10148; '.$file_info[2]['line'];
 
         $file =  ROOT . "/app/core/tmp/db_errors.txt";
         if(file_exists($file)){ // если файл существует
