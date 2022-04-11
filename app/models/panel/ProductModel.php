@@ -110,6 +110,7 @@ class ProductModel extends Model{
                 pp.sep,
                 pp.vendor,
                 pp.price,
+                pp.pv,
                 pp.stock,
                 pv.pid,
                 pv.val
@@ -364,11 +365,12 @@ class ProductModel extends Model{
      * @param $sep
      * @param $vendor
      * @param $price
+     * @param pv
      * @param $stock
      * @return bool|string
      * @throws Exception
      */
-    public function addProperty($product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock = null){
+    public function addProperty($product_id, $property_id, $property_v_id, $sep, $vendor, $price, $pv, $stock = null){
 
         $params = [
             $product_id,
@@ -377,6 +379,7 @@ class ProductModel extends Model{
             $sep,
             $vendor,
             $price,
+            pv,
             $stock
         ];
 
@@ -387,9 +390,10 @@ class ProductModel extends Model{
             sep,
             vendor,
             price,
+            pv,
             stock
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -411,13 +415,14 @@ class ProductModel extends Model{
      * @param $sep
      * @param $vendor
      * @param $price
+     * @param $pv
      * @param $stock
      * @return int
      * @throws Exception
      */
-    public function editProperty($id, $product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock = null){
+    public function editProperty($id, $product_id, $property_id, $property_v_id, $sep, $vendor, $price, $pv, $stock = null){
 
-        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_p = ?, id_pv = ?, sep = ?, vendor = ?, price = ?, stock = ? WHERE id = ?", [$product_id, $property_id, $property_v_id, $sep, $vendor, $price, $stock, $id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "product_prop SET pid = ?, id_p = ?, id_pv = ?, sep = ?, vendor = ?, price = ?, pv = ?, stock = ? WHERE id = ?", [$product_id, $property_id, $property_v_id, $sep, $vendor, $price, $pv, $stock, $id])->rowCount();
     }
 
 

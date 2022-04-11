@@ -171,6 +171,11 @@ $(function(){
             </div>
             <input type="text" name="prop[`+propId+`][vendor][]" value="" placeholder="Артикул">
             <input type="number" name="prop[`+propId+`][price][]" min="0" step=".1" value="" placeholder="Цена">
+            <select name="prop[`+propId+`][pv][]">
+                <option value="">Новая цена</option>
+                <option value="-">-</option>
+                <option value="+">+</option>
+            </select>
             <input type="number" name="prop[`+propId+`][stock][]" min="0" step="1" value="" placeholder="Кол-во">
             <a href="#" class="add_sub_property">+</a>
             <a href="#" class="remove_sub_property">-</a>
@@ -204,7 +209,8 @@ $(function(){
     $(document).on("click", '.edit_image', function(){
         let photoId = $(this).attr('data-img-id');
         let photoSrc = $(this).parent(".img_item").find('img').attr('src');
-        let photoAlt = $(this).prev().attr('data-caption');
+        let photoAlt = $(this).prev().prev().attr('data-caption');
+        if(photoAlt == undefined) photoAlt = '';
         $("#photoEditor").html(`<img src="`+photoSrc+`" alt="">
             <div id="editorOptions">
                 <input type="hidden" name="photo[id]" value="`+photoId+`">

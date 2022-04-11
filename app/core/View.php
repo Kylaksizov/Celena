@@ -106,7 +106,7 @@ class View{
             foreach ($searchAssocArray as $tag => $strField){
 
                 if(strripos($this->include[$this->lastInc], $tag) !== false){
-                    $result[$tag] = $strField;
+                    if(array_search($strField, $result) === false) $result[$tag] = $strField;
                 }
             }
         }

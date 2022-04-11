@@ -102,13 +102,13 @@
 .prop_main{
     display: grid;
     grid-gap: 15px;
-    grid-template-columns: 1fr 100px 100px 100px 40px 40px;
+    grid-template-columns: 1fr 100px 100px 110px 100px 40px 40px;
     align-items: flex-end;
 }
 .prop_sub{
     display: grid;
     grid-gap: 15px;
-    grid-template-columns: 1fr 100px 100px 100px 40px 40px;
+    grid-template-columns: 1fr 100px 100px 110px 100px 40px 40px;
     align-items: flex-end;
     margin-top: -14px;
 }

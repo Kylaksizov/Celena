@@ -209,6 +209,10 @@ class ProductsController extends PanelController {
                                     </select>';
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
+                    $pvOptions = '<option value="">Новая цена</option>
+                        <option value="-"'.($row["pv"] == '0' ? ' selected' : '').'>-</option>
+                        <option value="+"'.($row["pv"] == '1' ? ' selected' : '').'>+</option>';
+
                     $properties .= '
                         <div class="prop" data-prop-id="'.$row["id"].'">
                             <div class="prop_main" data-prop-id="'.$row["id"].'">
@@ -224,6 +228,12 @@ class ProductsController extends PanelController {
                                 <div>
                                     <label for="">Цена</label>
                                     <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                </div>
+                                <div>
+                                    <label for="">Вариант цены</label>
+                                    <select name="prop['.$row["id"].'][pv][]">
+                                        '.$pvOptions.'
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="">Кол-во</label>
@@ -244,6 +254,10 @@ class ProductsController extends PanelController {
                                         </select>';
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
+                    $pvOptions = '<option value="">Новая цена</option>
+                        <option value="-"'.($row["pv"] == '0' ? ' selected' : '').'>-</option>
+                        <option value="+"'.($row["pv"] == '1' ? ' selected' : '').'>+</option>';
+
                     $properties .= '
                                 <div class="prop_sub">
                                     <div class="pr">
@@ -252,6 +266,9 @@ class ProductsController extends PanelController {
                                     </div>
                                     <input type="text" name="prop['.$row["id"].'][vendor][]" value="'.$row["vendor"].'" placeholder="Артикул">
                                     <input type="number" name="prop['.$row["id"].'][price][]" min="0" step=".1" value="'.$row["price"].'" placeholder="Цена">
+                                    <select name="prop['.$row["id"].'][pv][]">
+                                        '.$pvOptions.'
+                                    </select>
                                     <input type="number" name="prop['.$row["id"].'][stock][]" min="0" step="1" value="'.$row["stock"].'" placeholder="Кол-во">
                                     <a href="#" class="add_sub_property">+</a>
                                     <a href="#" class="remove_sub_property" data-a="ProductShop:deleteProperty='.$row["pp_id"].'">-</a>

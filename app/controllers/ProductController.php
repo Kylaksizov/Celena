@@ -13,27 +13,26 @@ class ProductController extends Controller {
 
     public function indexAction(){
 
-        //$this->view->load('Nex');
-
         $ProductModel = new ProductModel();
 
         $this->view->include('product');
 
         $fieldsQuery = [
-            'p.id, p.uid AS author_id, p.title, p.url, p.category',
-            '{price}'      => 'p.price',
+            'p.id, p.uid AS author_id, p.title, p.content, p.m_title, p.m_description, p.category, p.price',
             '{sale}'       => 'p.sale',
+            '[sale]'       => 'p.sale',
+            '{old-price}'  => 'p.sale',
             '{stock}'      => 'p.stock',
             '{vendor}'     => 'p.vendor',
             '{date}'       => 'p.created',
+            '{poster}'     => 'p.poster',
             '{brand-id}'   => 'p.brand AS brand_id',
             '{brand-name}' => 'b.name AS brand_name',
             '{brand-url}'  => 'b.url AS brand_url',
-            '{brand-icon}' => 'b.icon AS brand_icon'
+            '{brand-icon}' => 'b.icon AS brand_icon',
+            '{images}'     => '1',
+            '{properties}' => '2',
         ];
-
-        if($this->view->findTag('{poster}')) $fieldsQuery['{poster}'] = 'i.src, i.alt, i.position';
-        if($this->view->findTag('{images}')) $fieldsQuery['{images}'] = '1';
 
         $findTags = $this->view->findTags($fieldsQuery);
 
@@ -52,10 +51,9 @@ class ProductController extends Controller {
                 ];
             }
         }
-        
 
-        $Product = $ProductModel->get($url);
-        
+        $Product = $ProductModel->get($url, $findTags);
+
         echo "<pre>";
         print_r($Product);
         echo "</pre>";

@@ -86,6 +86,10 @@ class ProductShop{
                             $id_pv = 0;
                         }
 
+                        $pv = null;
+                        if($propArray["pv"][$prop_key] == '-') $pv = '0';
+                        if($propArray["pv"][$prop_key] == '+') $pv = '1';
+
                         $ProductModel->addProperty(
                             $id,
                             $property_id,
@@ -93,6 +97,7 @@ class ProductShop{
                             $sep,
                             trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                             floatval($propArray["price"][$prop_key]),
+                            $pv,
                             !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null
                         );
                     }
@@ -148,6 +153,10 @@ class ProductShop{
                             $id_pv = 0;
                         }
 
+                        $pv = null;
+                        if($propArray["pv"][$prop_key] == '-') $pv = '0';
+                        if($propArray["pv"][$prop_key] == '+') $pv = '1';
+
                         if(!empty($propArray["pp_id"][$prop_key])){
 
                             $ProductModel->editProperty(
@@ -158,6 +167,7 @@ class ProductShop{
                                 $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
+                                $pv,
                                 !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null
                             );
 
@@ -170,6 +180,7 @@ class ProductShop{
                                 $sep,
                                 trim(htmlspecialchars(strip_tags($propArray["vendor"][$prop_key]))),
                                 floatval($propArray["price"][$prop_key]),
+                                $pv,
                                 !empty($propArray["stock"][$prop_key]) ? intval($propArray["stock"][$prop_key]) : null
                             );
                         }

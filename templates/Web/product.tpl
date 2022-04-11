@@ -5,7 +5,7 @@
         {*Картинки товара*}
         <div class="product_pictures">
             <div id="goods_carousel" class="owl-carousel">
-                {images}
+                {poster}
             </div>
             <div id="goods_carousel2" class="owl-carousel">
                 {images}
@@ -35,7 +35,7 @@
 
             <div class="main_goods_box">
                 <h3>Характеристики</h3>
-                {features}
+                {properties}
             </div>
 
         </div>

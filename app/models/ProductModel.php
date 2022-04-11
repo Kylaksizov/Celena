@@ -38,30 +38,97 @@ class ProductModel extends Model{
 
         if(!$fields){ // поля по умолчанию
 
-            $fields = "
-                p.id,
-                p.uid,
-                p.title,
-                p.m_title,
-                p.m_description,
-                p.content,
-                p.category,
-                p.vendor,
-                p.price,
-                p.sale,
-                p.stock,
-                p.created,
-                p.last_modify,
-                b.name AS brand_name";
+            $fields = [
+                'p.id, p.uid AS author_id, p.title, p.content, p.m_title, p.m_description, p.category, p.price',
+                '{sale}'       => 'p.sale',
+                '[sale]'       => 'p.sale',
+                '{old-price}'  => 'p.sale',
+                '{stock}'      => 'p.stock',
+                '{vendor}'     => 'p.vendor',
+                '{date}'       => 'p.created',
+                '{poster}'     => 'p.poster',
+                '{brand-id}'   => 'p.brand AS brand_id',
+                '{brand-name}' => 'b.name AS brand_name',
+                '{brand-url}'  => 'b.url AS brand_url',
+                '{brand-icon}' => 'b.icon AS brand_icon',
+                '{images}'     => '1',
+            ];
         }
+
+        $leftJoin = "";
+
+        if(isset($fields["{brand-id}"]) || isset($fields["{brand-name}"]) || isset($fields["{brand-url}"]) || isset($fields["{brand-icon}"])){
+            $leftJoin .= " LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand";
+        }
+
+        // проверка на изображения
+        $tagPoster = isset($fields["{poster}"]);
+        $tagImages = isset($fields["{images}"]);
+
+        if($tagPoster && $tagImages){
+            $fields["{poster}"] = "p.poster";
+            $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
+            unset($fields["{images}"]);
+        } else if($tagPoster && !$tagImages){
+            $fields["{poster}"] = "p.poster";
+            $fields["{poster2}"] = "i.src AS poster_src";
+            $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
+        } else if(!$tagPoster && $tagImages){
+            $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.nid = p.id";
+            unset($fields["{images}"]);
+        }
+
+        $fieldsString = implode(", ", $fields);
 
         $result["product"] = Base::run("
             SELECT
-                $fields
+                $fieldsString
             FROM " . PREFIX . "products p
-                LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand
+                $leftJoin
             WHERE $where
             ", $params)->fetch(PDO::FETCH_ASSOC);
+
+        // если есть тег на получение картинок
+        if(!empty($result["product"]) && $tagImages){
+
+            $result["images"] = System::setKeys(
+                Base::run(
+                    "SELECT
+                    id,
+                    src,
+                    alt
+                FROM " . PREFIX . "images
+                WHERE
+                    nid = ? AND itype = 1
+                    ORDER BY position ASC",
+                    [$result["product"]["id"]])->fetchAll(PDO::FETCH_ASSOC),
+                "id"
+            );
+        }
+
+        // если есть тег на получение свойств
+        if(isset($fields["{properties}"])){
+
+            $result["properties"] = System::setKeysArray(
+                Base::run(
+                    "SELECT
+                    ps.title,
+                    pp.id,
+                    pp.sep,
+                    pp.vendor,
+                    pp.price,
+                    pp.stock,
+                    pv.val
+                FROM " . PREFIX . "product_prop pp
+                    LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_pv
+                    LEFT JOIN " . PREFIX . "properties ps ON ps.id = pv.pid
+                WHERE
+                    pp.pid = ?
+                    ORDER BY pv.position ASC",
+                    [$result["product"]["id"]])->fetchAll(PDO::FETCH_ASSOC),
+                "title"
+            );
+        }
 
         return $result;
     }
@@ -118,17 +185,18 @@ class ProductModel extends Model{
 
         if(!$fields){ // поля по умолчанию
 
-            $fields = "
-                p.id,
-                p.uid AS author_id,
-                p.title,
-                p.category,
-                p.vendor,
-                p.price,
-                p.sale,
-                p.stock,
-                p.url,
-                p.created";
+            $fields = [
+                'p.id, p.uid AS author_id, p.title, p.url, p.category',
+                '{price}'      => 'p.price',
+                '{sale}'       => 'p.sale',
+                '{stock}'      => 'p.stock',
+                '{vendor}'     => 'p.vendor',
+                '{date}'       => 'p.created',
+                '{brand-id}'   => 'p.brand AS brand_id',
+                '{brand-name}' => 'b.name AS brand_name',
+                '{brand-url}'  => 'b.url AS brand_url',
+                '{brand-icon}' => 'b.icon AS brand_icon'
+            ];
         }
 
         $leftJoin = "";
