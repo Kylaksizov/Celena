@@ -146,6 +146,7 @@ exit;*/
             $this->view->set('{rating}', '');
             $this->view->set('{description}', '');
             $this->view->set('{buy}', '<a href="/cart.html" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+            $this->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
             $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
 
             if(!empty($row["sale"])){

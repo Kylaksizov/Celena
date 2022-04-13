@@ -310,18 +310,17 @@ hr{
 @keyframes tipsshow {0% {opacity: 0;transform:scale(1.4) rotateX(-360deg)}20% {opacity:1;transform:scale(1) rotateX(0deg)}80% {opacity:1;transform:scale(1) rotateX(0deg)}100% {opacity:0;transform:scale(1.4) rotateX(360deg)}}
 /* alert END */
 
+.tabs{
+    width: 100%;
+}
 .tabs_content.active{
     display: block;
 }
 .tabs_caption li{
-    background: #09b0ee;
-    color: #fff;
+    background: #dadfed;
+    color: #4B5E6E;
     display: inline-block;
-    padding: 7px 15px;
-    border-left: 1px #C9D6E2 solid;
-    border-top: 1px #C9D6E2 solid;
-    border-right: 1px #C9D6E2 solid;
-    box-shadow: 0 -3px 3px #C9D6E2 inset;
+    padding: 8px 10px;
     border-radius: 2px 2px 0 0;
     cursor: pointer;
     font-weight: 400;
@@ -335,7 +334,6 @@ hr{
 }
 .tabs_content{
     background: #fff;
-    border: 1px #C9D6E2 solid;
     border-radius: 0 0 2px 2px;
     padding: 15px;
     overflow-y: auto;

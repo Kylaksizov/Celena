@@ -92,6 +92,8 @@ function getConfig(settingName){
 
 $(function(){
 
+    let config = {};
+
     function unique(array){
         return array.filter(function(el, index, arr) {
             return index == arr.indexOf(el);

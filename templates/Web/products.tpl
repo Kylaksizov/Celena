@@ -17,7 +17,7 @@
             <div class="description">{description}</div>
             <div class="btn-cart">
                 {buy}
-                {*<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>*}
+                {buy-click}
                 {add-cart}
             </div>
         </div>

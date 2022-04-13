@@ -384,7 +384,7 @@ class ProductsController extends PanelController {
                     </div>
                     <p class="title_box hr_d">Описание</p>
                     <div>
-                        <textarea name="content" id="product_content" rows="5"></textarea>
+                        <textarea name="content" id="product_content" rows="5">'.(!empty($Product["product"]["content"])?$Product["product"]["content"]:'').'</textarea>
                         <br>
                         <script>
                             let editor = new FroalaEditor("#product_content", {

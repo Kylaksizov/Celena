@@ -123,11 +123,58 @@ class ProductController extends Controller {
         ];
         $data_goods = json_encode($data_goods, JSON_UNESCAPED_UNICODE);
 
-        $this->view->set('{images}', '');
-        $this->view->set('{rating}', '');
-        $this->view->set('{description}', '');
+
+        // IMAGES
+        $images = '';
+        if(!empty($findTags["{images}"]) && !empty($Product["images"])){
+            foreach ($Product["images"] as $image) {
+                $images .= '<figure><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="group"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" alt=""></a></figure>';
+            }
+        }
+        $this->view->set('{images}', $images);
+
+
+
+        // высчитываем средний бал по отзывам
+        $count_reviews = $rateAll = $rating = 0;
+        if(!empty($Product["reviews"])){
+            foreach ($Product["reviews"] as $review) {
+                if($review["status"] != '0'){
+                    $rateAll += $review["rating"];
+                    $count_reviews++;
+                }
+            }
+        }
+        if($rateAll != 0){
+
+            $rating = round($rateAll / $count_reviews, 2);
+
+            # TODO проверить!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $rating = '<div class="rating rating_stop" data-rate-value="'.$rating.'" data-nid="'.$Product["product"]["id"].'"></div>
+            <div class="dn" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
+                <span itemprop="ratingValue">'.$rating.'</span>
+                <span itemprop="worstRating">1</span>
+                <span itemprop="bestRating">5</span>
+                <span itemprop="ratingCount">'.$rateAll.'</span>
+            </div>';
+
+        } else $rating = '<div class="rating rating_stop" data-rate-value="0" data-nid="'.$Product["product"]["id"].'"></div>';
+
+
+        $this->view->set('{rating}', $rating);
+        $this->view->set('{content}', $Product["product"]["content"]);
         $this->view->set('{buy}', '<a href="/cart.html" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+        $this->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
         $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
+
+        $this->view->set('{properties}', '');
+        $this->view->set('{rating-count}', '1');
+        $this->view->set('{reviews}', '1');
+
+        $edit = '';
+        if(ADMIN) $edit = '<a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';
+
+        $this->view->set('{edit}', $edit);
 
         if(!empty($Product["product"]["sale"])){
 
