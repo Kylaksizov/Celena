@@ -52,6 +52,7 @@ return [
 
         '404/$' => ['controller' => 'NotFound'],
         '(.+?).html$' => ['controller' => 'product'],
+        'cart/$' => ['controller' => 'cart'],
         '(.+?)/$' => ['controller' => 'category'],
 
         'news/shop$' => [

@@ -479,6 +479,7 @@ class ProductsController extends PanelController {
 
                 $categoryContent .= '<tr>
                     <td>'.$row["id"].'</td>
+                    <td><a href="" target="_blank" class="ico_see" title="В разработке"></a></td>
                     <td>
                         <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
                     </td>
@@ -497,6 +498,7 @@ class ProductsController extends PanelController {
         $content .= '<table>
             <tr>
                 <th width="20">ID</th>
+                <th width="10"><span class="ico_see"></span></th>
                 <th width="30">Иконка</th>
                 <!--<th width="10"><input type="checkbox" class="ch_box_min" name="" id="cat_sel"><label for="cat_sel"></label></th>-->
                 <th>Название</th>

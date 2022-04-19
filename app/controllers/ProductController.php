@@ -39,7 +39,7 @@ class ProductController extends Controller {
         $url = trim(end($this->urls), CONFIG_SYSTEM["seo_type_end"]);
 
         if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4'){
-            
+
             preg_match('/^([0-9]+)\-(.+?)$/is', $url, $urlParams);
             if(!empty($urlParams[1]) && is_numeric($urlParams[1])){
 
@@ -56,12 +56,13 @@ class ProductController extends Controller {
 
 
 
-        /*$CategoryStep = System::setKeys($Product["categories"], "url");
+        $CategoryStep = System::setKeys($Product["categories"], "url");
 
         // CRUMBS
+        $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
-            $crumbs = '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
+            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
 
             $addLink = CONFIG_SYSTEM["home"];
             foreach ($CategoryStep as $row) {
@@ -70,9 +71,11 @@ class ProductController extends Controller {
                 $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addLink . '">' . $row["title"] . '</a>';
             }
 
-        } else $crumbs = '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+        } else $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
 
-        $this->view->setMain('{crumbs}', $crumbs);*/
+        $crumbs .= '</div>';
+
+        $this->view->setMain('{crumbs}', $crumbs);
 
 
         $poster = 'no-image.png';
@@ -163,7 +166,7 @@ class ProductController extends Controller {
 
         $this->view->set('{rating}', $rating);
         $this->view->set('{content}', $Product["product"]["content"]);
-        $this->view->set('{buy}', '<a href="/cart.html" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+        $this->view->set('{buy}', '<a href="/cart/" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
         $this->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
         $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
 

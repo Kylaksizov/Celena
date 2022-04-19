@@ -62,9 +62,10 @@ exit;*/
         echo "</ul>";*/
 
         // CRUMBS
+        $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
-            $crumbs = '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
+            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
 
             $addLink = CONFIG_SYSTEM["home"];
             foreach ($CategoryStep as $row) {
@@ -73,7 +74,9 @@ exit;*/
                 $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addLink . '">' . $row["title"] . '</a>';
             }
 
-        } else $crumbs = '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+        } else $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+
+        $crumbs .= '</div>';
 
         $this->view->setMain('{crumbs}', $crumbs);
 

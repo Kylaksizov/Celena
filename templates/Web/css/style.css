@@ -952,21 +952,21 @@ hr{
     line-height: 21px;
     margin-top: 15px;
 }
-.crumbs{
+#crumbs{
     background: rgba(251, 252, 254, .8);
     padding: 10px 20px !important;
     margin: -20px 0 20px !important;
     border: none !important;
 }
-.crumbs span{
+#crumbs span{
     display: inline-block;
     margin: 0 7px;
     color: #90abbd;
 }
-.crumbs a{
+#crumbs a{
     color: #6F8492;
 }
-.crumbs a:hover{
+#crumbs a:hover{
     color: #f2b200;
 }
 

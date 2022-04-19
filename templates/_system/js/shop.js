@@ -191,7 +191,7 @@ $(function(){
                 content_cart +
                 '</table>\n' +
                 '<div class="flex ai_c">\n' +
-                '    <a href="/cart.html" class="btn_order">Оформить заказ</a>\n' +
+                '    <a href="/cart/" class="btn_order">Оформить заказ</a>\n' +
                 '    <p class="cart_total">Всего: <b>'+total+' ₴</b></p>\n' +
                 '</div>\n' +
                 '<a href="#" class="close"></a>';
