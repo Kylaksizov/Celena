@@ -1,10 +1,15 @@
 $(function(){
 
     function addField(el){
+        let timestamp = new Date().getTime();
         el.closest(".p_val").after(`<div class="p_val">
             <input type="text" name="val[]" value="">
             <a href="#" class="add_val">+</a>
             <a href="#" class="remove_val">-</a>
+            <div class="is_def" title="Сделать по умолчанию">
+                <input type="radio" name="def" id="is_def_`+timestamp+`">
+                <label for="is_def_`+timestamp+`"></label>
+            </div>
         </div>`);
         $(".p_val:last input").focus();
     }
@@ -35,9 +40,16 @@ $(function(){
         }
     });
 
+    // изменение поля
+    $(document).on("keyup", '.p_val [name="val[]"]', function(event){
+        let valText = $(this).val();
+        $(this).closest(".p_val").find('[name="def"]').val(valText);
+    });
+
     // удаление значения
     $(document).on("click", ".remove_val", function(){
         if($(".p_val").length > 1) $(this).closest(".p_val").remove();
+        else $(this).closest(".p_val").find("input").val("");
         return false
     })
 })

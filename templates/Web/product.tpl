@@ -5,7 +5,7 @@
         {*Картинки товара*}
         <div class="product_pictures">
             <div id="goods_carousel" class="owl-carousel">
-                <img src="{poster}" alt="">
+                {images}
             </div>
             <div id="goods_carousel2" class="owl-carousel">
                 {images}

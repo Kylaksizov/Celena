@@ -30,7 +30,8 @@ $(function(){
 
             let optionsSelect = (propertySelected[0]["sep"] == '1') ? '<option value="sep" class="sep_field">ПРОИЗВОЛЬНОЕ ПОЛЕ</option>' : '';
             for (let key in propertySelected) {
-                optionsSelect += `<option value="`+propertySelected[key]["vid"]+`">`+propertySelected[key].val+`</option>`;
+                if(propertySelected[key].val != null)
+                    optionsSelect += `<option value="`+propertySelected[key]["vid"]+`">`+propertySelected[key].val+`</option>`;
             }
 
             $("#properties_product").append(`<div class="prop" data-prop-id="`+propertySelected[0].id+`">
@@ -49,6 +50,14 @@ $(function(){
                     <div>
                         <label for="">Цена</label>
                         <input type="number" name="prop[`+propertySelected[0].id+`][price][]" min="0" step=".1" value="" placeholder="Цена">
+                    </div>
+                    <div>
+                        <label for="">Вариант цены</label>
+                        <select name="prop[`+propertySelected[0].id+`][pv][]">
+                            <option value="">Новая цена</option>
+                            <option value="-">-</option>
+                            <option value="+">+</option>
+                        </select>
                     </div>
                     <div>
                         <label for="">Кол-во</label>

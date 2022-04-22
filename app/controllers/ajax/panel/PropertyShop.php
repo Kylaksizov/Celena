@@ -23,20 +23,25 @@ class PropertyShop{
 
         $title = !empty($_POST["title"]) ? trim(htmlspecialchars(strip_tags($_POST["title"]))) : die("info::error::Укажите название!");
         $url = !empty($_POST["url"]) ? System::translit(trim(htmlspecialchars(strip_tags($_POST["url"])))) : null;
+        $type = !empty($_POST["type"]) ? intval($_POST["type"]) : 1;
         $cid = !empty($_POST["cid"]) ? implode(",", $_POST["cid"]) : null;
         $option = !empty($_POST["display"]) ? 1 : 0;
         $sep = !empty($_POST["sep"]) ? 1 : 0;
+        $req_p = !empty($_POST["req_p"]) ? 1 : 0;
+        $req = !empty($_POST["req"]) ? 1 : 0;
         $position = 0;
 
         $PropertyModel = new PropertyModel();
 
-        if(empty($pid[1])){ // если это добавление новой категории
+        // добавление нового свойства
+        if(empty($pid[1])){
 
-            $id = $PropertyModel->create($title, $url, $cid, $option, $sep, $position);
+            $id = $PropertyModel->create($title, $url, $type, $cid, $option, $sep, $req_p, $req, $position);
 
             if(!empty($_POST["val"])){
                 foreach ($_POST["val"] as $val) {
-                    $PropertyModel->add($id, trim(htmlspecialchars(strip_tags($val))));
+                    $def = ($val == $_POST["def"]) ? 1 : null;
+                    $PropertyModel->add($id, trim(htmlspecialchars(strip_tags($val))), $def);
                 }
             }
 
@@ -46,27 +51,41 @@ class PropertyShop{
                 history.pushState(null, "Редактирование свойства", "'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$id.'/");
             </script>';
 
-        } else{ // если редактирование
+        // редактирование
+        } else{
 
             $id = intval($pid[1]);
             $PropertyModel->editFields($id, [
                 'title' => $title,
                 'url' => $url,
+                'f_type' => $type,
                 'cid' => $cid,
                 'option' => $option,
                 'sep' => $sep,
+                'req_p' => $req_p,
+                'req' => $req,
                 'position' => $position
             ]);
-
+            
             if(!empty($_POST["val"])){
-                foreach ($_POST["val"] as $val_key => $val) {
 
-                    if(!empty($_POST["id"][$val_key])){
-                        $PropertyModel->editFieldsV(intval($_POST["id"][$val_key]), [
-                            'val' =>  trim(htmlspecialchars(strip_tags($val)))
-                        ]);
-                    } else{
-                        $PropertyModel->add($id, trim(htmlspecialchars(strip_tags($val))));
+                // если очистили все значения
+                if(count($_POST["val"]) == 1 && empty($_POST["val"][0])) $PropertyModel->clear($id);
+
+                else{
+
+                    foreach ($_POST["val"] as $val_key => $val) {
+
+                        $def = (!empty($_POST["def"]) && $val == $_POST["def"]) ? 1 : null;
+
+                        if(!empty($_POST["id"][$val_key])){
+                            $PropertyModel->editFieldsV(intval($_POST["id"][$val_key]), [
+                                'val' =>  trim(htmlspecialchars(strip_tags($val))),
+                                'def' => $def
+                            ]);
+                        } else{
+                            $PropertyModel->add($id, trim(htmlspecialchars(strip_tags($val))), $def);
+                        }
                     }
                 }
             }

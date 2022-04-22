@@ -18,35 +18,44 @@ class PropertyModel extends Model{
      * =======================
      * @param $title
      * @param $url
+     * @param $type
      * @param $cid
      * @param int $option
      * @param int $sep
+     * @param int $req_p
+     * @param int $req
      * @param int $position
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, $url = null, $cid = null, int $option = 1, $sep = 0, int $position = 0){
+    public function create($title, $url = null, $type = 1, $cid = null, int $option = 1, $sep = 0, $req_p = 0, $req = 0, int $position = 0){
 
         if($url === null) $url = System::translit($title);
 
         $params = [
             $title,
             $url,
+            $type,
             $cid,
             $option,
             $sep,
+            $req_p,
+            $req,
             $position
         ];
 
         Base::run("INSERT INTO " . PREFIX . "properties (
             title,
             url,
+            f_type,
             cid,
             option,
             sep,
+            req_p,
+            req,
             position
         ) VALUES (
-            ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -104,12 +113,16 @@ class PropertyModel extends Model{
                 p.id,
                 p.title,
                 p.url,
+                p.f_type,
                 p.cid,
                 p.option,
                 p.sep,
+                p.req_p,
+                p.req,
                 p.position,
                 v.id AS pv_id,
                 v.val,
+                v.def,
                 v.position AS pv_position
             FROM " . PREFIX . "properties p
                 LEFT JOIN " . PREFIX . "properties_v v ON v.pid = p.id
@@ -206,6 +219,19 @@ class PropertyModel extends Model{
         array_push($params, $id);
 
         return Base::run("UPDATE " . PREFIX . "properties_v SET $set WHERE id = ?", $params)->rowCount();
+    }
+
+
+    /**
+     * @name очистка всех значений свойств
+     * ===================================
+     * @param $id
+     * @return bool|PDOStatement
+     * @throws Exception
+     */
+    public function clear($id){
+
+        return Base::run("DELETE FROM " . PREFIX . "properties_v WHERE pid = ?", [$id]);
     }
 
 

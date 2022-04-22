@@ -88,6 +88,38 @@ class ProductModel extends Model{
             WHERE $where
             ", $params)->fetch(PDO::FETCH_ASSOC);
 
+        // достаем инфу о категориях
+        if(!empty($result["product"])){
+
+            $catsIds = explode(",", $result["product"]["category"]);
+
+            if(count($catsIds) == 1){
+                $whereCategory = "id = ?";
+                $paramsCategory = $catsIds;
+            } else{
+                $whereCategory = "";
+                $paramsCategory = [];
+                foreach ($catsIds as $cId) {
+                    $whereCategory .= "id = ? OR ";
+                    array_push($paramsCategory, $cId);
+                }
+                $whereCategory = trim($whereCategory, " OR ");
+            }
+
+            $result["categories"] = System::setKeys(
+                Base::run(
+                    "SELECT
+                    id,
+                    title,
+                    icon,
+                    url
+                FROM " . PREFIX . "category
+                WHERE $whereCategory",
+                    $paramsCategory)->fetchAll(PDO::FETCH_ASSOC),
+                "id"
+            );
+        }
+
         // если есть тег на получение картинок
         if(!empty($result["product"]) && $tagImages){
 
@@ -113,16 +145,18 @@ class ProductModel extends Model{
                 Base::run(
                     "SELECT
                     ps.title,
+                    ps.f_type,
                     pp.id,
                     pp.sep,
                     pp.vendor,
                     pp.price,
                     pp.pv,
                     pp.stock,
+                    pv.def,
                     pv.val
                 FROM " . PREFIX . "product_prop pp
                     LEFT JOIN " . PREFIX . "properties_v pv ON pv.id = pp.id_pv
-                    LEFT JOIN " . PREFIX . "properties ps ON ps.id = pv.pid
+                    LEFT JOIN " . PREFIX . "properties ps ON ps.id = pp.id_p
                 WHERE
                     pp.pid = ?
                     ORDER BY pv.position ASC",

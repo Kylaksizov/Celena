@@ -275,7 +275,7 @@ class ProductsController extends PanelController {
                                 </div>';
                 }
 
-                #TODO чето запутался я !!!!!!!!!!!!!!!!!!!!!
+                #TODO что-то запутался я !!!!!!!!!!!!!!!!!!!!!
                 /*if((!$closeProp && (!empty($Product["props"][$propKey+1]["id"]) && $propId != $Product["props"][$propKey+1]["id"]) || count($Product["props"])-1 == $propKey) || (!empty($row["id"]) && $propId != $row["id"]))
                     $properties .= '
                             </div>
@@ -828,14 +828,26 @@ class ProductsController extends PanelController {
 
             $pVals = '';
             foreach ($Property as $item) {
+
+                $def = ($item["def"]) ? ' checked' : '';
+
                 $pVals .= '<div class="p_val">
                     <input type="hidden" name="id[]" value="'.$item["pv_id"].'">
                     <input type="text" name="val[]" value="'.$item["val"].'">
                     <a href="#" class="add_val">+</a>
                     <a href="#" class="remove_val">-</a>
+                    <div class="is_def" title="Сделать по умолчанию">
+                        <input type="radio" name="def" value="'.$item["val"].'"'.$def.' id="is_def_'.$item["pv_id"].'">
+                        <label for="is_def_'.$item["pv_id"].'"></label>
+                    </div>
                 </div>';
             }
         }
+
+        // тип поля
+        $typeOptions = '<option value="1">Выпадающий список</option>
+            <option value="2"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '2' ? ' selected' : '').'>Множественный выбор</option>
+            <option value="3"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '3' ? ' selected' : '').'>Радио-кнопка</option>';
 
         // родительская категория
         $categoryOptions = '';
@@ -862,13 +874,22 @@ class ProductsController extends PanelController {
                     <input type="text" name="url" placeholder="Только латинские символы без пробелов" value="'.(!empty($Property[0]["url"])?$Property[0]["url"]:'').'" autocomplete="off">
                 </div>
                 <div>
-                    <input type="checkbox" name="display" class="ch_min" id="display"'.(!empty($Property[0]["option"])?' checked':'').'><label for="display">Выводить сразу</label>
+                    <input type="checkbox" name="display" class="ch_min" id="display"'.(!empty($Property[0]["option"])?' checked':'').'><label for="display">Выводить сразу <span class="q"><i>Если включено, то при создании товара, данное свойство будет выведено на рабочую область по умолчанию.</i></span></label>
                     <br>
+                    <input type="checkbox" name="sep" class="ch_min" id="sep"'.(!empty($Property[0]["sep"])?' checked':'').'><label for="sep">Разрешить произвольный вариант <span class="q"><i>Если включено, то при создании товара, можно указать любое значение этому свойству, независимо от заданных значний.</i></span></label>
                     <br>
-                    <input type="checkbox" name="sep" class="ch_min" id="sep"'.(!empty($Property[0]["sep"])?' checked':'').'><label for="sep">Разрешить произвольный вариант</label>
+                    <input type="checkbox" name="req_p" class="ch_min" id="req_p"'.(!empty($Property[0]["req_p"])?' checked':'').'><label for="req_p">Обязательное заполнение <span class="q"><i>Если включено, то при добавлении товара на сайт, свойтво нужно заполнить обязательно.</i></span></label>
+                    <br>
+                    <input type="checkbox" name="req" class="ch_min" id="req"'.(!empty($Property[0]["req"])?' checked':'').'><label for="req">Обязательный выбор на сайте <span class="q"><i>Если включено, то при покупке товара, данное свойство должно быть выбрано обязательно.</i></span></label>
                 </div>
             </div>
             <div class="dg dg_auto">
+                <div>
+                    <label for="">Тип поля</label>
+                    <select name="type">
+                        '.$typeOptions.'
+                    </select>
+                </div>
                 <div>
                     <label for="" class="pr">Категории <span class="q"><i>Выберите категории, в котрых отображать это свойство.<br>Или оставьте пустым, для вывода для любых категорий.</i></span></label>
                     <select name="cid[]" class="multipleSelect" multiple>

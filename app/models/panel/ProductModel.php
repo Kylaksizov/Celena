@@ -365,7 +365,7 @@ class ProductModel extends Model{
      * @param $sep
      * @param $vendor
      * @param $price
-     * @param pv
+     * @param $pv
      * @param $stock
      * @return bool|string
      * @throws Exception
@@ -379,7 +379,7 @@ class ProductModel extends Model{
             $sep,
             $vendor,
             $price,
-            pv,
+            $pv,
             $stock
         ];
 

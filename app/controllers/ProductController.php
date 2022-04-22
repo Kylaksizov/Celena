@@ -58,30 +58,38 @@ class ProductController extends Controller {
 
         $CategoryStep = System::setKeys($Product["categories"], "url");
 
+
         // CRUMBS
+        $addCategoryLink = CONFIG_SYSTEM["home"];
+        
         $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
             $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
-
-            $addLink = CONFIG_SYSTEM["home"];
+            
             foreach ($CategoryStep as $row) {
 
-                $addLink .= $row["url"].'/';
-                $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addLink . '">' . $row["title"] . '</a>';
+                $addCategoryLink .= $row["url"].'/';
+                $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addCategoryLink . '">' . $row["title"] . '</a>';
             }
 
-        } else $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+        } else{
+
+            $addCategoryLink .= $CategoryStep[end($this->urls)]["url"];
+            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+        }
 
         $crumbs .= '</div>';
 
         $this->view->setMain('{crumbs}', $crumbs);
+        // CRUMBS END
+
 
 
         $poster = 'no-image.png';
         if(!empty($Product["product"]["src"])){
             $poster = $Product["product"]["src"];
-        } else if(!empty($Product["images"][$Product["product"]["poster"]]["src"])){
+        } else if(!empty($Product["product"]["poster"]) && !empty($Product["images"][$Product["product"]["poster"]]["src"])){
             $poster = $Product["images"][$Product["product"]["poster"]]["src"];
         }
 
@@ -94,24 +102,51 @@ class ProductController extends Controller {
         //$this->view->set('{link}', $link);
         $this->view->set('{title}', $Product["product"]["title"]);
 
-        $Product["product"]["price"] = $price = round($Product["product"]["price"]);
+
+
+        // --- категории товара
+        if($this->view->findTag('{categories}')){
+            $categories = '<ul class="nex_categories">';
+            $addLink = CONFIG_SYSTEM["home"];
+            foreach ($CategoryStep as $row) {
+
+                $addLink .= $row["url"].'/';
+                $categories .= '<li><a href="' . $addLink . '">' . $row["title"] . '</a></li>';
+            }
+            $categories .= '</ul>';
+            $this->view->set('{categories}', $categories);
+        }
+
+        // конечная категория
+        if($this->view->findTag('{category}')){
+            $categoryLast = end($Product["categories"]);
+            $this->view->set('{category}', '<a href="'.$addCategoryLink.'">'.$categoryLast["title"].'</a>');
+        }
+
+        // конечная категория
+        if($this->view->findTag('{category-title}')){
+            $categoryLast = end($Product["categories"]);
+            $this->view->set('{category-title}', $categoryLast["title"]);
+        }
+        // ---
+
+
 
         if(!empty($Product["product"]["sale"])){
 
-            if(is_numeric($Product["product"]["sale"])){
+            $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
+            $this->view->set('{sale}', $Product["product"]["sale"]);
+            $this->view->set('[sale]', '');
+            $this->view->set('[/sale]', '');
 
-                $price = round($price - intval($Product["product"]["sale"]), 2);
-                $Product["product"]["sale"] .= CONFIG_SYSTEM["currency"];
+        } else{
 
-            } else if(strripos($Product["product"]["sale"], "%") !== false){
-
-                $price = round($price - (($price / 100) * trim($Product["product"]["sale"], "%")));
-            }
+            $this->view->setPreg('/\[sale\](.*?)\[\/sale\]/is', '');
+            $this->view->set('{sale}', '');
+            $this->view->set('[no-sale]', '');
+            $this->view->set('[/no-sale]', '');
         }
 
-        $this->view->set('{price}', $price);
-        $this->view->set('{old-price}', $Product["product"]["price"]);
-        $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
 
         $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
         $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$poster);
@@ -170,29 +205,127 @@ class ProductController extends Controller {
         $this->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
         $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
 
-        $this->view->set('{properties}', '');
+
         $this->view->set('{rating-count}', '1');
         $this->view->set('{reviews}', '1');
+
+        $Product["product"]["price"] = $price = round($Product["product"]["price"]);
+
+
+        $properties = '';
+
+        if(!empty($Product["properties"])){
+
+            foreach ($Product["properties"] as $propName => $props) {
+
+                // select
+                if($props[0]["f_type"] == '1'){
+
+                    $properties .= '<div class="features">
+                            <label for="">'.$propName.':</label>
+                            <select name="ft_select" class="ft_select" data-type-select="'.$props[0]["f_type"].'">
+                                <option data-title="" data-sum="">- не выбрано -</option>';
+
+                    $c = 0;
+                    foreach ($props as $prop) {
+                        $active = ($prop["def"] == 1) ? ' selected' : '';
+                        $properties .= '<option data-title="'.$propName.'" data-sum="'.(($prop["price"] != 0) ? $prop["price"] : 0).'"'.$active.'>'.$prop["sep"].'</option>';
+                        $c++;
+                    }
+
+                    $properties .= '</select>
+                        </div>';
+                }
+
+                // change
+                if($props[0]["f_type"] == '2' || $props[0]["f_type"] == '3'){
+
+                    $properties .= '<div class="features">
+                            <label for="">'.$propName.':</label>
+                            <ul class="ft_select" data-type-select="'.$props[0]["f_type"].'">';
+
+                    $c = 0;
+                    foreach ($props as $prop) {
+                        
+                        $class_active = ($prop["def"] == 1) ? ' class="active"' : '';
+                        $properties .= '<li data-title="'.$propName.'" data-sum="'.(($prop["price"] != 0) ? $prop["price"] : $price).'"'.$class_active.'>'.$prop["val"].'</li>';
+                        $c++;
+                    }
+
+                    $properties .= '</ul>
+                        </div>';
+                }
+            }
+        }
+
+        $this->view->set('{properties}', $properties);
+
+
+
+
+
+        if(!empty($Product["product"]["sale"])){
+
+            if(is_numeric($Product["product"]["sale"])){
+
+                $price = round($price - intval($Product["product"]["sale"]), 2);
+                $Product["product"]["sale"] .= CONFIG_SYSTEM["currency"];
+
+            } else if(strripos($Product["product"]["sale"], "%") !== false){
+
+                $price = round($price - (($price / 100) * trim($Product["product"]["sale"], "%")));
+            }
+        }
+
+        $this->view->set('{price}', $price);
+        $this->view->set('{old-price}', $Product["product"]["price"]);
+        $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
+
+
 
         $edit = '';
         if(ADMIN) $edit = '<a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';
 
         $this->view->set('{edit}', $edit);
 
-        if(!empty($Product["product"]["sale"])){
 
-            $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
-            $this->view->set('{sale}', $Product["product"]["sale"]);
-            $this->view->set('[sale]', '');
-            $this->view->set('[/sale]', '');
 
-        } else{
+        // скидка
+        /*if(!empty($findTags["{sale}"]) || !empty($findTags["sale]"])){
 
-            $this->view->setPreg('/\[sale\](.*?)\[\/sale\]/is', '');
-            $this->view->set('{sale}', '');
-            $this->view->set('[no-sale]', '');
-            $this->view->set('[/no-sale]', '');
-        }
+            $sale = "";
+
+            // если скидка есть
+            if($Product["product"]["sale"] != "0"){
+
+                // проценты это или точная сумма
+                $percentage = false;
+                if(strripos($goods["goods"]["sale"], "%") !== false) $percentage = true;
+
+                if($percentage) $sale = $goods["goods"]["sale"];
+                else $sale = $goods["goods"]["sale"] . " " . $this->config["currency"];
+
+                $this->view->set('[sale]', '');
+                $this->view->set('[/sale]', '');
+                $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
+
+                $old_price = $price;
+
+                if($percentage) $price = round($price - (($price / 100) * trim($goods["goods"]["sale"], "%")));
+                else $price = round((float)$price - (float)$goods["goods"]["sale"], 2);
+                // если включен вывод копеек
+                if($this->config["penny"]) $price = number_format((float)$price, 2, '.', '');
+
+                // если нет скидки
+            } else{
+
+                $this->view->set('[no-sale]', "");
+                $this->view->set('[/no-sale]', "");
+                $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
+            }
+
+            $this->view->set('{sale}', $sale);
+        }*/
 
 
 

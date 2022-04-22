@@ -9,7 +9,7 @@
 - _[index.tpl](#index_tpl)_ - главный файл, который может включать в себя другие подключаемые файлы и плагины.
 - _[products.tpl](#products_tpl)_ - превью товара.
 - _[product.tpl](#product_tpl)_ - карточка товара.
-- _[products_custom.tpl](#products_custom_tpl)_ - превью товара, подключаемого через тег custom.
+- _[product_custom.tpl](#product_custom_tpl)_ - превью товара, подключаемого через тег custom.
 - _[cart.tpl](cart_tpl)_ - страницы оформления заказа.
 - _[login.tpl](login_tpl)_ - форма входа и регистрации.
 
@@ -55,7 +55,7 @@
 
 <br>
 
-### <a name="products_custom_tpl">products_custom.tpl</a>
+### <a name="product_custom_tpl">product_custom.tpl</a>
 `{tag}` - описание тега.
 
 <br>

@@ -3,6 +3,7 @@
     grid-gap: 15px;
     grid-template-columns: 1fr 40px 40px;
     align-items: flex-start;
+    position: relative;
 }
 .add_val, .remove_val{
     background: var(--c-success);
@@ -21,4 +22,9 @@
 }
 .remove_val:hover {
     background: var(--c-red-hover);
+}
+.is_def{
+    position: absolute;
+    top: 10px;
+    left: -10px;
 }
