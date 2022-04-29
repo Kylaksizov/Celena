@@ -13,6 +13,10 @@ use PDOStatement;
 class UsersModel extends Model{
 
 
+    public function __construct($conf = null){
+        parent::__construct($conf);
+    }
+
     /**
      * @name создание пользователя
      * ===========================
@@ -79,6 +83,28 @@ class UsersModel extends Model{
             WHERE u.id = ? AND u.hash = ?
         ",
             [$id, $hash]
+        );
+    }
+
+
+    /**
+     * @name авторизация
+     * =================
+     * @param $email
+     * @return mixed|null
+     */
+    public function login($email){
+
+        return self::instanceFetch("
+            SELECT
+                u.*,
+                r.name AS role_name,
+                r.rules
+            FROM " . PREFIX . "users u
+                LEFT JOIN " . PREFIX . "roles r ON r.id = u.role
+            WHERE u.email = ?
+        ",
+            [$email]
         );
     }
 

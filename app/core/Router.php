@@ -61,8 +61,7 @@ class Router{
         $route_type = 'web';
         $panelKey = '';
 
-        if($this->urls[0] == CONFIG_SYSTEM["panel"] && USER && USER["role"] == '1'){
-
+        if($this->urls[0] == CONFIG_SYSTEM["panel"]){
             $this->is_panel = true;
             $route_type = 'panel';
             $panelKey = $this->urls[0].'/';

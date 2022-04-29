@@ -2,6 +2,7 @@
     --main-bg: #ECF0FA;
     --main-color: #72798b;
     --main-color-p: #74788d;
+    --main-color-g: #a9adbf;
     --bg-global: #FFFFFF;
     --bg-grey: #E8EAEA;
     --bg-green: #CCF0E3;
@@ -9,6 +10,8 @@
     --bg-red: #FCDADA;
     --bg-yellow: #FBECD2;
     --c-white: #FFFFFF;
+    --c-black: #3A4451;
+    --c-black-hover: #1e2834;
     --c-grey: #929dbb;
     --c-grey-s: #aeb7cc;
     --c-green: #51CA9E;

@@ -238,13 +238,66 @@ class View{
 
 
 
-    
+
 
 
     private function mainReplace(){
 
         $controller = str_replace("\\", "/", $this->route["controller"]);
 
+        if(strripos($this->tplIndex, '{include') !== false){
+
+            preg_match_all('/\{include\s+file=\"([a-z0-9-_\/\.]+)\"\}/is', $this->tplIndex, $includes);
+            if(!empty($includes[1])){
+
+                // перебираем все шорт-коды {include file="..."}
+                // $includes[0] - шорт-код
+                // $includes[1] - путь к файлу от корня шаблона
+                foreach ($includes[1] as $key => $file) {
+                    if(!empty($file) && file_exists(ROOT.'/templates/'.$this->template.'/'.$file)) {
+                        $include_file = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$file);
+                        $this->tplIndex = str_replace($includes[0][$key], $include_file, $this->tplIndex);
+                    } else $this->tplIndex = str_replace($includes[0][$key], '', $this->tplIndex);
+                }
+                unset($includes);
+
+                // снова проверяем, есть ли в подключаемых файлах теги {include ...}
+                preg_match_all('/\{include\s+file=\"([a-z0-9-_\/\.]+)\"\}/is', $this->tplIndex, $includes);
+
+                // если есть, запускаем рекурсивно этот метод
+                if(!empty($includes[0])) $this->mainReplace();
+            }
+        }
+
+        if(strripos($this->tplIndex, 'Module}}') !== false){
+
+            // скрытие контента в зависимости от типа страницы
+            preg_match_all('/\{\{(.+?)Module\}\}/is', $this->tplIndex, $module);
+
+
+            // $show[0][0] - {{MenuModule}}
+            // $show[1][0] - Menu
+
+            if(!empty($module[1])){
+
+                foreach ($module[1] as $module) {
+
+                    $pathModule = 'app\controllers\modules\\'.ucfirst($module).'Module';
+
+                    // если модуль найден
+                    if(class_exists($pathModule)){
+
+
+                        $moduleClass = new $pathModule();
+                        if(method_exists($pathModule, "init"))$moduleClass->init($this);
+                        if(method_exists($pathModule, "turn")){
+                            $this->tplIndex = str_replace('{{'.$module.'Module}}', $moduleClass->turn($this), $this->tplIndex);
+                        }
+
+                    }
+                }
+            }
+        }
 
         if(strripos($this->tplIndex, '[show') !== false){
 
@@ -308,21 +361,21 @@ class View{
         if(strripos($this->tplIndex, '[role') !== false){
 
             // отображение контента в зависимости от типа страницы
-            preg_match_all('/(\[role\s?=\s?\"(.+?)\"\])(.+?)(\[\/role\])/is', $this->tplIndex, $show);
+            preg_match_all('/(\[role\s?=\s?\"(.+?)\"\])(.+?)(\[\/role\])/is', $this->tplIndex, $rolesA);
 
-            // $show[0][0] - содержит все целиком
-            // $show[1][0] - содержит [role = "..."]
-            // $show[2][0] - содержит типа страницы (1, 2, 3, ...)
-            // $show[3][0] - содержит то что внутри, то есть од, без тегов
-            // $show[4][0] - содержит [/role]
+            // $rolesA[0][0] - содержит все целиком
+            // $rolesA[1][0] - содержит [role = "..."]
+            // $rolesA[2][0] - содержит ID группы (0 - гость, или ID группы)
+            // $rolesA[3][0] - содержит то что внутри, то есть од, без тегов
+            // $rolesA[4][0] - содержит [/role]
 
-            if(!empty($show[1])){
+            if(!empty($rolesA[1])){
 
-                foreach ($show[2] as $key => $type) {
+                foreach ($rolesA[2] as $key => $type) {
 
                     $roles = explode(",", $type);
 
-                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $show[1][$key]);
+                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $rolesA[1][$key]);
 
                     // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
                     if(USER && in_array(USER["role"], $roles) || !USER && in_array('0', $roles))
@@ -337,21 +390,21 @@ class View{
         if(strripos($this->tplIndex, '[not-role') !== false){
 
             // скрытие контента в зависимости от типа страницы
-            preg_match_all('/(\[not-role\s?=\s?\"(.+?)\"\])(.+?)(\[\/not-role\])/is', $this->tplIndex, $show);
+            preg_match_all('/(\[not-role\s?=\s?\"(.+?)\"\])(.+?)(\[\/not-role\])/is', $this->tplIndex, $rolesA);
 
-            // $show[0][0] - содержит все целиком
-            // $show[1][0] - содержит [not-show = "..."]
-            // $show[2][0] - содержит типа страницы (home, category, page, ...)
-            // $show[3][0] - содержит то что внутри, то есть од, без тегов
-            // $show[4][0] - содержит [/not-show]
+            // $rolesA[0][0] - содержит все целиком
+            // $rolesA[1][0] - содержит [not-show = "..."]
+            // $rolesA[2][0] - содержит типа страницы (home, category, page, ...)
+            // $rolesA[3][0] - содержит то что внутри, то есть од, без тегов
+            // $rolesA[4][0] - содержит [/not-show]
 
-            if(!empty($show[1])){
+            if(!empty($rolesA[1])){
 
-                foreach ($show[2] as $key => $type) {
+                foreach ($rolesA[2] as $key => $type) {
 
                     $roles = explode(",", $type);
 
-                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $show[1][$key]);
+                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $rolesA[1][$key]);
 
                     // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
                     if(USER && in_array(USER["role"], $roles) || !USER && in_array('0', $roles))
@@ -359,61 +412,6 @@ class View{
                     else
                         $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/not-role\]/i', "$1", $this->tplIndex);
 
-                }
-            }
-        }
-
-
-        if(strripos($this->tplIndex, '{include') !== false){
-
-            preg_match_all('/\{include\s+file=\"([a-z0-9-_\/\.]+)\"\}/is', $this->tplIndex, $includes);
-            if(!empty($includes[1])){
-
-                // перебираем все шорт-коды {include file="..."}
-                // $includes[0] - шорт-код
-                // $includes[1] - путь к файлу от корня шаблона
-                foreach ($includes[1] as $key => $file) {
-                    if(!empty($file) && file_exists(ROOT.'/templates/'.$this->template.'/'.$file)) {
-                        $include_file = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$file);
-                        $this->tplIndex = str_replace($includes[0][$key], $include_file, $this->tplIndex);
-                    } else $this->tplIndex = str_replace($includes[0][$key], '', $this->tplIndex);
-                }
-                unset($includes);
-
-                // снова проверяем, есть ли в подключаемых файлах теги {include ...}
-                preg_match_all('/\{include\s+file=\"([a-z0-9-_\/\.]+)\"\}/is', $this->tplIndex, $includes);
-
-                // если есть, запускаем рекурсивно этот метод
-                if(!empty($includes[0])) $this->mainReplace();
-            }
-        }
-
-        if(strripos($this->tplIndex, 'Module}}') !== false){
-
-            // скрытие контента в зависимости от типа страницы
-            preg_match_all('/\{\{(.+?)Module\}\}/is', $this->tplIndex, $module);
-
-
-            // $show[0][0] - {{MenuModule}}
-            // $show[1][0] - Menu
-
-            if(!empty($module[1])){
-
-                foreach ($module[1] as $module) {
-
-                    $pathModule = 'app\controllers\modules\\'.ucfirst($module).'Module';
-
-                    // если модуль найден
-                    if(class_exists($pathModule)){
-
-
-                        $moduleClass = new $pathModule();
-                        if(method_exists($pathModule, "init"))$moduleClass->init($this);
-                        if(method_exists($pathModule, "turn")){
-                            $this->tplIndex = str_replace('{{'.$module.'Module}}', $moduleClass->turn($this), $this->tplIndex);
-                        }
-
-                    }
                 }
             }
         }

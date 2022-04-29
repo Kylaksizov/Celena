@@ -33,8 +33,8 @@
             </ul>
         </div>
         <div>
-            <a href="#" class="developer">Разработка интернет магазинов</a>
-            <p class="copyright">&copy; 2018 MIKC</p>
+            <a href="#" class="developer">Разработка систем</a>
+            <p class="copyright">&copy; 2022</p>
         </div>
     </div>
 </footer>
@@ -49,18 +49,6 @@
     <a href="#" class="exit">Отмена</a>
     <a href="#" class="close"></a>
 </div>
-
-[role="0"]
-<div class="modal" id="authorization">
-    <h4 class="modal_title">Авторизация</h4>
-    <form action="#" method="POST">
-        <input type="email" name="email" placeholder="E-mail">
-        <input type="password" name="password" placeholder="Пароль">
-        <input type="hidden" name="auth" value="1">
-        <input type="submit" class="btn ajax" value="Вход">
-    </form>
-    <a href="#" class="close"></a>
-</div>[/role]
 
 <link rel="stylesheet" href="/templates/_system/css/owl.carousel.min.css">
 
