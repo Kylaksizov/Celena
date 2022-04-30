@@ -87,8 +87,10 @@ class ProductShop{
                         }
 
                         $pv = null;
-                        if($propArray["pv"][$prop_key] == '-') $pv = '0';
-                        if($propArray["pv"][$prop_key] == '+') $pv = '1';
+                        if($propArray["pv"][$prop_key] == '-')  $pv = '0';
+                        if($propArray["pv"][$prop_key] == '+')  $pv = '1';
+                        if($propArray["pv"][$prop_key] == '-%') $pv = '2';
+                        if($propArray["pv"][$prop_key] == '+%') $pv = '3';
 
                         $ProductModel->addProperty(
                             $id,
@@ -154,8 +156,10 @@ class ProductShop{
                         }
 
                         $pv = null;
-                        if($propArray["pv"][$prop_key] == '-') $pv = '0';
-                        if($propArray["pv"][$prop_key] == '+') $pv = '1';
+                        if($propArray["pv"][$prop_key] == '-')  $pv = '0';
+                        if($propArray["pv"][$prop_key] == '+')  $pv = '1';
+                        if($propArray["pv"][$prop_key] == '-%') $pv = '2';
+                        if($propArray["pv"][$prop_key] == '+%') $pv = '3';
 
                         if(!empty($propArray["pp_id"][$prop_key])){
 

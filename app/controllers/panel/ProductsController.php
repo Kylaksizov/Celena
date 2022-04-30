@@ -210,8 +210,10 @@ class ProductsController extends PanelController {
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
                     $pvOptions = '<option value="">Новая цена</option>
-                        <option value="-"'.($row["pv"] == '0' ? ' selected' : '').'>-</option>
-                        <option value="+"'.($row["pv"] == '1' ? ' selected' : '').'>+</option>';
+                        <option value="-"'.($row["pv"]  == '0' ? ' selected' : '').'>отнять</option>
+                        <option value="+"'.($row["pv"]  == '1' ? ' selected' : '').'>прибавить</option>
+                        <option value="-%"'.($row["pv"] == '2' ? ' selected' : '').'>уменьшить</option>
+                        <option value="+%"'.($row["pv"] == '3' ? ' selected' : '').'>увеличить</option>';
 
                     $properties .= '
                         <div class="prop" data-prop-id="'.$row["id"].'">
@@ -255,8 +257,10 @@ class ProductsController extends PanelController {
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
                     $pvOptions = '<option value="">Новая цена</option>
-                        <option value="-"'.($row["pv"] == '0' ? ' selected' : '').'>-</option>
-                        <option value="+"'.($row["pv"] == '1' ? ' selected' : '').'>+</option>';
+                        <option value="-"'.($row["pv"]  == '0' ? ' selected' : '').'>отнять</option>
+                        <option value="+"'.($row["pv"]  == '1' ? ' selected' : '').'>прибавить</option>
+                        <option value="-%"'.($row["pv"] == '2' ? ' selected' : '').'>уменьшить</option>
+                        <option value="+%"'.($row["pv"] == '3' ? ' selected' : '').'>увеличить</option>';
 
                     $properties .= '
                                 <div class="prop_sub">
@@ -816,6 +820,10 @@ class ProductsController extends PanelController {
             <input type="text" name="val[]" value="">
             <a href="#" class="add_val">+</a>
             <a href="#" class="remove_val">-</a>
+            <div class="is_def" title="Сделать по умолчанию">
+                <input type="radio" name="def" id="is_def_1">
+                <label for="is_def_1"></label>
+            </div>
         </div>';
 
         if(!empty($this->urls[4])){

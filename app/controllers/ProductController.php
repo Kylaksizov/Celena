@@ -209,7 +209,7 @@ class ProductController extends Controller {
         $this->view->set('{rating-count}', '1');
         $this->view->set('{reviews}', '1');
 
-        $Product["product"]["price"] = $price = round($Product["product"]["price"]);
+        $Product["product"]["price"] = $price = (CONFIG_SYSTEM["penny"]) ? floatval($Product["product"]["price"]) : round($Product["product"]["price"]);
 
 
         $properties = '';
@@ -224,12 +224,19 @@ class ProductController extends Controller {
                     $properties .= '<div class="features">
                             <label for="">'.$propName.':</label>
                             <select name="ft_select" class="ft_select" data-type-select="'.$props[0]["f_type"].'">
-                                <option data-title="" data-sum="">- не выбрано -</option>';
+                                <option>- не выбрано -</option>';
 
                     $c = 0;
                     foreach ($props as $prop) {
+
+                        $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
+
+                        if($prop["pv"] === null) $calc = 'new';
+                        else $calc = $prop["pv"];
+
                         $active = ($prop["def"] == 1) ? ' selected' : '';
-                        $properties .= '<option data-title="'.$propName.'" data-sum="'.(($prop["price"] != 0) ? $prop["price"] : 0).'"'.$active.'>'.$prop["sep"].'</option>';
+                        $val = !empty($prop["sep"]) ? $prop["sep"] : $prop["val"];
+                        $properties .= '<option data-title="'.$propName.'" data-sum="'.$priceProp.'" data-calc="'.$calc.'"'.$active.'>'.$val.'</option>';
                         $c++;
                     }
 
@@ -246,9 +253,14 @@ class ProductController extends Controller {
 
                     $c = 0;
                     foreach ($props as $prop) {
-                        
+
+                        $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
+
+                        if($prop["pv"] === null) $calc = 'new';
+                        else $calc = $prop["pv"];
+
                         $class_active = ($prop["def"] == 1) ? ' class="active"' : '';
-                        $properties .= '<li data-title="'.$propName.'" data-sum="'.(($prop["price"] != 0) ? $prop["price"] : $price).'"'.$class_active.'>'.$prop["val"].'</li>';
+                        $properties .= '<li data-title="'.$propName.'" data-sum="'.(($priceProp != 0) ? $priceProp : $price).'" data-calc="'.$calc.'"'.$class_active.'>'.$prop["val"].'</li>';
                         $c++;
                     }
 
@@ -268,12 +280,12 @@ class ProductController extends Controller {
 
             if(is_numeric($Product["product"]["sale"])){
 
-                $price = round($price - intval($Product["product"]["sale"]), 2);
+                $price = $price - intval($Product["product"]["sale"]);
                 $Product["product"]["sale"] .= CONFIG_SYSTEM["currency"];
 
             } else if(strripos($Product["product"]["sale"], "%") !== false){
 
-                $price = round($price - (($price / 100) * trim($Product["product"]["sale"], "%")));
+                $price = $price - (($price / 100) * trim($Product["product"]["sale"], "%"));
             }
         }
 

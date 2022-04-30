@@ -349,6 +349,8 @@ $(function(){
         }
     })
 
+    if($(".multipleSelect").length) $('.multipleSelect').select2();
+
     // контекстное меню
     /*$(document).on("contextmenu", '.cxt', function(e){
         e.preventDefault()
@@ -363,5 +365,24 @@ $(function(){
 
         return false
     })*/
+
+    $(document).on('change', 'input[type="file"]', function(){
+
+        let all_files = "<b>выбранные:</b> ";
+        for (let i = 0; i < this.files.length; i++) {
+            all_files += '<span>' + this.files[i]["name"] + '</span>';
+        }
+        $(this).parent().next().next(".files_preload").remove();
+        $(this).parent().after(`<div class="clr"></div><div class="files_preload">`+all_files+`</div>`);
+        $(this).parent().next().next(".files_preload").fadeIn(300);
+    })
+
+    // https://air-datepicker.com/ru/docs
+    if($('.date').length) new AirDatepicker('.date');
+    if($('.dateTime').length) {
+        new AirDatepicker('.dateTime', {
+            timepicker: true,
+        });
+    }
 
 })

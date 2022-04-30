@@ -34,6 +34,9 @@ return [
     // знак валюты
     "currency" => "$",
 
+    // копейки
+    "penny" => true,
+
     // знаков в ID товара
     "str_pad_id" => 6,
 

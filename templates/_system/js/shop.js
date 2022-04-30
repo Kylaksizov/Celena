@@ -1,6 +1,6 @@
 /**
  * @name функция запоминания настроек
- * @description если toggle задан, то переданное значение во втором парметре будет добавляться или удалять из массима
+ * @description если toggle задан, то переданное значение во втором параметре будет добавляться или удалять из массива
  * @param settingName
  * @param val
  * @param toggle
@@ -37,62 +37,7 @@ function getConfig(settingName){
     } else return null;
 }
 
-/*=== Alert ===*/
-// https://www.jqueryscript.net/demo/Mobile-friendly-Dialog-Toast-Plugin-With-jQuery-alert-js/
-!function ($) {
-    $._isalert=0,
-        $.alert=function(){
-            if(arguments.length){
-                $._isalert=1;
-                return $.confirm.apply($,arguments);
-            }
-        },
-        $.confirm=function(){
-            var args=arguments;
-            if(args.length){
-                var d =$('<div class="alert_overlay esc"></div><div class="alert_msg esc"><div class="alert_content">'+args[0]+'</div><div class="alert_buttons"><button class="alert_btn alert_btn_ok">Ok</button><button class="alert_btn alert_btn_cancel">Отмена</button></div></div>'),
-                    fn=args[1],
-                    flag=1,
-                    _click = function(e){
-                        typeof fn=='function'?(fn.call(d,e.data.r)!=!1&&d.remove()):d.remove();
-                    };
-                $._isalert&&d.find('.alert_btn_cancel').hide();
-                d.on('contextmenu',!1)
-                    .on('click','.alert_btn_ok',{r:!0},_click)
-                    .on('click','.alert_btn_cancel',{r:!1},_click)
-                    .appendTo('body');
-            }
-            $._isalert=0;
-        },
-        $.prompt=function(){
-            var args=arguments;
-            if(args.length){
-                var d =$('<div class="alert_overlay esc"></div><div class="alert_msg esc"><div class="alert_content">'+args[0]+'<br><input type="text" id="prompt_js"></div><div class="alert_buttons"><button class="alert_btn alert_btn_ok">Ок</button><button class="alert_btn alert_btn_cancel">Отмена</button></div></div>'),
-                    fn=args[1],
-                    flag=1,
-                    _click = function(e){
-                        var prompt_js = false;
-                        if(e.data.r !== false && $("#prompt_js").val().length > 0) prompt_js = $("#prompt_js").val();
-                        typeof fn=='function'?(fn.call(d,e.data.r = prompt_js)!=!1&&d.remove()):d.remove();
-                    };
-                $._isalert&&d.find('.alert_btn_cancel').hide();
-                d.on('contextmenu',!1)
-                    .on('click','.alert_btn_ok',{r:!0},_click)
-                    .on('click','.alert_btn_cancel',{r:!1},_click)
-                    .appendTo('body');
-                $("#prompt_js").focus();
-            }
-            $._isalert=0;
-        },
-        $.tips=function(m){
-            $('.alert_tips').remove();
-            $('<div class="alert_tips"><div>'+m+'</div></div>').appendTo('body').one('webkitAnimationEnd animationEnd',function(){$(this).remove()})
-        }
-}($);
-
 $(function(){
-
-    let config = {};
 
     function unique(array){
         return array.filter(function(el, index, arr) {
@@ -412,6 +357,7 @@ $(function(){
 
 
         let tmp_sum = 0;
+        let tmp_calc = 0;
         let fSum = 0;
         let original_price_ = 0;
         let static_price_ = 0;
@@ -428,32 +374,38 @@ $(function(){
             if(el_name == "select"){
 
                 tmp_sum = $(this).find('option:checked').attr("data-sum");
+                tmp_calc = $(this).find('option:checked').attr("data-calc");
 
                 if(tmp_sum != undefined){
-                    if(tmp_sum.indexOf("%") + 1 && tmp_sum.indexOf("-") + 1){
-                        // уменьшение
-                        fSum = original_price * parseInt(tmp_sum.replace('-', '').replace('%', '')) / 100;
-                        original_price_ = parseFloat(original_price) - parseFloat(fSum);
 
-                    } else if(tmp_sum.indexOf("%") + 1 && tmp_sum.indexOf("+") + 1){
-                        // увеличение
-                        fSum = original_price * parseInt(tmp_sum.replace('+', '').replace('%', '')) / 100;
-                        original_price_ = parseFloat(original_price) + parseFloat(fSum);
+                    if(tmp_calc == 'n'){ // новая цена
 
-                    } else if(tmp_sum.indexOf("+") + 1){
+                        fSum = parseFloat(tmp_sum);
 
-                        fSum += parseFloat(tmp_sum.slice(1));
-
-                    } else if(tmp_sum.indexOf("-") + 1){
+                    } else if(tmp_calc == '0'){ // минус цена
 
                         fSum -= parseFloat(tmp_sum.slice(1));
 
-                    } else{
+                    } else if(tmp_calc == '1'){ // плюс цена
 
-                        original_price_ = parseFloat(tmp_sum);
-                        static_price_ = parseFloat(tmp_sum);
+                        fSum += parseFloat(tmp_sum.slice(1));
+
+                    } else if(tmp_calc == '2'){ // уменьшение %
+
+                        fSum = original_price * parseInt(tmp_sum.replace('-', '').replace('%', '')) / 100;
+                        original_price_ = parseFloat(original_price) - parseFloat(fSum);
+
+                    } else{ // увеличение %
+
+                        fSum = original_price * parseInt(tmp_sum.replace('+', '').replace('%', '')) / 100;
+                        original_price_ = parseFloat(original_price) + parseFloat(fSum);
+
+                        /*original_price_ = parseFloat(tmp_sum);
+                        static_price_ = parseFloat(tmp_sum);*/
                     }
                 }
+                
+                console.log(fSum);
 
 
                 // ============================
@@ -464,30 +416,34 @@ $(function(){
                 $(this).find('.active').each(function(){
 
                     tmp_sum = $(this).attr("data-sum");
+                    tmp_calc = $(this).attr("data-calc");
 
                     if(tmp_sum != undefined){
-                        if(tmp_sum.indexOf("%") + 1 && tmp_sum.indexOf("-") + 1){
-                            // уменьшение
-                            fSum = original_price * parseInt(tmp_sum.replace('-', '').replace('%', '')) / 100;
-                            original_price_ = parseFloat(original_price) - parseFloat(fSum);
 
-                        } else if(tmp_sum.indexOf("%") + 1 && tmp_sum.indexOf("+") + 1){
-                            // увеличение
-                            fSum = original_price * parseInt(tmp_sum.replace('+', '').replace('%', '')) / 100;
-                            original_price_ = parseFloat(original_price) + parseFloat(fSum);
+                        if(tmp_calc == 'n'){ // новая цена
 
-                        } else if(tmp_sum.indexOf("+") + 1){
+                            fSum = parseFloat(tmp_sum);
 
-                            fSum += parseFloat(tmp_sum.slice(1));
-
-                        } else if(tmp_sum.indexOf("-") + 1){
+                        } else if(tmp_calc == '0'){ // минус цена
 
                             fSum -= parseFloat(tmp_sum.slice(1));
 
-                        } else{
+                        } else if(tmp_calc == '1'){ // плюс цена
 
-                            original_price_ = parseFloat(tmp_sum);
-                            static_price_ = parseFloat(tmp_sum);
+                            fSum += parseFloat(tmp_sum.slice(1));
+
+                        } else if(tmp_calc == '2'){ // уменьшение %
+
+                            fSum = original_price * parseInt(tmp_sum.replace('-', '').replace('%', '')) / 100;
+                            original_price_ = parseFloat(original_price) - parseFloat(fSum);
+
+                        } else{ // увеличение %
+
+                            fSum = original_price * parseInt(tmp_sum.replace('+', '').replace('%', '')) / 100;
+                            original_price_ = parseFloat(original_price) + parseFloat(fSum);
+
+                            /*original_price_ = parseFloat(tmp_sum);
+                            static_price_ = parseFloat(tmp_sum);*/
                         }
                     }
                 })
@@ -501,8 +457,6 @@ $(function(){
         else fSum = parseFloat(original_price) + fSum;
 
         if(static_price_ != 0) fSum = static_price_;
-
-        console.log(fSum);
 
         // меняем цену в кнопках
         let data_goods = JSON.parse($('[data-goods]:first').attr('data-goods'));

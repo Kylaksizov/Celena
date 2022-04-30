@@ -484,6 +484,9 @@ class View{
 
         }
 
+        $config = json_encode(CONFIG_SYSTEM, JSON_UNESCAPED_UNICODE);
+        $scripts .= '<script id="ks_config">let config = '.$config.'</script>';
+
         $systems = '<div class="bg_0"></div>
 <div id="main_answer_server"></div>
 
