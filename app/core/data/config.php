@@ -19,6 +19,8 @@ return [
 
     "panel" => "panel",
 
+    "template" => "Web",
+
     // ЧПУ: 1 - link
     // ЧПУ: 2 - ID-link
     // ЧПУ: 3 - /category/link

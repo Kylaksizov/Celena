@@ -6,6 +6,8 @@ return [
 
         '404/$' => ['controller' => 'NotFound'],
 
+        'auth/$' => ['controller' => 'auth'],
+
         'products/(page-[0-9]+/)?$' => ['controller' => 'products'],
         'products/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addProduct'],
         'products/categories/(page-[0-9]+/)?$' => ['controller' => 'products', 'action' => 'categories'],
@@ -16,6 +18,7 @@ return [
         'products/properties/(add/|edit/([0-9]+/)?)$' => ['controller' => 'products', 'action' => 'addProperty'],
 
         'orders/(page-[0-9]+/)?$' => ['controller' => 'orders'],
+        'orders/[0-9]+/$' => ['controller' => 'orders', 'action' => 'order'],
         'orders/click/(page-[0-9]+/)?$' => ['controller' => 'orders', 'action' => 'click'],
 
         'posts/news/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'news'],

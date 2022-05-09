@@ -4,6 +4,14 @@ html, body{
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
+a{
+    color: #50A5F1;
+    text-decoration: none;
+    transition: .2s;
+}
+a:hover{
+    color: #0e1f30;
+}
 ul{
     list-style: none;
 }
@@ -530,6 +538,10 @@ table.min th{
 }
 .contextmenu{
     display: none;
+}
+.status_select option{
+    font-size: 15px;
+    color: #fff;
 }
 
 

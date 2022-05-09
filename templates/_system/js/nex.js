@@ -250,7 +250,7 @@
             contentType: d2,
             success: function(data){
 
-                console.log('ajaxSend -> ' + data);
+                console.log('response: ' + data);
 
                 /**
                  * @param redirect - редирект на data[1]

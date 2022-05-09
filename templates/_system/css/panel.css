@@ -96,6 +96,14 @@ body::-webkit-scrollbar-thumb{background:#7192A9A5}
 .box_ h3{
     padding: 0 0 15px 0;
 }
+.box_title{
+    background: #72798b;
+    font-weight: 300 !important;
+    color: #fff;
+    padding: 8px 15px !important;
+    margin: -15px -15px 10px;
+    border-radius: 4px 4px 0 0;
+}
 
 input{outline:none;}
 input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"], input[type="tel"], textarea, select{
@@ -1119,7 +1127,13 @@ h1 b{
     border: 1px #c7ccdd dashed;
     border-radius: 2px;
 }
-
+.box_error{
+    background: #e34646;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 2px;
+}
 
 
 

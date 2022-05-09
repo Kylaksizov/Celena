@@ -20,6 +20,8 @@ class CartController extends Controller {
         $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<span>Корзина</span></div>');
 
         $this->view->set('{cart}', '<div id="cart_ordering" class="w100"></div>');
+        $this->view->set('{name}', !empty(USER["name"]) ? USER["name"] : '');
+        $this->view->set('{email}', !empty(USER["email"]) ? USER["email"] : '');
 
 
 

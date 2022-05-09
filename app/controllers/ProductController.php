@@ -18,7 +18,7 @@ class ProductController extends Controller {
         $this->view->include('product');
 
         $fieldsQuery = [
-            'p.id, p.uid AS author_id, p.title, p.content, p.m_title, p.m_description, p.category, p.price',
+            'p.id, p.uid AS author_id, p.title, p.url, p.content, p.m_title, p.m_description, p.category, p.price',
             '{sale}'       => 'p.sale',
             '[sale]'       => 'p.sale',
             '{old-price}'  => 'p.sale',
@@ -86,11 +86,13 @@ class ProductController extends Controller {
 
 
 
-        $poster = 'no-image.png';
+        $poster = CONFIG_SYSTEM["home"].'templates/'.CONFIG_SYSTEM["template"].'/img/'.'no-image.svg';
         if(!empty($Product["product"]["src"])){
-            $poster = $Product["product"]["src"];
+            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.$Product["product"]["src"];
         } else if(!empty($Product["product"]["poster"]) && !empty($Product["images"][$Product["product"]["poster"]]["src"])){
-            $poster = $Product["images"][$Product["product"]["poster"]]["src"];
+            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.$Product["images"][$Product["product"]["poster"]]["src"];
+        } else if(!empty($Product["images"])){
+            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.end($Product["images"])["src"];
         }
 
 
@@ -147,20 +149,34 @@ class ProductController extends Controller {
             $this->view->set('[/no-sale]', '');
         }
 
+        $categoryLink = implode("/", $this->urls);
+
+        // FULL LINK
+        $link = $Product["product"]["url"].CONFIG_SYSTEM["seo_type_end"];
+        if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4')
+            $link = $Product["product"]["id"] . '-' . $link;
+        if(CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4')
+            $link = $categoryLink . '/' . $link;
+        $link = CONFIG_SYSTEM["home"].$link;
+
 
         $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
-        $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$poster);
+        $this->view->set('{poster}', $poster);
 
 
         $data_goods = [
             "id" => $Product["product"]["id"],
-            "title" => $Product["product"]["title"],
-            //"link"  => $link,
+            "title" => str_replace("'", "", $Product["product"]["title"]), #TODO решить проблему с апострофом
+            "link"  => $link,
             "price" => $Product["product"]["price"],
             "image" => $poster,
         ];
         $data_goods = json_encode($data_goods, JSON_UNESCAPED_UNICODE);
 
+        /*echo "<pre>";
+        print_r($data_goods);
+        echo "</pre>";
+        exit;*/
 
         // IMAGES
         $images = '';
@@ -201,9 +217,9 @@ class ProductController extends Controller {
 
         $this->view->set('{rating}', $rating);
         $this->view->set('{content}', $Product["product"]["content"]);
-        $this->view->set('{buy}', '<a href="/cart/" class="ks_buy" data-goods=\''.$data_goods.'\'>Купить</a>');
+        $this->view->set('{buy}', '<a href="/cart/" class="ks_buy" data-product=\''.$data_goods.'\'>Купить</a>');
         $this->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
-        $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
+        $this->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-product=\''.$data_goods.'\' title="Добавить в корзину"></a>');
 
 
         $this->view->set('{rating-count}', '1');
@@ -221,10 +237,9 @@ class ProductController extends Controller {
                 // select
                 if($props[0]["f_type"] == '1'){
 
-                    $properties .= '<div class="features">
+                    $properties .= '<div class="nex_properties">
                             <label for="">'.$propName.':</label>
-                            <select name="ft_select" class="ft_select" data-type-select="'.$props[0]["f_type"].'">
-                                <option>- не выбрано -</option>';
+                            <select name="ft_select" class="ft_select" data-type-select="'.$props[0]["f_type"].'">';
 
                     $c = 0;
                     foreach ($props as $prop) {
@@ -236,7 +251,9 @@ class ProductController extends Controller {
 
                         $active = ($prop["def"] == 1) ? ' selected' : '';
                         $val = !empty($prop["sep"]) ? $prop["sep"] : $prop["val"];
-                        $properties .= '<option data-title="'.$propName.'" data-sum="'.$priceProp.'" data-calc="'.$calc.'"'.$active.'>'.$val.'</option>';
+
+                        if($val == '') $properties .= '<option data-p-sum="" data-p-calc="" value="">- выбрать -</option>';
+                        else $properties .= '<option data-p-id="'.$prop["id"].'" data-p-title="'.$propName.'" data-p-sum="'.$priceProp.'" data-p-stock="'.$prop["stock"].'" data-p-calc="'.$calc.'"'.$active.' value="'.$val.'">'.$val.'</option>';
                         $c++;
                     }
 
@@ -247,7 +264,7 @@ class ProductController extends Controller {
                 // change
                 if($props[0]["f_type"] == '2' || $props[0]["f_type"] == '3'){
 
-                    $properties .= '<div class="features">
+                    $properties .= '<div class="nex_properties">
                             <label for="">'.$propName.':</label>
                             <ul class="ft_select" data-type-select="'.$props[0]["f_type"].'">';
 
@@ -260,7 +277,9 @@ class ProductController extends Controller {
                         else $calc = $prop["pv"];
 
                         $class_active = ($prop["def"] == 1) ? ' class="active"' : '';
-                        $properties .= '<li data-title="'.$propName.'" data-sum="'.(($priceProp != 0) ? $priceProp : $price).'" data-calc="'.$calc.'"'.$class_active.'>'.$prop["val"].'</li>';
+                        $val = !empty($prop["sep"]) ? $prop["sep"] : $prop["val"];
+
+                        $properties .= '<li data-p-id="'.$prop["id"].'" data-p-title="'.$propName.'" data-p-sum="'.(($priceProp != 0) ? $priceProp : $price).'" data-p-stock="'.$prop["stock"].'" data-p-calc="'.$calc.'"'.$class_active.' data-p-val="'.$val.'">'.$val.'</li>';
                         $c++;
                     }
 

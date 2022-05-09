@@ -27,7 +27,7 @@ class ProductsController extends PanelController {
 
         $content = '<div class="fx">
             <h1>Товары</h1>
-            <a href="/panel/products/add/" class="btn">Добавить</a>
+            <a href="/'.CONFIG_SYSTEM["panel"].'/products/add/" class="btn">Добавить</a>
         </div>';
 
         $ProductsModel = new ProductModel();
@@ -62,7 +62,7 @@ class ProductsController extends PanelController {
                         <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$row["id"].'/">'.$row["title"].'</a>
                         <span class="br_min">'.$category.'</span>
                     </td>
-                    <td><b>'.$row["price"].' $</b></td>
+                    <td><b>'.$row["price"].' '.CONFIG_SYSTEM["currency"].'</b></td>
                     <td class="fs12">'.date("d.m.Y H:i", $row["created"]).'</td>
                     <td>'.$stock.'</td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_product" data-id="'.$row["id"].'"  id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>
@@ -854,8 +854,8 @@ class ProductsController extends PanelController {
 
         // тип поля
         $typeOptions = '<option value="1">Выпадающий список</option>
-            <option value="2"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '2' ? ' selected' : '').'>Множественный выбор</option>
-            <option value="3"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '3' ? ' selected' : '').'>Радио-кнопка</option>';
+            <option value="2"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '2' ? ' selected' : '').'>Выбор</option>
+            <option value="3"'.(!empty($Property[0]["f_type"]) && $Property[0]["f_type"] == '3' ? ' selected' : '').'>Множественный выбор</option>';
 
         // родительская категория
         $categoryOptions = '';

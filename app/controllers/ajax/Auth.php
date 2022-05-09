@@ -3,9 +3,7 @@
 namespace app\controllers\ajax;
 
 use app\core\System;
-use app\models\panel\BrandModel;
 use app\models\UsersModel;
-use Exception;
 
 class Auth{
 

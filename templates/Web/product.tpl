@@ -5,7 +5,7 @@
         {*Картинки товара*}
         <div class="product_pictures">
             <div id="goods_carousel" class="owl-carousel">
-                {images}
+                <img src="{poster}" alt="">
             </div>
             <div id="goods_carousel2" class="owl-carousel">
                 {images}
@@ -24,7 +24,7 @@
             </div>
             <h1 itemprop="name">{title}{edit}</h1>
             <div class="prices">
-                <span class="price">{price} {currency}</span>
+                <span class="price" data-price="{price}">{price} {currency}</span>
                 [sale]<span class="old_price">{old-price} {currency}</span>[/sale]
             </div>
             <div class="btn-cart">

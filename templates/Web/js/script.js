@@ -265,21 +265,23 @@ $(function(){
         }
 
         // при слайде ползунков
-        $("#filter_price").slider({
-            range: true,
-            min: config.filter_min_price,
-            max: config.filter_max_price,
-            step: config.filter_step,
-            values: [min_price, max_price],
-            slide: function(event, ui) {
-                $("#min_price").val(ui.values[0]);
-                $("#max_price").val(ui.values[1]);
-            },
-            stop: function(event, ui){
+        if($("#filter_price").length){
+            $("#filter_price").slider({
+                range: true,
+                min: config.filter_min_price,
+                max: config.filter_max_price,
+                step: config.filter_step,
+                values: [min_price, max_price],
+                slide: function(event, ui) {
+                    $("#min_price").val(ui.values[0]);
+                    $("#max_price").val(ui.values[1]);
+                },
+                stop: function(event, ui){
 
-                getGoodsByFilter();
-            }
-        });
+                    getGoodsByFilter();
+                }
+            });
+        }
 
 
         $(document).on("keyup", "#min_price, #max_price", function(){

@@ -39,7 +39,7 @@ class ProductModel extends Model{
         if(!$fields){ // поля по умолчанию
 
             $fields = [
-                'p.id, p.uid AS author_id, p.title, p.content, p.m_title, p.m_description, p.category, p.price',
+                'p.id, p.uid AS author_id, p.title, p.url, p.content, p.m_title, p.m_description, p.category, p.price',
                 '{sale}'       => 'p.sale',
                 '[sale]'       => 'p.sale',
                 '{old-price}'  => 'p.sale',

@@ -62,6 +62,12 @@ class Router{
         $panelKey = '';
 
         if($this->urls[0] == CONFIG_SYSTEM["panel"]){
+
+            if(!USER && $this->urls[1] != 'auth'){
+                header("Location: /".CONFIG_SYSTEM["panel"]."/auth/");
+                die();
+            }
+
             $this->is_panel = true;
             $route_type = 'panel';
             $panelKey = $this->urls[0].'/';
