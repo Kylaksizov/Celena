@@ -17,10 +17,30 @@ class CategoryController extends Controller {
     public function indexAction(){
 
         //$this->view->load('Nex');
-/*echo "<pre>";
-print_r("Блять!");
-echo "</pre>";
-exit;*/
+
+
+        self::getProducts();
+
+
+
+        $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
+            [
+                'property' => 'og:title',
+                'content' => 'NEX CRM',
+            ],
+            [
+                'property' => 'og:description',
+                'content' => 'CRM система для автоматизации бизнес процессов',
+            ]
+        ]);
+
+        $this->view->render();
+    }
+
+
+
+    public function getProducts(){
+
         $ProductModel = new ProductModel();
 
         $this->view->include('products');
@@ -65,16 +85,16 @@ exit;*/
         $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
-            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
+            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
 
-            $addLink = CONFIG_SYSTEM["home"];
+            $addLink = '/'.CONFIG_SYSTEM["home"].'/';
             foreach ($CategoryStep as $row) {
 
                 $addLink .= $row["url"].'/';
                 $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addLink . '">' . $row["title"] . '</a>';
             }
 
-        } else $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+        } else $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
 
         $crumbs .= '</div>';
 
@@ -99,9 +119,9 @@ exit;*/
                 $link = $row["id"] . '-' . $link;
             if(CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4')
                 $link = $categoryLink . '/' . $link;
-            $link = CONFIG_SYSTEM["home"].$link;
+            $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
 
-            
+
             $poster = !empty($row["src"]) ? $row["src"] : 'no-image.png';
 
 
@@ -133,7 +153,7 @@ exit;*/
             if($tagStock)    $this->view->set('{stock}', $row["stock"]);
 
             $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
-            $this->view->set('{poster}', CONFIG_SYSTEM["home"].'uploads/products/'.$poster);
+            $this->view->set('{poster}', '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$poster);
 
 
             $data_goods = [
@@ -170,23 +190,7 @@ exit;*/
             $this->view->push();
         }
 
-        $this->view->clearPush();
-
-
-
-
-        $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
-            [
-                'property' => 'og:title',
-                'content' => 'NEX CRM',
-            ],
-            [
-                'property' => 'og:description',
-                'content' => 'CRM система для автоматизации бизнес процессов',
-            ]
-        ]);
-
-        $this->view->render();
+        return $this->view->clearPush();
     }
 
 

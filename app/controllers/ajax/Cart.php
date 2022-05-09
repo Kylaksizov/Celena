@@ -4,6 +4,7 @@ namespace app\controllers\ajax;
 
 use app\core\System;
 use app\models\OrderModel;
+use app\traits\Mail;
 
 class Cart{
 
@@ -66,16 +67,20 @@ class Cart{
                 }
             }
 
-            die();
-
             //  отправляем сообщение админу
+            $theme = 'Новый заказ № ' . $orderId;
+            $body = 'На сайте оформлен новый заказ на сумму: <b>'.$total.' '.CONFIG_SYSTEM["currency"].'</b>';
 
+            Mail::send(CONFIG_SYSTEM["admin_email"], $theme, $body);
 
-            //  отправляем сообщение покупателю
+            //  отправляем сообщение покупателю в
 
             $script = '<script>
-                $.server_say({say: "Успешная авторизация!", status: "success"});
-                window.location.href = "/'.CONFIG_SYSTEM["panel"].'/";
+                $.server_say({say: "Заказ оформлен!", status: "success"});
+                localStorage.removeItem("cart");
+                setTimeout(function(){
+                    window.location.href = "'.CONFIG_SYSTEM["after_cart"].'";
+                }, 1000)
             </script>';
 
             System::script($script);

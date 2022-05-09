@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\controllers\classes\Main;
 use app\core\Controller;
 use app\core\System;
 use app\models\ProductModel;
@@ -361,12 +362,7 @@ class ProductController extends Controller {
 
 
 
-
-
-
-
-
-
+        Main::scanTags($this);
 
         $this->view->setMeta('Продукты', 'CRM система для автоматизации бизнес процессов', [
             [

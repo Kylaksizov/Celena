@@ -6,13 +6,13 @@ return [
 	"errors" => 0,
 
     // вести журнал ошибок
-	"db_log" => 0,
+	"db_log" => 1,
 
     // помощь разработчику
 	"dev_tools" => 1,
 
     // какому IP показывать ошибки независимо от настроек выше
-	"dev" => ["127.0.0.1", "93.79.238.129"],
+	"dev" => ["127.0.0.1"],
 
 	"home" => "nexshop",
 
@@ -64,6 +64,9 @@ return [
     // шаблон по умолчанию
 	"template" => "Web",
 
+    // перекидывать на страницу после оформления заказа
+	"after_cart" => "/",
+
     "auth" => [
         "googleClientId" => '956715554556-ckj2ju70102elqq6990k8rb3439qb28e.apps.googleusercontent.com',
         "googleClientSecret" => 'MQc0zaALnIANl2KEmJBDsPH2',
@@ -71,16 +74,16 @@ return [
     ],
 
     // email админа
-    "noreply" => "noreply@nex.company",
-    "admin_email" => "info@nex.company",
+    "noreply" => "noreply@kylaksizov.com",
+    "admin_email" => "info@kylaksizov.com",
 
     // SMTP
-    "SMTPHost" => "smtp.beget.com",
-    "SMTPLogin" => "info@nex.company",
-    "SMTPPassword" => "",
+    "SMTPHost" => "mail.adm.tools",
+    "SMTPLogin" => "info@kylaksizov.com",
+    "SMTPPassword" => "8PS_7N^r6u(r",
     "SMTPSecure" => "ssl",
     "SMTPPort" => 465,
-    "SMTPFrom" => "info@nex.company",
+    "SMTPFrom" => "info@kylaksizov.com",
 
     "version" => "0.0.1",
 

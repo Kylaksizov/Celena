@@ -232,7 +232,7 @@ class ViewPanel{
         $this->tplIndex = str_replace('{panel}', '/'.CONFIG_SYSTEM["panel"], $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);
-        $this->tplIndex = str_replace('{PLUGIN_THEME}', CONFIG_SYSTEM['home'].'templates/'.$this->template.'/'.$pluginTheme, $this->tplIndex);
+        $this->tplIndex = str_replace('{PLUGIN_THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.$pluginTheme, $this->tplIndex);
 
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 

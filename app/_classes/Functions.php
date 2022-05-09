@@ -85,41 +85,4 @@ class Functions{
         else return '';
     }
 
-
-
-
-    /**
-     * @param $rows
-     * @param string $field_name
-     * @return array
-     * ============================================
-     * @name установить ключи для полученных данных
-     */
-    public static function setKeys($rows, string $field_name = "id"){
-
-        $result = [];
-        foreach ($rows as $row) $result[$row[$field_name]] = $row;
-        return $result;
-    }
-
-
-
-
-    /**
-     * @param $rows
-     * @param string $field_name
-     * @return array
-     * ============================================
-     * @name установить ключи для полученных данных
-     */
-    public static function setKeysArray($rows, string $field_name = "id"){
-
-        $result = [];
-        foreach ($rows as $row){
-            if(!empty($result[$row[$field_name]])) array_push($result[$row[$field_name]], $row);
-            else $result[$row[$field_name]][] = $row;
-        }
-        return $result;
-    }
-
 }

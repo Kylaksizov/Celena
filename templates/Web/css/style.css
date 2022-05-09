@@ -338,6 +338,7 @@ hr{
     margin-left: -350px;
 }
 #cart_ordering{
+    background: #fff;
     width: 100%;
 }
 .modal_header{
@@ -357,6 +358,7 @@ hr{
 }
 .cart_img{
     width: 80px;
+    text-align: center;
 }
 .cart_title{
     width: 47%;
@@ -836,7 +838,9 @@ hr{
     font-size: 13px;
     margin: 5px 0;
 }
-
+#cart_ordering h2{
+    background: #3a4451;
+}
 .cart_static .modal_header{
     margin: 20px 0 !important;
 }

@@ -115,8 +115,8 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
-                                <h3>Разрешенные IP адреса</h3>
-                                <div class="setDescription">Если указать IP адреса, каждый с новой строки, то ошибки и другая информация так же будет показываться этим адресам.</div>
+                                <h3>IP адреса для ошибок</h3>
+                                <div class="setDescription">IP адреса (каждый с новой строки), которым будут видны ошибки при любом раскладе, независимо от настроек выше.</div>
                             </div>
                             <div>
                                 <textarea name="config[dev]">'.implode("\r\n", CONFIG_SYSTEM["dev"]).'</textarea>

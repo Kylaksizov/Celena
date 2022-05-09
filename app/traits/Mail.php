@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 trait Mail{
 
 
-    public static function send($config, $reply = null, $to, $theme, $body, $files = []){
+    public static function send($to, $theme, $body, $files = []){
 
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
@@ -15,15 +15,15 @@ trait Mail{
             //Server settings
             //$mail->SMTPDebug = 2;
             $mail->isSMTP();
-            $mail->Host = $config->SMTPHost;
+            $mail->Host = CONFIG_SYSTEM["SMTPHost"];
             $mail->SMTPAuth = true;
-            $mail->Username = $config->SMTPLogin;                 // SMTP username
-            $mail->Password = $config->SMTPPassword;                           // SMTP password
-            $mail->SMTPSecure = $config->SMTPSecure;                            // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = $config->SMTPPort;                                    // TCP port to connect to
+            $mail->Username = CONFIG_SYSTEM["SMTPLogin"];                 // SMTP username
+            $mail->Password = CONFIG_SYSTEM["SMTPPassword"];                           // SMTP password
+            $mail->SMTPSecure = CONFIG_SYSTEM["SMTPSecure"];                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = CONFIG_SYSTEM["SMTPPort"];                                    // TCP port to connect to
 
             //Recipients
-            $mail->setFrom($config->admin_email, $config->SMTPFrom);
+            $mail->setFrom(CONFIG_SYSTEM["admin_email"], CONFIG_SYSTEM["SMTPFrom"]);
 
             if(is_array($to)){
                 foreach ($to as $email) {
@@ -31,8 +31,7 @@ trait Mail{
                 }
             } else $mail->addAddress($to);
 
-            if(!$reply) $reply = $config->admin_email;
-            $mail->addReplyTo($reply);
+            $mail->addReplyTo(CONFIG_SYSTEM["admin_email"]);
             //$mail->addCC('cc@example.com');
             //$mail->addBCC('bcc@example.com');
 

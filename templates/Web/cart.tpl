@@ -3,6 +3,7 @@
     <div class="cart_static">
         {cart}
     </div>
+    <br>
     <div class="cart_order_form">
         <p>Пожалуйста заполните все поля, что бы оформить заказ.</p>
         <form action method="POST">

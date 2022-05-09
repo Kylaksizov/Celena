@@ -68,7 +68,7 @@
         <div class="site_bar_box">
             <div class="box_title">Похожие товары</div>
             <div class="box_content goods_see">
-                {goods category="{category-id}" template="custom" limit="12"}
+                {products category="7" template="custom" limit="12"}
             </div>
         </div>
 

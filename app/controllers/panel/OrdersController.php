@@ -177,7 +177,7 @@ class OrdersController extends PanelController {
                 $total += $row["price"];
             }
             $products .= '<tr>
-                <td colspan="3" class="tr total">Всего: <b>'.$total.' '.CONFIG_SYSTEM["currency"].'</b></td>
+                <td colspan="3" class="tr total">Всего: <b>'.$Order["order"][0]["total"].' '.CONFIG_SYSTEM["currency"].'</b></td>
             </tr>';
 
             $content .= '<div class="dg order_box">
