@@ -1134,6 +1134,11 @@ h1 b{
     text-align: center;
     border-radius: 2px;
 }
+.set_item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
 
 
 

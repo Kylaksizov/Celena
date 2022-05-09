@@ -11,9 +11,9 @@ class SupportController extends PanelController {
 
     public function indexAction(){
 
-        $content = '';
+        $content = 'В разработке';
 
-        $this->view->render('Поддержка');
+        $this->view->render('Поддержка', $content);
     }
 
 }
