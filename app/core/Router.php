@@ -41,17 +41,19 @@ class Router{
         $this->url = !empty($_GET["url"]) ? trim(htmlspecialchars(strip_tags($_GET["url"]))) : '';
         $this->urls = explode("/", trim($this->url, "/"));
 
-        // вывод ошибок
-        if(CONFIG_SYSTEM["errors"]){
-            // если пусто или совпадает по IP
-            if(empty(CONFIG_SYSTEM["dev"]) || (in_array($_SERVER["REMOTE_ADDR"], CONFIG_SYSTEM["dev"]) !== false)){
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
-                define('ADMIN', true);
-            }
-        }
-
         $this->getAuthUser(); // получаем инфу о пользователе
+
+        // вывод ошибок
+        if(CONFIG_SYSTEM["errors"] || in_array($_SERVER["REMOTE_ADDR"], CONFIG_SYSTEM["dev"]) !== false){
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+        } else{
+            error_reporting(0);
+            ini_set('display_errors', 0);
+        }
+        
+        if(USER["role"] == '1') define('ADMIN', true);
+        else define('ADMIN', false);
 
         $routes = require APP . '/cache/routes.php';
 

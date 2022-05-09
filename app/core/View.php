@@ -441,12 +441,12 @@ class View{
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
-        $styles = '<link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/nex.css">
-    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/'.$this->template.'/css/'.$style.'">';
+        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/nex.css">
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.'/css/'.$style.'">';
 
         $scripts = '
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/jquery.min.js"></script>
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/nex.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/jquery.min.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/nex.js"></script>
     <script src="{THEME}/js/script.js"></script>';
 
         if(!empty($this->styles)){
@@ -477,10 +477,12 @@ class View{
         if(ADMIN){
 
             $styles .= '
-    <link rel="stylesheet" href="'.CONFIG_SYSTEM['home'].'templates/_system/css/admin.css">';
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/admin.css">';
 
             $scripts .= '
-    <script src="'.CONFIG_SYSTEM['home'].'templates/_system/js/admin.js"></script>'.$this->dev();
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/admin.js"></script>';
+
+            if(CONFIG_SYSTEM["dev_tools"]) $scripts .= $this->dev();
 
         }
 
@@ -500,7 +502,7 @@ class View{
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);
         $this->tplIndex = str_replace('{SCRIPTS}', $scripts, $this->tplIndex);
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);
-        $this->tplIndex = str_replace('{THEME}', CONFIG_SYSTEM['home'].'templates/'.$this->template, $this->tplIndex);
+        $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
 
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 

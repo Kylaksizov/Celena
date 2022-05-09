@@ -69,13 +69,13 @@ class Base {
                 throw New Exception("Параметр \$args ($args) не является массивом | line: " . __LINE__ . " in " . __FILE__);
             } else{
 
-                if(!empty(CONFIG_SYSTEM["db_log"])) $query_start = microtime(true);
+                if(CONFIG_SYSTEM["db_log"]) $query_start = microtime(true);
                 self::$queries[] = $sql; // add sql request
                 self::$countSql++; // add +1 for counter
                 $stmt = self::instance() -> prepare($sql);
                 $stmt -> execute($args);
 
-                if(!empty(CONFIG_SYSTEM["db_log"])){
+                if(CONFIG_SYSTEM["db_log"]){
                     $result_query = round(microtime(true) - intval($query_start), 2);
                 }
 
@@ -108,40 +108,43 @@ class Base {
      */
     static function Error($errors){
 
-        $file_info = debug_backtrace();
+        if(CONFIG_SYSTEM["db_log"]){
 
-        $relPath_1 = strstr($file_info[1]['file'], "app\\");
-        $relPath_2 = strstr($file_info[2]['file'], "app\\");
-        $relPath_3 = strstr($file_info[3]['file'], "app\\");
-        $relPath_4 = strstr($file_info[4]['file'], "app\\");
-        $relPath_5 = strstr($file_info[5]['file'], "app\\");
+            $file_info = debug_backtrace();
 
-        $content = date("d.m.Y H:i:s", time()) . " | " . $errors . '<br><span class="file_log">1: '.$relPath_1.' &#10148; '.$file_info[1]['line'].'</span><br>' . '<span class="file_log">2: '.$relPath_2.' &#10148; '.$file_info[2]['line'].'</span>';
+            $relPath_1 = strstr($file_info[1]['file'], "app\\");
+            $relPath_2 = strstr($file_info[2]['file'], "app\\");
+            $relPath_3 = strstr($file_info[3]['file'], "app\\");
+            $relPath_4 = strstr($file_info[4]['file'], "app\\");
+            $relPath_5 = strstr($file_info[5]['file'], "app\\");
 
-        if($relPath_3)
-            $content .= '<br>' . '<span class="file_log">3: '.$relPath_3.' &#10148; '.$file_info[3]['line'].'</span>';
+            $content = date("d.m.Y H:i:s", time()) . " | " . $errors . '<br><span class="file_log">1: '.$relPath_1.' &#10148; '.$file_info[1]['line'].'</span><br>' . '<span class="file_log">2: '.$relPath_2.' &#10148; '.$file_info[2]['line'].'</span>';
 
-        if($relPath_4)
-            $content .= '<br>' . '<span class="file_log">4: '.$relPath_4.' &#10148; '.$file_info[4]['line'].'</span>';
+            if($relPath_3)
+                $content .= '<br>' . '<span class="file_log">3: '.$relPath_3.' &#10148; '.$file_info[3]['line'].'</span>';
 
-        if($relPath_5)
-            $content .= '<br>' . '<span class="file_log">5: '.$relPath_5.' &#10148; '.$file_info[5]['line'].'</span>';
+            if($relPath_4)
+                $content .= '<br>' . '<span class="file_log">4: '.$relPath_4.' &#10148; '.$file_info[4]['line'].'</span>';
 
-        $content .= PHP_EOL.PHP_EOL;
+            if($relPath_5)
+                $content .= '<br>' . '<span class="file_log">5: '.$relPath_5.' &#10148; '.$file_info[5]['line'].'</span>';
 
-        self::$countErrors++;
-        self::$errors[] = $relPath_2.' &#10148; '.$file_info[2]['line'];
+            $content .= PHP_EOL.PHP_EOL;
 
-        $file =  ROOT . "/app/core/tmp/db_errors.txt";
-        if(file_exists($file)){ // если файл существует
-            if(filesize($file) > 5242880){ // если файл больше N кб (5 Мб)
-                $fp = fopen($file, "w");
-                fwrite($fp, $content);
+            self::$countErrors++;
+            self::$errors[] = $relPath_2.' &#10148; '.$file_info[2]['line'];
+
+            $file =  ROOT . "/app/core/tmp/db_errors.txt";
+            if(file_exists($file)){ // если файл существует
+                if(filesize($file) > 5242880){ // если файл больше N кб (5 Мб)
+                    $fp = fopen($file, "w");
+                    fwrite($fp, $content);
+                }
             }
+            $fp = fopen($file, "a");
+            fwrite($fp, $content);
+            fclose($fp);
         }
-        $fp = fopen($file, "a");
-        fwrite($fp, $content);
-        fclose($fp);
     }
 
     function __destruct(){

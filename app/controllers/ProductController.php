@@ -60,12 +60,12 @@ class ProductController extends Controller {
 
 
         // CRUMBS
-        $addCategoryLink = CONFIG_SYSTEM["home"];
+        $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';
         
         $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
-            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>';
+            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
             
             foreach ($CategoryStep as $row) {
 
@@ -76,7 +76,7 @@ class ProductController extends Controller {
         } else{
 
             $addCategoryLink .= $CategoryStep[end($this->urls)]["url"];
-            $crumbs .= '<a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
         }
 
         $crumbs .= '</div>';
@@ -86,13 +86,13 @@ class ProductController extends Controller {
 
 
 
-        $poster = CONFIG_SYSTEM["home"].'templates/'.CONFIG_SYSTEM["template"].'/img/'.'no-image.svg';
+        $poster = '//'.CONFIG_SYSTEM["home"].'/templates/'.CONFIG_SYSTEM["template"].'/img/'.'no-image.svg';
         if(!empty($Product["product"]["src"])){
-            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.$Product["product"]["src"];
+            $poster = '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$Product["product"]["src"];
         } else if(!empty($Product["product"]["poster"]) && !empty($Product["images"][$Product["product"]["poster"]]["src"])){
-            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.$Product["images"][$Product["product"]["poster"]]["src"];
+            $poster = '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$Product["images"][$Product["product"]["poster"]]["src"];
         } else if(!empty($Product["images"])){
-            $poster = CONFIG_SYSTEM["home"].'uploads/products/'.end($Product["images"])["src"];
+            $poster = '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.end($Product["images"])["src"];
         }
 
 
@@ -109,7 +109,7 @@ class ProductController extends Controller {
         // --- категории товара
         if($this->view->findTag('{categories}')){
             $categories = '<ul class="nex_categories">';
-            $addLink = CONFIG_SYSTEM["home"];
+            $addLink = '//'.CONFIG_SYSTEM["home"].'/';
             foreach ($CategoryStep as $row) {
 
                 $addLink .= $row["url"].'/';
@@ -157,7 +157,7 @@ class ProductController extends Controller {
             $link = $Product["product"]["id"] . '-' . $link;
         if(CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4')
             $link = $categoryLink . '/' . $link;
-        $link = CONFIG_SYSTEM["home"].$link;
+        $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
 
 
         $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
@@ -182,7 +182,7 @@ class ProductController extends Controller {
         $images = '';
         if(!empty($findTags["{images}"]) && !empty($Product["images"])){
             foreach ($Product["images"] as $image) {
-                $images .= '<figure><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="group"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" alt=""></a></figure>';
+                $images .= '<figure><a href="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image["src"].'" data-fancybox="group"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image["src"].'" alt=""></a></figure>';
             }
         }
         $this->view->set('{images}', $images);
@@ -315,7 +315,7 @@ class ProductController extends Controller {
 
 
         $edit = '';
-        if(ADMIN) $edit = '<a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';
+        if(ADMIN) $edit = '<a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';
 
         $this->view->set('{edit}', $edit);
 

@@ -41,7 +41,7 @@ class ProductsController extends PanelController {
 
             foreach ($Products["products"] as $row) {
 
-                $img = !empty($row["src"]) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.$row["src"].'" alt="">' : '<span class="no_image"></span>';
+                $img = !empty($row["src"]) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$row["src"].'" alt="">' : '<span class="no_image"></span>';
 
                 $category = '';
                 if(!empty($row["category"])){
@@ -59,7 +59,7 @@ class ProductsController extends PanelController {
                         '.$img.'
                     </td>
                     <td>
-                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$row["id"].'/">'.$row["title"].'</a>
+                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$row["id"].'/">'.$row["title"].'</a>
                         <span class="br_min">'.$category.'</span>
                     </td>
                     <td><b>'.$row["price"].' '.CONFIG_SYSTEM["currency"].'</b></td>
@@ -302,12 +302,12 @@ class ProductsController extends PanelController {
         if(!empty($Product["images"])){
             foreach ($Product["images"] as $image) {
 
-                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"];
+                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.str_replace('/', '/thumbs/', $image["src"]) : '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image["src"];
 
                 $is_main = ($Product["product"]["poster"] == $image["id"]) ? ' is_main' : '';
 
                 $images .= '<div class="img_item" data-img-id="'.$image["id"].'">
-                    <a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
+                    <a href="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image["src"].'" data-fancybox="gallery" data-caption="'.$image["alt"].'"><img src="'.$thumb.'" alt=""></a>
                     <a href="#" class="main_image'.$is_main.'" data-a="ProductShop:setMainImage='.$image["id"].'"></a>
                     <a href="#editPhoto" class="edit_image open_modal" data-img-id="'.$image["id"].'"></a>
                     <a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$image["id"].'&link='.$image["src"].'"></a>
@@ -485,9 +485,9 @@ class ProductsController extends PanelController {
                     <td>'.$row["id"].'</td>
                     <td><a href="" target="_blank" class="ico_see" title="В разработке"></a></td>
                     <td>
-                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
+                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="//'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
                     </td>
-                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
+                    <td><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_category" data-id="'.$row["id"].'" id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>
                     <td>
                         <ul class="tc">
@@ -556,7 +556,7 @@ class ProductsController extends PanelController {
 
         $content = '<h1>'.$title.'</h1>';
 
-        $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$Category["icon"].'" alt="">' : '<span class="no_image"></span>';
+        $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/categories/'.$Category["icon"].'" alt="">' : '<span class="no_image"></span>';
 
         $content .= '<form action method="POST" class="box_">
             <div class="dg dg_auto">
@@ -646,9 +646,9 @@ class ProductsController extends PanelController {
                 $categoryContent .= '<tr>
                     <td>'.$row["id"].'</td>
                     <td>
-                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
+                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="//'.CONFIG_SYSTEM["home"].'/'.'uploads/brands/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
                     </td>
-                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.$row["name"].'</a></td>
+                    <td><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$row["id"].'/">'.$row["name"].'</a></td>
                     <td>
                         <ul class="tc">
                             <li><a href="#" class="remove" data-a="Brand:deleteBrand='.$row["id"].'"></a></li>
@@ -770,7 +770,7 @@ class ProductsController extends PanelController {
 
                 $propertiesContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <td><a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
+                    <td><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td>
                         <ul class="tc">
                             <li><a href="#" class="remove"></a></li>

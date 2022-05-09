@@ -2,24 +2,25 @@
 
 return [
 
-    // вывод ошибок: 0 - выкл., 1 - ошибки будут показаны только разработчику, IP которого на настройку ниже
-    "errors" => 1,
+    // вывод ошибок
+	"errors" => 0,
 
-    "db_log" => 1,
+    // вести журнал ошибок
+	"db_log" => 0,
 
-    // IP разработчика
-    "dev" => [
-        "127.0.0.1",
-        "93.79.238.129"
-    ],
+    // помощь разработчику
+	"dev_tools" => 1,
 
-    "home" => "http://nexshop/",
+    // какому IP показывать ошибки независимо от настроек выше
+	"dev" => ["127.0.0.1", "93.79.238.129"],
+
+	"home" => "nexshop",
+
+	"ssl" => 1,
 
     "site_title" => "Мой магазин",
 
-    "panel" => "panel",
-
-    "template" => "Web",
+	"panel" => "panel",
 
     // ЧПУ: 1 - link
     // ЧПУ: 2 - ID-link
@@ -61,24 +62,13 @@ return [
     "quality_thumb" => "80",
 
     // шаблон по умолчанию
-    "template" => "Web",
+	"template" => "Web",
 
     "auth" => [
         "googleClientId" => '956715554556-ckj2ju70102elqq6990k8rb3439qb28e.apps.googleusercontent.com',
         "googleClientSecret" => 'MQc0zaALnIANl2KEmJBDsPH2',
         "redirect_url" => 'https://nex.company/'
     ],
-
-
-    "telegramToken" => "5045603422:AAF3be0tXSZXdPz_3kt0xOhfluSN0jcv4eU",
-
-
-    // LIQ-PAY
-    //"LiqPay_public_key" => "sandbox_i61178662755",
-    "LiqPay_public_key" => "i15845909488",
-    //"LiqPay_private_key" => "sandbox_LJQTJkT3Xh5M024SeMFHm9L5e4riRcaNo8rBYAnJ",
-    "LiqPay_private_key" => "A31DuJRMAr5FcS6Eyi4v1VwwxBHEuODlioqpotYd",
-
 
     // email админа
     "noreply" => "noreply@nex.company",
@@ -87,7 +77,7 @@ return [
     // SMTP
     "SMTPHost" => "smtp.beget.com",
     "SMTPLogin" => "info@nex.company",
-    "SMTPPassword" => "Kyls17*master",
+    "SMTPPassword" => "",
     "SMTPSecure" => "ssl",
     "SMTPPort" => 465,
     "SMTPFrom" => "info@nex.company",

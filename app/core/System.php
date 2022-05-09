@@ -8,6 +8,17 @@ class System{
 
 
     /**
+     * @name для input type check
+     * ==========================
+     * @param $val
+     * @return string
+     */
+    public static function check($val){
+        return $val ? ' checked' : '';
+    }
+
+
+    /**
      * @name очистка и сжатие скриптов (для AJAX)
      * ==========================================
      * @param $str
@@ -252,8 +263,9 @@ class System{
 
 
 
-    public function editConfig($file, $newSettings){
+    public static function editSystemConfig($newSettings){
 
+        $file = CORE . '/data/config.php';
         $new_settings = '';
 
         $handle = @fopen($file, "r");

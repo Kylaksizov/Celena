@@ -1139,6 +1139,27 @@ h1 b{
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
 }
+.set_item:not(:last-child){
+    padding-bottom: 10px;
+    border-bottom: 1px #dce1ef dashed;
+}
+.settings h2{
+    font-size: 17px;
+    font-weight: 500;
+}
+.settings h3{
+    font-size: 15px;
+    font-weight: 500;
+}
+.settings input[type="checkbox"]+label{
+    margin-bottom: 17px;
+}
+.setDescription{
+    font-size: 13px;
+    display: block;
+    margin-top: 4px;
+    color: var(--main-color-g);
+}
 
 
 
