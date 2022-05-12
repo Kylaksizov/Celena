@@ -1,10 +1,10 @@
 <article class="flex goods_box">
     <a href="{link}" class="g_preview">
-        <img src="{image-thumb-1}" alt="">
-        <span class="g_id">{sid}</span>
+        <img src="{poster}" alt="">
+        <span class="g_id">{id}</span>
     </a>
     <div class="goods_info">
-        {rating}<span class="reviews_count">({rating-count} отзывов)</span>
+        {rating}<span class="reviews_count">(0 отзывов)</span>
         <h3><a href="{link}">{title}</a></h3>
         <div class="price">
             [sale]<span class="price_sale">{price} {currency}</span>

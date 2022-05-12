@@ -76,21 +76,19 @@
 
 </article>
 
-[goods-see]
+{*[goods-see]
 <h3 class="title_center">Вы смотрели:</h3>
 <div id="goods_see" class="owl-carousel">
     {goods-see}
 </div>
-[/goods-see]
+[/goods-see]*}
 
-[role="guest"]
 <div class="modal" id="add_review">
     <h4 class="modal_title">Добавление отзыва</h4>
     <p>Что бы добавить отзыв, <a href="/registration.html">зарегистрируйтесь</a> или <a href="#authorization" class="ico_login open_modal">войдите</a> на сайте.</p>
     <a href="#" class="close"></a>
-</div>[/role]
+</div>
 
-[not-role="guest"]
 <div class="modal" id="add_review">
     <h4 class="modal_title">Добавление отзыва</h4>
     <form action="#" method="POST">
@@ -100,4 +98,4 @@
         <input type="submit" class="btn" data-a="AddReview" value="Добавить">
     </form>
     <a href="#" class="close"></a>
-</div>[/not-role]
+</div>

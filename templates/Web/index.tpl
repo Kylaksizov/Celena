@@ -29,7 +29,6 @@
             <a href="#"><img src="{THEME}/img/slide.jpg" alt=""></a>
         </div>
         [/show]
-
         [show="category"]
         <div class="flex cat_info">
             <h1 class="category_name">{category-name}</h1>
