@@ -208,7 +208,8 @@ class System{
         $count = Base::run($sql, $params)->fetch(PDO::FETCH_COLUMN);
         $start_from = @ceil($count / $limit);
         $result["start"] = abs($page_number_ * $limit);
-
+        
+        $path = (strripos($_SERVER["REQUEST_URI"], "?") !== false) ? strstr($_SERVER["REQUEST_URI"], "?") : '';
 
         // если записей больше чем лимит, то выводим пагинацию
         if($count > $limit){
@@ -216,13 +217,13 @@ class System{
             $pagination = '<ul class="navigation">';
 
             if(!empty($category)) $category = '/'.$category;
-            $pagination .= '<li class="pagination_edge"><a href="'.$category.'/"></a></li>';
+            $pagination .= '<li class="pagination_edge"><a href="'.$category.'/'.$path.'"></a></li>';
 
             // предыдущая страница
             if(!empty($page_number)) {
                 if($page_number <= 2) $prev = $category.'/';
                 else $prev = $category.'/page-'.($page_number-1).'/';
-                $pagination .= '<li><a href="'.$prev.'">&laquo;</a></li>';
+                $pagination .= '<li><a href="'.$prev.$path.'">&laquo;</a></li>';
             }
 
             $j = 0;
@@ -232,7 +233,7 @@ class System{
 
                     $active = '';
                     if($i == $page_number) $active = ' class="active"';
-                    if($i != 1) $pagination .= '<li><a href="'.$category.'/page-'.$i.'/"'.$active.'>'.$i.'</a></li>';
+                    if($i != 1) $pagination .= '<li><a href="'.$category.'/page-'.$i.'/'.$path.'"'.$active.'>'.$i.'</a></li>';
                 }
 
                 $j++;
@@ -240,12 +241,12 @@ class System{
 
             // следующая страница
             if(empty($page_number)) {
-                $pagination .= '<li><a href="'.$category.'/page-2/">&raquo;</a></li>';
+                $pagination .= '<li><a href="'.$category.'/page-2/'.$path.'">&raquo;</a></li>';
             } else{
-                if($page_number != $start_from) $pagination .= '<li><a href="'.$category.'/page-'.($page_number+1).'/">&raquo;</a></li>';
+                if($page_number != $start_from) $pagination .= '<li><a href="'.$category.'/page-'.($page_number+1).'/'.$path.'">&raquo;</a></li>';
             }
 
-            $pagination .= '<li class="pagination_edge"><a href="'.$category.'/page-'.$start_from.'/">'.$start_from.'</a></li>';
+            //$pagination .= '<li class="pagination_edge"><a href="'.$category.'/page-'.$start_from.'/">'.$start_from.'</a></li>';
             // <li class="count_db">записей: <b>'.$count.'</b></li>
             $pagination .= '</ul>';
 

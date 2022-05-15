@@ -629,7 +629,7 @@ hr{
 
 .navigation{
     width: 100%;
-    margin-top: 20px;
+    margin: 15px 0;
 }
 .navigation li{
     display: inline-block;

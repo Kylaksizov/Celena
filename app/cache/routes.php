@@ -57,7 +57,7 @@ return [
         '404/$' => ['controller' => 'NotFound'],
         '(.+?).html$' => ['controller' => 'product'],
         'cart/$' => ['controller' => 'cart'],
-        'search/$' => ['controller' => 'search'],
+        'search/(page-[0-9]+/)?$' => ['controller' => 'search'],
         '(.+?)/$' => ['controller' => 'category'],
 
         'news/shop$' => [

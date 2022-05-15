@@ -9,6 +9,7 @@ class View{
     public $tplIndex;
     private $includeSource = [];
     public $include = [];
+    private $includeCache; // TMP
     private $lastInc; // имя файла последнего подгруженного
     public $styles = [];
     public $scripts = [];
@@ -40,21 +41,24 @@ class View{
      * @name подключаем другие файлы
      * =============================
      * @param $view
+     * @param bool $cache
      * @return false|string|void
      */
-    public function include($view){
+    public function include($view, $cache = false){
 
         $viewPrev = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["author"].'/' : '';
 
-        if($view != $this->lastInc){
+        if($view != $this->lastInc || $cache){
 
             if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl')){
 
-                $this->lastInc = $view;
-                $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
-                $this->include[$view] = $this->includeSource[$view];
-                return $this->include[$view];
-
+                if($cache) $this->includeCache = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
+                else{
+                    $this->lastInc = $view;
+                    $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
+                    $this->include[$view] = $this->includeSource[$view];
+                    return $this->include[$view];
+                }
             }
 
         } else{
@@ -127,6 +131,8 @@ class View{
     public function set($search, $replace){
         if(isset($this->include[$this->lastInc]))
             $this->include[$this->lastInc] = str_replace($search, $replace, $this->include[$this->lastInc]);
+        if(isset($this->include[$this->includeCache]))
+            $this->includeCache = str_replace($search, $replace, $this->includeCache);
     }
 
 
@@ -142,6 +148,8 @@ class View{
     public function setPreg($search, $replace){
         if(isset($this->include[$this->lastInc]))
             $this->include[$this->lastInc] = preg_replace($search, $replace, $this->include[$this->lastInc]);
+        if(isset($this->includeCache))
+            $this->includeCache = preg_replace($search, $replace, $this->includeCache);
     }
 
 
@@ -167,6 +175,11 @@ class View{
         if(isset($this->include[$this->lastInc])){
             if($file) return $this->include[$file];
             else return $this->include[$this->lastInc];
+        }
+        if(isset($this->includeCache)){
+            $includeCache = $this->includeCache;
+            $this->includeCache = '';
+            return $includeCache;
         }
     }
 

@@ -383,7 +383,7 @@ $(function(){
         let original_price_ = 0
         let static_price_ = 0
 
-        $(".properties .ft_select").each(function(i, element){
+        $(".nex_properties .ft_select").each(function(i, element){
 
             let el_name = $(element).context.localName
 

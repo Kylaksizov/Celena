@@ -422,6 +422,94 @@ class ProductModel extends Model{
     }
 
 
+
+
+    /**
+     * @name получение всех товаров
+     * ============================
+     * @return array
+     * @throws Exception
+     */
+    public function search($search, $categories, $limit = 10, $order = 'id', $sort = 'desc'){
+
+        $search = trim(htmlspecialchars(stripslashes($search)));
+        $where = "p.title LIKE ? AND ";
+        $params = ["%$search%"];
+
+        $pagination = [
+            "start" => 0,
+            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
+            "pagination" => ""
+        ];
+
+        #TODO временно сделаю выборку всех категорий
+        $result["categories"] = System::setKeys(
+            Base::run("SELECT
+                id,
+                title,
+                url,
+                pid
+            FROM " . PREFIX . "categories", $params)->fetchAll(PDO::FETCH_ASSOC),
+            "id"
+        );
+
+
+        if(is_array($categories)){ // если это массив из ID категорий
+
+            foreach ($categories as $categoryId) {
+                $where .= "pc.cid = ? OR ";
+                array_push($params, $categoryId);
+            }
+
+            if(!empty($where)){
+                $where = "(" . trim($where, " OR ") . ") AND ";
+            }
+        }
+
+
+        $where .= "c.status != 0 AND p.status != 0";
+
+        $sort = ($sort == 'desc') ? 'DESC' : 'ASC';
+        switch ($order){
+            case "date": $orderBy = "p.created $sort"; break;
+            case "price": $orderBy = "p.price $sort"; break;
+            case "modify": $orderBy = "p.last_modify $sort"; break;
+            default: $orderBy = "p.id $sort";
+        }
+
+        $whereP = "p.title LIKE ? AND p.status != 0";
+        $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "products p
+         WHERE " . $whereP, $params, $pagination["start"], $limit);
+
+        $result["products"] = Base::run("SELECT
+                pc.pid AS id,
+                c.id AS category_id,
+                c.title AS category_title,
+                c.url AS category_url,
+                c.pid AS parent_category,
+                p.title AS title,
+                p.vendor,
+                p.price,
+                p.sale,
+                p.stock,
+                p.url,
+                p.created,
+                i.src AS poster
+            FROM " . PREFIX . "products_cat pc
+                LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
+                LEFT JOIN " . PREFIX . "products p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
+            WHERE " . $where . " GROUP BY $orderBy
+            LIMIT {$pagination["start"]}, $limit
+                ", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+        $result["pagination"] = $pagination['pagination'];
+
+        return $result;
+    }
+
+
+
     /**
      * @name получение изображений товара
      * ==================================
