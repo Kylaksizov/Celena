@@ -485,7 +485,7 @@ class ProductsController extends PanelController {
                     <td>'.$row["id"].'</td>
                     <td><a href="" target="_blank" class="ico_see" title="В разработке"></a></td>
                     <td>
-                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="//'.CONFIG_SYSTEM["home"].'uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
+                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.(!empty($row["icon"])?'<img src="//'.CONFIG_SYSTEM["home"].'/uploads/categories/'.$row["icon"].'" alt="">':'<span class="no_image"></span>').'</a>
                     </td>
                     <td><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_category" data-id="'.$row["id"].'" id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>

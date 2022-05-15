@@ -33,6 +33,12 @@ class Router{
             die();
         }
 
+        // install
+        if(!file_exists(CORE . '/data/db_config.php')){
+            header("Location: /install.php");
+            exit;
+        }
+
         $config = require CORE . '/data/config.php'; // подключаем главный конфиг
         $db_conf = require CORE . '/data/db_config.php';
         define('CONFIG_SYSTEM', $config);
@@ -51,7 +57,7 @@ class Router{
             error_reporting(0);
             ini_set('display_errors', 0);
         }
-        
+
         if(USER && USER["role"] == '1') define('ADMIN', true);
         else define('ADMIN', false);
 
@@ -74,7 +80,7 @@ class Router{
             $route_type = 'panel';
             $panelKey = $this->urls[0].'/';
         }
-        
+
         #TODO сделать проверку, если кеш не существует, создать его !!!!!!!!!!!!!!!!!!
 
         foreach ($routes[$route_type] as $route => $params) {
