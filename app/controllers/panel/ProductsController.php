@@ -714,7 +714,7 @@ class ProductsController extends PanelController {
 
         $content = '<h1>'.$title.'</h1>';
 
-        $icon = (!empty($Brand["icon"]) && file_exists(ROOT . '/uploads/brands/'.$Brand["icon"])) ? '<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$Brand["icon"].'" alt="">' : '<span class="no_image"></span>';
+        $icon = (!empty($Brand["icon"]) && file_exists(ROOT . '/uploads/brands/'.$Brand["icon"])) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/brands/'.$Brand["icon"].'" alt="">' : '<span class="no_image"></span>';
 
         $content .= '<form action method="POST" class="box_">
             <div class="dg dg_auto">

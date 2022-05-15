@@ -40,14 +40,14 @@ class Brand{
                     'icon' => $icon,
                     'categories' => $categories
                 ]);
-                $addScript = '$(".brand_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$icon.'">`);';
+                $addScript = '$(".brand_icon").html(`<img src="//'.CONFIG_SYSTEM["home"].'/uploads/brands/'.$icon.'">`);';
             }
 
             $script = '<script>
                 '.$addScript.'
                 $("h1").html(`Редактирование бренда: <b>'.$name.'</b>`);
                 $.server_say({say: "Бренд создан!", status: "success"});
-                history.pushState(null, "Редактирование бренда", "'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$id.'/");
+                history.pushState(null, "Редактирование бренда", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/brands/edit/'.$id.'/");
             </script>';
 
         } else{ // если редактирование
@@ -67,7 +67,7 @@ class Brand{
 
                 $icon = $this->uploadIcon($id);
                 $BrandModel->editFields($id, ['icon' => $icon]);
-                $addScript = '$(".brand_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/brands/'.$icon.'">`);';
+                $addScript = '$(".brand_icon").html(`<img src="//'.CONFIG_SYSTEM["home"].'/uploads/brands/'.$icon.'">`);';
             }
 
             $script = '<script>

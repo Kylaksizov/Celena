@@ -44,14 +44,14 @@ class CategoryShop{
             if(!empty($_FILES["icon"])){
                 $icon = $this->uploadIcon($id);
                 $CategoryModel->editFields($id, ['icon' => $icon]);
-                $addScript = '$(".category_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$icon.'">`);';
+                $addScript = '$(".category_icon").html(`<img src="//'.CONFIG_SYSTEM["home"].'/uploads/categories/'.$icon.'">`);';
             }
 
             $script = '<script>
                 '.$addScript.'
                 $("h1").html(`Редактирование категории для товаров: <b>'.$title.'</b>`);
                 $.server_say({say: "Категория создана!", status: "success"});
-                history.pushState(null, "Редактирование категории", "'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$id.'/");
+                history.pushState(null, "Редактирование категории", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/categories/edit/'.$id.'/");
             </script>';
 
         } else{ // если редактирование
@@ -67,7 +67,7 @@ class CategoryShop{
                 
                 $icon = $this->uploadIcon($id);
                 $CategoryModel->editFields($id, ['icon' => $icon]);
-                $addScript = '$(".category_icon").html(`<img src="'.CONFIG_SYSTEM["home"].'uploads/categories/'.$icon.'">`);';
+                $addScript = '$(".category_icon").html(`<img src="//'.CONFIG_SYSTEM["home"].'/uploads/categories/'.$icon.'">`);';
             }
 
             $script = '<script>

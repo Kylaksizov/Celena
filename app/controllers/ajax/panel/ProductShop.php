@@ -65,7 +65,7 @@ class ProductShop{
                 $addScript = '$("#product_images").append(`';
                 foreach ($images as $image) {
                     $imgId = $ProductModel->addImage(1, $id, $image);
-                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
+                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -110,7 +110,7 @@ class ProductShop{
             $script = '<script>
                 '.$addScript.'
                 $.server_say({say: "Товар создана!", status: "success"});
-                history.pushState(null, "Редактирование товара", "'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$id.'/");
+                history.pushState(null, "Редактирование товара", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$id.'/");
             </script>';
 
         } else{ // если редактирование
@@ -135,7 +135,7 @@ class ProductShop{
                 $addScript = '$("#product_images").append(`';
                 foreach ($images as $image) {
                     $imgId = $ProductModel->addImage(1, $productId, $image);
-                    $addScript .= '<div class="img_item"><a href="'.CONFIG_SYSTEM["home"].'uploads/products/'.$image.'" data-fancybox="gallery"><img src="'.CONFIG_SYSTEM["home"].'uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
+                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/products/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="ProductShop:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -466,7 +466,7 @@ class ProductShop{
                 if(!file_exists($dir)) mkdir($dir, 0777, true);
 
                 //$milliseconds = round(microtime(true) * 1000);
-                $image_name = $id.'_'.time().'_'.System::translit($image).'.'.$ext;
+                $image_name = $id.'_'.time().'_'.System::translit(strstr($image, ".", true)).'.'.$ext;
 
 
 
