@@ -37,7 +37,7 @@ class CategoryModel extends Model{
             $status
         ];
 
-        Base::run("INSERT INTO " . PREFIX . "category (
+        Base::run("INSERT INTO " . PREFIX . "categories (
             title,
             m_title,
             m_description,
@@ -65,7 +65,7 @@ class CategoryModel extends Model{
      */
     public function get($id, string $fields = "*"){
 
-        return Base::run("SELECT $fields FROM " . PREFIX . "category WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return Base::run("SELECT $fields FROM " . PREFIX . "categories WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -79,7 +79,7 @@ class CategoryModel extends Model{
 
         if($all){
 
-            $result = System::setKeys(Base::run("SELECT id, title FROM " . PREFIX . "category ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
+            $result = System::setKeys(Base::run("SELECT id, title FROM " . PREFIX . "categories ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
 
         } else{
 
@@ -92,10 +92,10 @@ class CategoryModel extends Model{
                 "pagination" => ""
             ];
 
-            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "category c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "categories c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
 
             $result["categories"] = Base::run(
-                "SELECT * FROM " . PREFIX . "category ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+                "SELECT * FROM " . PREFIX . "categories ORDER BY id DESC LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
 
             $result["pagination"] = $pagination['pagination'];
         }
@@ -120,7 +120,7 @@ class CategoryModel extends Model{
     public function edit($id, $title, array $meta = [], $content, $url, $pid, int $status = 1){
 
         return Base::run("
-            UPDATE " . PREFIX . "category SET
+            UPDATE " . PREFIX . "categories SET
                 title = ?,
                 m_title = ?,
                 m_description = ?,
@@ -154,7 +154,7 @@ class CategoryModel extends Model{
         $set = trim($set, ", ");
         array_push($params, $id);
 
-        return Base::run("UPDATE " . PREFIX . "category SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "categories SET $set WHERE id = ?", $params)->rowCount();
     }
 
 
@@ -167,7 +167,7 @@ class CategoryModel extends Model{
      */
     public function delete($id){
 
-        return Base::run("DELETE FROM " . PREFIX . "category WHERE id = ?", [$id]);
+        return Base::run("DELETE FROM " . PREFIX . "categories WHERE id = ?", [$id]);
     }
 
 

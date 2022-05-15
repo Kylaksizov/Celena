@@ -52,7 +52,7 @@ class Router{
             ini_set('display_errors', 0);
         }
         
-        if(USER["role"] == '1') define('ADMIN', true);
+        if(USER && USER["role"] == '1') define('ADMIN', true);
         else define('ADMIN', false);
 
         $routes = require APP . '/cache/routes.php';

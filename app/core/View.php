@@ -437,7 +437,7 @@ class View{
      * =======================
      * @return void
      */
-    public function render(){
+    public function render($display = true){
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
@@ -506,7 +506,15 @@ class View{
 
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 
+        if($display) echo $this->tplIndex;
+        else return $this->tplIndex;
+    }
 
+
+
+
+    public function display(){
+        $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
         echo $this->tplIndex;
     }
 

@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\controllers\classes\Main;
+use app\controllers\classes\Functions;
 use app\core\Controller;
 use app\core\System;
 use app\models\ProductModel;
@@ -57,27 +57,35 @@ class ProductController extends Controller {
 
 
 
+        // CRUMBS
         $CategoryStep = System::setKeys($Product["categories"], "url");
 
+        // CATEGORY NAME
+        $categoryName = !empty($CategoryStep[end($this->urls)]) ? $CategoryStep[end($this->urls)]["title"] : '';
+        $this->view->setMain('{category-name}', $categoryName);
 
-        // CRUMBS
         $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';
-        
+
+        $catLink = $this->urls;
+        array_pop($catLink);
+        $catLink = implode("/", $catLink);
+
         $crumbs = '<div id="crumbs">';
         if(count($CategoryStep) > 1){
 
             $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
-            
-            foreach ($CategoryStep as $row) {
 
-                $addCategoryLink .= $row["url"].'/';
-                $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addCategoryLink . '">' . $row["title"] . '</a>';
+            foreach ($this->urls as $url) {
+
+                if(!empty($CategoryStep[$url]["title"])){
+                    $addCategoryLink .= $url . '/';
+                    $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addCategoryLink . '">' . $CategoryStep[$url]["title"] . '</a>';
+                }
             }
 
         } else{
 
-            $addCategoryLink .= $CategoryStep[end($this->urls)]["url"];
-            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($this->urls)]["title"];
+            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
         }
 
         $crumbs .= '</div>';
@@ -87,7 +95,7 @@ class ProductController extends Controller {
 
 
 
-        $poster = '//'.CONFIG_SYSTEM["home"].'/templates/'.CONFIG_SYSTEM["template"].'/img/'.'no-image.svg';
+        $poster = '//'.CONFIG_SYSTEM["home"].'/templates/'.CONFIG_SYSTEM["template"].'/img/no-image.svg';
         if(!empty($Product["product"]["src"])){
             $poster = '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$Product["product"]["src"];
         } else if(!empty($Product["product"]["poster"]) && !empty($Product["images"][$Product["product"]["poster"]]["src"])){
@@ -309,6 +317,8 @@ class ProductController extends Controller {
             }
         }
 
+        $this->view->set('{categories}', $Product["product"]["category"]);
+        
         $this->view->set('{price}', $price);
         $this->view->set('{old-price}', $Product["product"]["price"]);
         $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
@@ -321,49 +331,6 @@ class ProductController extends Controller {
         $this->view->set('{edit}', $edit);
 
 
-
-        // скидка
-        /*if(!empty($findTags["{sale}"]) || !empty($findTags["sale]"])){
-
-            $sale = "";
-
-            // если скидка есть
-            if($Product["product"]["sale"] != "0"){
-
-                // проценты это или точная сумма
-                $percentage = false;
-                if(strripos($goods["goods"]["sale"], "%") !== false) $percentage = true;
-
-                if($percentage) $sale = $goods["goods"]["sale"];
-                else $sale = $goods["goods"]["sale"] . " " . $this->config["currency"];
-
-                $this->view->set('[sale]', '');
-                $this->view->set('[/sale]', '');
-                $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
-
-                $old_price = $price;
-
-                if($percentage) $price = round($price - (($price / 100) * trim($goods["goods"]["sale"], "%")));
-                else $price = round((float)$price - (float)$goods["goods"]["sale"], 2);
-                // если включен вывод копеек
-                if($this->config["penny"]) $price = number_format((float)$price, 2, '.', '');
-
-                // если нет скидки
-            } else{
-
-                $this->view->set('[no-sale]', "");
-                $this->view->set('[/no-sale]', "");
-                $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
-            }
-
-            $this->view->set('{sale}', $sale);
-        }*/
-
-
-
-
-        Main::scanTags($this);
-
         $this->view->setMeta('Продукты', 'CRM система для автоматизации бизнес процессов', [
             [
                 'property' => 'og:title',
@@ -375,7 +342,10 @@ class ProductController extends Controller {
             ]
         ]);
 
-        $this->view->render();
+        $this->view->render(false);
+
+        Functions::scanTags($this);
+        $this->view->display();
     }
 
 }

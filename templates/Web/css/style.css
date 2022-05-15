@@ -284,7 +284,7 @@ hr{
     color: #fff;
     text-align: center !important;
 }
-#search [name="search"]{
+#search [name="str"]{
     background: #ffd830;
     position: absolute;
     top: 0;
@@ -774,7 +774,6 @@ hr{
 
 #camby_content .goods_box{
     background: #fff;
-    width: 330px;
     border-radius: 2px;
     box-shadow: 0 1px 5px #c2cddb;
     margin-bottom: 20px;
@@ -1272,13 +1271,9 @@ hr{
 }
 .all_goods{
     position: relative;
-}
-
-.navigation li a{
-    background: #42535E !important;
-}
-.navigation li a:hover{
-    background: #4e626f !important;
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 #order_click form{
     display: flex;
@@ -1726,9 +1721,6 @@ hr{
 
 /*=== MEDIA ===*/
 @media screen and (max-width: 1730px){
-    #camby_content .goods_box{
-        width: 24%;
-    }
     #right_bar .goods_box, #goods_see .goods_box{
         width: auto;
     }
@@ -1755,16 +1747,13 @@ hr{
     }
 }
 @media screen and (max-width: 1430px){
-    #camby_content .goods_box{
-        width: 32%;
-    }
     #right_bar .goods_box, #goods_see .goods_box{
         width: auto;
     }
     .nav_top li a{
         padding: 24px 10px;
     }
-    #search [name="search"]{
+    #search [name="str"]{
         width: calc(100% - 295px);
         max-width: 100%;
     }
@@ -1807,9 +1796,6 @@ hr{
     }
 }
 @media screen and (max-width: 1120px){
-    #camby_content .goods_box{
-        width: 49%;
-    }
     #right_bar .goods_box, #goods_see .goods_box{
         width: auto;
     }
@@ -1890,7 +1876,7 @@ hr{
     #cart p{
         display: none;
     }
-    #search [name="search"]{
+    #search [name="str"]{
         width: calc(100% - 66px);
         right: 66px;
     }
@@ -1957,9 +1943,6 @@ hr{
     }
     #menu a{
         padding: 10px 20px 10px 0;
-    }
-    #camby_content .goods_box{
-        width: 100%;
     }
     #right_bar .goods_box, #goods_see .goods_box{
         width: auto;

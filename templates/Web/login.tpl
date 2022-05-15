@@ -29,14 +29,6 @@
 <div id="registration" class="modal">
     <h4 class="modal_title">Регистрация в системе</h4>
     <form action="#" method="POST" class="inp100">
-        {*<select name="type" id="type_account" class="inp100_">
-            <option value="1" selected disabled>-- выберите тип услуги --</option>
-            <option value="1">Управление отелем / гостиницей</option>
-            <option value="1">Запись клиентов почасово</option>
-            <option value="1">Грузоперевозки</option>
-            <option value="1">Сбор данных с форм</option>
-        </select>
-        <br><br>*}
         <input type="text" name="name" placeholder="Фамилия Имя">
         <input type="email" name="email" placeholder="E-mail">
         <input type="password" name="password" placeholder="Пароль">

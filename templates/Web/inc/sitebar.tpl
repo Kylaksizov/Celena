@@ -18,11 +18,13 @@
         </div>
         <a href="#" id="open_filter"></a>
         [/show]
-        [show="index, category, product"]
+        [show="index,category,product"]
         <div class="site_bar_box">
             <div class="box_title">Новые товары</div>
             <div class="box_content">
-                {goods category="0" template="custom" limit="4"}
+                {products category="0" template="customProducts" limit="3" order="price" sort="asc"}
+                <br><br><br><br>
+                {products category="0" template="customProducts" limit="1"}
             </div>
         </div>
         [/show]

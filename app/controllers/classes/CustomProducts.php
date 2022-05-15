@@ -8,90 +8,79 @@ use app\models\ProductModel;
 class CustomProducts{
 
 
-    public function get($e, $template = 'products'){
+    public function get($e, $categories, $template = 'customProducts', $limit = 10, $order = 'id', $sort = 'desc'){
+
+
+        if(empty($template)) $template = 'customProducts';
 
         $ProductModel = new ProductModel();
 
         $e->view->include($template);
 
-        // подбор полей из таблиц в зависимости от заданных тегов - эффективно, если большая база
-        #TODO потом можно сделать проверку из конфига
+        if(!is_array($categories) || $categories == 'index') $limit = CONFIG_SYSTEM["count_prod_by_cat"];
 
-        $fieldsQuery = [
-            'p.id, p.uid AS author_id, p.title, p.url, p.category',
-            '{price}'      => 'p.price',
-            '{sale}'       => 'p.sale',
-            '{stock}'      => 'p.stock',
-            '{vendor}'     => 'p.vendor',
-            '{date}'       => 'p.created',
-            '{brand-id}'   => 'p.brand AS brand_id',
-            '{brand-name}' => 'b.name AS brand_name',
-            '{brand-url}'  => 'b.url AS brand_url',
-            '{brand-icon}' => 'b.icon AS brand_icon'
-        ];
+        $Products = $ProductModel->getCustomProducts($categories, $limit, $order, $sort);
 
-        if($e->view->findTag('{poster}')) $fieldsQuery['{poster}'] = 'i.src, i.alt, i.position';
-        if($e->view->findTag('{images}')) $fieldsQuery['{images}'] = '1';
+        if($e->route["controller"] == 'category'){ // если категория
 
-        $findTags = $e->view->findTags($fieldsQuery);
+            // CRUMBS
+            $CategoryStep = System::setKeys($Products["categories"], "url");
 
-        $Products = $ProductModel->getProducts($e->urls, $findTags);
+            // CATEGORY NAME
+            $categoryName = !empty($CategoryStep[end($e->urls)]) ? $CategoryStep[end($e->urls)]["title"] : '';
+            $e->view->setMain('{category-name}', $categoryName);
 
-        $CategoryStep = System::setKeys($Products["categories"], "url");
-        $categoryLink = implode("/", $e->urls);
+            $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';
 
-        /*echo '<ul class="editor_menu">';
-        foreach ($Products["categories"] as $row) {
-            if($row["parent_category"] == 0) {
-                echo '<li>'.$row["id"].' '.$row["title"];
-                echo self::ReintCategory($Products["categories"], $row["id"]);
-                echo '</li>';
+            $crumbs = '<div id="crumbs">';
+            if(count($CategoryStep) > 1){
+
+                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
+
+                foreach ($e->urls as $url) {
+
+                    if(!empty($CategoryStep[$url]["title"])){
+                        $addCategoryLink .= $url . '/';
+                        $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addCategoryLink . '">' . $CategoryStep[$url]["title"] . '</a>';
+                    }
+                }
+
+            } else{
+
+                $catLink = $e->urls;
+                array_pop($catLink);
+                $catLink = implode("/", $catLink);
+
+                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
             }
+
+            $crumbs .= '</div>';
+
+            $e->view->setMain('{crumbs}', $crumbs);
+            // CRUMBS END
         }
-        echo "</ul>";*/
-
-        // CRUMBS
-        /*$crumbs = '<div id="crumbs">';
-        if(count($CategoryStep) > 1){
-
-            $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
-
-            $addLink = '/'.CONFIG_SYSTEM["home"].'/';
-            foreach ($CategoryStep as $row) {
-
-                $addLink .= $row["url"].'/';
-                $crumbs .= CONFIG_SYSTEM["separator"] . '<a href="' . $addLink . '">' . $row["title"] . '</a>';
-            }
-
-        } else $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . $CategoryStep[end($e->urls)]["title"];
-
-        $crumbs .= '</div>';
-
-        $e->view->setMain('{crumbs}', $crumbs);*/
-
-
-        // CATEGORY NAME
-        $categoryName = $CategoryStep[end($e->urls)]["title"];
-        $e->view->setMain('{category-name}', $categoryName);
 
         // проверяем теги тут, что бы меньше было поиска в цикле
         $tagPrice = $e->view->findTag('{price}');
         $tagOldPrice = $e->view->findTag('{old-price}');
         $tagStock = $e->view->findTag('{stock}');
 
-        foreach ($Products["products"] as $row) {
+        $buildCatLinks = (CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4') ? Functions::buildCatLinks($Products["categories"]) : '';
 
+        foreach ($Products["products"] as $row) {
 
             // FULL LINK
             $link = $row["url"].CONFIG_SYSTEM["seo_type_end"];
-            if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4')
+            if(CONFIG_SYSTEM["seo_type"] == '2')
                 $link = $row["id"] . '-' . $link;
-            if(CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4')
-                $link = $categoryLink . '/' . $link;
+            if(CONFIG_SYSTEM["seo_type"] == '3')
+                $link = $buildCatLinks[$row["category_id"]]["urls"].'/' . $link;
+            if(CONFIG_SYSTEM["seo_type"] == '4')
+                $link = $buildCatLinks[$row["category_id"]]["urls"].'/' . $row["id"] . '-' . $link;
             $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
 
 
-            $poster = !empty($row["src"]) ? $row["src"] : 'no-image.png';
+            $poster = !empty($row["poster"]) ? $row["poster"] : 'no-image.png';
 
 
             $e->view->set('{id}', !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"]);
@@ -141,6 +130,7 @@ class CustomProducts{
             $e->view->set('{buy-click}', '<a href="#order_click" class="buy_on_click open_modal" title="Заказать по телефону"></a>');
             $e->view->set('{add-cart}', '<a href="#" class="ks_add_cart" data-goods=\''.$data_goods.'\' title="Добавить в корзину"></a>');
 
+
             if(!empty($row["sale"])){
 
                 $e->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
@@ -158,12 +148,9 @@ class CustomProducts{
 
             $e->view->push();
         }
+
         $e->view->clearPush();
-
-        //$e->view->include[$e->route["controller"]] = str_replace($product, $res, $e->view->include[$e->route["controller"]]);
-
-        //return $e->view->include[$template];
-        return $e->view->get();
+        return $e->view->get().(!empty($Products["pagination"]) ? $Products["pagination"] : '');
     }
 
 }

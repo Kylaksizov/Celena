@@ -131,8 +131,8 @@ $(function(){
 
     let is_search = false;
     $(document).on("click", "#search_go", function(){
-        if(is_search === false || $('#search [name="search"]').val() == ""){
-            $('#search [name="search"]').show().focus();
+        if(is_search === false || $('#search [name="str"]').val() == ""){
+            $('#search [name="str"]').show().focus();
             is_search = true;
             return false;
         }
@@ -330,7 +330,7 @@ $(function(){
 
 
     // search
-    $(document).on("keyup", '#search [name="search"]', function(){
+    /*$(document).on("keyup", '#search [name="str"]', function(){
 
         let this_ = $(this);
         let search_string = $(this).val();
@@ -363,6 +363,6 @@ $(function(){
             }
 
         }, 500);
-    });
+    });*/
 
 })

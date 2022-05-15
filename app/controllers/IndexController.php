@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\_classes\Auth;
+use app\controllers\classes\CustomProducts;
+use app\controllers\classes\Functions;
 use app\core\Controller;
 
 
@@ -53,6 +55,21 @@ class IndexController extends Controller {
 
         $this->view->setMain('{login}', $login);
 
+
+        // если тег ля вывода продуктов присутствует
+        if($this->view->findTag('{products}', 1)){
+            $Products = new CustomProducts();
+            $products = $Products->get($this, 'index', 'products');
+            $this->view->setMain('{products}', $products);
+            $this->view->clear();
+        }
+
+
+
+        $this->view->setMain('{crumbs}', '');
+
+
+
         $this->view->setMeta('Panel', 'CRM система для автоматизации бизнес процессов', [
             [
                 'property' => 'og:title',
@@ -64,7 +81,10 @@ class IndexController extends Controller {
             ]
         ]);
 
-        $this->view->render();
+        $this->view->render(false);
+
+        Functions::scanTags($this);
+        $this->view->display();
     }
 
 }

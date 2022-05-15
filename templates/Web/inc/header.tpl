@@ -9,7 +9,7 @@
             <li><a href="#">Контакты</a></li>
             [role="0"]<li><a href="#authorization" class="ico_login open_modal">Вход</a></li>
             <li><a href="/registration.html" class="ico_reg">Регистрация</a></li>[/role]
-            [not-role="0"]<li><a href="/logout/" class="ico_logout">Выход</a></li>[/not-role]
+            [not-role="0"]<li><a href="?logout=1" class="ico_logout">Выход</a></li>[/not-role]
         </ul>
     </div>
     <div class="flex">
@@ -18,8 +18,8 @@
             <li class="ico_tel"><a href="tel:123456789011">+1 (234) 567 890 11</a></li>
             <li class="ico_mail"><a href="mailto:info@camby.top">info@camby.top</a></li>
         </ul>
-        <form action="{HOME}search/" method="GET" id="search" class="flex">
-            <input type="search" name="search" placeholder="Введите запрос..." autocomplete="off">
+        <form action="/search/" method="GET" id="search" class="flex">
+            <input type="search" name="str" placeholder="Введите запрос..." autocomplete="off">
             <input type="submit" id="search_go" value="">
         </form>
         <a href="#cart_modal" id="cart" class="open_modal">

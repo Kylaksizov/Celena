@@ -53,9 +53,11 @@ return [
 
     'web' => [
 
+        '(page-[0-9]+/)?$' => ['controller' => 'index'],
         '404/$' => ['controller' => 'NotFound'],
         '(.+?).html$' => ['controller' => 'product'],
         'cart/$' => ['controller' => 'cart'],
+        'search/$' => ['controller' => 'search'],
         '(.+?)/$' => ['controller' => 'category'],
 
         'news/shop$' => [

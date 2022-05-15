@@ -627,6 +627,28 @@ hr{
 }
 /* SERVER SAY END */
 
+.navigation{
+    width: 100%;
+    margin-top: 20px;
+}
+.navigation li{
+    display: inline-block;
+}
+.navigation li a, .navigation li span{
+    background: #8993a2;
+    color: #fff !important;
+    text-align: center;
+    display: block;
+    padding: 4px 10px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+.navigation li a:hover{
+    background: #737c85;
+}
+.navigation .active{
+    background: #737c85 !important;
+}
 .pagination{
     text-align: center;
     margin-top: 20px;

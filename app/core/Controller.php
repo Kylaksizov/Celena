@@ -7,6 +7,7 @@ namespace app\core;
 
 abstract class Controller{
 
+    public $url;
     public $urls;
     public $route;
     public $view;
@@ -20,6 +21,7 @@ abstract class Controller{
      */
     public function __construct($route, $ajax){
 
+        $this->url = !empty($_GET["url"]) ? $_GET["url"] : '/';
         $this->urls = $route["urls"];
         $this->ajax = $ajax;
         $this->route = $route;

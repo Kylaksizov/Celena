@@ -2,13 +2,12 @@
 
 namespace app\controllers;
 
-use app\controllers\classes\CustomProducts;
 use app\controllers\classes\Functions;
 use app\core\Controller;
 use Exception;
 
 
-class CategoryController extends Controller {
+class SearchController extends Controller {
 
 
     /**
@@ -16,14 +15,16 @@ class CategoryController extends Controller {
      */
     public function indexAction(){
 
-        //$this->view->load('Nex');
+        $this->view->include('search');
 
 
-        $Products = new CustomProducts();
-        $Products->get($this, end($this->urls), 'products');
+        $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<span>Поиск</span></div>');
 
+        $result = 'Ничего не найдено!';
 
-        $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
+        $this->view->set('{result}', $result);
+
+        $this->view->setMeta('Поиск', 'Поиск', [
             [
                 'property' => 'og:title',
                 'content' => 'NEX CRM',

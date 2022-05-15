@@ -113,7 +113,7 @@ class ProductModel extends Model{
                     title,
                     icon,
                     url
-                FROM " . PREFIX . "category
+                FROM " . PREFIX . "categories
                 WHERE $whereCategory",
                     $paramsCategory)->fetchAll(PDO::FETCH_ASSOC),
                 "id"
@@ -175,7 +175,7 @@ class ProductModel extends Model{
      * @return array
      * @throws Exception
      */
-    public function getProducts($categories = [], $fields = null){
+    /*public function getProducts($categories = [], $fields = null){
 
         $result = [];
 
@@ -201,7 +201,7 @@ class ProductModel extends Model{
                     c.url,
                     c.pid AS parent_category,
                     pc.pid AS product_id
-                FROM " . PREFIX . "category c
+                FROM " . PREFIX . "categories c
                     LEFT JOIN " . PREFIX . "products_cat pc ON pc.cid = c.id
                 WHERE " . $where . " AND c.status != 0 GROUP BY pc.pid
                 ", $params)->fetchAll(PDO::FETCH_ASSOC);
@@ -240,10 +240,6 @@ class ProductModel extends Model{
             $leftJoin .= " LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand";
         }
 
-        /*if(isset($fields["{poster}"])){
-            if(!isset($fields["{images}"])) $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
-            else unset($fields['{poster}']);
-        }*/
         $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
 
         $fieldsString = implode(", ", $fields);
@@ -262,8 +258,9 @@ class ProductModel extends Model{
             }
             $where = trim($where, " OR ");
         }
+        if(!empty($where)) $where .= " AND ";
 
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "products p WHERE $where AND p.status != 0 ORDER BY p.id DESC", $params, $pagination["start"], $pagination["limit"]);
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "products p WHERE $where p.status != 0 ORDER BY p.id DESC", $params, $pagination["start"], $pagination["limit"]);
 
         #TODO в дальнейшем можно разбить запросов зависимости от настроек, для оптимизации
         $result["products"] = Base::run(
@@ -271,7 +268,7 @@ class ProductModel extends Model{
                     $fieldsString
                 FROM " . PREFIX . "products p
                     $leftJoin
-                WHERE $where AND p.status != 0
+                WHERE $where p.status != 0
                     GROUP BY p.id
                     ORDER BY p.id DESC
                 LIMIT {$pagination["start"]}, {$pagination["limit"]}
@@ -302,6 +299,122 @@ class ProductModel extends Model{
                 "nid"
             );
         }
+
+        $result["pagination"] = $pagination['pagination'];
+
+        return $result;
+    }*/
+
+
+    /**
+     * @name получение всех товаров
+     * ============================
+     * @return array
+     * @throws Exception
+     */
+    public function getCustomProducts($categories, $limit = 10, $order = 'id', $sort = 'desc'){
+
+        $where = "";
+        $params = [];
+
+        $pagination = [
+            "start" => 0,
+            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
+            "pagination" => ""
+        ];
+
+
+        #TODO временно сделаю выборку всех категорий
+        $result["categories"] = System::setKeys(
+            Base::run("SELECT
+                id,
+                title,
+                url,
+                pid
+            FROM " . PREFIX . "categories", $params)->fetchAll(PDO::FETCH_ASSOC),
+            "id"
+        );
+
+
+        if(is_array($categories)){ // если это массив из ID категорий
+
+            foreach ($categories as $categoryId) {
+                $where .= "pc.cid = ? OR ";
+                array_push($params, $categoryId);
+            }
+
+            if(!empty($where)){
+                $where = "(" . trim($where, " OR ") . ") AND ";
+            }
+
+        } else if(is_string($categories) && $categories != 'index'){ // если мы в категории
+
+            $products_cat = Base::run("
+                SELECT
+                    pc.pid
+                FROM " . PREFIX . "categories c
+                    LEFT JOIN " . PREFIX . "products_cat pc ON pc.cid = c.id
+                WHERE c.url = ?
+            ", [$categories])->fetchAll(PDO::FETCH_COLUMN);
+
+            if(empty($products_cat)) return [];
+
+            $addWhere = "(";
+            foreach ($products_cat as $pid) {
+                $addWhere .= "p.id = ? OR ";
+
+            }
+            $addWhere = trim($addWhere, " OR ").") AND ";
+            $params = $products_cat;
+
+            $where = $addWhere;
+
+        }
+
+
+        $where .= "c.status != 0 AND p.status != 0";
+
+        $sort = ($sort == 'desc') ? 'DESC' : 'ASC';
+        switch ($order){
+            case "date": $orderBy = "p.created $sort"; break;
+            case "price": $orderBy = "p.price $sort"; break;
+            case "modify": $orderBy = "p.last_modify $sort"; break;
+            default: $orderBy = "p.id $sort";
+        }
+
+        $limitQuery = "LIMIT $limit";
+
+        if($categories == 'index'){
+
+            $where = "p.status != 0";
+
+            $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "products p
+             WHERE " . $where, $params, $pagination["start"], $limit);
+
+            $limitQuery = "LIMIT {$pagination["start"]}, $limit";
+        }
+
+        $result["products"] = Base::run("SELECT
+                pc.pid AS id,
+                c.id AS category_id,
+                c.title AS category_title,
+                c.url AS category_url,
+                c.pid AS parent_category,
+                p.title AS title,
+                p.vendor,
+                p.price,
+                p.sale,
+                p.stock,
+                p.url,
+                p.created,
+                i.src AS poster
+            FROM " . PREFIX . "products_cat pc
+                LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
+                LEFT JOIN " . PREFIX . "products p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
+            WHERE " . $where . " GROUP BY $orderBy
+            $limitQuery
+                ", $params)->fetchAll(PDO::FETCH_ASSOC);
 
         $result["pagination"] = $pagination['pagination'];
 

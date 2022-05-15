@@ -3,7 +3,7 @@
 return [
 
     // вывод ошибок
-	"errors" => 0,
+	"errors" => 1,
 
     // вести журнал ошибок
 	"db_log" => 1,
@@ -26,7 +26,7 @@ return [
     // ЧПУ: 2 - ID-link
     // ЧПУ: 3 - /category/link
     // ЧПУ: 4 - /category/ID-link
-    "seo_type" => 4,
+    "seo_type" => 3,
 
     // концовка URL товара
     "seo_type_end" => ".html",
@@ -47,7 +47,7 @@ return [
     "str_pad_vendor" => 6,
 
     // количество товаров в категориях
-    "count_prod_by_cat" => 25,
+    "count_prod_by_cat" => 2,
 
     // размер обрезки загружаемых изображений
     "origin_image" => "1500",

@@ -4,7 +4,7 @@
         <span class="g_id">{id}</span>
     </a>
     <div class="goods_info">
-        {rating}<span class="reviews_count">(0 отзывов)</span>
+        {*{rating}<span class="reviews_count">(0 отзывов)</span>*}
         <h3><a href="{link}">{title}</a></h3>
         <div class="price">
             [sale]<span class="price_sale">{price} {currency}</span>
