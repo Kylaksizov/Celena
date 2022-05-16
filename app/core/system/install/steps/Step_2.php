@@ -267,6 +267,24 @@ class Step_2{
 
         $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(Functions::generationCode()), time(), 1]);
 
+
+        // create db config
+        $db_config = '<?php
+
+return [
+    "DB_HOST" => "'.$DB_HOST.'",
+    "DB_NAME" => "'.$DB_NAME.'",
+    "DB_USER" => "'.$DB_USER.'",
+    "DB_PASSWORD" => "'.$DB_PASSWORD.'",
+    "PREFIX" => "'.$PREFIX.'"
+];';
+
+        $fp = fopen(CORE . "/data/db_config.php", "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, $db_config);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
         return 'next';
     }
 

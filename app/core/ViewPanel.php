@@ -224,6 +224,7 @@ class ViewPanel{
 
         $pluginTheme = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["brand"].'/'.CONFIG_PLUGIN["plugin"]["name"] : '';
 
+        $this->tplIndex = str_replace('{user-name}', USER["name"], $this->tplIndex);
         $this->tplIndex = str_replace('{META}', '<title>'.$title.'</title>', $this->tplIndex);
         $this->tplIndex = str_replace('{CONTENT}', $content, $this->tplIndex);
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);

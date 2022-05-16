@@ -10,6 +10,6 @@ class Finish{
 
     public function indexAction(){
 
-        return 'Спасибо за установку нашей CMS!';
+        return 'Спасибо за установку нашей CMS!<br>Перейди в панель по адресу /panel/';
     }
 }

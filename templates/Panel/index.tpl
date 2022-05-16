@@ -85,7 +85,7 @@
     <div class="profile_header">
         <a href="#" class="open_profile_setting">
             <img src="//minible-v-light.react.themesbrand.com/static/media/avatar-4.b23e41d9.jpg" alt="" class="avatar">
-            <span>Владимир Кулаксизов</span>
+            <span>{user-name}</span>
             <span class="cur"></span>
         </a>
         <ul class="esc">

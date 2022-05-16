@@ -17,8 +17,9 @@ $(function(){
     // установка пароля
     let generatedPass = false;
     $(document).on("click", ".generatePassword", function(){
-        $("#passwordHelper").text(generatePassword());
-        $("#password, #password2").val(generatePassword());
+        let pass = generatePassword();
+        $("#passwordHelper").text(pass);
+        $("#password, #password2").val(pass);
         generatedPass = true;
         return false;
     })

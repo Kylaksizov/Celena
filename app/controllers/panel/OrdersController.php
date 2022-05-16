@@ -24,7 +24,7 @@ class OrdersController extends PanelController {
         $Orders = $OrdersModel->getAll();
         $OrdersStatus = $OrdersModel->getStatuses();
 
-        if($Orders){
+        if($Orders["orders"]){
 
             $ordersContent = '';
 
