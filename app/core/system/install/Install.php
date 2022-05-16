@@ -23,14 +23,13 @@ class Install{
         // POST
         if(!empty($_POST["ajax"])){
             if(!empty($_POST["params"])) mb_parse_str($_POST["params"], $_POST);
-            else die("info::error::Видимо Вы что-то не пропустили!");
-            $this->post = $_POST;
+            $this->post = true;
         }
 
 
-        $step = !empty($_GET["step"]) ? 'Step_'.intval($_GET["step"]) : 'Start';
+        $step = !empty($_GET["step"]) ? intval($_GET["step"]) : 0;
 
-        $stepClass = 'app\core\system\install\steps\\'.$step;
+        $stepClass = !empty($_GET["step"]) ? 'app\core\system\install\steps\Step_'.intval($_GET["step"]) : 'app\core\system\install\steps\Start';
 
         if(class_exists($stepClass)){
 
@@ -43,8 +42,44 @@ class Install{
 
                 if($result == 'next'){
 
+                    $url = '';
+                    $stepB = 'Start';
+                    $addScript = '';
+
+                    if($step == 'Start'){
+
+                        $url = '?step=1';
+                        $stepB = 'Step_1';
+
+                    } else if(is_numeric($step)){
+
+                        $url = '?step='.($step+1);
+                        $stepB = 'Step_'.($step+1);
+                    }
+
+                    $stepClassB = 'app\core\system\install\steps\\'.$stepB;
+
+                    if(class_exists($stepClassB)){
+
+                        $controllerB = new $stepClassB();
+                        $contentB = $controllerB->indexAction();
+                        $addScript = '$("#content").fadeOut(300, function(){
+                            $("#content").html(`'.$contentB.'`).fadeIn(400);
+                        });';
+
+                    } else if(is_numeric($step)){
+
+                        $stepClassB = 'app\core\system\install\steps\Finish';
+                        $controllerB = new $stepClassB();
+                        $contentB = $controllerB->indexAction();
+                        $addScript = '$("#content").fadeOut(300, function(){
+                            $("#content").html(`'.$contentB.'`).fadeIn(400);
+                        });';
+                    }
+
                     $result = '<script>
-                        
+                        '.$addScript.'
+                        history.pushState(null, "Install: '.$step.'", "'.$url.'");
                     </script>';
                 }
 

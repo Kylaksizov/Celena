@@ -13,12 +13,10 @@ class Start{
 
     public function postAction(){
         
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-        exit;
-
-        return '<script>$("a").remove();</script>';
+        if(!empty($_POST["agreement"])){
+            SetCookie("licence", "1", time() + 3600, "/");
+            return 'next';
+        }
     }
 
 
