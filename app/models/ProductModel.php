@@ -24,7 +24,7 @@ class ProductModel extends Model{
     public function get($urlOrArray, $fields = null){
 
         $result = [];
-        
+
         if(is_array($urlOrArray)){
 
             $where = "p.id = ?";
@@ -150,7 +150,7 @@ class ProductModel extends Model{
         }
 
         // если есть тег на получение свойств
-        if(isset($fields["{properties}"])){
+        if(isset($fields["{properties}"]) && !empty($result["product"])){
 
             $result["properties"] = System::setKeysArray(
                 Base::run(

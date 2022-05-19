@@ -43,7 +43,7 @@ class ProductShop{
         $stock = !empty($_POST["stock"]) ? intval($_POST["stock"]) : null;
         $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
-        $category = !empty($_POST["category"]) ? $_POST["category"] : '';
+        $category = !empty($_POST["category"]) ? $_POST["category"] : die("info::error::Выберите категорию!");
         $brand = !empty($_POST["brand"]) ? intval($_POST["brand"]) : null;
         $status = !empty($_POST["status"]) ? 1 : 0;
 

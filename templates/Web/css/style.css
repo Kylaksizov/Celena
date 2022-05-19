@@ -1347,7 +1347,7 @@ hr{
 
 }
 #authorization input[type="email"], #authorization input[type="password"]{
-    width: calc(100% - 30px);
+    width: 100%;
     display: block;
     margin-bottom: 15px;
 }

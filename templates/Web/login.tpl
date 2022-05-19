@@ -5,8 +5,8 @@
         <input type="email" name="email" placeholder="E-mail">
         <input type="password" name="password" placeholder="Пароль">
         <input type="hidden" name="action" value="auth"><br>
-        <div class="hr_line">или</div>
-        {reg}
+        {*<div class="hr_line">или</div>
+        {reg}*}
         <div class="fx ai_c">
             <a href="#member_pass" class="member_password open_modal">Забыли пароль?</a>
             <input type="submit" class="btn" data-a="Auth" value="Вход">

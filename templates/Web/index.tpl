@@ -50,6 +50,8 @@
 
 </section>
 
+{login}
+
 {include file="inc/footer.tpl"}
 
 <div id="cart_modal" class="modal"></div>

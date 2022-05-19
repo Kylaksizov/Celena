@@ -37,7 +37,7 @@ class ProductController extends Controller {
 
         $findTags = $this->view->findTags($fieldsQuery);
 
-        $url = trim(end($this->urls), CONFIG_SYSTEM["seo_type_end"]);
+        $url = str_replace(CONFIG_SYSTEM["seo_type_end"], "", end($this->urls));
 
         if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4'){
 
@@ -246,28 +246,36 @@ class ProductController extends Controller {
                 // select
                 if($props[0]["f_type"] == '1'){
 
-                    $properties .= '<div class="nex_properties">
+                    $selectProp = '<div class="nex_properties">
                             <label for="">'.$propName.':</label>
                             <select name="ft_select" class="ft_select" data-type-select="'.$props[0]["f_type"].'">';
 
-                    $c = 0;
+                    $allowedNext = false;
                     foreach ($props as $prop) {
 
-                        $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
+                        if(!empty($prop["val"]) || !empty($prop["sep"])){
 
-                        if($prop["pv"] === null) $calc = 'new';
-                        else $calc = $prop["pv"];
+                            $allowedNext = true;
 
-                        $active = ($prop["def"] == 1) ? ' selected' : '';
-                        $val = !empty($prop["sep"]) ? $prop["sep"] : $prop["val"];
+                            $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
 
-                        if($val == '') $properties .= '<option data-p-sum="" data-p-calc="" value="">- выбрать -</option>';
-                        else $properties .= '<option data-p-id="'.$prop["id"].'" data-p-title="'.$propName.'" data-p-sum="'.$priceProp.'" data-p-stock="'.$prop["stock"].'" data-p-calc="'.$calc.'"'.$active.' value="'.$val.'">'.$val.'</option>';
-                        $c++;
+                            if($prop["pv"] === null) $calc = 'new';
+                            else $calc = $prop["pv"];
+
+                            $active = ($prop["def"] == 1) ? ' selected' : '';
+                            $val = !empty($prop["sep"]) ? $prop["sep"] : $prop["val"];
+                            
+                            if($priceProp == '0') $priceProp = '';
+
+                            if($val == '') $selectProp .= '<option data-p-sum="" data-p-calc="" value="">- выбрать -</option>';
+                            else $selectProp .= '<option data-p-id="'.$prop["id"].'" data-p-title="'.$propName.'" data-p-sum="'.$priceProp.'" data-p-stock="'.$prop["stock"].'" data-p-calc="'.$calc.'"'.$active.' value="'.$val.'">'.$val.'</option>';
+                        }
                     }
 
-                    $properties .= '</select>
+                    $selectProp .= '</select>
                         </div>';
+
+                    if($allowedNext) $properties .= $selectProp;
                 }
 
                 // change
