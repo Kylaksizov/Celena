@@ -3,6 +3,7 @@
 namespace app\core\system\install\steps;
 
 use app\_classes\Functions;
+use app\core\system\install\steps\addon\FillBase;
 use Exception;
 use PDO;
 use PDOException;
@@ -50,7 +51,21 @@ class Step_2{
         }
 
         // удаляем все таблицы если есть
-        $db->exec("DROP TABLE `nex_brands`, `nex_categories`, `nex_images`, `nex_log`, `nex_orders`, `nex_orders_ex`, `nex_orders_status`, `nex_products`, `nex_products_cat`, `nex_product_prop`, `nex_properties`, `nex_properties_v`, `nex_roles`, `nex_systems`, `nex_users`;");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}brands");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}categories");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}images");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders_ex");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders_status");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}products");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}products_cat");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}product_prop");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties_v");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}roles");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}systems");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -269,13 +284,10 @@ class Step_2{
         $PANEL_PASSWORD = sha1(md5($PANEL_PASSWORD).':NEX');
         $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(Functions::generationCode()), time(), 1]);
 
-
-        $query = $db->prepare("INSERT INTO {$PREFIX}roles
-                (name, rules)
-            VALUES (?, ?)");
-
-        $query->execute(['Администратор', null]);
-        $query->execute(['Пользователь', null]);
+        FillBase::fill($db, $PREFIX);
+        # ===============
+        # FILL TABLES END
+        # ===============
 
 
         // create db config
@@ -302,6 +314,11 @@ return [
         flock($fp, LOCK_UN);
         fclose($fp);
 
+        echo "<pre>";
+        print_r('ok');
+        echo "</pre>";
+        exit;
+        
         return 'next';
     }
 
@@ -390,7 +407,7 @@ return [
     // какому IP показывать ошибки независимо от настроек выше
 	"dev" => ["127.0.0.1"],
 
-	"home" => "nexshop",
+	"home" => "'.$home.'",
 
 	"ssl" => 1,
 
@@ -446,19 +463,19 @@ return [
 	"after_cart" => "/",
 
     // email админа
-	"admin_email" => "masterz1zzz@gmail.com",
+	"admin_email" => "'.$email.'",
 
 	"mail_method" => "mail",
 
     "noreply" => "noreply@kylaksizov.com",
 
     // SMTP
-	"SMTPHost" => "mail.adm.tools",
-	"SMTPLogin" => "info@kylaksizov.com",
-	"SMTPPassword" => "не скажу",
+	"SMTPHost" => "",
+	"SMTPLogin" => "",
+	"SMTPPassword" => "",
 	"SMTPSecure" => "ssl",
 	"SMTPPort" => 465,
-	"SMTPFrom" => "info@kylaksizov.com",
+	"SMTPFrom" => "'.$email.'",
 
     "version" => "0.0.1",
 

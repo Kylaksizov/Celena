@@ -150,7 +150,7 @@ class ProductController extends Controller {
             if(!empty($Product["product"]["sale"])){
 
                 $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
-                $this->view->set('{sale}', $Product["product"]["sale"]);
+                $this->view->set('{sale}', $Product["product"]["sale"].''.(strripos($Product["product"]["sale"],"%")!==false?'':CONFIG_SYSTEM["currency"]));
                 $this->view->set('[sale]', '');
                 $this->view->set('[/sale]', '');
 

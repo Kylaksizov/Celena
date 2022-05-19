@@ -64,7 +64,7 @@ class OrdersController extends PanelController {
                     <td>'.$id.'</td>
                     <td>'.$order_id.'</td>
                     <td>
-                        <a href="'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/edit/'.$row["pid"].'/">'.$row["title"].'</a>
+                        <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$row["pid"].'/">'.$row["title"].'</a>
                     </td>
                     <td class="tc">'.$row["count"].'</td>
                     <td class="fs12">'.$buyer.'</td>
@@ -115,8 +115,8 @@ class OrdersController extends PanelController {
         $OrdersModel = new OrderModel();
         $Order = $OrdersModel->get(intval($this->urls[2]));
         $OrdersStatus = $OrdersModel->getStatuses();
-        
-        if($Order){
+
+        if($Order["order"]){
 
             $OrderRow = $Order["order"][0];
 
@@ -200,6 +200,9 @@ class OrdersController extends PanelController {
                         <li><span>Тел.:</span> <b><a href="tel:'.$OrderRow["tel"].'">'.$OrderRow["tel"].'</a></b></li>
                         <li><span>Email.:</span> <b><a href="mailto:'.$OrderRow["email"].'">'.$OrderRow["email"].'</a></b></li>
                     </ul>
+                    <br>
+                    <p>Комментарий к заказу:</p>
+                    <div class="order_comment">'.$OrderRow["comment"].'</div>
                     <br>
                     <label for="">Статус заказа:</label>
                     '.$statuses.'

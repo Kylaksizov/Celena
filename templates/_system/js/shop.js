@@ -70,44 +70,45 @@ $(function(){
                 let tmp_price = 0
                 let properties = '<ul class="properties_changed">'
 
-                if(cart[key].properties == undefined) return // tmp
-                cart[key].properties.forEach(function(item){ // перебираем свойства с каждой добавленной позиции
+                if(cart[key].properties != undefined){
+                    cart[key].properties.forEach(function(item){ // перебираем свойства с каждой добавленной позиции
 
-                    if(cart[key].properties.length > 1) properties += '<li class="prop_position">Позиция: '+propNumber+'</li>'
+                        if(cart[key].properties.length > 1) properties += '<li class="prop_position">Позиция: '+propNumber+'</li>'
 
-                    for(let j in item){
+                        for(let j in item){
 
-                        if(item[j].length){ // если более одного значения в свойстве
+                            if(item[j].length){ // если более одного значения в свойстве
 
-                            let tmpRepeatName, val_ = ''
-                            item[j].forEach(function(itemI, i){
-                                if(tmpRepeatName == itemI.name){
-                                    properties += ', ' + itemI.value
-                                } else{
-                                    val_ = itemI.value
-                                    properties += '<li><b>'+itemI.name+':</b> '+itemI.value
-                                }
-                                if(item[j] >= i && tmpRepeatName == itemI.name) properties += '</li>'
-                                tmpRepeatName = itemI.name
-                            })
-
-                        } else{
-
-                            for(let k in item[j]){
-                                let propVal = []
-                                if(item[j][k].length == 1)
-                                    propVal.push(item[j][k][0]['value'])
-                                else{
-                                    for(let s in item[j][k]){
-                                        propVal.push(item[j][k][s]['value'])
+                                let tmpRepeatName, val_ = ''
+                                item[j].forEach(function(itemI, i){
+                                    if(tmpRepeatName == itemI.name){
+                                        properties += ', ' + itemI.value
+                                    } else{
+                                        val_ = itemI.value
+                                        properties += '<li><b>'+itemI.name+':</b> '+itemI.value
                                     }
+                                    if(item[j] >= i && tmpRepeatName == itemI.name) properties += '</li>'
+                                    tmpRepeatName = itemI.name
+                                })
+
+                            } else{
+
+                                for(let k in item[j]){
+                                    let propVal = []
+                                    if(item[j][k].length == 1)
+                                        propVal.push(item[j][k][0]['value'])
+                                    else{
+                                        for(let s in item[j][k]){
+                                            propVal.push(item[j][k][s]['value'])
+                                        }
+                                    }
+                                    properties += '<li><b>'+item[j][k][0]['name']+':</b> '+propVal.join(', ')+'</li>'
                                 }
-                                properties += '<li><b>'+item[j][k][0]['name']+':</b> '+propVal.join(', ')+'</li>'
                             }
                         }
-                    }
-                    propNumber++;
-                })
+                        propNumber++;
+                    })
+                }
                 properties += '</ul>'
 
                 total += tmp_price // прибавляем к сумме сумму за свойства
@@ -201,7 +202,7 @@ $(function(){
             if(cart[goods.id] != undefined && cart[goods.id].id == goods.id){
 
                 cart[goods.id].count++ // добавляем кол-во
-                cart[goods.id].properties.push(goods.properties)
+                if(cart[goods.id].properties != undefined) cart[goods.id].properties.push(goods.properties)
                 ResultGoods = cart
 
             // если такого товара еще нет в корзине
