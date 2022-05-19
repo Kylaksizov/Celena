@@ -1,6 +1,6 @@
 <header id="header" class="flex">
     <div class="flex">
-        <a href="/" id="logo" title="Camby Shop"></a>
+        <a href="/" id="logo" title="Celena system">Celena</a>
         <a href="#" id="media_menu"></a>
         <ul class="nav_top">
             <li><a href="/">Главная</a></li>
@@ -16,7 +16,7 @@
         {*<a href="#order_click" class="btn-callback open_modal">Заказать звонок</a>*}
         <ul class="contacts">
             <li class="ico_tel"><a href="tel:123456789011">+1 (234) 567 890 11</a></li>
-            <li class="ico_mail"><a href="mailto:info@camby.top">info@camby.top</a></li>
+            <li class="ico_mail"><a href="mailto:info@site.com">info@site.com</a></li>
         </ul>
         <form action="/search/" method="GET" id="search" class="flex">
             <input type="search" name="str" placeholder="Введите запрос..." autocomplete="off">

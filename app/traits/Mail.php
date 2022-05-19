@@ -12,15 +12,23 @@ trait Mail{
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
         try {
-            //Server settings
-            //$mail->SMTPDebug = 2;
-            $mail->isSMTP();
-            $mail->Host = CONFIG_SYSTEM["SMTPHost"];
-            $mail->SMTPAuth = true;
-            $mail->Username = CONFIG_SYSTEM["SMTPLogin"];                 // SMTP username
-            $mail->Password = CONFIG_SYSTEM["SMTPPassword"];                           // SMTP password
-            $mail->SMTPSecure = CONFIG_SYSTEM["SMTPSecure"];                            // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = CONFIG_SYSTEM["SMTPPort"];                                    // TCP port to connect to
+
+            if(CONFIG_SYSTEM["mail_method"] == 'smtp'){
+
+                //Server settings
+                //$mail->SMTPDebug = 2;
+                $mail->isSMTP();
+                $mail->Host = CONFIG_SYSTEM["SMTPHost"];
+                $mail->SMTPAuth = true;
+                $mail->Username = CONFIG_SYSTEM["SMTPLogin"];                 // SMTP username
+                $mail->Password = CONFIG_SYSTEM["SMTPPassword"];              // SMTP password
+                $mail->SMTPSecure = CONFIG_SYSTEM["SMTPSecure"];              // Enable TLS encryption, `ssl` also accepted
+                $mail->Port = CONFIG_SYSTEM["SMTPPort"];
+
+            } else{
+
+                $mail->isMail();
+            }
 
             //Recipients
             $mail->setFrom(CONFIG_SYSTEM["admin_email"], CONFIG_SYSTEM["SMTPFrom"]);

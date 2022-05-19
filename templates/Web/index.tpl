@@ -37,9 +37,9 @@
         <div class="clr"></div>
         [/show]
 
-        [show="index,category"]<div class="all_goods">[/show]
+        [show="index,category,search"]<div class="all_goods">[/show]
             {CONTENT}
-        [show="index,category"]</div>[/show]
+        [show="index,category,search"]</div>[/show]
 
         [show="index"]<div class="description_page">
             <h1>Интернет-магазин</h1>

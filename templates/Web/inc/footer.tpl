@@ -3,8 +3,8 @@
         <div class="site_info flex">
             <ul>
                 <li>Контакты:</li>
-                <li><a href="tel:0500340460">(050) 034-04-60</a></li>
-                <li><a href="tel:0985782608">(098) 578-26-08</a></li>
+                <li><a href="tel:0123456789">+38 (050) 000-00-00</a></li>
+                <li><a href="tel:0123456789">+38 (098) 000-00-00</a></li>
                 <li><br></li>
                 <li>График работы:</li>
                 <li class="schedule">с 9:00 до 20:00 без выходных</li>
@@ -33,7 +33,7 @@
             </ul>
         </div>
         <div>
-            <a href="#" class="developer">Разработка систем</a>
+            <a href="//celena.io/" class="developer">Разработка сайтов</a>
             <p class="copyright">&copy; 2022</p>
         </div>
     </div>

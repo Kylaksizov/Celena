@@ -25,10 +25,19 @@ class SearchController extends Controller {
 
 
         // если тег ля вывода продуктов присутствует
-        if(!empty($_GET["str"])){
+        /*if(!empty($_GET["str"])){
             $_GET["search"] = trim(htmlspecialchars(stripslashes($_GET["str"]))); // repeat
             $Products = new CustomProducts();
             $result = $Products->custom($this, 'index', 'products');
+        }*/
+
+        // если тег ля вывода продуктов присутствует
+        if(!empty($_GET["str"])){
+            $_GET["search"] = trim(htmlspecialchars(stripslashes($_GET["str"]))); // repeat
+            $Products = new CustomProducts();
+            $products = $Products->get($this, true, end($this->urls), 'products');
+            $this->view->setMain('{CONTENT}', $products);
+            $this->view->clear();
         }
 
         $this->view->set('{result}', $result);

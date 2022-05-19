@@ -24,7 +24,7 @@ class CustomProducts{
         if(!is_array($categories) || $categories == 'index') $limit = CONFIG_SYSTEM["count_prod_by_cat"];
 
         if(!empty($_GET["search"])) $Products = $ProductModel->search($_GET["search"], $categories, $limit, $order, $sort);
-        else $Products = $ProductModel->getProducts($paginationPow, $categories, $limit, $order, $sort);
+        else $Products = $ProductModel->getProducts($categories, $paginationPow, $limit, $order, $sort);
 
         if($e->route["controller"] == 'category'){ // если категория
 

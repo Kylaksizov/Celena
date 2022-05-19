@@ -183,157 +183,21 @@ class ProductModel extends Model{
     /**
      * @name получение всех товаров
      * ============================
-     * @return array
-     * @throws Exception
-     */
-    /*public function getProducts($categories = [], $fields = null){
-
-        $result = [];
-
-        // если был передан параметр с категориями
-        if(!empty($categories)){
-
-            $where = "";
-            $params = [];
-
-            foreach ($categories as $categoryUrl) {
-                $where .= "c.url = ? OR ";
-                array_push($params, $categoryUrl);
-            }
-            $where = trim($where, " OR ");
-
-            $result["categories"] = Base::run("SELECT
-                    c.id,
-                    c.title,
-                    c.m_title,
-                    c.m_description,
-                    c.content,
-                    c.icon,
-                    c.url,
-                    c.pid AS parent_category,
-                    pc.pid AS product_id
-                FROM " . PREFIX . "categories c
-                    LEFT JOIN " . PREFIX . "products_cat pc ON pc.cid = c.id
-                WHERE " . $where . " AND c.status != 0 GROUP BY pc.pid
-                ", $params)->fetchAll(PDO::FETCH_ASSOC);
-
-            //$result["categories_ids"] = System::setKeys($result["categories"], "id");
-        }
-
-        $where = "";
-        $params = [];
-
-        $pagination = [
-            "start" => 0,
-            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
-            "pagination" => ""
-        ];
-
-        if(!$fields){ // поля по умолчанию
-
-            $fields = [
-                'p.id, p.uid AS author_id, p.title, p.url, p.category',
-                '{price}'      => 'p.price',
-                '{sale}'       => 'p.sale',
-                '{stock}'      => 'p.stock',
-                '{vendor}'     => 'p.vendor',
-                '{date}'       => 'p.created',
-                '{brand-id}'   => 'p.brand AS brand_id',
-                '{brand-name}' => 'b.name AS brand_name',
-                '{brand-url}'  => 'b.url AS brand_url',
-                '{brand-icon}' => 'b.icon AS brand_icon'
-            ];
-        }
-
-        $leftJoin = "";
-
-        if(isset($fields["{brand-id}"]) || isset($fields["{brand-name}"]) || isset($fields["{brand-url}"]) || isset($fields["{brand-icon}"])){
-            $leftJoin .= " LEFT JOIN " . PREFIX . "brands b ON b.id = p.brand";
-        }
-
-        $leftJoin .= " LEFT JOIN " . PREFIX . "images i ON i.id = p.poster";
-
-        $fieldsString = implode(", ", $fields);
-
-        // перебираем категории, а именно новости из них
-        if(!empty($categories) && !empty($result["categories"])){
-
-            $lastCategoryName = end($categories);
-            
-            foreach ($result["categories"] as $catRow) {
-
-                if($lastCategoryName == $catRow["url"]){
-                    $where .= "p.id = ? OR ";
-                    array_push($params, $catRow["product_id"]);
-                }
-            }
-            $where = trim($where, " OR ");
-        }
-        if(!empty($where)) $where .= " AND ";
-
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "products p WHERE $where p.status != 0 ORDER BY p.id DESC", $params, $pagination["start"], $pagination["limit"]);
-
-        #TODO в дальнейшем можно разбить запросов зависимости от настроек, для оптимизации
-        $result["products"] = Base::run(
-            "SELECT
-                    $fieldsString
-                FROM " . PREFIX . "products p
-                    $leftJoin
-                WHERE $where p.status != 0
-                    GROUP BY p.id
-                    ORDER BY p.id DESC
-                LIMIT {$pagination["start"]}, {$pagination["limit"]}
-                ", $params)->fetchAll(PDO::FETCH_ASSOC);
-
-        // если есть тег на получение картинок
-        if(!empty($result["products"]) && isset($fields["{images}"])){
-
-            $where = "";
-            $params = [];
-            foreach ($result["products"] as $row) {
-                $where .= "nid = ? OR ";
-                array_push($params, $row["id"]);
-            }
-            $where = trim($where, " OR ");
-
-            $result["images"] = System::setKeysArray(
-                Base::run(
-                    "SELECT
-                    nid,
-                    src,
-                    alt
-                FROM " . PREFIX . "images
-                WHERE
-                    $where AND itype = 1
-                    ORDER BY position ASC
-                ", $params)->fetchAll(PDO::FETCH_ASSOC),
-                "nid"
-            );
-        }
-
-        $result["pagination"] = $pagination['pagination'];
-
-        return $result;
-    }*/
-
-
-    /**
-     * @name получение всех товаров
-     * ============================
+     * @param $categories
      * @param bool $paginationPow
-     * @param array|string $categories
      * @param int $limit
      * @param string $order
      * @param string $sort
-     * @return void
+     * @return array
      * @throws Exception
      */
-    public function getProducts(bool $paginationPow = false, array|string $categories = '', int $limit = 10, string $order = 'id', string $sort = 'desc'){
+    public function getProducts($categories, bool $paginationPow = false, int $limit = 10, string $order = 'id', string $sort = 'desc'){
 
         $where = "";
         $params = [];
-        $wherePagination = "";
-        $paramsPagination = [];
+        $catId = null;
+        //$wherePagination = "";
+        //$paramsPagination = [];
 
         $pagination = [
             "start" => 0,
@@ -359,7 +223,8 @@ class ProductModel extends Model{
 
             foreach ($result["categories"] as $categoryRow) {
                 if($categoryRow["url"] == $categories){
-                    $wherePagination = "p.category REGEXP '[[:<:]]".$categoryRow["id"].",'";
+                    $catId = $categoryRow["id"];
+                    //$wherePagination = "p.category REGEXP '[[:<:]]".$categoryRow["id"].",'";
                     $where .= "pc.cid = ?";
                     array_push($params, $categoryRow["id"]);
                     break;
@@ -374,7 +239,7 @@ class ProductModel extends Model{
         }
         #TODO сюда...
 
-
+        //$join_category = "INNER JOIN (SELECT DISTINCT(" . PREFIX . "products_cat.news_id) FROM " . PREFIX . "products_cat pc WHERE pc.cid IN ('" . $catId . "')) c ON (p.id=c.news_id) ";
 
 
         $where .= "c.status != 0 AND p.status != 0";

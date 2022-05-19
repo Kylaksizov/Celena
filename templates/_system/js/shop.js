@@ -70,6 +70,7 @@ $(function(){
                 let tmp_price = 0
                 let properties = '<ul class="properties_changed">'
 
+                if(cart[key].properties == undefined) return // tmp
                 cart[key].properties.forEach(function(item){ // перебираем свойства с каждой добавленной позиции
 
                     if(cart[key].properties.length > 1) properties += '<li class="prop_position">Позиция: '+propNumber+'</li>'

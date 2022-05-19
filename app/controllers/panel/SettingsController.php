@@ -94,6 +94,17 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Метод отправки</h3>
+                            </div>
+                            <div>
+                                <select name="config[mail_method]">
+                                    <option value="mail">PHP mail()</option>
+                                    <option value="smtp"'.(CONFIG_SYSTEM["mail_method"] == 'smtp' ? ' selected' : '').'>SMTP</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>SMTP хост</h3>
                             </div>
                             <div>
