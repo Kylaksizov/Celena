@@ -617,7 +617,7 @@ hr{
 }
 
 #slider{
-    margin-top: -20px;
+    margin: -20px 0 20px;
     overflow: hidden;
 }
 #slider img{
@@ -1466,6 +1466,9 @@ hr{
 }
 .product_info{
     width: calc(100% - 520px);
+}
+.product p:not(:last-child){
+    margin-bottom: 10px;
 }
 #main_goods h1{
     font-size: 20px;

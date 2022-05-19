@@ -29,14 +29,14 @@ class IndexController extends Controller {
 
 
 
-        $this->view->setMeta('Panel', 'CRM система для автоматизации бизнес процессов', [
+        $this->view->setMeta(CONFIG_SYSTEM["site_title"], CONFIG_SYSTEM["site_description"], [
             [
                 'property' => 'og:title',
-                'content' => 'NEX CRM',
+                'content' => CONFIG_SYSTEM["site_title"],
             ],
             [
                 'property' => 'og:description',
-                'content' => 'CRM система для автоматизации бизнес процессов',
+                'content' => CONFIG_SYSTEM["site_description"],
             ]
         ]);
 

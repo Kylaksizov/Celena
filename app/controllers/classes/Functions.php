@@ -47,7 +47,10 @@ class Functions{
 
             $login = $e->view->get();
             $e->view->setMain('{login}', $login);
-        }
+
+        } else $e->view->setMain('{login}', '');
+
+        $e->view->setMain('{sort}', '');
     }
 
 

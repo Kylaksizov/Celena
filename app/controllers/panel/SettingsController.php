@@ -46,6 +46,23 @@ class SettingsController extends PanelController {
                     <div class="dg settings">
                         <div class="set_item">
                             <div>
+                                <h3>Название сайта</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[site_title]" value="'.CONFIG_SYSTEM["site_title"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Описание сайта</h3>
+                                <div class="setDescription">До 250 символов.</div>
+                            </div>
+                            <div>
+                                <textarea name="config[site_description]">'.CONFIG_SYSTEM["site_description"].'</textarea>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>Адрес сайта</h3>
                                 <div class="setDescription">Указывать нужно без слешей. Например: <b>site.com</b></div>
                             </div>
@@ -68,6 +85,75 @@ class SettingsController extends PanelController {
                             <div>
                                 <input type="checkbox" name="config[ssl]" value="1"'.System::check(CONFIG_SYSTEM["ssl"]).' id="ch_ssl">
                                 <label for="ch_ssl"></label>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Знак валюты</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[currency]" value="'.CONFIG_SYSTEM["currency"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Количество знаков в ID товара</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[str_pad_id]" value="'.CONFIG_SYSTEM["str_pad_id"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Количество товаров на главной и в категориях</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[count_prod_by_cat]" value="'.CONFIG_SYSTEM["count_prod_by_cat"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>До какого размера (в px) уменьшать загружаемые изображения</h3>
+                                <div class="setDescription">Если оставить пустым, то будут загружаться оригинальные изображения.</div>
+                            </div>
+                            <div>
+                                <input type="text" name="config[origin_image]" value="'.CONFIG_SYSTEM["origin_image"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Качество загружаемых изображений</h3>
+                                <div class="setDescription">Если оставить пустым, качество будет оставаться исходным.</div>
+                            </div>
+                            <div>
+                                <input type="text" name="config[quality_image]" value="'.CONFIG_SYSTEM["quality_image"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>До какого размера (в px) создавать уменьшенную копию изображений</h3>
+                                <div class="setDescription">Если оставить пустым, уменьшеная копия создаваться не будет.</div>
+                            </div>
+                            <div>
+                                <input type="text" name="config[thumb]" value="'.CONFIG_SYSTEM["thumb"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Качество уменьшенных копий изображений</h3>
+                                <div class="setDescription">Если оставить пустым, качество будет оставаться исходным.</div>
+                            </div>
+                            <div>
+                                <input type="text" name="config[quality_thumb]" value="'.CONFIG_SYSTEM["quality_thumb"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Редирект после оформления заказа</h3>
+                                <div class="setDescription">Можно указать как относительный путь, так и любую ссылку.</div>
+                            </div>
+                            <div>
+                                <input type="text" name="config[after_cart]" value="'.CONFIG_SYSTEM["after_cart"].'">
                             </div>
                         </div>
                         <div class="set_item">

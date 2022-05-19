@@ -231,7 +231,7 @@ class View{
         $meta = '<meta charset="UTF-8">
     <title>'.$title.'</title>
     <meta name="description" content="'.$description.'">
-    <meta name="generator" content="Nex">';
+    <meta name="generator" content="Celena">';
         
         if(!empty($array)){
             foreach ($array as $arr) {

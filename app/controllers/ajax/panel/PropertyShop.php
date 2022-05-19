@@ -40,7 +40,7 @@ class PropertyShop{
 
             if(!empty($_POST["val"])){
                 foreach ($_POST["val"] as $val) {
-                    $def = ($val == $_POST["def"]) ? 1 : null;
+                    $def = (!empty($_POST["def"]) && $val == $_POST["def"]) ? 1 : null;
                     $PropertyModel->add($id, trim(htmlspecialchars(strip_tags($val))), $def);
                 }
             }

@@ -317,6 +317,11 @@ class ProductsController extends PanelController {
 
         $content = '<h1>'.$h1.'</h1>';
 
+        $productStatus = ' checked';
+        if(!empty($Product["product"])){
+            if(empty($Product["product"]["status"])) $productStatus = '';
+        }
+
         $content .= '<form action method="POST">
             <div class="tabs">
                 <ul class="tabs_caption">
@@ -371,7 +376,7 @@ class ProductsController extends PanelController {
                         <div>
                             <div>
                                 <div class="tr">
-                                    <input type="checkbox" name="status" id="p_status"'.(!empty($Product["product"]["status"])?' checked':'').' value="1"><label for="p_status">Активен</label>
+                                    <input type="checkbox" name="status" id="p_status"'.$productStatus.' value="1"><label for="p_status">Активен</label>
                                 </div>
                                 <div>
                                     <label for="p_images" class="upload_files">
@@ -558,6 +563,11 @@ class ProductsController extends PanelController {
 
         $icon = (!empty($Category["icon"]) && file_exists(ROOT . '/uploads/categories/'.$Category["icon"])) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/categories/'.$Category["icon"].'" alt="">' : '<span class="no_image"></span>';
 
+        $categoryStatus = ' checked';
+        if(!empty($Category)){
+            if(empty($Category["status"])) $categoryStatus = '';
+        }
+
         $content .= '<form action method="POST" class="box_">
             <div class="dg dg_auto">
                 <div>
@@ -580,7 +590,7 @@ class ProductsController extends PanelController {
                     <input type="text" name="meta[description]" value="'.(!empty($Category["m_description"])?$Category["m_description"]:'').'" autocomplete="off">
                 </div>
             </div>
-            <input type="checkbox" name="status" class="ch_min status_product" id="category_status"'.(!empty($Category["status"])?' checked':'').'><label for="category_status">Активна</label>
+            <input type="checkbox" name="status" class="ch_min status_product" id="category_status"'.$categoryStatus.'><label for="category_status">Активна</label>
             <br>
             <p class="title_box hr_d">Дополнительно</p>
             <div class="dg dg_auto">

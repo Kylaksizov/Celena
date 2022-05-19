@@ -147,6 +147,7 @@ class Brand{
             $ext == 'jpg' ||
             $ext == 'webp' ||
             $ext == 'bmp' ||
+            $ext == 'svg' ||
             $ext == 'gif'
         ) {
 

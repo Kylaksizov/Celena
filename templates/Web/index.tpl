@@ -41,7 +41,8 @@
             {CONTENT}
         [show="index,category,search"]</div>[/show]
 
-        [show="index"]<div class="description_page">
+        [show="index"]<br>
+        <div class="description_page">
             <h1>Интернет-магазин</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi consectetur dicta facere fugit impedit inventore, magni molestias necessitatibus nisi omnis saepe vero voluptates voluptatibus? Architecto atque beatae dignissimos distinctio dolor error exercitationem impedit ipsa ipsam iste iusto maiores molestiae non obcaecati odio officia quae quaerat quas quidem, rerum veritatis, vitae voluptatum. Dignissimos dolore expedita ipsum magnam maxime perferendis possimus ut. Ab dicta dolores iure necessitatibus quis unde. Ad alias aliquid aut beatae corporis deserunt, ea eaque enim, error ipsa laboriosam libero magnam necessitatibus nesciunt officiis quam sint sit veritatis voluptas voluptates. Dolor doloribus iusto perspiciatis. Blanditiis est iusto minus quidem.</p>
         </div>[/show]

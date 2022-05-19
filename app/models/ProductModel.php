@@ -212,6 +212,8 @@ class ProductModel extends Model{
             Base::run("SELECT
                 id,
                 title,
+                m_title,
+                m_description,
                 url,
                 pid
             FROM " . PREFIX . "categories", $params)->fetchAll(PDO::FETCH_ASSOC),

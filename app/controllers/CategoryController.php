@@ -16,6 +16,8 @@ class CategoryController extends Controller {
      */
     public function indexAction(){
 
+        Functions::preTreatment($this);
+
         // если тег ля вывода продуктов присутствует
         if($this->view->findTag('{CONTENT}', 1)){
             $Products = new CustomProducts();
@@ -23,18 +25,6 @@ class CategoryController extends Controller {
             $this->view->setMain('{CONTENT}', $products);
             $this->view->clear();
         }
-
-
-        $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
-            [
-                'property' => 'og:title',
-                'content' => 'NEX CRM',
-            ],
-            [
-                'property' => 'og:description',
-                'content' => 'CRM система для автоматизации бизнес процессов',
-            ]
-        ]);
 
         $this->view->render(false);
 
