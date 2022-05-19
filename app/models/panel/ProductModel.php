@@ -17,7 +17,7 @@ class ProductModel extends Model{
      * @param $title
      * @param string $vendor
      * @param array $meta
-     * @param $content
+     * @param string $content
      * @param array $categories
      * @param $brand
      * @param $price
@@ -29,7 +29,7 @@ class ProductModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, string $vendor = '', array $meta = [], $content, array $categories = [], $brand = null, $price, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
+    public function create($title, string $vendor = '', array $meta = [], string $content = '', array $categories = [], $brand = null, $price = 0, string $sale = null, $stock = null, $url = null, $created = null, int $status = 1){
         
         if($url === null) $url = System::translit($title);
         if($created === null) $created = time();

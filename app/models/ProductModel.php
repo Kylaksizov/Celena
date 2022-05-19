@@ -91,7 +91,7 @@ class ProductModel extends Model{
         // достаем инфу о категориях
         if(!empty($result["product"])){
 
-            $catsIds = explode(",", $result["product"]["category"]);
+            /*$catsIds = explode(",", $result["product"]["category"]);
 
             if(count($catsIds) == 1){
                 $whereCategory = "id = ?";
@@ -116,6 +116,17 @@ class ProductModel extends Model{
                 FROM " . PREFIX . "categories
                 WHERE $whereCategory",
                     $paramsCategory)->fetchAll(PDO::FETCH_ASSOC),
+                "id"
+            );*/
+
+            #TODO временно сделаю выборку всех категорий
+            $result["categories"] = System::setKeys(
+                    Base::run("SELECT
+                    id,
+                    title,
+                    url,
+                    pid
+                FROM " . PREFIX . "categories", [])->fetchAll(PDO::FETCH_ASSOC),
                 "id"
             );
         }
@@ -304,6 +315,130 @@ class ProductModel extends Model{
 
         return $result;
     }*/
+
+
+    /**
+     * @name получение всех товаров
+     * ============================
+     * @param bool $paginationPow
+     * @param array|string $categories
+     * @param int $limit
+     * @param string $order
+     * @param string $sort
+     * @return void
+     * @throws Exception
+     */
+    public function getProducts(bool $paginationPow = false, array|string $categories = '', int $limit = 10, string $order = 'id', string $sort = 'desc'){
+
+        $where = "";
+        $params = [];
+        $wherePagination = "";
+        $paramsPagination = [];
+
+        $pagination = [
+            "start" => 0,
+            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
+            "pagination" => ""
+        ];
+
+
+        #TODO временно сделаю выборку всех категорий
+        #TODO переделать этот мусор до...
+        $result["categories"] = System::setKeys(
+            Base::run("SELECT
+                id,
+                title,
+                url,
+                pid
+            FROM " . PREFIX . "categories", $params)->fetchAll(PDO::FETCH_ASSOC),
+            "id"
+        );
+
+
+        if(is_string($categories)){ // если передано url строка конечной категории
+
+            foreach ($result["categories"] as $categoryRow) {
+                if($categoryRow["url"] == $categories){
+                    $wherePagination = "p.category REGEXP '[[:<:]]".$categoryRow["id"].",'";
+                    $where .= "pc.cid = ?";
+                    array_push($params, $categoryRow["id"]);
+                    break;
+                }
+            }
+
+            if(!empty($where))
+                $where = "(" . $where . ") AND ";
+
+        } else if(is_array($categories)){
+
+        }
+        #TODO сюда...
+
+
+
+
+        $where .= "c.status != 0 AND p.status != 0";
+
+        $sort = ($sort == 'desc') ? 'DESC' : 'ASC';
+        switch ($order){
+            case "date": $orderBy = "p.created $sort"; break;
+            case "price": $orderBy = "p.price $sort"; break;
+            case "modify": $orderBy = "p.last_modify $sort"; break;
+            default: $orderBy = "p.id $sort";
+        }
+
+        $limitQuery = "LIMIT $limit";
+
+        if($paginationPow){
+
+            if(is_string($categories)){
+
+                //$where = "p.status != 0";
+
+                $pagination = System::pagination("SELECT COUNT(DISTINCT pc.pid) AS count FROM " . PREFIX . "products_cat pc
+                    LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
+                    LEFT JOIN " . PREFIX . "products p ON p.id = pc.pid
+                WHERE " . $where, $params, $pagination["start"], $limit);
+
+                $limitQuery = "LIMIT {$pagination["start"]}, $limit";
+
+            } else if(is_array($categories)){
+
+                $where = "p.status != 0";
+
+                $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "products p
+             WHERE " . $where, $params, $pagination["start"], $limit);
+
+                $limitQuery = "LIMIT {$pagination["start"]}, $limit";
+            }
+        }
+
+        $result["products"] = Base::run("SELECT
+                pc.pid AS id,
+                c.id AS category_id,
+                c.title AS category_title,
+                c.url AS category_url,
+                c.pid AS parent_category,
+                p.title AS title,
+                p.vendor,
+                p.price,
+                p.sale,
+                p.stock,
+                p.url,
+                p.created,
+                i.src AS poster
+            FROM " . PREFIX . "products_cat pc
+                LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
+                LEFT JOIN " . PREFIX . "products p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
+            WHERE " . $where . " GROUP BY $orderBy
+            $limitQuery
+                ", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+        $result["pagination"] = $pagination['pagination'];
+
+        return $result;
+    }
 
 
     /**

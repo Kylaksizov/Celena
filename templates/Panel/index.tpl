@@ -35,7 +35,7 @@
 
     <a href="{panel}/balance/" id="balance">
         <span>Баланс</span>
-        <b>116923.5 $</b>
+        <b>0 $</b>
     </a>
 
     <div id="notification">
@@ -100,7 +100,7 @@
 <main id="content">
 
     <aside id="menu">
-        <div class="company_name"><a href="{panel}/">МОЙ МАГАЗИН</a> <a href="{HOME}" target="_blank" class="on_site"></a></div>
+        <div class="company_name">{logo}</div>
         <nav>
             {menu}
         </nav>

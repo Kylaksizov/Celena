@@ -37,7 +37,7 @@ class Step_1{
         $errorText = !empty($allowed) ? '<p class="errorText">Исправьте проблемы и обновите страницу</p>' : '';
 
         return '<form action method="POST">
-            <h1>Проверка системы</h1>
+            <h1><a href="//celena.io/" id="celena_logo" target="_blank">celena</a> Проверка системы</h1>
             <p class="step_description">Данный шаг ещё в процессе доработки</p>
             <div class="system_test">
             

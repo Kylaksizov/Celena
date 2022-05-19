@@ -329,6 +329,7 @@ class ProductController extends Controller {
         if(ADMIN) $edit = '<a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';
 
         $this->view->set('{edit}', $edit);
+        $this->view->setMain('{CONTENT}', $this->view->get());
 
 
         $this->view->setMeta('Продукты', 'CRM система для автоматизации бизнес процессов', [

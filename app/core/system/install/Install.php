@@ -67,7 +67,7 @@ class Install{
                             $("#content").html(`'.$contentB.'`).fadeIn(400);
                         });';
 
-                    } else if(is_numeric($step)){
+                    } else {
 
                         $stepClassB = 'app\core\system\install\steps\Finish';
                         $controllerB = new $stepClassB();

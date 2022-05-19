@@ -39,7 +39,7 @@ class CategoryShop{
 
         if(empty($cid[1])){ // если это добавление новой категории
 
-            $id = $CategoryModel->create($title, $meta, $cont, $url, $pid, $status);
+            $id = $CategoryModel->create($title, $cont, $url, $pid, $meta, $status);
 
             if(!empty($_FILES["icon"])){
                 $icon = $this->uploadIcon($id);
@@ -57,7 +57,7 @@ class CategoryShop{
         } else{ // если редактирование
 
             $id = intval($cid[1]);
-            $CategoryModel->edit($id, $title, $meta, $cont, $url, $pid, $status);
+            $CategoryModel->edit($id, $title, $cont, $url, $pid, $meta, $status);
 
             if(!empty($_FILES["icon"])){
 

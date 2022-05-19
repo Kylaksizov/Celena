@@ -1,11 +1,12 @@
 html, body{
-    background: var(--c-black);
+    background: #ecf0fa;
     color: var(--main-color);
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
 #authForm{
-    background: #fff url("/templates/Web/img/logo.png") no-repeat center 20px;
+    background: #fff url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI2Ny4yMDQybW0iIGhlaWdodD0iNjcuMjA0Mm1tIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSJzaGFwZS1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZpbGwtcnVsZTpldmVub2RkOyBjbGlwLXJ1bGU6ZXZlbm9kZCINCnZpZXdCb3g9IjAgMCA1NDgwLjk1IDU0ODAuOTUiPg0KIDx0aXRsZT5DZWxlbnRhIExvZ288L3RpdGxlPg0KIDxkZWZzPg0KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KICAgPCFbQ0RBVEFbDQogICAgLmZpbDAge2ZpbGw6IzQ3YjNmZn0NCiAgIF1dPg0KICA8L3N0eWxlPg0KIDwvZGVmcz4NCiA8ZyBpZD0i0KHQu9C+0LlfeDAwMjBfMSI+DQogIDxtZXRhZGF0YSBpZD0iQ29yZWxDb3JwSURfMENvcmVsLUxheWVyIi8+DQogIDxwYXRoIGNsYXNzPSJmaWwwIiBkPSJNMjc0MC40OCAwYzE1MTMuNTIsMCAyNzQwLjQ4LDEyMjYuOTYgMjc0MC40OCwyNzQwLjQ4IDAsMTUxMy41MiAtMTIyNi45NiwyNzQwLjQ4IC0yNzQwLjQ4LDI3NDAuNDggLTE1MTMuNTIsMCAtMjc0MC40OCwtMTIyNi45NiAtMjc0MC40OCwtMjc0MC40OCAwLC0xNTEzLjUyIDEyMjYuOTYsLTI3NDAuNDggMjc0MC40OCwtMjc0MC40OHptLTYuOTIgMjg4LjA1YzEwOTEuNjcsMCAyMDE2LjU3LDcxMy4zNyAyMzM0LjQyLDE2OTkuMzJsLTIzMjcuNSA0MTguNjRjLTMwNy4wOCwtODM4LjY4IDEwNzYuMTIsLTE4NTUuODYgLTEuMjUsLTE4NTUuODYgLTEwNzcuMzcsMCAtMjE5MC4zMyw5ODAuNjUgLTIxOTAuMzMsMjE5MC4zMyAwLDEyMDkuNjggMTExMi45NiwyMTkwLjMzIDIxOTAuMzMsMjE5MC4zMyAxMDc3LjM3LDAgLTMwNS44MywtMTAxOS4yNiAxLjI1LC0xODU3Ljk0bDIzMjcuNSA0MjAuNzNjLTMxNy44NSw5ODUuOTUgLTEyNDIuNzUsMTY5OS4zMiAtMjMzNC40MiwxNjk5LjMyIC0xMzU0LjQ0LDAgLTI0NTIuNDMsLTEwOTggLTI0NTIuNDMsLTI0NTIuNDMgMCwtMTM1NC40MyAxMDk3Ljk5LC0yNDUyLjQzIDI0NTIuNDMsLTI0NTIuNDN6Ii8+DQogPC9nPg0KPC9zdmc+") no-repeat center 20px;
+    background-size: 50px;
     padding: 80px 20px 20px;
     border-radius: 2px;
     max-width: 400px;
@@ -18,12 +19,12 @@ h3{
     margin-bottom: 10px;
 }
 #authForm .btn{
-    background: var(--c-black);
+    background: #47b3ff;
     width: 100%;
     padding: 10px;
 }
 #authForm .btn:hover{
-    background: var(--c-black-hover);
+    background: #2292e1;
 }
 .contextmenu{
     display: none;

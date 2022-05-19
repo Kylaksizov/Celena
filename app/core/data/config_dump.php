@@ -3,24 +3,24 @@
 return [
 
     // вывод ошибок
-	"errors" => 1,
+    "errors" => 1,
 
     // вести журнал ошибок
-	"db_log" => 1,
+    "db_log" => 1,
 
     // помощь разработчику
-	"dev_tools" => 1,
+    "dev_tools" => 1,
 
     // какому IP показывать ошибки независимо от настроек выше
-	"dev" => ["127.0.0.1"],
+    "dev" => ["127.0.0.1"],
 
-	"home" => "nexshop",
+    "home" => "nexshop",
 
-	"ssl" => 1,
+    "ssl" => 1,
 
     "site_title" => "Мой магазин",
 
-	"panel" => "panel",
+    "panel" => "panel",
 
     // ЧПУ: 1 - link
     // ЧПУ: 2 - ID-link
@@ -62,16 +62,10 @@ return [
     "quality_thumb" => "80",
 
     // шаблон по умолчанию
-	"template" => "Web",
+    "template" => "Web",
 
     // перекидывать на страницу после оформления заказа
-	"after_cart" => "/",
-
-    "auth" => [
-        "googleClientId" => '956715554556-ckj2ju70102elqq6990k8rb3439qb28e.apps.googleusercontent.com',
-        "googleClientSecret" => 'MQc0zaALnIANl2KEmJBDsPH2',
-        "redirect_url" => 'https://nex.company/'
-    ],
+    "after_cart" => "/",
 
     // email админа
     "noreply" => "noreply@kylaksizov.com",
@@ -80,7 +74,7 @@ return [
     // SMTP
     "SMTPHost" => "mail.adm.tools",
     "SMTPLogin" => "info@kylaksizov.com",
-    "SMTPPassword" => "8PS_7N^r6u(r",
+    "SMTPPassword" => "не скажу",
     "SMTPSecure" => "ssl",
     "SMTPPort" => 465,
     "SMTPFrom" => "info@kylaksizov.com",

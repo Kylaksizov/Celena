@@ -10,6 +10,17 @@ class Finish{
 
     public function indexAction(){
 
-        return 'Спасибо за установку нашей CMS!<br>Перейди в панель по адресу /panel/';
+        $config = require CORE . "/data/config.php";
+
+        return '<div class="system_installed">
+            <a href="//celena.io/" id="celena_logo" target="_blank">celena</a>
+            <br>
+            <p>Спасибо за установку нашей CMS!</p>
+            <br>
+            <div class="fx jc_c">
+                <a href="//'.$config["home"].'/panel/" class="btn">Перейти в панель</a>&nbsp;&nbsp;&nbsp;
+                <a href="//'.$config["home"].'/" class="btn">Перейти на сайт</a>
+            </div>
+        </div>';
     }
 }

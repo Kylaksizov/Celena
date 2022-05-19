@@ -511,7 +511,7 @@ class View{
 </div>';
 
 
-        $this->tplIndex = str_replace('{CONTENT}', $content, $this->tplIndex);
+        if($display) $this->tplIndex = str_replace('{CONTENT}', $content, $this->tplIndex);
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);
         $this->tplIndex = str_replace('{SCRIPTS}', $scripts, $this->tplIndex);
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);

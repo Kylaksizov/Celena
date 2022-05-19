@@ -116,7 +116,7 @@ class Base {
             $relPath_2 = strstr($file_info[2]['file'], "app\\");
             $relPath_3 = strstr($file_info[3]['file'], "app\\");
             $relPath_4 = strstr($file_info[4]['file'], "app\\");
-            $relPath_5 = strstr($file_info[5]['file'], "app\\");
+            $relPath_5 = !empty($file_info[5]['file']) ? strstr($file_info[5]['file'], "app\\") : '';
 
             $content = date("d.m.Y H:i:s", time()) . " | " . $errors . '<br><span class="file_log">1: '.$relPath_1.' &#10148; '.$file_info[1]['line'].'</span><br>' . '<span class="file_log">2: '.$relPath_2.' &#10148; '.$file_info[2]['line'].'</span>';
 

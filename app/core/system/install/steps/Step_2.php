@@ -28,6 +28,7 @@ class Step_2{
         $PANEL_EMAIL     = !empty($_POST["panel"]["email"])     ? $_POST["panel"]["email"]     : die("info::error::Заполните все поля!");
         $PANEL_PASSWORD  = !empty($_POST["panel"]["password"])  ? $_POST["panel"]["password"]  : die("info::error::Заполните все поля!");
         $PANEL_PASSWORD2 = !empty($_POST["panel"]["password2"]) ? $_POST["panel"]["password2"] : die("info::error::Заполните все поля!");
+        $PANEL_HOME      = !empty($_POST["panel"]["home"])      ? $_POST["panel"]["home"]      : die("info::error::Заполните все поля!");
 
         $PANEL_NAME = trim(htmlspecialchars(stripslashes($PANEL_NAME)));
 
@@ -47,6 +48,9 @@ class Step_2{
         } catch(PDOException $e){
             die("info::error::Не удалось соединится с базой!");
         }
+
+        // удаляем все таблицы если есть
+        $db->exec("DROP TABLE `nex_brands`, `nex_categories`, `nex_images`, `nex_log`, `nex_orders`, `nex_orders_ex`, `nex_orders_status`, `nex_products`, `nex_products_cat`, `nex_product_prop`, `nex_properties`, `nex_properties_v`, `nex_roles`, `nex_systems`, `nex_users`;");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -285,6 +289,13 @@ return [
         flock($fp, LOCK_UN);
         fclose($fp);
 
+        // create config file
+        $fp = fopen(CORE . "/data/config.php", "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, self::configFile($PANEL_HOME, $PANEL_EMAIL));
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
         return 'next';
     }
 
@@ -294,7 +305,7 @@ return [
     public function indexAction(){
 
         return '<form action method="POST">
-            <h1>Доступы</h1>
+            <h1><a href="//celena.io/" id="celena_logo" target="_blank">celena</a> Доступы</h1>
             <div class="dg access">
                 <div>
                     <h3 class="title_hr">База данных</h3>
@@ -316,7 +327,7 @@ return [
                     </div>
                     <div>
                         <label for="">Префикс к таблицам</label>
-                        <input type="text" name="db[prefix]" value="nex_">
+                        <input type="text" name="db[prefix]" value="sel_">
                     </div>
                 </div>
                 <div></div>
@@ -344,9 +355,103 @@ return [
                         <label for="">Повторите пароль</label>
                         <input type="password" name="panel[password2]" id="password2">
                     </div>
+                    <div>
+                        <label for="">Адрес сайта (без протокода и слешей)</label>
+                        <input type="text" name="panel[home]" value="'.$_SERVER["HTTP_HOST"].'">
+                    </div>
                 </div>
             </div>
             <input type="submit" data-a="Step" class="btn" id="createAccess" value="Далее">
         </form>';
+    }
+
+
+    private function configFile($home, $email){
+
+        return '<?php
+
+return [
+
+    // вывод ошибок
+    "errors" => 1,
+
+    // вести журнал ошибок
+    "db_log" => 1,
+
+    // помощь разработчику
+    "dev_tools" => 1,
+
+    // какому IP показывать ошибки независимо от настроек выше
+    "dev" => ["127.0.0.1"],
+
+    "home" => "'.$home.'",
+
+    "ssl" => 1,
+
+    "site_title" => "Мой магазин",
+
+    "panel" => "panel",
+
+    // ЧПУ: 1 - link
+    // ЧПУ: 2 - ID-link
+    // ЧПУ: 3 - /category/link
+    // ЧПУ: 4 - /category/ID-link
+    "seo_type" => 3,
+
+    // концовка URL товара
+    "seo_type_end" => ".html",
+
+    // разделитель чпу
+    "separator" => " &#10148; ",
+
+    // знак валюты
+    "currency" => "$",
+
+    // копейки
+    "penny" => true,
+
+    // знаков в ID товара
+    "str_pad_id" => 6,
+
+    // знаков в артикуле товара
+    "str_pad_vendor" => 6,
+
+    // количество товаров в категориях
+    "count_prod_by_cat" => 2,
+
+    // размер обрезки загружаемых изображений
+    "origin_image" => "1500",
+
+    // размер уменьшенной копии загружаемых изображений
+    "thumb" => "300",
+
+    // качество загружаемых изображений
+    "quality_image" => "80",
+
+    // качество уменьшенной копии
+    "quality_thumb" => "80",
+
+    // шаблон по умолчанию
+    "template" => "Web",
+
+    // перекидывать на страницу после оформления заказа
+    "after_cart" => "/",
+
+    // email админа
+    "noreply" => "noreply@kylaksizov.com",
+    "admin_email" => "'.$email.'",
+
+    // SMTP
+    "SMTPHost" => "mail.adm.tools",
+    "SMTPLogin" => "info@kylaksizov.com",
+    "SMTPPassword" => "не скажу",
+    "SMTPSecure" => "ssl",
+    "SMTPPort" => 465,
+    "SMTPFrom" => "info@kylaksizov.com",
+
+    "version" => "0.0.1",
+
+];';
+
     }
 }

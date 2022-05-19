@@ -24,7 +24,7 @@ class Functions{
 
                     $categories = !empty($customProducts[2][$tplKey]) ? explode(",", $customProducts[2][$tplKey]) : [];
 
-                    $res = $CustomProducts->get($e, $categories, $customProducts[4][$tplKey], intval($customProducts[6][$tplKey]), $customProducts[8][$tplKey], $customProducts[10][$tplKey]);
+                    $res = $CustomProducts->get($e, false, $categories, $customProducts[4][$tplKey], intval($customProducts[6][$tplKey]), $customProducts[8][$tplKey], $customProducts[10][$tplKey]);
                     $e->view->include[$e->route["controller"]] = str_replace($tag, $res, $e->view->include[$e->route["controller"]]);
                 }
             }
@@ -35,7 +35,7 @@ class Functions{
 
                     $categories = !empty($customProductsIndex[2][$tplKey]) ? explode(",", $customProductsIndex[2][$tplKey]) : [];
 
-                    $res = $CustomProducts->get($e, $categories, $customProductsIndex[4][$tplKey], intval($customProductsIndex[6][$tplKey]), $customProductsIndex[8][$tplKey], $customProductsIndex[10][$tplKey]);
+                    $res = $CustomProducts->get($e, false, $categories, $customProductsIndex[4][$tplKey], intval($customProductsIndex[6][$tplKey]), $customProductsIndex[8][$tplKey], $customProductsIndex[10][$tplKey]);
                     $e->view->tplIndex = str_replace($tag, $res, $e->view->tplIndex);
                 }
             }

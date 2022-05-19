@@ -16,11 +16,13 @@ class CategoryController extends Controller {
      */
     public function indexAction(){
 
-        //$this->view->load('Nex');
-
-
-        $Products = new CustomProducts();
-        $Products->get($this, end($this->urls), 'products');
+        // если тег ля вывода продуктов присутствует
+        if($this->view->findTag('{CONTENT}', 1)){
+            $Products = new CustomProducts();
+            $products = $Products->get($this, true, end($this->urls), 'products');
+            $this->view->setMain('{CONTENT}', $products);
+            $this->view->clear();
+        }
 
 
         $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [

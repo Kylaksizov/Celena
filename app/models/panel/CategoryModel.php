@@ -25,7 +25,7 @@ class CategoryModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, array $meta = [], $content, $url, $pid, int $status = 1){
+    public function create($title, $content, $url, $pid, array $meta = [], int $status = 1){
 
         $params = [
             $title,
@@ -117,7 +117,7 @@ class CategoryModel extends Model{
      * @return void
      * @throws Exception
      */
-    public function edit($id, $title, array $meta = [], $content, $url, $pid, int $status = 1){
+    public function edit($id, $title, $content, $url, $pid, array $meta = [], int $status = 1){
 
         return Base::run("
             UPDATE " . PREFIX . "categories SET

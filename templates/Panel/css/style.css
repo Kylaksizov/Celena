@@ -251,17 +251,13 @@ ul{
     }
 }
 .company_name{
-    background: #f6f7fb;
+    background: #f5f8ff;
     font-weight: 700;
-    font-size: 17px;
-    padding: 16px;
+    font-size: 24px;
+    padding: 14px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /*border-bottom: 1px #ecf0fa solid;*/
-}
-.company_name a{
-    color: var(--main-color);
 }
 
 .ico_space{

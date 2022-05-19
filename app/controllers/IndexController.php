@@ -13,14 +13,14 @@ class IndexController extends Controller {
 
     public function indexAction(){
 
-        if(!USER) Auth::google_callback();
+        //if(!USER) Auth::google_callback();
 
-        $Auth = Auth::google_init();
+        //$Auth = Auth::google_init();
 
 
         $this->view->include('login');
 
-        $this->view->set('{reg}', $Auth);
+        //$this->view->set('{reg}', $Auth);
 
         $new_password = '';
         if(!empty($_GET["member_pass"])){
@@ -51,20 +51,20 @@ class IndexController extends Controller {
         $this->view->set('{new-password}', $new_password);
 
         $login = $this->view->get();
-        $this->view->clear();
+        //$this->view->clear();
 
         $this->view->setMain('{login}', $login);
 
 
         // если тег ля вывода продуктов присутствует
-        if($this->view->findTag('{products}', 1)){
+        $products = '';
+        if($this->view->findTag('{CONTENT}', 1)){
             $Products = new CustomProducts();
-            $products = $Products->get($this, 'index', 'products');
-            $this->view->setMain('{products}', $products);
-            $this->view->clear();
+            $products = $Products->get($this, 1, 'index', 'products');
         }
 
-
+        $this->view->setMain('{CONTENT}', $products);
+        $this->view->clear();
 
         $this->view->setMain('{crumbs}', '');
 

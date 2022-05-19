@@ -224,12 +224,13 @@ class ViewPanel{
 
         $pluginTheme = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["brand"].'/'.CONFIG_PLUGIN["plugin"]["name"] : '';
 
-        $this->tplIndex = str_replace('{user-name}', USER["name"], $this->tplIndex);
+        $this->tplIndex = str_replace('{user-name}', !empty(USER["name"]) ? USER["name"] : '', $this->tplIndex);
         $this->tplIndex = str_replace('{META}', '<title>'.$title.'</title>', $this->tplIndex);
         $this->tplIndex = str_replace('{CONTENT}', $content, $this->tplIndex);
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);
         $this->tplIndex = str_replace('{SCRIPTS}', $scripts, $this->tplIndex);
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);
+        $this->tplIndex = str_replace('{logo}', '<a href="//'.CONFIG_SYSTEM['home'].'/'.CONFIG_SYSTEM["panel"].'/" id="celena_logo">Celena.io</a> <a href="//'.CONFIG_SYSTEM['home'].'/" target="_blank" class="on_site"></a>', $this->tplIndex);
         $this->tplIndex = str_replace('{panel}', '/'.CONFIG_SYSTEM["panel"], $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);

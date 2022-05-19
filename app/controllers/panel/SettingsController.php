@@ -39,6 +39,7 @@ class SettingsController extends PanelController {
             <div class="tabs">
                 <ul class="tabs_caption">
                     <li class="active">Общие настройки</li>
+                    <li>Почта</li>
                     <li>Разработчикам</li>
                 </ul>
                 <div class="tabs_content active">
@@ -75,6 +76,71 @@ class SettingsController extends PanelController {
                             </div>
                             <div>
                                 '.$templatesOptions.'
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- tab POST -->
+                <div class="tabs_content">
+                    <div class="dg settings">
+                        <div class="set_item">
+                            <div>
+                                <h3>Email администратора</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[admin_email]" value="'.CONFIG_SYSTEM["admin_email"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>SMTP хост</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[SMTPHost]" value="'.CONFIG_SYSTEM["SMTPHost"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>SMTP логин</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[SMTPLogin]" value="'.CONFIG_SYSTEM["SMTPLogin"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>SMTP пароль</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[SMTPPassword]" value="'.CONFIG_SYSTEM["SMTPPassword"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>SMTP шифрование</h3>
+                            </div>
+                            <div>
+                                <select name="config[SMTPSecure]">
+                                    <option value="tls">tls</option>
+                                    <option value="ssl"'.(CONFIG_SYSTEM["SMTPSecure"] == 'ssl' ? ' selected' : '').'>ssl</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>SMTP порт</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[SMTPPort]" value="'.CONFIG_SYSTEM["SMTPPort"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Отправлять от email</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[SMTPFrom]" value="'.CONFIG_SYSTEM["SMTPFrom"].'">
                             </div>
                         </div>
                     </div>
