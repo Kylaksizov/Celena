@@ -323,7 +323,7 @@ return [
     public function indexAction(){
 
         return '<form action method="POST">
-            <h1><a href="//celena.io/" id="celena_logo" target="_blank">celena</a> Доступы</h1>
+            <h1><a href="//celena.io/" id="celena_logo" target="_blank" title="Celena logo"></a> Доступы</h1>
             <div class="dg access">
                 <div>
                     <h3 class="title_hr">База данных</h3>

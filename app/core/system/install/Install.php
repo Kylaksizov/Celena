@@ -20,6 +20,12 @@ class Install{
      */
     public function __construct(){
 
+        // install
+        if(file_exists(CORE . '/data/db_config.php')){
+            header("Location: /");
+            exit;
+        }
+
         // POST
         if(!empty($_POST["ajax"])){
             if(!empty($_POST["params"])) mb_parse_str($_POST["params"], $_POST);
@@ -119,7 +125,7 @@ class Install{
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="apple-mobile-web-app-status-bar-style" content="default">
         
-                <link rel="shortcut icon" href="{THEME}/img/favicon.ico">
+                <link rel="shortcut icon" href="/app/core/system/img/favicon.ico">
                 <link rel="stylesheet" href="/app/core/system/install/css/style.css">
         
                 <script type="text/javascript" src="/templates/_system/js/jquery.min.js"></script>

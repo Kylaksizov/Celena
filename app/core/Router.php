@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\traits\Log;
 use app\traits\Users;
 
 class Router{
@@ -242,7 +243,13 @@ class Router{
             $User = $this->getAuth($_COOKIE["uid"], $_COOKIE["uhash"]);
             define("USER", $User ?: FALSE);
             // если false - значит кто-то пытается подменить данные !!!!!!!!!!!!!!!!!!!!!
-            if(USER === FALSE) System::log();
+            if(USER === FALSE){
+                //Log::add();
+                SetCookie("uid", "", time() - (3600 * 10000), "/");
+                SetCookie("uhash", "", time() - (3600 * 10000), "/");
+                header("Location: /");
+                die();
+            }
 
         } else define("USER", NULL);
     }

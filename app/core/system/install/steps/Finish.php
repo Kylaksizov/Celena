@@ -13,7 +13,7 @@ class Finish{
         $config = require CORE . "/data/config.php";
 
         return '<div class="system_installed">
-            <a href="//celena.io/" id="celena_logo" target="_blank">celena</a>
+            <a href="//celena.io/" id="celena_logo" target="_blank" title="Celena logo"></a>
             <br>
             <p>Спасибо за установку нашей CMS!</p>
             <br>

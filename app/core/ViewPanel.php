@@ -143,7 +143,8 @@ class ViewPanel{
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
-        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/panel.css">';
+        $styles = '<link rel="icon" href="//'.CONFIG_SYSTEM['home'].'/app/core/system/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/panel.css">';
 
         // https://air-datepicker.com/ru/examples
 
@@ -230,7 +231,7 @@ class ViewPanel{
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);
         $this->tplIndex = str_replace('{SCRIPTS}', $scripts, $this->tplIndex);
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);
-        $this->tplIndex = str_replace('{logo}', '<a href="//'.CONFIG_SYSTEM['home'].'/'.CONFIG_SYSTEM["panel"].'/" id="celena_logo">Celena.io</a> <a href="//'.CONFIG_SYSTEM['home'].'/" target="_blank" class="on_site"></a>', $this->tplIndex);
+        $this->tplIndex = str_replace('{logo}', '<a href="//'.CONFIG_SYSTEM['home'].'/'.CONFIG_SYSTEM["panel"].'/" id="celena_logo" title="Celena logo"></a> <a href="//'.CONFIG_SYSTEM['home'].'/" target="_blank" class="on_site"></a>', $this->tplIndex);
         $this->tplIndex = str_replace('{panel}', '/'.CONFIG_SYSTEM["panel"], $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);
