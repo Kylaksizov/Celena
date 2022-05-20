@@ -459,8 +459,7 @@ class View{
 
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/jquery.min.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/nex.js"></script>
-    <script src="{THEME}/js/script.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/nex.js"></script>';
 
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {

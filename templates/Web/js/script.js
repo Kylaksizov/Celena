@@ -119,13 +119,13 @@ $(function(){
         return false;
     })
     $(document).on("click", "#media_menu", function(){
-        $(".nav_top").stop(true, true).slideToggle(300);
+        $(".nav_top").stop(true, true).slideDown(300);
         $(".contacts").stop(true, true).slideDown(300);
         return false;
     })
 
     if($(".product h1").length > 0 && $(window).width() <= 768){
-        $(".product_pictures").before($(".product h1")[0].outerHTML);
+        $(".product_pictures").before($("#main_goods h1")[0].outerHTML);
         $(".product_info h1").remove();
     }
 

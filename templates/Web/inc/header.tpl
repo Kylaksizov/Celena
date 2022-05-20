@@ -1,6 +1,6 @@
 <header id="header" class="flex">
     <div class="flex">
-        <a href="/" id="logo" title="Celena system">Celena</a>
+        <a href="/" id="logo" title="Celena system">Celena system</a>
         <a href="#" id="media_menu"></a>
         <ul class="nav_top">
             <li><a href="/">Главная</a></li>

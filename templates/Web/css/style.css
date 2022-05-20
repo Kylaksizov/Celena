@@ -200,7 +200,7 @@ hr{
     display: block;
     padding: 21px 10px 21px 75px;
     color: #47b3ff;
-    font-size: 21px;
+    font-size: 18px;
     font-weight: 600;
 }
 #logo:hover{
@@ -511,8 +511,9 @@ hr{
 }
 
 #cart{
-    background: #ffd830 url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDU5LjUyOSA0NTkuNTI5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0NTkuNTI5IDQ1OS41Mjk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgY2xhc3M9IiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMTcsNTUuMjMxaDQ4LjczM2w2OS40MTcsMjUxLjAzM2MxLjk4Myw3LjM2Nyw4Ljc4MywxMi40NjcsMTYuNDMzLDEyLjQ2N2gyMTMuMzVjNi44LDAsMTIuNzUtMy45NjcsMTUuNTgzLTEwLjIgICAgbDc3LjYzMy0xNzguNWMyLjI2Ny01LjM4MywxLjctMTEuMzMzLTEuNDE3LTE2LjE1Yy0zLjExNy00LjgxNy04LjUtNy42NS0xNC4xNjctNy42NUgyMDYuODMzYy05LjM1LDAtMTcsNy42NS0xNywxNyAgICBzNy42NSwxNywxNywxN0g0MTYuNWwtNjIuOSwxNDQuNUgxNjQuMzMzTDk0LjkxNywzMy42OThjLTEuOTgzLTcuMzY3LTguNzgzLTEyLjQ2Ny0xNi40MzMtMTIuNDY3SDE3Yy05LjM1LDAtMTcsNy42NS0xNywxNyAgICBTNy42NSw1NS4yMzEsMTcsNTUuMjMxeiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojRkZGRkZGIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0xMzUuNDMzLDQzOC4yOThjMjEuMjUsMCwzOC41MzMtMTcuMjgzLDM4LjUzMy0zOC41MzNzLTE3LjI4My0zOC41MzMtMzguNTMzLTM4LjUzM1M5Ni45LDM3OC41MTQsOTYuOSwzOTkuNzY0ICAgIFMxMTQuMTgzLDQzOC4yOTgsMTM1LjQzMyw0MzguMjk4eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojRkZGRkZGIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0zNzYuMjY3LDQzOC4yOThjMC44NSwwLDEuOTgzLDAsMi44MzMsMGMxMC4yLTAuODUsMTkuNTUtNS4zODMsMjYuMzUtMTMuMzE3YzYuOC03LjY1LDkuOTE3LTE3LjU2Nyw5LjM1LTI4LjA1ICAgIGMtMS40MTctMjAuOTY3LTE5LjgzMy0zNy4xMTctNDEuMDgzLTM1LjdjLTIxLjI1LDEuNDE3LTM3LjExNywyMC4xMTctMzUuNyw0MS4wODMgICAgQzMzOS40MzMsNDIyLjQzMSwzNTYuMTUsNDM4LjI5OCwzNzYuMjY3LDQzOC4yOTh6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiNGRkZGRkYiIGRhdGEtb2xkX2NvbG9yPSIjMDAwMDAwIj48L3BhdGg+Cgk8L2c+CjwvZz48L2c+IDwvc3ZnPg==) no-repeat calc(100% - 20px) center;
+    background: #47b3ff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDU5LjUyOSA0NTkuNTI5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0NTkuNTI5IDQ1OS41Mjk7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgY2xhc3M9IiI+PGc+PGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMTcsNTUuMjMxaDQ4LjczM2w2OS40MTcsMjUxLjAzM2MxLjk4Myw3LjM2Nyw4Ljc4MywxMi40NjcsMTYuNDMzLDEyLjQ2N2gyMTMuMzVjNi44LDAsMTIuNzUtMy45NjcsMTUuNTgzLTEwLjIgICAgbDc3LjYzMy0xNzguNWMyLjI2Ny01LjM4MywxLjctMTEuMzMzLTEuNDE3LTE2LjE1Yy0zLjExNy00LjgxNy04LjUtNy42NS0xNC4xNjctNy42NUgyMDYuODMzYy05LjM1LDAtMTcsNy42NS0xNywxNyAgICBzNy42NSwxNywxNywxN0g0MTYuNWwtNjIuOSwxNDQuNUgxNjQuMzMzTDk0LjkxNywzMy42OThjLTEuOTgzLTcuMzY3LTguNzgzLTEyLjQ2Ny0xNi40MzMtMTIuNDY3SDE3Yy05LjM1LDAtMTcsNy42NS0xNywxNyAgICBTNy42NSw1NS4yMzEsMTcsNTUuMjMxeiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojRkZGRkZGIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0xMzUuNDMzLDQzOC4yOThjMjEuMjUsMCwzOC41MzMtMTcuMjgzLDM4LjUzMy0zOC41MzNzLTE3LjI4My0zOC41MzMtMzguNTMzLTM4LjUzM1M5Ni45LDM3OC41MTQsOTYuOSwzOTkuNzY0ICAgIFMxMTQuMTgzLDQzOC4yOTgsMTM1LjQzMyw0MzguMjk4eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojRkZGRkZGIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0zNzYuMjY3LDQzOC4yOThjMC44NSwwLDEuOTgzLDAsMi44MzMsMGMxMC4yLTAuODUsMTkuNTUtNS4zODMsMjYuMzUtMTMuMzE3YzYuOC03LjY1LDkuOTE3LTE3LjU2Nyw5LjM1LTI4LjA1ICAgIGMtMS40MTctMjAuOTY3LTE5LjgzMy0zNy4xMTctNDEuMDgzLTM1LjdjLTIxLjI1LDEuNDE3LTM3LjExNywyMC4xMTctMzUuNyw0MS4wODMgICAgQzMzOS40MzMsNDIyLjQzMSwzNTYuMTUsNDM4LjI5OCwzNzYuMjY3LDQzOC4yOTh6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiNGRkZGRkYiIGRhdGEtb2xkX2NvbG9yPSIjMDAwMDAwIj48L3BhdGg+Cgk8L2c+CjwvZz48L2c+IDwvc3ZnPg==) no-repeat calc(100% - 20px) center;
     background-size: 40px;
+    color: #fff;
     padding: 17px 70px 17px 20px;
     position: fixed;
     top: 0;
@@ -521,14 +522,14 @@ hr{
     font-size: 14px;
 }
 #cart:hover{
-    background-color: #ffed9e;
+    background-color: #1b9af5;
 }
 #cart .total{
     font-weight: 600;
 }
 
 #menu{
-    background: #FFD830;
+    background: #47b3ff;
     position: sticky;
     top: 0;
     z-index: 9000;
@@ -540,14 +541,14 @@ hr{
 #menu a{
     display: inline-block;
     padding: 10px 20px;
+    color: #fff;
 }
 #menu > ul > li > a:hover{
-    background: #fff;
+    background: #000;
 }
 #menu .submenu{
     background: #fff;
     width: 100vw;
-    max-width: 1460px;
     position: absolute;
     top: 60px;
     left: 0;
@@ -594,6 +595,7 @@ hr{
 #menu .submenu li a{
     display: block;
     padding: 5px 0;
+    color: #000;
 }
 #menu .submenu li a:hover{
     color: #efbd00;
@@ -682,7 +684,7 @@ hr{
     margin-top: 20px;
 }
 .box_title{
-    background: rgba(10, 16, 23, 0.7);
+    background: #47b3ff;
     color: #fff;
     font-size: 16px;
     font-weight: 300;
@@ -1774,7 +1776,7 @@ hr{
     }
     .nav_top{
         width: 100%;
-        background: #42535e;
+        background: #1a262e;
         text-align: center;
         position: absolute;
         top: 66px;
@@ -1876,9 +1878,9 @@ hr{
     }
     #cart{
         background-position: center center;
-        background-size: 30px;
-        padding: 20px;
-        top: 104px;
+        background-size: 40px;
+        padding: 30px;
+        top: 120px;
     }
     #cart p{
         display: none;
@@ -1886,6 +1888,14 @@ hr{
     #search [name="str"]{
         width: calc(100% - 66px);
         right: 66px;
+    }
+}
+@media screen and (max-width: 768px){
+    .product_pictures, .product_info{
+        width: 100%;
+    }
+    .product_pictures{
+        padding-right: 6px;
     }
 }
 @media screen and (max-width: 700px){
@@ -1901,13 +1911,8 @@ hr{
     #cart_modal table tr, #cart_ordering tr{
         box-shadow: 0 1px 0 #d3d3d3;
     }
-}
-@media screen and (max-width: 768px){
-    .product_pictures, .product_info{
-        width: 100%;
-    }
-    .product_pictures{
-        padding-right: 6px;
+    #cart_modal table td, #cart_ordering table td{
+        border: none;
     }
 }
 @media screen and (max-width: 500px){
@@ -1927,9 +1932,13 @@ hr{
     #goods_carousel{
         margin-bottom: 20px;
     }
+    #menu {
+        position: relative;
+        top: 0;
+    }
     .contacts{
         background: #42535e;
-        position: fixed;
+        position: absolute;
         width: 100%;
         top: 60px;
         left: 0;
@@ -1949,7 +1958,7 @@ hr{
         top: 99px;
     }
     #menu a{
-        padding: 10px 20px 10px 0;
+        padding: 10px 20px;
     }
     #right_bar .goods_box, #goods_see .goods_box{
         width: auto;
@@ -1960,9 +1969,6 @@ hr{
     .crumbs{
         font-size: 13px;
     }
-    #logo{
-        padding: 10px;
-    }
     #search_go{
         padding: 33px 25px;
     }
@@ -1971,6 +1977,9 @@ hr{
     }
     .crumbs{
         padding: 10px !important;
+    }
+    .preview_menu{
+        padding-left: 0 !important;
     }
 }
 

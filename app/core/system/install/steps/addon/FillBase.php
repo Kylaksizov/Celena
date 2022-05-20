@@ -127,5 +127,31 @@ class FillBase{
             (1, 4, '2022-05/4_1652979009_5fb69b19d6d7b_f2v9hs9t_13_front_top_drawer_details.webp', '', 6, NULL),
             (1, 4, '2022-05/4_1652979009_5fb69b1823623_f2v9hs9t_10_left_top_perspective_drawer_open.webp', '', 7, NULL)");
         $query->execute();
+
+
+        $query = $db->prepare("INSERT INTO `{$PREFIX}orders`
+            (`uid`, `buyer_id`, `order_id`, `name`, `email`, `tel`, `address`, `payment_id`, `prod_ids`, `total`, `comment`, `hash`, `created`, `paid`, `status`)
+        VALUES
+            (1, 1, '6T1652983373', 'Владимир', 'masterz1zzz@gmail.com', '+380952059675', '', 0, '2,3,4', '113594.00', 'Хочу все купить', 'e6778c02f4216afa154d9255fce728577b9d691c', 1652983373, 0, 0)");
+        $query->execute();
+
+
+        $query = $db->prepare("INSERT INTO `{$PREFIX}orders_ex`
+            (`oid`, `pid`, `count`, `props`)
+        VALUES
+            (1, 2, 2, '4,7|4,7'),
+            (1, 3, 1, '8'),
+            (1, 4, 3, '9')");
+        $query->execute();
+
+
+        $query = $db->prepare("INSERT INTO `{$PREFIX}orders_status`
+            (`name`, `color`, `pos`)
+        VALUES
+            ('Новый', 'ff2d2d', 1),
+            ('Принят', '17d5d5', 2),
+            ('У курьера', '906ee3', 3),
+            ('Выполнен', '69d924', 4)");
+        $query->execute();
     }
 }

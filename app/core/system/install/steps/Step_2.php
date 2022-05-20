@@ -313,11 +313,6 @@ return [
         fwrite($fp, self::configFile($PANEL_HOME, $PANEL_EMAIL));
         flock($fp, LOCK_UN);
         fclose($fp);
-
-        echo "<pre>";
-        print_r('ok');
-        echo "</pre>";
-        exit;
         
         return 'next';
     }
