@@ -21,7 +21,6 @@ class ProductShop{
         if(!empty($_POST["deleteProperty"])) self::deleteProperty(intval($_POST["deleteProperty"])); // удаление одного свойства товара
         if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения товаров
         if(!empty($_POST["setMainImage"])) self::setMainImage($productId); // установка постера
-        if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения товаров
         if(!empty($_POST["pp_ids"])) self::deleteProperties($_POST["pp_ids"]); // удаление нескольких свойств товара
         if(!empty($_POST["deleteImage"])) self::deleteImage(); // удаление фото товара
         if(!empty($_POST["photo"])) self::editImage(); // редактирование фото товара

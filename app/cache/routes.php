@@ -23,6 +23,7 @@ return [
 
         'posts/news/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'news'],
         'posts/pages/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'pages'],
+        'posts/pages/(add/|edit/([0-9]+/)?)$' => ['controller' => 'posts', 'action' => 'addPage'],
         'posts/categories/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'categories'],
 
         'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
@@ -55,7 +56,8 @@ return [
 
         '(page-[0-9]+/)?$' => ['controller' => 'index'],
         '404/$' => ['controller' => 'NotFound'],
-        '(.+?).html$' => ['controller' => 'product'],
+        '([a-z-0-9]+).html$' => ['controller' => 'page'],
+        '([a-z-/0-9]+).html$' => ['controller' => 'product'],
         'cart/$' => ['controller' => 'cart'],
         'search/(page-[0-9]+/)?$' => ['controller' => 'search'],
         '(.+?)/$' => ['controller' => 'category'],

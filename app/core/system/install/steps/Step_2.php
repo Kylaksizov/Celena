@@ -272,6 +272,20 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}pages` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `uid` INT(11) NOT NULL,
+            `title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `m_title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `m_description` VARCHAR(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `content` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+            `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `created` INT(11) NOT NULL,
+            `status` TINYINT(1) NOT NULL DEFAULT '1',
+            PRIMARY KEY  (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
 
 
         # ===========
@@ -426,6 +440,9 @@ return [
 
     // знак валюты
 	"currency" => "$",
+
+    // тип номера заказа
+	"cart_id" => "int",
 
     // копейки
     "penny" => true,

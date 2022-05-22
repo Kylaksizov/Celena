@@ -41,6 +41,7 @@ class SettingsController extends PanelController {
                     <li class="active">Общие настройки</li>
                     <li>Почта</li>
                     <li>Пользователи</li>
+                    <li>Корзина</li>
                     <li>Разработчикам</li>
                 </ul>
                 <div class="tabs_content active">
@@ -256,6 +257,24 @@ class SettingsController extends PanelController {
                             <div>
                                 <input type="checkbox" name="config[email_confirm]" value="1"'.System::check(CONFIG_SYSTEM["email_confirm"]).' id="ch_email_confirm">
                                 <label for="ch_email_confirm"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- tab Cart -->
+                <div class="tabs_content">
+                    <div class="dg settings">
+                        <div class="set_item">
+                            <div>
+                                <h3>Тип номера заказа</h3>
+                            </div>
+                            <div>
+                                <select name="config[cart_id]">
+                                    <option value="int">Порядковый номер</option>
+                                    <option value="rand"'.(CONFIG_SYSTEM["cart_id"]=='rand'?' selected':'').'>Произвольное число</option>
+                                    <option value="standard"'.(CONFIG_SYSTEM["cart_id"]=='standard'?' selected':'').'>С произвольным префиксом</option>
+                                </select>
                             </div>
                         </div>
                     </div>

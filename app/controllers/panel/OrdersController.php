@@ -48,9 +48,14 @@ class OrdersController extends PanelController {
                 $actions = '';
 
                 if($key == 0 || $lastOrder != $row["id"]){
+
+                    if (CONFIG_SYSTEM["cart_id"] == 'int'){
+                        $order_id = !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"];
+                    } else $order_id = $row["order_id"];
+
                     $nextOrder = ' class="newOrder"';
                     $id = $row["id"];
-                    $order_id = '<a href="/'.CONFIG_SYSTEM["panel"].'/orders/'.$row["id"].'/">'.$row["order_id"].'</a>';
+                    $order_id = '<a href="/'.CONFIG_SYSTEM["panel"].'/orders/'.$row["id"].'/">'.$order_id.'</a>';
                     $buyer = $row["name"];
                     $total = $row["total"].' '.CONFIG_SYSTEM["currency"];
                     $created = date("d.m.Y H:i", $row["created"]);

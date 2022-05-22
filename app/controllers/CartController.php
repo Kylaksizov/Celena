@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\controllers\classes\Functions;
 use app\core\Controller;
 use Exception;
 
@@ -16,6 +17,8 @@ class CartController extends Controller {
 
         $this->view->include('cart');
 
+        Functions::preTreatment($this);
+
 
         $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="' . CONFIG_SYSTEM["home"] . '">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<span>Корзина</span></div>');
 
@@ -24,20 +27,23 @@ class CartController extends Controller {
         $this->view->set('{email}', !empty(USER["email"]) ? USER["email"] : '');
 
 
+        $this->view->setMain('{CONTENT}', $this->view->get());
 
-
-        $this->view->setMeta('Категория', 'CRM система для автоматизации бизнес процессов', [
+        $this->view->setMeta('Оформление заказа', 'Страница оформления заказа', [
             [
                 'property' => 'og:title',
-                'content' => 'NEX CRM',
+                'content' => 'Оформление заказа',
             ],
             [
                 'property' => 'og:description',
-                'content' => 'CRM система для автоматизации бизнес процессов',
+                'content' => 'Страница оформления заказа',
             ]
         ]);
 
-        $this->view->render();
+        $this->view->render(false);
+
+        Functions::scanTags($this);
+        $this->view->display();
     }
 
 

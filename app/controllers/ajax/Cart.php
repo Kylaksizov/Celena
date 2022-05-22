@@ -13,6 +13,7 @@ class Cart{
     public function index(){
 
         if(!empty($_POST["products"])) self::createOrder(); // оформление заказа
+        else die("info::error::Ваша корзина пуста!"); #TODO нужна ещё проверка на формат который в корзине
     }
 
 
