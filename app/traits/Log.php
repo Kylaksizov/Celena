@@ -2,7 +2,7 @@
 
 namespace app\traits;
 
-use app\models\SystemModel;
+use app\models\panel\SystemModel;
 
 trait Log {
 

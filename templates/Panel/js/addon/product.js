@@ -55,10 +55,10 @@ $(function(){
                         <label for="">Вариант цены</label>
                         <select name="prop[`+propertySelected[0].id+`][pv][]">
                             <option value="">Новая цена</option>
-                            <option value="-">отнять</option>
-                            <option value="+">прибавить</option>
-                            <option value="-%">уменьшить</option>
-                            <option value="+%">увеличить</option>
+                            <option value="-">отнять сумму</option>
+                            <option value="+">прибавить сумму</option>
+                            <option value="-%">уменьшить на %</option>
+                            <option value="+%">увеличить на %</option>
                         </select>
                     </div>
                     <div>
@@ -184,10 +184,10 @@ $(function(){
             <input type="number" name="prop[`+propId+`][price][]" min="0" step=".1" value="" placeholder="Цена">
             <select name="prop[`+propId+`][pv][]">
                 <option value="">Новая цена</option>
-                <option value="-">отнять</option>
-                <option value="+">прибавить</option>
-                <option value="-%">уменьшить</option>
-                <option value="+%">увеличить</option>
+                <option value="-">отнять сумму</option>
+                <option value="+">прибавить сумму</option>
+                <option value="-%">уменьшить на %</option>
+                <option value="+%">увеличить на %</option>
             </select>
             <input type="number" name="prop[`+propId+`][stock][]" min="0" step="1" value="" placeholder="Кол-во">
             <a href="#" class="add_sub_property">+</a>

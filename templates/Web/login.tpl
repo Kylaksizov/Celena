@@ -29,19 +29,12 @@
 <div id="registration" class="modal">
     <h4 class="modal_title">Регистрация в системе</h4>
     <form action="#" method="POST" class="inp100">
-        <input type="text" name="name" placeholder="Фамилия Имя">
+        <input type="text" name="name" placeholder="Имя">
         <input type="email" name="email" placeholder="E-mail">
         <input type="password" name="password" placeholder="Пароль">
         <input type="password" name="password_repeat" placeholder="Повторите пароль">
         <input type="hidden" name="action" value="registration">
-        <br>
-        <div class="hr_line">или</div>
-        {reg}
-        <div>
-            {*<input type="checkbox" name="agree" id="agree" class="ch_min" value="ok">*}
-            <label for="agree">Регистрируясь, вы соглашаетесь с нашими<br><a href="/offer.pdf">Договором</a> и
-                <a href="/police.pdf">Политикой конфиденциальности</a></label>
-        </div>
+        <label for="agree">Регистрируясь, вы соглашаетесь с условиями сайта</label>
         <br>
         <input type="submit" class="btn" data-a="Auth" value="Зарегистрироваться">
     </form>

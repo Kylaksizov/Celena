@@ -40,6 +40,7 @@ class SettingsController extends PanelController {
                 <ul class="tabs_caption">
                     <li class="active">Общие настройки</li>
                     <li>Почта</li>
+                    <li>Пользователи</li>
                     <li>Разработчикам</li>
                 </ul>
                 <div class="tabs_content active">
@@ -238,6 +239,23 @@ class SettingsController extends PanelController {
                             </div>
                             <div>
                                 <input type="text" name="config[SMTPFrom]" value="'.CONFIG_SYSTEM["SMTPFrom"].'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- tab users -->
+                <div class="tabs_content">
+                    <div class="dg settings">
+                        <div class="set_item">
+                            <div>
+                                <h3>Отправлять email уведомление при регистрации</h3>
+                                <div class="setDescription">После регистрации пользователь должен подтвердить свою почту перейдя по ссылке в письме.</div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="config[email_confirm]" value="1"'.System::check(CONFIG_SYSTEM["email_confirm"]).' id="ch_email_confirm">
+                                <label for="ch_email_confirm"></label>
                             </div>
                         </div>
                     </div>

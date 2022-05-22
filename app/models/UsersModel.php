@@ -3,9 +3,9 @@
 namespace app\models;
 
 
-use app\_classes\System;
 use app\core\Base;
 use app\core\Model;
+use app\core\System;
 use Exception;
 use PDO;
 use PDOStatement;
@@ -23,14 +23,15 @@ class UsersModel extends Model{
      * @param $name
      * @param $email
      * @param $password
-     * @param $avatar
-     * @param $role
-     * @param $hash
-     * @param $status
+     * @param string $avatar
+     * @param int $role
+     * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function add($name, $email, $password, $avatar = '', $role = 2, $hash = '', $status = 1){
+    public function add($name, $email, $password, string $avatar = '', int $role = 2, int $status = 1){
+
+        $hash = sha1(time() . rand(100, 9999));
 
         $params = [
             $name,
@@ -60,7 +61,12 @@ class UsersModel extends Model{
 
         unset($params);
 
-        return Base::lastInsertId();
+        $id = Base::lastInsertId();
+
+        return [
+            "id" => $id,
+            "hash" => $hash,
+        ];
     }
 
 
@@ -133,7 +139,7 @@ class UsersModel extends Model{
      * @return array
      * @throws Exception
      */
-    public function getUsers(){
+    public function getAll(){
 
         $result = [];
         $params = [];
@@ -161,6 +167,21 @@ class UsersModel extends Model{
         $result["pagination"] = $pagination['pagination'];
 
         return $result;
+    }
+
+
+
+
+    /**
+     * @name удаление пользователя
+     * ===========================
+     * @param $id
+     * @return bool|PDOStatement
+     * @throws Exception
+     */
+    public function delete($id){
+
+        return Base::run("DELETE FROM " . PREFIX . "users WHERE id = ?", [$id]);
     }
 
 

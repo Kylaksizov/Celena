@@ -210,10 +210,10 @@ class ProductsController extends PanelController {
                     } else $element = '<input type="text" name="prop['.$row["id"].'][id][]" class="property_name" value="'.$row["sep"].'"><span class="callback_select"></span>';
 
                     $pvOptions = '<option value="">Новая цена</option>
-                        <option value="-"'.($row["pv"]  == '0' ? ' selected' : '').'>отнять</option>
-                        <option value="+"'.($row["pv"]  == '1' ? ' selected' : '').'>прибавить</option>
-                        <option value="-%"'.($row["pv"] == '2' ? ' selected' : '').'>уменьшить</option>
-                        <option value="+%"'.($row["pv"] == '3' ? ' selected' : '').'>увеличить</option>';
+                        <option value="-"'.($row["pv"]  == '0' ? ' selected' : '').'>отнять сумму</option>
+                        <option value="+"'.($row["pv"]  == '1' ? ' selected' : '').'>прибавить сумму</option>
+                        <option value="-%"'.($row["pv"] == '2' ? ' selected' : '').'>уменьшить на %</option>
+                        <option value="+%"'.($row["pv"] == '3' ? ' selected' : '').'>увеличить на %</option>';
 
                     $properties .= '
                         <div class="prop" data-prop-id="'.$row["id"].'">

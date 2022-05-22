@@ -8,7 +8,7 @@
             <li><a href="#">О нас</a></li>
             <li><a href="#">Контакты</a></li>
             [role="0"]<li><a href="#authorization" class="ico_login open_modal">Вход</a></li>
-            {*<li><a href="/registration.html" class="ico_reg">Регистрация</a></li>*}[/role]
+            <li><a href="#registration" class="ico_reg open_modal">Регистрация</a></li>[/role]
             [not-role="0"]<li><a href="?logout=1" class="ico_logout">Выход</a></li>[/not-role]
         </ul>
     </div>

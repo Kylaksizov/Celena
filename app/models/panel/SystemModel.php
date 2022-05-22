@@ -88,7 +88,7 @@ class SystemModel extends Model{
         $params = [
             (USER && !empty(USER["id"])) ? USER["id"] : null,
             $_SERVER["REMOTE_ADDR"],
-            trim(htmlspecialchars($_GET["url"])),
+            !empty($_GET["url"]) ? trim(htmlspecialchars($_GET["url"])) : '/',
             $text,
             time(),
             $status

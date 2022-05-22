@@ -1,0 +1,8 @@
+21.05.2022 13:30:26 | SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'info@kylaksizov.com' for key 'email'<br><span class="file_log">1: app\models\UsersModel.php &#10148; 58</span><br><span class="file_log">2: app\controllers\ajax\Auth.php &#10148; 45</span><br><span class="file_log">3: app\controllers\ajax\Auth.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 168</span>
+
+21.05.2022 13:43:25 | SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'info@kylaksizov.com' for key 'email'<br><span class="file_log">1: app\models\UsersModel.php &#10148; 48</span><br><span class="file_log">2: app\controllers\ajax\Auth.php &#10148; 44</span><br><span class="file_log">3: app\controllers\ajax\Auth.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 168</span>
+
+21.05.2022 13:43:32 | SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'info@kylaksizov.com' for key 'email'<br><span class="file_log">1: app\models\UsersModel.php &#10148; 48</span><br><span class="file_log">2: app\controllers\ajax\Auth.php &#10148; 44</span><br><span class="file_log">3: app\controllers\ajax\Auth.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 168</span>
+
+21.05.2022 13:44:06 | SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'info@kylaksizov.com' for key 'email'<br><span class="file_log">1: app\models\UsersModel.php &#10148; 48</span><br><span class="file_log">2: app\controllers\ajax\Auth.php &#10148; 44</span><br><span class="file_log">3: app\controllers\ajax\Auth.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 168</span>
+
