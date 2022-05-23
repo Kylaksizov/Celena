@@ -41,14 +41,16 @@ class ViewPanel{
 
     public function include($view){
 
-        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : false;
 
         if($view != $this->lastInc){
+            
+            $incFile = $viewPlugin ? ROOT.'/templates/'.$viewPlugin.'panel/'.$view.'.tpl' : ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl';
 
-            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl')){
+            if(file_exists($incFile)){
 
                 $this->lastInc = $view;
-                $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
+                $this->includeSource[$view] = file_get_contents($incFile);
                 $this->include[$view] = $this->includeSource[$view];
                 return $this->include[$view];
 

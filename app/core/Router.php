@@ -148,7 +148,7 @@ class Router{
                     'brand' => $explodeMatch[1],
                     'name' => $explodeMatch[2]
                 ];
-                $panel = '';
+                $this->params['controller'] = 'plugins\\'.$explodeMatch[1].'\\'.$explodeMatch[2].'\\'.$panel.$explodeMatch[3];
             }
 
 
@@ -208,7 +208,7 @@ class Router{
                 }
             }
 
-            if($this->plugin) $path = 'app\\'.$panel.$this->params['controller'].'Controller';
+            if($this->plugin) $path = 'app\\'.$this->params['controller'].'Controller';
             else $path = 'app\controllers\\'.$panel.ucfirst($this->params['controller']).'Controller';
 
             // если контроллер найден

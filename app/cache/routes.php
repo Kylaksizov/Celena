@@ -52,6 +52,8 @@ return [
 
         'Kylaksizov/Example/$' => ['controller' => 'support'],
 
+        'examplePlugin/$' => ['controller' => 'plugins\Kylaksizov\Example\Index', 'action' => 'index'],
+
     ],
 
     'web' => [

@@ -50,12 +50,14 @@ class View{
 
         if($view != $this->lastInc || $cache){
 
-            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl')){
+            $incFile = $viewPlugin ? ROOT.'/templates/'.$viewPlugin.'web/'.$view.'.tpl' : ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl';
 
-                if($cache) $this->includeCache = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
+            if(file_exists($incFile)){
+
+                if($cache) $this->includeCache = file_get_contents($incFile);
                 else{
                     $this->lastInc = $view;
-                    $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
+                    $this->includeSource[$view] = file_get_contents($incFile);
                     $this->include[$view] = $this->includeSource[$view];
                     return $this->include[$view];
                 }
