@@ -633,6 +633,7 @@ table:not(.table-condensed) td {
     color: #fff;
     display: inline-block;
     padding: 7px 15px;
+    margin-right: 2px;
     border-left: 1px #C9D6E2 solid;
     border-top: 1px #C9D6E2 solid;
     border-right: 1px #C9D6E2 solid;
@@ -724,7 +725,7 @@ table:not(.table-condensed) td {
     margin-left: calc(-40% - 20px);
 }
 .modal .modal_title, .modal_big .modal_title{
-    background: #50A5F1;
+    background: #242f3d;
     font-size: 14px;
     color: #fff;
     text-align: left;
@@ -1131,6 +1132,7 @@ h1 b{
 }
 .btn:hover{
     background-color: var(--firma-color-hover);
+    color: #fff;
 }
 .btn_r{
     border-radius: 50px;

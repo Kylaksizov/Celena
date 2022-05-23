@@ -46,7 +46,7 @@ class View{
      */
     public function include($view, $cache = false){
 
-        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->celena->name.'/' : '';
 
         if($view != $this->lastInc || $cache){
 
@@ -234,7 +234,7 @@ class View{
     <title>'.$title.'</title>
     <meta name="description" content="'.$description.'">
     <meta name="generator" content="Celena">';
-        
+
         if(!empty($array)){
             foreach ($array as $arr) {
                 $meta .= '

@@ -172,6 +172,10 @@ class ViewPanel{
                 $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/fancybox.css">';
                 $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/fancybox.umd.js"></script>';
             }
+            if(in_array("rating", $this->plugins)){
+                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/jquery.rateyo.min.css">';
+                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/jquery.rateyo.min.js"></script>';
+            }
         }
 
         $scripts .= '

@@ -31,7 +31,7 @@ return [
         'users/employee/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'employee'],
         'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
 
-        'celena_shop/(page-[0-9]+/)?$' => ['controller' => 'shop'],
+        'celena_shop/(page-[0-9]+/)?$' => ['controller' => 'celenaShop'],
         'celena_shop/templates/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'templates'],
         'celena_shop/plugins/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'plugins'],
         'celena_shop/modules/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'modules'],

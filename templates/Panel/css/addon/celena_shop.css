@@ -1,0 +1,100 @@
+.plugin{
+    background: #fff;
+    padding: 10px;
+    border-radius: 2px;
+}
+.plug_poster{
+    display: block;
+    text-align: center;
+}
+.plug_title{
+    font-size: 17px;
+    margin: 10px 0;
+    height: 37px;
+    overflow: hidden;
+}
+.plug_desc{
+    color: #62677c;
+    display: block;
+    height: 70px;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+.plug_desc:after{
+    content: "";
+    background: linear-gradient(0deg, white, transparent);
+    width: 100%;
+    height: 25px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.plug_info{
+    margin-top: 10px;
+}
+.plug_buttons{
+    margin-top: 10px;
+}
+.btn_uninstall{
+    background: #50576b;
+}
+.btn_uninstall:hover{
+    background: #2b3546;
+}
+#plugin_detail{
+    background: #ecf0fa;
+    padding: 0 5px 5px;
+}
+#plugin_detail .modal_title{
+    margin: 0 -5px -5px;
+}
+#plugin_detail .modal_body{
+    text-align: left;
+}
+.tabs_content{
+    box-shadow: 0 3px 3px #b5bbc9;
+}
+.tabs_content p{
+    line-height: 21px;
+}
+.tabs_content p:not(:last-child){
+    margin-bottom: 10px;
+}
+.plugin_header{
+    background-size: cover;
+    width: 100%;
+    height: 270px;
+}
+.plugin_more_info{
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-gap: 15px;
+}
+.plugin_details{
+    background: #fff;
+    margin-top: 33px;
+    padding: 10px;
+    box-shadow: 0 3px 3px #b5bbc9;
+}
+.plugin_details li{
+    margin-bottom: 15px;
+}
+.plugin_details li b{
+    display: inline-block;
+    margin-right: 10px;
+}
+.plugin_details .btn_install{
+    float: right;
+    margin-bottm: 20px;
+    position: sticky;
+    top: 20px;
+}
+.plugin_more_info h2{
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+.plugin_more_info h3{
+    font-size: 17px;
+    margin-bottom: 10px;
+}

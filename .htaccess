@@ -6,6 +6,12 @@ AddDefaultCharset UTF-8
     Satisfy All
 </Files>
 
+RewriteCond %{HTTP_HOST} ^www\.(.*)$
+RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+#RewriteCond %{HTTPS} off
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -13,7 +19,3 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 #RewriteRule ^(.*)$ index.php
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
-
-#RewriteCond %{HTTPS} !=on
-#RewriteCond %{HTTP_HOST} !(.*)\.nex\.com
-#RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
