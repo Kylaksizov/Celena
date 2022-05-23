@@ -9,9 +9,17 @@ class IndexController extends PanelController{
 
     public function indexAction(){
 
-        $this->view->include('index');
+        //$this->view->include('index');
+        
+        if($this->ajax) die($this->ajax);
 
-        $this->view->render('Example Plugin');
+        $content = '<div class="fx jc_c">
+            <a href="#" data-a="Test:example=1" class="btn">Первая 1</a>&nbsp;
+            <a href="#" data-a="Test:example=2" class="btn">Вторая 2</a>&nbsp;
+            <a href="#" data-a="Test:param=1&param=2" class="btn">Вторая 3</a>
+        </div>';
+
+        $this->view->render('Example Plugin', $content);
     }
 
 }
