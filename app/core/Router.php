@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\protected\InstallApplications;
+use app\models\CelenaSystemModel;
 use app\traits\Log;
 use app\traits\Users;
 
@@ -125,7 +127,6 @@ class Router{
         
         // install plugins, modules, ...
         if(!empty($this->urls[2]) && $this->urls[2] == 'install'){
-
             new InstallApplications($this);
             die();
         }
@@ -139,7 +140,7 @@ class Router{
             $explodeMatch = explode("\\", $match["controller"]);
 
             $panel = ($this->is_panel) ? 'panel\\' : '';
-            
+
             // если это плагин
             if($explodeMatch[0] == 'plugins'){
                 unset($explodeMatch[0]);
@@ -150,6 +151,38 @@ class Router{
                 $panel = '';
             }
 
+
+            // если это плагин
+            if($this->plugin){
+
+                // проверяем установлен ли плагин и активен ли он
+                $CelenaSystemModel = new CelenaSystemModel();
+                $pluginActive = $CelenaSystemModel->getPlugin($this->plugin["brand"], $this->plugin["name"]);
+
+                // если плагин зарегистрирован в базе
+                if($pluginActive){
+
+                    // если есть необязательный конфиг, подключаем
+                    $config_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php') ? require APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php' : [];
+
+                    $this->plugin = json_encode([
+                        "celena" => $pluginActive,
+                        "config" => $config_plugin
+                    ]);
+
+                    $this->plugin = json_decode($this->plugin);
+
+                    // если плагин активен
+                    if($this->plugin->celena->status != '1' && !ADMIN){
+
+                        header("Location: ".$this->panel_is()."/404/");
+                        View::errorCode(404);
+
+                    }
+                }
+            }
+            
+
             // AJAX
             if(self::isAjax() && !empty($_POST["ajax"])){
 
@@ -158,7 +191,8 @@ class Router{
                 // преобразуем строку вида a=1&b=2 в нормальный вид пост запроса
                 if(!empty($_POST["params"])) mb_parse_str($_POST["params"], $_POST);
 
-                $path = 'app\controllers\ajax\\'.$panel.$ajax_file;
+                if($this->plugin) $path = 'app\\'.$panel.'plugins\\'.str_replace('/', '\\', $this->plugin->celena->name).'\ajax\\'.$ajax_file;
+                else $path = 'app\controllers\ajax\\'.$panel.$ajax_file;
 
                 if(class_exists($path)){
 
@@ -174,7 +208,8 @@ class Router{
                 }
             }
 
-            $path = 'app\controllers\\'.$panel.ucfirst($this->params['controller']).'Controller';
+            if($this->plugin) $path = 'app\\'.$panel.$this->params['controller'].'Controller';
+            else $path = 'app\controllers\\'.$panel.ucfirst($this->params['controller']).'Controller';
 
             // если контроллер найден
             if(class_exists($path)){
@@ -182,12 +217,6 @@ class Router{
                 $action = !empty($this->params['action']) ? $this->params['action'].'Action' : 'indexAction';
 
                 if(method_exists($path, $action)){
-
-                    // если это плагин
-                    if($this->plugin)
-                        define("CONFIG_PLUGIN", require APP . '/controllers/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php');
-                    else
-                        define("CONFIG_PLUGIN", false);
 
                     $this->params["urls"] = $this->urls;
                     $this->params["plugin"] = $this->plugin;

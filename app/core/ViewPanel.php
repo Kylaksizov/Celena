@@ -41,14 +41,14 @@ class ViewPanel{
 
     public function include($view){
 
-        $viewPrev = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["brand"].'/'.CONFIG_PLUGIN["plugin"]["name"].'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : '';
 
         if($view != $this->lastInc){
 
-            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl')){
+            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl')){
 
                 $this->lastInc = $view;
-                $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
+                $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
                 $this->include[$view] = $this->includeSource[$view];
                 return $this->include[$view];
 
@@ -223,7 +223,7 @@ class ViewPanel{
     <li><a href="#">Удалить</a></li>
 </ul>';
 
-        $pluginTheme = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["brand"].'/'.CONFIG_PLUGIN["plugin"]["name"] : '';
+        $pluginTheme = !empty($this->route["plugin"]->config->brand) ? $this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name : '';
 
         $this->tplIndex = str_replace('{user-name}', !empty(USER["name"]) ? USER["name"] : '', $this->tplIndex);
         $this->tplIndex = str_replace('{META}', '<title>'.$title.'</title>', $this->tplIndex);
@@ -251,10 +251,8 @@ class ViewPanel{
 
         $devContent = '<ul>';
 
-        if(!empty(CONFIG_PLUGIN["plugin"]["id"])){
-
-            $devContent .= '<li>Плагин: <b>'.CONFIG_PLUGIN["plugin"]["id"].' ('.CONFIG_PLUGIN["plugin"]["name"].')</b></li>';
-        }
+        if(!empty($this->route["plugin"]->config->brand))
+            $devContent .= '<li>Плагин: <b>'.$this->route["plugin"]->config->brand.' ('.$this->route["plugin"]->config->name.')</b></li>';
 
         $dbLogs = Base::log();
 

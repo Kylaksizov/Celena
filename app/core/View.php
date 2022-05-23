@@ -46,16 +46,16 @@ class View{
      */
     public function include($view, $cache = false){
 
-        $viewPrev = (CONFIG_PLUGIN !== false) ? 'plugins/'.CONFIG_PLUGIN["plugin"]["author"].'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : '';
 
         if($view != $this->lastInc || $cache){
 
-            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl')){
+            if(file_exists(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl')){
 
-                if($cache) $this->includeCache = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
+                if($cache) $this->includeCache = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
                 else{
                     $this->lastInc = $view;
-                    $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPrev.$view.'.tpl');
+                    $this->includeSource[$view] = file_get_contents(ROOT.'/templates/'.$this->template.'/'.$viewPlugin.$view.'.tpl');
                     $this->include[$view] = $this->includeSource[$view];
                     return $this->include[$view];
                 }
@@ -538,10 +538,8 @@ class View{
 
         $devContent = '<ul>';
 
-        if(!empty(CONFIG_PLUGIN["plugin"]["id"])){
-
-            $devContent .= '<li>Плагин: <b>'.CONFIG_PLUGIN["plugin"]["id"].' ('.CONFIG_PLUGIN["plugin"]["name"].')</b></li>';
-        }
+        if(!empty($this->route["plugin"]->config->brand))
+            $devContent .= '<li>Плагин: <b>'.$this->route["plugin"]->config->brand.' ('.$this->route["plugin"]->config->name.')</b></li>';
 
         $dbLogs = Base::log();
 

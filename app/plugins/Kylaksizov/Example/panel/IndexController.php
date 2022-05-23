@@ -13,6 +13,11 @@ class IndexController extends PanelController{
 
     
     public function indexAction(){
+        
+        echo "<pre>";
+        print_r("Это уже плагин!");
+        echo "</pre>";
+        exit;
 
         $this->view->include('leads');
 

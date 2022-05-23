@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\controllers\classes\Functions;
 use app\core\Controller;
-use app\core\System;
 use app\core\View;
 use app\models\PageModel;
 

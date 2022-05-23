@@ -40,18 +40,16 @@ class InstallApplications{
         $pluginBrand = ucfirst($this->params->urls[3]);
         $pluginName = ucfirst($this->params->urls[4]);
 
+        $init = 'app\plugins\\'.$pluginBrand.'\\'.$pluginName.'\init';
 
-        $path = 'app\controllers\plugins\\'.$pluginBrand.'\\'.$pluginName.'\init';
+        if(class_exists($init)){
 
-        if(class_exists($path)){
-
-            $controller = new $path();
+            $controller = new $init();
             $resultInstall = $controller->install();
 
             if($resultInstall === true){ // если установка прошла успешно, заносим в базу инфу
 
                 Log::add('Установлен "плагин" <b>'.$pluginName.'</b> от разработчика <b>'.$pluginBrand.'</b>', 1);
-
                 die("Plugin installed...");
             }
 

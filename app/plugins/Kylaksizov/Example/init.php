@@ -1,12 +1,12 @@
 <?php
 
-namespace app\controllers\plugins\Kylaksizov\Example;
+namespace app\plugins\Kylaksizov\Example;
 
 use app\core\interface\InitPlugin;
 
 /**
- * @name Установка_обновление_обновление_плагина
- * =============================================
+ * @name Установка_обновление_удаление_плагина
+ * ===========================================
  */
 class init implements InitPlugin {
 

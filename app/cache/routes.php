@@ -31,11 +31,11 @@ return [
         'users/employee/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'employee'],
         'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
 
-        'shop/(page-[0-9]+/)?$' => ['controller' => 'shop'],
-        'shop/templates/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'templates'],
-        'shop/plugins/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'plugins'],
-        'shop/modules/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'modules'],
-        'shop/order-development/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'orderDevelopment'],
+        'celena_shop/(page-[0-9]+/)?$' => ['controller' => 'shop'],
+        'celena_shop/templates/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'templates'],
+        'celena_shop/plugins/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'plugins'],
+        'celena_shop/modules/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'modules'],
+        'celena_shop/order-development/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'orderDevelopment'],
 
         'settings/$' => ['controller' => 'settings'],
         'settings/seo/$' => ['controller' => 'settings', 'action' => 'seo'],
@@ -50,9 +50,16 @@ return [
 
         'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 
+        'Kylaksizov/Example/$' => ['controller' => 'support'],
+
     ],
 
     'web' => [
+
+        'kyl/$' => [
+            'controller' => 'plugins\Kylaksizov\Example\Index',
+            'action' => 'index'
+        ],
 
         '(page-[0-9]+/)?$' => ['controller' => 'index'],
         '404/$' => ['controller' => 'NotFound'],
