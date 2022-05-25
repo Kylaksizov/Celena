@@ -43,17 +43,21 @@
     background: #2b3546;
 }
 #plugin_detail{
-    background: #ecf0fa;
-    padding: 0 5px 5px;
+    background: #fff;
+    padding: 0;
 }
 #plugin_detail .modal_title{
-    margin: 0 -5px -5px;
+    font-weight: 500;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: .5s;
 }
 #plugin_detail .modal_body{
     text-align: left;
-}
-.tabs_content{
-    box-shadow: 0 3px 3px #b5bbc9;
+    position: relative;
+    margin: -33px 5px 5px 5px;
 }
 .tabs_content p{
     line-height: 21px;
@@ -62,9 +66,33 @@
     margin-bottom: 10px;
 }
 .plugin_header{
-    background-size: cover;
+    background-size: cover !important;
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    text-align: left;
+    padding: 2em 2em 5em;
     width: 100%;
-    height: 270px;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+}
+.plugin_header:after{
+    content: "";
+    background: linear-gradient(0deg, white, transparent);
+    width: 100%;
+    height: 110px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: 1s;
+}
+.bg_black{
+    color: #fff;
+}
+.bg_white{
+    color: #000;
 }
 .plugin_more_info{
     display: grid;
@@ -75,7 +103,7 @@
     background: #fff;
     margin-top: 33px;
     padding: 10px;
-    box-shadow: 0 3px 3px #b5bbc9;
+    border-left: 1px #cdd2e1 dashed;
 }
 .plugin_details li{
     margin-bottom: 15px;
@@ -88,7 +116,7 @@
     float: right;
     margin-bottm: 20px;
     position: sticky;
-    top: 20px;
+    top: 45px;
 }
 .plugin_more_info h2{
     font-size: 19px;
@@ -97,4 +125,12 @@
 .plugin_more_info h3{
     font-size: 17px;
     margin-bottom: 10px;
+}
+#plugin_images{
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+hr{
+    border-top: 1px #cdd2e1 dashed;
 }

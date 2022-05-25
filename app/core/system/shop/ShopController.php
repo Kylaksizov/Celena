@@ -9,8 +9,12 @@ class ShopController{
 
 
     public static function getPlugins(){
+        return self::request("shop/plugins/");
+    }
 
-        return self::request("shop");
+
+    public static function getPlugin($id){
+        return self::request("shop/plugin/$id/");
     }
 
 
@@ -34,13 +38,13 @@ class ShopController{
         //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($ch, CURLOPT_URL, 'https://'.self::CELENA_URI.'/'.$method.'/');
+        curl_setopt($ch, CURLOPT_URL, 'https://'.self::CELENA_URI.'/'.$method);
 
         $html = curl_exec($ch);
         //$document_info = curl_getinfo($ch);
         curl_close($ch);
 
-        return json_decode($html, true);
+        return $html;
     }
 
 }
