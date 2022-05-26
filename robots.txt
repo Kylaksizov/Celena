@@ -23,5 +23,3 @@ Disallow: /
 Host: https://site.com/
 
 Sitemap: /sitemap.xml
-
-Заменил файлик

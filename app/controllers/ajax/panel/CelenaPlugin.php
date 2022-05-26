@@ -5,6 +5,8 @@ namespace app\controllers\ajax\panel;
 
 use app\core\System;
 use app\core\system\shop\ShopController;
+use app\models\panel\SystemModel;
+use app\traits\Log;
 use ZipArchive;
 
 class CelenaPlugin{
@@ -34,12 +36,12 @@ class CelenaPlugin{
 
     private function installPlugin(){
 
-        $result = ShopController::installPlugin(intval($_POST["id"]));
-        //copy($result, ROOT . '/');
+        $plugin_id = intval($_POST["id"]);
 
+        $result = ShopController::installPlugin($plugin_id);
         $pluginInstallName = 'install_plugin'.time().'.zip';
 
-        $hashFile = time().'_'.sha1(rand(100, 9999)).'.cache';
+        $hashFile = $plugin_id.'_'.sha1(rand(100, 9999));
         $hashFileContent = '';
 
         $fp = fopen(ROOT . '/' . $pluginInstallName, "w");
@@ -52,24 +54,31 @@ class CelenaPlugin{
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
 
-                if(is_file($filename)){
-                    $hashFileContent .= $filename."\n";
-                }
+                if(is_file($filename)) $hashFileContent .= $filename."\n";
             }
 
             $zip->extractTo(ROOT . '/');
             $zip->close();
 
             // создаем файл кеша
-            $fp = fopen(ROOT . '/app/cache/system/plugins/' . $hashFile, "w");
-            fwrite($fp, trim($hashFileContent));
-            fclose($fp);
+            $cache = fopen(ROOT . '/app/cache/system/plugins/' . $hashFile . '.txt', "w");
+            flock($cache, LOCK_EX);
+            fwrite($cache, trim($hashFileContent));
+            flock($cache, LOCK_UN);
+            fclose($cache);
 
-            die("info::success::загрузил");
+            $SystemModel = new SystemModel();
+            $SystemModel->addPlugin($plugin_id, $hashFile);
 
         } else {
-            die("info::error::не загрузил");
+
+            Log::add("Ошибка загрузки плагина с сервера!", 2);
+            die("info::error::Ошибка загрузки плагина с сервера!");
         }
+
+        unlink(ROOT . '/' . $pluginInstallName);
+
+        die("info::success::загрузил");
 
         if(strripos($result, "<script>") === false) die($result);
         else System::script($result);

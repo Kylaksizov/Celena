@@ -62,6 +62,8 @@ img{max-width:100%}
 .tc{text-align:center}
 .tl{text-align:left}
 .tr{text-align:right}
+.fl{float:left}
+.fr{float:right}
 
 .fs12{font-size:12px}
 .fs13{font-size:13px}

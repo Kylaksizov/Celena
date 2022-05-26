@@ -17,31 +17,55 @@ class SystemModel extends Model{
      * @name получение системных значений
      * ==================================
      * @param string $fields
-     * @param array $s_type
      * @param int|string $status
      * @return mixed|null
      */
-    public function getSystems($fields = '*', $s_type = ['plugin', 'modules'], $status = 'all'){
+    public function getPlugins($fields = '*', $status = 'all'){
 
         $where = "";
-        foreach ($s_type as $item) {
-            $where .= "s_type = ? OR ";
-        }
-        $where = trim($where, " OR ");
+        $params = [];
 
-        if($status != 'all' && isset($status)){
-            $where = "(".$where." ) AND status = ?";
-            array_push($s_type, $status);
+        if($status != 'all'){
+            $where = "WHERE status = ?";
+            array_push($params, $status);
         }
 
         return self::instanceFetchAll("
             SELECT
                 $fields
-            FROM " . PREFIX . "systems
-            WHERE $where
+            FROM " . PREFIX . "plugins
+            $where
         ",
-            $s_type
+            $params
         );
+    }
+
+
+    /**
+     * @name добавление плагина
+     * ========================
+     * @param $plugin_id
+     * @param $hashfile
+     * @return bool|string
+     * @throws Exception
+     */
+    public function addPlugin($plugin_id, $hashfile){
+
+        Base::run("INSERT INTO " . PREFIX . "plugins (
+            plugin_id,
+            hashfile,
+            status
+        ) VALUES (
+            ?, ?, ?
+        )", [
+            $plugin_id,
+            $hashfile,
+            0
+        ]);
+
+        unset($params);
+
+        return Base::lastInsertId();
     }
 
 

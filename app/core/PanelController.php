@@ -93,7 +93,7 @@ abstract class PanelController{
             ]], JSON_UNESCAPED_UNICODE));*/
 
             $SystemModel = new SystemModel();
-            $PluginsInfo = $SystemModel->getSystems('menu', ['plugin'], 1);
+            $PluginsInfo = $SystemModel->getPlugins('menu', 1);
 
             if(!empty($PluginsInfo)){
 
@@ -130,11 +130,12 @@ abstract class PanelController{
                 <li id="home_link"><a href="{panel}/" class="ico_space">Рабочий стол</a></li>
                 '.$addMenu.'
                 <li>
-                    <a href="{panel}/celena_shop/" class="ico_applications">Плагины и модули</a>
+                    <a href="{panel}/celenaShop/plugins/" class="ico_applications">Плагины и модули</a>
                     <ul>
-                        <li><a href="{panel}/celena_shop/plugins/">Плагины</a></li>
-                        <li><a href="{panel}/celena_shop/modules/">Модули</a></li>
-                        <li><a href="{panel}/celena_shop/order-development/">Заказать разработку</a></li>
+                        <li><a href="{panel}/plugins/">Плагины</a></li>
+                        <li><a href="{panel}/modules/">Модули</a></li>
+                        <li><a href="{panel}/celenaShop/plugins/">Магазин плагинов и модулей</a></li>
+                        <li><a href="{panel}/celenaShop/order-development/">Заказать разработку</a></li>
                     </ul>
                 </li>
                 <li>

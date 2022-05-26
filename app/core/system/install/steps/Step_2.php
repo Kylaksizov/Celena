@@ -64,7 +64,7 @@ class Step_2{
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties_v");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}roles");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}systems");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}plugins");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
@@ -82,15 +82,16 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}systems` (
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}plugins` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
-            `s_type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип',
-            `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название плагина или модуля',
-            `menu` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Меню для админки JSON',
+            `plugin_id` int(11) NOT NULL,
+            `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Название плагина или модуля',
+            `menu` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT NULL COMMENT 'Меню для админки JSON',
             `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Конфиг для плагина',
             `hashfile` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',
             `status` tinyint(1) DEFAULT 0,
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `plugin_id` (`plugin_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 

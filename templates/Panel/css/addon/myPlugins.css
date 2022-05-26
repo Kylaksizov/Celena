@@ -1,0 +1,44 @@
+.plugin_table{
+    background: #fff;
+    display: grid;
+    align-items: center;
+    grid-gap: 15px;
+    grid-template-columns: 70px 1fr;
+    padding: 15px;
+}
+.plugin_table:not(:last-child){
+    border-bottom: 1px #b7bed4 dashed;
+}
+.plugin_box h2{
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.plugin_version{
+    font-size: 17px;
+    display: inline-block;
+    margin-left: 10px;
+    float: right;
+}
+.plugin_description{
+    max-height: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.btn_plugin_activate{
+    background: #83cd3f;
+}
+.btn_plugin_activate:hover{
+    background: #6ab327;
+}
+.btn_plugin_deactivate{
+    background: #72798b;
+}
+.btn_plugin_deactivate:hover{
+    background: #5a6279;
+}
+.btn_plugin_remove{
+    background: #e74a4a;
+}
+.btn_plugin_remove:hover{
+    background: #e81f1f;
+}

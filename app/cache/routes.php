@@ -31,11 +31,13 @@ return [
         'users/employee/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'employee'],
         'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
 
-        'celena_shop/(page-[0-9]+/)?$' => ['controller' => 'celenaShop'],
-        'celena_shop/templates/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'templates'],
-        'celena_shop/plugins/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'plugins'],
-        'celena_shop/modules/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'modules'],
-        'celena_shop/order-development/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'orderDevelopment'],
+        //'celenaShop/(page-[0-9]+/)?$' => ['controller' => 'celenaShop'],
+        //'celenaShop/templates/(page-[0-9]+/)?$' => ['controller' => 'shop', 'action' => 'templates'],
+        'plugins/(page-[0-9]+/)?$' => ['controller' => 'plugins'],
+        'plugin/[0-9]+/settings/$' => ['controller' => 'pluginSettings'],
+        'modules/(page-[0-9]+/)?$' => ['controller' => 'modules'],
+        'celenaShop/plugins/(page-[0-9]+/)?$' => ['controller' => 'celenaPlugins'],
+        'celenaShop/order-development/(page-[0-9]+/)?$' => ['controller' => 'orderDevelopment'],
 
         'settings/$' => ['controller' => 'settings'],
         'settings/seo/$' => ['controller' => 'settings', 'action' => 'seo'],
