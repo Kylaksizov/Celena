@@ -88,6 +88,9 @@
     left: 0;
     transition: 1s;
 }
+.plugin_header h2{
+    font-size: 4em;
+}
 .bg_black{
     color: #fff;
 }

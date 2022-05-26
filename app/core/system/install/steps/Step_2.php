@@ -71,7 +71,7 @@ class Step_2{
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
             `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
             `role` tinyint(5) DEFAULT NULL,
             `ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
             `hash` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -88,6 +88,7 @@ class Step_2{
             `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название плагина или модуля',
             `menu` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Меню для админки JSON',
             `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Конфиг для плагина',
+            `hashfile` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',
             `status` tinyint(1) DEFAULT 0,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");

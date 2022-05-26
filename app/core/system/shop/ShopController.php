@@ -18,6 +18,11 @@ class ShopController{
     }
 
 
+    public static function installPlugin($id){
+        return self::request("shop/install/plugin/$id/");
+    }
+
+
     private static function request($method){
 
         /*$headers = array(

@@ -83,11 +83,11 @@ return [
     "noreply" => "noreply@kylaksizov.com",
 
     // SMTP
-	"SMTPHost" => "mail.adm.tools",
-	"SMTPLogin" => "info@kylaksizov.com",
-	"SMTPPassword" => "не скажу",
+	"SMTPHost" => "smtp.mailtrap.io",
+	"SMTPLogin" => "55aeba55b268e6",
+	"SMTPPassword" => "077917546beb79",
 	"SMTPSecure" => "ssl",
-	"SMTPPort" => 465,
+	"SMTPPort" => 2525,
 	"SMTPFrom" => "info@kylaksizov.com",
 
     "version" => "0.0.1",

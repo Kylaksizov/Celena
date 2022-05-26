@@ -1,4 +1,5 @@
 .idea
 uploads/*
 app/core/tmp
+app/cache/system/*
 Before__Start.txt

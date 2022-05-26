@@ -46,7 +46,7 @@ class View{
      */
     public function include($view, $cache = false){
 
-        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->celena->name.'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]->celena->status) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->celena->name.'/' : '';
 
         if($view != $this->lastInc || $cache){
 
