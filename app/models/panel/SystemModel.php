@@ -14,65 +14,6 @@ class SystemModel extends Model{
 
 
     /**
-     * @name получение системных значений
-     * ==================================
-     * @param string $fields
-     * @param int|string $status
-     * @return mixed|null
-     */
-    public function getPlugins($fields = '*', $status = 'all'){
-
-        $where = "";
-        $params = [];
-
-        if($status != 'all'){
-            $where = "WHERE status = ?";
-            array_push($params, $status);
-        }
-
-        return self::instanceFetchAll("
-            SELECT
-                $fields
-            FROM " . PREFIX . "plugins
-            $where
-        ",
-            $params
-        );
-    }
-
-
-    /**
-     * @name добавление плагина
-     * ========================
-     * @param $plugin_id
-     * @param $name
-     * @param $hashfile
-     * @return bool|string
-     * @throws Exception
-     */
-    public function addPlugin($plugin_id, $name, $hashfile){
-
-        Base::run("INSERT INTO " . PREFIX . "plugins (
-            plugin_id,
-            name,
-            hashfile,
-            status
-        ) VALUES (
-            ?, ?, ?, ?
-        )", [
-            $plugin_id,
-            $name,
-            $hashfile,
-            0
-        ]);
-
-        unset($params);
-
-        return Base::lastInsertId();
-    }
-
-
-    /**
      * @name получение логов
      * =====================
      * @return array

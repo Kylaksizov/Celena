@@ -332,34 +332,33 @@ class System{
     }
 
 
-
-
     /**
-     * @name добавление роутов
-     * =======================
      * @param array $routes
+     * @param int $position
      * @return bool
      * @example
-        System::addRoute([
-            'panel' => [
-                'path/$' => ['controller' => 'plugins\Celena\Example', 'action' => 'act'],
-                'path2/$' => ['controller' => 'plugins\Celena\Example2']
-            ],
-            'web' => [
-                'path3/$' => ['controller' => 'plugins\Celena\Example'],
-                'path4/$' => ['controller' => 'plugins\Celena\Example2', 'action' => 'act']
-            ]
-        ]);
+     * System::addRoute([
+     * 'panel' => [
+     * 'path/$' => ['controller' => 'plugins\Celena\Example', 'action' => 'act'],
+     * 'path2/$' => ['controller' => 'plugins\Celena\Example2']
+     * ],
+     * 'web' => [
+     * 'path3/$' => ['controller' => 'plugins\Celena\Example'],
+     * 'path4/$' => ['controller' => 'plugins\Celena\Example2', 'action' => 'act']
+     * ]
+     * ]);
      */
-    public static function addRoute(array $routes){
+    public static function addRoute(array $routes, $position = 1){
 
         $resultRoutes = "";
-        $file = ROOT . '/app/cache/routes_tmp.php';
+        $file = ROOT . '/app/cache/routes.php';
         
         $realRoutes = require $file;
 
-        $addPanelRoute = "";
-        $addWebRoute = "";
+        $addPanelRouteBefore = "";
+        $addPanelRouteAfter = "";
+        $addWebRouteBefore = "";
+        $addWebRouteAfter = "";
 
         foreach ($routes as $type => $newRoutes) {
 
@@ -373,11 +372,13 @@ class System{
 
                 if($type == 'panel'){
                     $action = (!empty($newRouteAction["action"]) && $newRouteAction["action"] != 'index') ? ", 'action' => '{$newRouteAction["action"]}'" : "";
-                    $addPanelRoute .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
+                    if(!$position) $addPanelRouteBefore .= "'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],\n\t\t";
+                    else $addPanelRouteAfter .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
                 }
                 if($type == 'web'){
                     $action = (!empty($newRouteAction["action"]) && $newRouteAction["action"] != 'index') ? ", 'action' => '{$newRouteAction["action"]}'" : "";
-                    $addWebRoute .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
+                    if(!$position) $addWebRouteBefore .= "'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],\n\t\t";
+                    else $addWebRouteAfter .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
                 }
             }
         }
@@ -387,12 +388,12 @@ class System{
 return [
 
     'panel' => [
-        ".self::rebuildRoutes($realRoutes["panel"])."$addPanelRoute
+        ".$addPanelRouteBefore.self::rebuildRoutes($realRoutes["panel"])."$addPanelRouteAfter
         
     ],
     
     'web' => [
-        ".self::rebuildRoutes($realRoutes["web"])."$addWebRoute
+        ".$addWebRouteBefore.self::rebuildRoutes($realRoutes["web"])."$addWebRouteAfter
     ],
     
 ];";
@@ -445,7 +446,7 @@ return [
     public static function removeRoute(array $routes){
 
         $resultRoutes = "";
-        $file = ROOT . '/app/cache/routes_tmp.php';
+        $file = ROOT . '/app/cache/routes.php';
 
         $realRoutes = require $file;
 

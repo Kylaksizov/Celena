@@ -30,15 +30,27 @@ class Init implements InitPlugin {
 
 
 
-        // добавление роутов
-        $resultAdd = System::addRoute([
+        // добавление роутов одним махом в конец
+        /*$resultAdd = System::addRoute([
             'panel' => [
                 'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
             ],
             'web' => [
                 'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
             ]
+        ]);*/
+
+        // добавление роутов панели в конец, а web в начало
+        System::addRoute([
+            'panel' => [
+                'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
+            ],
         ]);
+        $resultAdd = System::addRoute([
+            'web' => [
+                'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
+            ]
+        ], 0);
 
         if(!$resultAdd){
             Log::add('Не удалось добавить роуты при установке плагина', 2);

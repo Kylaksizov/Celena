@@ -5,7 +5,7 @@
 
 namespace app\core;
 
-use app\models\panel\SystemModel;
+use app\models\panel\PluginModel;
 
 abstract class PanelController{
 
@@ -92,15 +92,19 @@ abstract class PanelController{
                 ]
             ]], JSON_UNESCAPED_UNICODE));*/
 
-            $SystemModel = new SystemModel();
-            $PluginsInfo = $SystemModel->getPlugins('menu', 1);
+            $PluginModel = new PluginModel();
+            $PluginsInfo = $PluginModel->getUniqPlugins('name', 1);
 
             if(!empty($PluginsInfo)){
 
                 $pluginsMenu = [];
                 foreach ($PluginsInfo as $row) {
-                    $plMenu = json_decode($row["menu"], true);
-                    $pluginsMenu = array_merge($pluginsMenu, $plMenu);
+
+                    if(file_exists(APP . '/plugins/'.$row["name"].'/menu.json')){
+                        $menuPlugin = file_get_contents(APP . '/plugins/'.$row["name"].'/menu.json');
+                        $plMenu = json_decode($menuPlugin, true);
+                        $pluginsMenu = array_merge($pluginsMenu, $plMenu);
+                    }
                 }
 
                 $menu = array_merge($menu, $pluginsMenu);

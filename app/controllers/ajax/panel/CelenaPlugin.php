@@ -5,7 +5,7 @@ namespace app\controllers\ajax\panel;
 
 use app\core\System;
 use app\core\system\shop\ShopController;
-use app\models\panel\SystemModel;
+use app\models\panel\PluginModel;
 use app\traits\Log;
 use Exception;
 use ZipArchive;
@@ -48,10 +48,11 @@ class CelenaPlugin{
      */
     private function installPlugin(){
 
-        // {"Меню моего плагина":{"link":"{panel}/examplePlugin/","class":"ico_space","icon":"","submenu":{"Пункт меню 1":"{panel}/examplePlugin/","Пункт меню 2":"#","Пункт меню 3":"#"}}}
-
         $plugin_id = intval($_POST["id"]);
 
+        $pluginInfo = ShopController::getPlugin(intval($_POST["id"]), 'json');
+        $pluginInfo = json_decode($pluginInfo);
+        
         $result = ShopController::installPlugin($plugin_id);
         $pluginInstallZip = 'install_plugin_'.time().'.zip';
 
@@ -109,8 +110,8 @@ class CelenaPlugin{
             fclose($cache);
             
             // добавляем в базу
-            $SystemModel = new SystemModel();
-            $SystemModel->addPlugin($plugin_id, $pluginBrandName, $hashFile);
+            $PluginModel = new PluginModel();
+            $PluginModel->addPlugin($plugin_id, $pluginBrandName, $pluginInfo->plugin->plugin_v, $hashFile);
 
         } else {
 
@@ -132,7 +133,7 @@ class CelenaPlugin{
 
                 if($installed === true){
 
-                    die("info::success::Все заебись!");
+                    die("info::success::Все супер!");
 
                 } else{
 

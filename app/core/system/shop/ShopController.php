@@ -13,8 +13,8 @@ class ShopController{
     }
 
 
-    public static function getPlugin($id){
-        return self::request("shop/plugin/$id/");
+    public static function getPlugin($id, $format = false){
+        return self::request("shop/plugin/$id/", $format);
     }
 
 
@@ -23,7 +23,7 @@ class ShopController{
     }
 
 
-    private static function request($method){
+    private static function request($method, $format = false){
 
         /*$headers = array(
             "Accept: application/json",
@@ -38,7 +38,7 @@ class ShopController{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36');
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7"));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7")."&format=$format");
         //curl_setopt($ch, CURLOPT_HEADER, true);
         //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);

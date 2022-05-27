@@ -1,12 +1,16 @@
 <?php
 
-namespace app\core\protected;
+namespace app\core\system\plugins;
 
 use app\traits\Log;
 
 
 # TODO данный класс работает, нужно доделать установку лагинов, если он был загружен вручную
-class InstallApplications{
+
+/**
+ * @name установка плагинов из папки
+ */
+class InstallLocalPlugins{
 
     private $params;
 

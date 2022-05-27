@@ -4,7 +4,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
-use app\core\system\shop\ShopController;
+use app\models\panel\PluginModel;
 
 
 class PluginsController extends PanelController {
@@ -15,6 +15,9 @@ class PluginsController extends PanelController {
         $this->view->styles = ['css/addon/myPlugins.css'];
         $this->view->scripts = ['js/addon/myPlugins.js'];
         $this->view->plugins = ['rating', 'fancybox'];
+
+        $PluginsModel = new PluginModel();
+        $PluginsModel->getPlugins();
 
         $content = '<div class="fx">
             <h1>Мои плагины</h1>

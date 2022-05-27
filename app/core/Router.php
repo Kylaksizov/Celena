@@ -2,9 +2,9 @@
 
 namespace app\core;
 
-use app\core\protected\InstallApplications;
-use app\models\CelenaSystemModel;
-use app\traits\Log;
+use app\core\system\plugins\InstallLocalPlugins;
+use app\models\panel\PluginModel;
+use app\models\panel\SystemModel;
 use app\traits\Users;
 
 class Router{
@@ -127,7 +127,7 @@ class Router{
         
         // install plugins, modules, ...
         if(!empty($this->urls[2]) && $this->urls[2] == 'install'){
-            new InstallApplications($this);
+            new InstallLocalPlugins($this);
             die();
         }
         
@@ -156,8 +156,8 @@ class Router{
             if($this->plugin){
 
                 // проверяем установлен ли плагин и активен ли он
-                $CelenaSystemModel = new CelenaSystemModel();
-                $pluginActive = $CelenaSystemModel->getPlugin($this->plugin["brand"], $this->plugin["name"]);
+                $PluginModel = new PluginModel();
+                $pluginActive = $PluginModel->getPlugin($this->plugin["brand"], $this->plugin["name"]);
 
                 // если плагин зарегистрирован в базе
                 if($pluginActive){
