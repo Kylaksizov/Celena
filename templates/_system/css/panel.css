@@ -1085,7 +1085,7 @@ table:not(.table-condensed) td {
 }
 
 
-h1{
+h1, h2{
     font-size: 17px;
     margin-bottom: 20px;
     font-weight: 500;
@@ -1095,6 +1095,9 @@ h1{
 h1 b{
     color: var(--firma-color);
     margin-left: 10px;
+}
+h2{
+    font-size: 15px;
 }
 .title_box{
     overflow: hidden;

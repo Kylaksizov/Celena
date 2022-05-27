@@ -160,6 +160,7 @@ abstract class PanelController{
                 <li>
                     <a href="#" class="ico_system">Система</a>
                     <ul>
+                        <li><a href="{panel}/system/routes/">Роуты</a></li>
                         <li><a href="{panel}/system/logs/">Журнал логов</a></li>
                         <li><a href="{panel}/system/db-logs/">Ошибки базы</a></li>
                     </ul>

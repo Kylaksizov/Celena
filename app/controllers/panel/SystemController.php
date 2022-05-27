@@ -9,6 +9,67 @@ use Exception;
 class SystemController extends PanelController {
 
 
+
+
+
+    /**
+     * @name Ошибки запросов в БД
+     * ==========================
+     * @return void
+     */
+    public function RoutesAction(){
+
+        $this->view->styles = ["css/addon/routes.css"];
+
+        $content = '<h1>Роуты</h1>';
+        
+        $Routes = require ROOT . '/app/cache/routes.php';
+
+        $content .= '<h2>Роуты панели:</h2>
+        <table id="routs_panel">
+            <tr>
+                <th>URL</th>
+                <th>Controller</th>
+                <th>Method</th>
+            </tr>';
+        foreach ($Routes["panel"] as $path => $controllerAction) {
+
+            $action = !empty($controllerAction["action"]) ? $controllerAction["action"].'Action' : 'indexAction';
+
+            $content .= '<tr>
+                <td>'.$path.'</td>
+                <td>'.ucfirst($controllerAction["controller"]).'</td>
+                <td>'.ucfirst($action).'</td>
+            </tr>';
+        }
+        $content .= '</table>';
+
+        $content .= '<h2>Роуты WEB:</h2>
+        <table id="routs_web">
+            <tr>
+                <th>URL</th>
+                <th>Controller</th>
+                <th>Method</th>
+            </tr>';
+        foreach ($Routes["web"] as $path => $controllerAction) {
+
+            $action = !empty($controllerAction["action"]) ? $controllerAction["action"].'Action' : 'indexAction';
+
+            $content .= '<tr>
+                <td>'.$path.'</td>
+                <td>'.ucfirst($controllerAction["controller"]).'</td>
+                <td>'.ucfirst($action).'</td>
+            </tr>';
+        }
+        $content .= '</table>';
+
+
+        $this->view->render('Логи', $content);
+    }
+
+
+
+
     /**
      * @name Журнал логов
      * ==================

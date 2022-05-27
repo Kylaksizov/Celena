@@ -47,8 +47,9 @@ return [
         'settings/payment-methods/$' => ['controller' => 'settings', 'action' => 'paymentMethods'],
         'settings/delivery-methods/$' => ['controller' => 'settings', 'action' => 'deliveryMethods'],
 
-        'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'Logs'],
-        'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'DbLogs'],
+        'system/routes/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'routes'],
+        'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'logs'],
+        'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'dbLogs'],
 
         'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 
