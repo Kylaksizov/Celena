@@ -7,6 +7,7 @@ use app\core\System;
 use app\core\system\shop\ShopController;
 use app\models\panel\SystemModel;
 use app\traits\Log;
+use Exception;
 use ZipArchive;
 
 class CelenaPlugin{
@@ -25,6 +26,11 @@ class CelenaPlugin{
     }
 
 
+    /**
+     * @name Получение детальной информации о плагине
+     * ==============================================
+     * @return void
+     */
     private function getPlugin(){
 
         $result = ShopController::getPlugin(intval($_POST["id"]));
@@ -34,27 +40,85 @@ class CelenaPlugin{
     }
 
 
+    /**
+     * @name Установка плагина
+     * =======================
+     * @return void
+     * @throws Exception
+     */
     private function installPlugin(){
+
+        $resultAdd = System::addRoute([
+            'panel' => [
+                'newPath/$' => ['controller' => 'plugins\Kylaksizov\Example\New', 'action' => 'Test'],
+                'newPath2/$' => ['controller' => 'plugins\Kylaksizov\Example\New2']
+            ],
+            'web' => [
+                'test1/$' => ['controller' => 'plugins\Kylaksizov\Example\New'],
+                'test2/$' => ['controller' => 'plugins\Kylaksizov\Example\New2', 'action' => 'Test2']
+            ]
+        ]);
+
+        $resultAdd = System::removeRoute([
+            'panel' => [
+                'newPath/$',
+                'newPath2/$'
+            ],
+            'web' => [
+                'test1/$',
+                'test2/$'
+            ]
+        ]);
+
+        if($resultAdd === true) die("info::success::ok");
+        else  die("info::error::".$resultAdd);
 
         $plugin_id = intval($_POST["id"]);
 
         $result = ShopController::installPlugin($plugin_id);
-        $pluginInstallName = 'install_plugin'.time().'.zip';
+        $pluginInstallZip = 'install_plugin_'.time().'.zip';
 
         $hashFile = $plugin_id.'_'.sha1(rand(100, 9999));
         $hashFileContent = '';
 
-        $fp = fopen(ROOT . '/' . $pluginInstallName, "w");
+        $fp = fopen(ROOT . '/' . $pluginInstallZip, "w");
         fwrite($fp, $result);
         fclose($fp);
 
         $zip = new ZipArchive;
-        if ($zip->open(ROOT . '/' . $pluginInstallName) === TRUE) {
+        if ($zip->open(ROOT . '/' . $pluginInstallZip) === TRUE) {
+
+            $pluginBrandName = false;
 
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
 
-                if(is_file($filename)) $hashFileContent .= $filename."\n";
+                #TODO проверка на файл не работает из-за прав доступа скорей всего, нужно записать только файлы в кеш а не весь лист
+                /*echo $filename."\n";
+
+                print_r(mime_content_type($filename));
+                echo $filename."\n\n";*/
+
+                //if(is_file($filename)){
+
+                    // получаем бренд и имя плагина
+                    if(!$pluginBrandName && strripos($filename, "app/plugins/") !== false){
+                        $pluginBrandName_ = explode("/", $filename);
+                        if(!empty($pluginBrandName_[2]) && !empty($pluginBrandName_[3])){
+                            $pluginBrandName = $pluginBrandName_[2].'/'.$pluginBrandName_[3];
+                            unset($pluginBrandName_);
+                        }
+                    }
+
+                    $hashFileContent .= $filename."\n";
+                //}
+            }
+
+            if(empty($pluginBrandName)){
+
+                $zip->close();
+                unlink(ROOT . '/' . $pluginInstallZip);
+                die("info::error::В плагине отсутствует папка брендом и названием плагина!");
             }
 
             $zip->extractTo(ROOT . '/');
@@ -66,9 +130,10 @@ class CelenaPlugin{
             fwrite($cache, trim($hashFileContent));
             flock($cache, LOCK_UN);
             fclose($cache);
-
+            
+            // добавляем в базу
             $SystemModel = new SystemModel();
-            $SystemModel->addPlugin($plugin_id, $hashFile);
+            $SystemModel->addPlugin($plugin_id, $pluginBrandName, $hashFile);
 
         } else {
 
@@ -76,12 +141,38 @@ class CelenaPlugin{
             die("info::error::Ошибка загрузки плагина с сервера!");
         }
 
-        unlink(ROOT . '/' . $pluginInstallName);
+        unlink(ROOT . '/' . $pluginInstallZip);
 
-        die("info::success::загрузил");
+        $PI = 'app\plugins\\'.str_replace('/', '\\', $pluginBrandName).'\Init';
 
-        if(strripos($result, "<script>") === false) die($result);
-        else System::script($result);
+        if(class_exists($PI)){
+
+            if(method_exists($PI, 'install')){
+
+                $PluginInit = new $PI();
+                $installed = $PluginInit->install();
+
+                if($installed === true){
+
+                    die("info::success::Все заебись!");
+
+                } else{
+
+                    Log::add("Ошибка <b style='color:#e82a2a'>$installed</b> при установке плагина <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
+                    die("info::error::Отсутствует при установке!<br>Обратитесь к разработчику плагина.");
+                }
+
+            } else{
+
+                Log::add("Отсутствует метод установки в плагине <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
+                die("info::error::Отсутствует метод установки!<br>Обратитесь к разработчику плагина.");
+            }
+        }
+
+        die("info::success::Ok");
+
+        //if(strripos($result, "<script>") === false) die($result);
+        //else System::script($result);
     }
 
 }

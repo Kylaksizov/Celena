@@ -45,20 +45,23 @@ class SystemModel extends Model{
      * @name добавление плагина
      * ========================
      * @param $plugin_id
+     * @param $name
      * @param $hashfile
      * @return bool|string
      * @throws Exception
      */
-    public function addPlugin($plugin_id, $hashfile){
+    public function addPlugin($plugin_id, $name, $hashfile){
 
         Base::run("INSERT INTO " . PREFIX . "plugins (
             plugin_id,
+            name,
             hashfile,
             status
         ) VALUES (
-            ?, ?, ?
+            ?, ?, ?, ?
         )", [
             $plugin_id,
+            $name,
             $hashfile,
             0
         ]);

@@ -134,7 +134,7 @@ abstract class PanelController{
                     <ul>
                         <li><a href="{panel}/plugins/">Плагины</a></li>
                         <li><a href="{panel}/modules/">Модули</a></li>
-                        <li><a href="{panel}/celenaShop/plugins/">Магазин плагинов и модулей</a></li>
+                        <li class="menu_shop"><a href="{panel}/celenaShop/plugins/">Магазин плагинов и модулей</a></li>
                         <li><a href="{panel}/celenaShop/order-development/">Заказать разработку</a></li>
                     </ul>
                 </li>

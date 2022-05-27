@@ -52,8 +52,6 @@ return [
 
         'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 
-        'Kylaksizov/Example/$' => ['controller' => 'support'],
-
         'examplePlugin/$' => ['controller' => 'plugins\Kylaksizov\Example\Index', 'action' => 'index'],
 
     ],

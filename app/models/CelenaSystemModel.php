@@ -18,7 +18,7 @@ class CelenaSystemModel extends Model{
 
     public function getPlugin($brand, $name){
 
-        return Base::run("SELECT name, status FROM " . PREFIX . "systems WHERE s_type = ? AND name = ?", ["plugin", trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
+        return Base::run("SELECT name, status FROM " . PREFIX . "plugins WHERE name = ?", [trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
     }
 
 

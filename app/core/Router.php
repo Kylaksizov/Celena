@@ -142,7 +142,7 @@ class Router{
             $panel = ($this->is_panel) ? 'panel\\' : '';
 
             // если это плагин
-            if($explodeMatch[0] == 'plugin'){
+            if($explodeMatch[0] == 'plugins' && !empty($explodeMatch[1])){
                 unset($explodeMatch[0]);
                 $this->plugin = [
                     'brand' => $explodeMatch[1],

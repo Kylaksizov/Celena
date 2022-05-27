@@ -2,32 +2,48 @@
 
 namespace app\plugins\Kylaksizov\Example;
 
-use app\core\interface\InitPlugin;
+use app\core\Base;
+use core\system\plugins\InitPlugin;
 
 /**
  * @name Установка_обновление_удаление_плагина
  * ===========================================
  */
-class init implements InitPlugin {
+class Init implements InitPlugin {
 
 
+    // install...
     public function install()
     {
-        // install...
+
         return true;
     }
 
 
+    // power on...
+    public function powerOn()
+    {
+        return true;
+    }
+
+
+    // power off...
+    public function powerOff()
+    {
+        return true;
+    }
+
+
+    // update...
     public function update()
     {
-        // update...
         return true;
     }
 
 
+    // delete...
     public function delete()
     {
-        // delete...
         return true;
     }
 

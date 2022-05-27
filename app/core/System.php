@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\system\DeclareNames;
 use PDO;
 
 class System{
@@ -328,6 +329,162 @@ class System{
             if(ADMIN) die($file . ' - не найден!');
             return false;
         }
+    }
+
+
+    /**
+     * @name добавление роутов
+     * =======================
+     * @param array $routes
+     * @return bool
+     * @example
+        System::addRoute([
+            'panel' => [
+                'path/$' => ['controller' => 'plugins\Celena\Example', 'action' => 'act'],
+                'path2/$' => ['controller' => 'plugins\Celena\Example2']
+            ],
+            'web' => [
+                'path3/$' => ['controller' => 'plugins\Celena\Example'],
+                'path4/$' => ['controller' => 'plugins\Celena\Example2', 'action' => 'act']
+            ]
+        ]);
+     */
+    public static function addRoute(array $routes){
+
+        $resultRoutes = "";
+        $file = ROOT . '/app/cache/routes_tmp.php';
+        
+        $realRoutes = require $file;
+
+        $addPanelRoute = "";
+        $addWebRoute = "";
+
+        foreach ($routes as $type => $newRoutes) {
+
+            $type = ($type == 'panel') ? 'panel' : 'web';
+
+            // DeclareNames::ROUTES
+
+            foreach ($newRoutes as $path => $newRouteAction) {
+
+                if(!empty($realRoutes[$type][$path])) continue;
+
+                if($type == 'panel'){
+                    $action = (!empty($newRouteAction["action"]) && $newRouteAction["action"] != 'index') ? ", 'action' => '{$newRouteAction["action"]}'" : "";
+                    $addPanelRoute .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
+                }
+                if($type == 'web'){
+                    $action = (!empty($newRouteAction["action"]) && $newRouteAction["action"] != 'index') ? ", 'action' => '{$newRouteAction["action"]}'" : "";
+                    $addWebRoute .= "\n\t\t'$path' => ['controller' => '{$newRouteAction["controller"]}'$action],";
+                }
+            }
+        }
+
+        $resultRoutes = "<?php
+
+return [
+
+    'panel' => [
+        ".self::rebuildRoutes($realRoutes["panel"])."$addPanelRoute
+        
+    ],
+    
+    'web' => [
+        ".self::rebuildRoutes($realRoutes["web"])."$addWebRoute
+    ],
+    
+];";
+
+        $fp = fopen($file, "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, $resultRoutes);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
+        return true;
+    }
+
+
+    /**
+     * @name для self::addRoute()
+     * ==========================
+     * @param $array
+     * @return string
+     */
+    private static function rebuildRoutes($array){
+
+        $result = '';
+        foreach ($array as $path => $controllerAction) {
+            $action = !empty($controllerAction["action"]) ? ", 'action' => '{$controllerAction["action"]}'" : "";
+            $result .= "'$path' => ['controller' => '{$controllerAction["controller"]}'$action],\n\t\t";
+        }
+        
+        return trim($result);
+    }
+
+
+    /**
+     * @name удаление роутов
+     * =====================
+     * @param array $routes
+     * @return bool
+     * @example
+        System::removeRoute([
+            'panel' => [
+                'path/$',
+                'path2/$'
+            ],
+            'web' => [
+                'path3/$',
+                'path4/$'
+            ]
+        ]);
+     */
+    public static function removeRoute(array $routes){
+
+        $resultRoutes = "";
+        $file = ROOT . '/app/cache/routes_tmp.php';
+
+        $realRoutes = require $file;
+
+        $addPanelRoute = "";
+        $addWebRoute = "";
+
+        foreach ($routes as $type => $newRoutes) {
+
+            $type = ($type == 'panel') ? 'panel' : 'web';
+
+            // DeclareNames::ROUTES
+
+            foreach ($newRoutes as $newRoute) {
+
+                if(!isset($realRoutes[$type][$newRoute])) continue;
+                unset($realRoutes[$type][$newRoute]);
+            }
+        }
+
+        $resultRoutes = "<?php
+
+return [
+
+    'panel' => [
+        ".self::rebuildRoutes($realRoutes["panel"])."$addPanelRoute
+        
+    ],
+    
+    'web' => [
+        ".self::rebuildRoutes($realRoutes["web"])."$addWebRoute
+    ],
+    
+];";
+
+        $fp = fopen($file, "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, $resultRoutes);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
+        return true;
     }
 
 }

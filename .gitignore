@@ -2,4 +2,5 @@
 uploads/*
 app/core/tmp
 app/cache/system/*
+tmp.txt
 Before__Start.txt
