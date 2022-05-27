@@ -2,6 +2,8 @@
 
 namespace app\core\system\shop;
 
+use app\models\panel\PluginModel;
+
 class ShopController{
 
 
@@ -9,12 +11,17 @@ class ShopController{
 
 
     public static function getPlugins(){
-        return self::request("shop/plugins/");
+
+        $PluginsModel = new PluginModel();
+        $MyIdsPlugins = $PluginsModel->getMyPluginsIds();
+
+        $post = !empty($MyIdsPlugins) ? "myPlugins=".implode(",", $MyIdsPlugins) : "";
+        return self::request("shop/plugins/", $post);
     }
 
 
     public static function getPlugin($id, $format = false){
-        return self::request("shop/plugin/$id/", $format);
+        return self::request("shop/plugin/$id/", "", $format);
     }
 
 
@@ -23,7 +30,7 @@ class ShopController{
     }
 
 
-    private static function request($method, $format = false){
+    private static function request($method, $post = "", $format = false){
 
         /*$headers = array(
             "Accept: application/json",
@@ -38,7 +45,7 @@ class ShopController{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36');
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7")."&format=$format");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7").($post?"&".$post:"")."&format=$format");
         //curl_setopt($ch, CURLOPT_HEADER, true);
         //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);

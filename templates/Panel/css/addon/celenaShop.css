@@ -138,3 +138,9 @@
 hr{
     border-top: 1px #cdd2e1 dashed;
 }
+.btn_plugin_remove{
+    background: #e74a4a;
+}
+.btn_plugin_remove:hover{
+    background: #e81f1f;
+}

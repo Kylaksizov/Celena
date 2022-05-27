@@ -18,7 +18,7 @@ class CelenaPluginsController extends PanelController {
 
         $content = ShopController::getPlugins();
 
-        $this->view->render('', $content);
+        $this->view->render('Магазин плагинов и модулей', $content);
     }
 
 }

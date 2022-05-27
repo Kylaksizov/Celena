@@ -4,6 +4,8 @@ namespace app\models\panel;
 
 use app\core\Base;
 use app\core\Model;
+use app\core\System;
+use Exception;
 use PDO;
 
 class PluginModel extends Model{
@@ -35,31 +37,46 @@ class PluginModel extends Model{
         );
     }
 
-    /**
-     * @name получение системных значений
-     * ==================================
-     * @param string $fields
-     * @param int|string $status
-     * @return mixed|null
-     */
-    public function getPlugins($fields = '*', $status = 'all'){
 
-        $where = "";
+    /**
+     * @name получение всех id плагинов
+     * ================================
+     * @return array|false
+     * @throws Exception
+     */
+    public function getMyPluginsIds(){
+
+        return Base::run("SELECT plugin_id FROM " . PREFIX . "plugins")->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function getPlugins(){
+
+        $result = [];
         $params = [];
 
-        if($status != 'all'){
-            $where = "WHERE status = ?";
-            array_push($params, $status);
-        }
+        $pagination = [
+            "start" => 0,
+            "limit" => 25,
+            "pagination" => ""
+        ];
 
-        return self::instanceFetchAll("
-            SELECT
-                $fields
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "plugins c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+
+        $result["plugins"] = Base::run(
+            "SELECT
+                *
             FROM " . PREFIX . "plugins
-            $where
-        ",
-            $params
-        );
+            ORDER BY id DESC
+            LIMIT {$pagination["start"]}, {$pagination["limit"]}
+            ", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+        $result["pagination"] = $pagination['pagination'];
+
+        return $result;
     }
 
 
@@ -104,12 +121,12 @@ class PluginModel extends Model{
     }
 
 
-    private function instanceFetch($query, $params){
+    private function instanceFetch($query, $params = []){
         if(!empty($this->get($query))) return $this->get($query);
         return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
     }
 
-    private function instanceFetchAll($query, $params){
+    private function instanceFetchAll($query, $params = []){
         if(!empty($this->get($query))) return $this->get($query);
         return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
     }

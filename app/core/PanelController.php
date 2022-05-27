@@ -11,6 +11,7 @@ abstract class PanelController{
 
     public $urls;
     public $plugin;
+    public $pluginsSystems;
     public $route;
     public $view;
     public $ajax = false;
@@ -25,6 +26,7 @@ abstract class PanelController{
 
         $this->urls = $route["urls"];
         $this->plugin = $route["plugin"];
+        $this->pluginsSystems = [];
         $this->ajax = $ajax;
         $this->route = $route;
         $this->view = new ViewPanel($route);
@@ -100,12 +102,20 @@ abstract class PanelController{
                 $pluginsMenu = [];
                 foreach ($PluginsInfo as $row) {
 
-                    if(file_exists(APP . '/plugins/'.$row["name"].'/menu.json')){
-                        $menuPlugin = file_get_contents(APP . '/plugins/'.$row["name"].'/menu.json');
-                        $plMenu = json_decode($menuPlugin, true);
-                        $pluginsMenu = array_merge($pluginsMenu, $plMenu);
+                    if(file_exists(APP . '/plugins/'.$row["name"].'/system.json')){
+
+                        $PluginSystem = json_decode(file_get_contents(APP . '/plugins/'.$row["name"].'/system.json'), true);
+                        $this->pluginsSystems[$row["name"]] = $PluginSystem;
+                        $pluginsMenu = array_merge($pluginsMenu, $PluginSystem["menu"]);
+
+                    } else{
+
+                        die("Плагин <b>{$row["name"]}</b> отсутствует конфигурационный файл, который должен быть обязательно!");
                     }
                 }
+
+                # TODO хз, чето надо придумать ещё тут...
+                $this->pluginsSystems = json_decode(json_encode($this->pluginsSystems));
 
                 $menu = array_merge($menu, $pluginsMenu);
             }

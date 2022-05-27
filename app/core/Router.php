@@ -165,8 +165,12 @@ class Router{
                     // если есть необязательный конфиг, подключаем
                     $config_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php') ? require APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php' : [];
 
+                    // обязательный системный конфиг
+                    $system_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json') ? json_decode(file_get_contents(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json')) : die("В плагине <b>{$this->plugin["brand"]}/{$this->plugin["name"]}</b> отсутствует конфигурационный файл, который должен быть обязательно!");
+
                     $this->plugin = json_encode([
                         "celena" => $pluginActive,
+                        "system" => $system_plugin,
                         "config" => $config_plugin
                     ]);
 
