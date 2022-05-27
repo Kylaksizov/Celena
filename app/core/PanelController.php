@@ -95,7 +95,7 @@ abstract class PanelController{
             ]], JSON_UNESCAPED_UNICODE));*/
 
             $PluginModel = new PluginModel();
-            $PluginsInfo = $PluginModel->getUniqPlugins('name', 1);
+            $PluginsInfo = $PluginModel->getPluginField('name, status');
 
             if(!empty($PluginsInfo)){
 
@@ -106,7 +106,8 @@ abstract class PanelController{
 
                         $PluginSystem = json_decode(file_get_contents(APP . '/plugins/'.$row["name"].'/system.json'), true);
                         $this->pluginsSystems[$row["name"]] = $PluginSystem;
-                        $pluginsMenu = array_merge($pluginsMenu, $PluginSystem["menu"]);
+                        $this->pluginsSystems[$row["name"]]["brandName"] = $row["name"];
+                        if($row["status"] == '1') $pluginsMenu = array_merge($pluginsMenu, $PluginSystem["menu"]);
 
                     } else{
 

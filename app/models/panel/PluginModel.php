@@ -14,27 +14,11 @@ class PluginModel extends Model{
      * @name получение системных значений
      * ==================================
      * @param string $fields
-     * @param int|string $status
      * @return mixed|null
      */
-    public function getUniqPlugins($fields = '*', $status = 'all'){
+    public function getPluginField($fields = '*'){
 
-        $where = "";
-        $params = [];
-
-        if($status != 'all'){
-            $where = "WHERE status = ?";
-            array_push($params, $status);
-        }
-
-        return self::instanceFetchAll("
-            SELECT
-                $fields
-            FROM " . PREFIX . "plugins
-            $where
-        ",
-            $params
-        );
+        return self::instanceFetchAll("SELECT $fields FROM " . PREFIX . "plugins");
     }
 
 

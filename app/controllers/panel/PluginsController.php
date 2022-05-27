@@ -28,16 +28,17 @@ class PluginsController extends PanelController {
 
             foreach ($Plugins["plugins"] as $row) {
 
+                $buttonStatus = ($row["status"] == '1') ? '<a href="#" class="btn btn_plugin_deactivate">Выключить</a>' : '<a href="#" class="btn btn_plugin_activate">Активировать</a>';
+
                 $content .= '<div class="plugin_table">
                     <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/'.$row["id"].'/">
-                        <img src="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/app/plugins/'.$row["name"].'/'.$this->pluginsSystems->{$row["name"]}->icon.'" alt="">
+                        <img src="//'.CONFIG_SYSTEM["home"].'/templates/plugins/'.$row["name"].'/panel/'.$this->pluginsSystems->{$row["name"]}->icon.'" alt="">
                     </a>
                     <div class="plugin_box">
-                        <h2><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/1/">Celena Shop</a> <span class="plugin_version">v 1.0.3</span></h2>
-                        <p class="plugin_description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam commodi culpa distinctio eum laborum minima necessitatibus nulla, repellat sunt suscipit.</p>
+                        <h2><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/'.$row["id"].'/">'.$this->pluginsSystems->{$row["name"]}->name.'</a> <span class="plugin_version">v '.$row["version"].'</span></h2>
+                        <p class="plugin_description">'.$this->pluginsSystems->{$row["name"]}->description.'</p>
                         <div class="plugin_actions">
-                            <a href="#" class="btn btn_plugin_activate">Активировать</a>
-                            <a href="#" class="btn btn_plugin_deactivate">Выключить</a>
+                            '.$buttonStatus.'
                             <a href="#" class="btn btn_plugin_remove fr">Удалить</a>
                         </div>
                     </div>
