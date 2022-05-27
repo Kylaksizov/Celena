@@ -10,6 +10,9 @@ class IndexController extends PanelController{
     public function indexAction(){
 
         //$this->view->include('index');
+
+        $this->view->styles = ['css/style.css'];
+        $this->view->scripts = ['js/script.js'];
         
         if($this->ajax) die($this->ajax);
 

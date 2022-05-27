@@ -187,15 +187,21 @@ class ViewPanel{
         #TODO тут нужно подумать что сначала что с конца, учитывая что стили и скрипты могут подключаться как в tpl так и в контроллере !!!!!!!!
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {
+
+                $style = !empty($this->route["plugin"]->system->status) ? '//'.CONFIG_SYSTEM['home'].'/templates/plugins/' . $this->route["plugin"]->system->name . '/panel/' . $style : '{THEME}/' . $style;
+
                 $styles .= '
-    <link rel="stylesheet" href="{PLUGIN_THEME}/'.$style.'">';
+    <link rel="stylesheet" href="'.$style.'">';
             }
         }
 
         if(!empty($this->scripts)){
             foreach ($this->scripts as $script) {
+
+                $script = !empty($this->route["plugin"]->system->status) ? '//'.CONFIG_SYSTEM['home'].'/templates/plugins/' . $this->route["plugin"]->system->name . '/panel/' . $script : '{THEME}/' . $script;
+
                 $scripts .= '
-    <script src="{PLUGIN_THEME}/'.$script.'"></script>';
+    <script src="'.$script.'"></script>';
             }
         }
 
@@ -229,7 +235,6 @@ class ViewPanel{
     <li><a href="#">Удалить</a></li>
 </ul>';
 
-        $pluginTheme = !empty($this->route["plugin"]->config->brand) ? $this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name : '';
 
         $this->tplIndex = str_replace('{user-name}', !empty(USER["name"]) ? USER["name"] : '', $this->tplIndex);
         $this->tplIndex = str_replace('{META}', '<title>'.$title.'</title>', $this->tplIndex);
@@ -241,7 +246,6 @@ class ViewPanel{
         $this->tplIndex = str_replace('{panel}', '/'.CONFIG_SYSTEM["panel"], $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);
-        $this->tplIndex = str_replace('{PLUGIN_THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.$pluginTheme, $this->tplIndex);
 
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 

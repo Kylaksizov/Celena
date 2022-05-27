@@ -166,18 +166,17 @@ class Router{
                     $config_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php') ? require APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php' : [];
 
                     // обязательный системный конфиг
-                    $system_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json') ? json_decode(file_get_contents(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json')) : die("В плагине <b>{$this->plugin["brand"]}/{$this->plugin["name"]}</b> отсутствует конфигурационный файл, который должен быть обязательно!");
+                    $system_plugin = file_exists(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json') ? json_decode(file_get_contents(APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/system.json'), true) : die("В плагине <b>{$this->plugin["brand"]}/{$this->plugin["name"]}</b> отсутствует конфигурационный файл, который должен быть обязательно!");
 
-                    $this->plugin = json_encode([
-                        "celena" => $pluginActive,
-                        "system" => $system_plugin,
-                        "config" => $config_plugin
-                    ]);
-
-                    $this->plugin = json_decode($this->plugin);
+                    $this->plugin = json_decode(
+                        json_encode([
+                            "system" => array_merge($system_plugin, $pluginActive),
+                            "config" => $config_plugin
+                        ], JSON_UNESCAPED_UNICODE)
+                    );
 
                     // если плагин активен
-                    if($this->plugin->celena->status != '1' && !ADMIN){
+                    if($this->plugin->system->status != '1' && !ADMIN){
 
                         header("Location: ".$this->panel_is()."/404/");
                         View::errorCode(404);

@@ -1,5 +1,5 @@
 {
-  "icon": "",
+  "icon": "panel/img.png",
   "menu": {
     "Меню тестового плагина": {
       "link": "{panel}/examplePlugin/",
