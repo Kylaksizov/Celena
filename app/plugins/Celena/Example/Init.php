@@ -75,7 +75,7 @@ class Init implements InitPlugin {
     {
 
         // удаление таблиц
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "new_table");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "example");
 
 
         // удаление роутов

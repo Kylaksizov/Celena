@@ -3,7 +3,7 @@
 return [
 
     // вывод ошибок
-    "errors" => 1,
+    "errors" => 0,
 
     // вести журнал ошибок
     "db_log" => 1,
@@ -39,6 +39,9 @@ return [
     // знак валюты
     "currency" => "$",
 
+    // тип номера заказа
+    "cart_id" => "int",
+
     // копейки
     "penny" => true,
 
@@ -69,6 +72,9 @@ return [
     // перекидывать на страницу после оформления заказа
     "after_cart" => "/",
 
+    // подтверждение почты
+    "email_confirm" => 0,
+
     // email админа
     "admin_email" => "masterz1zzz@gmail.com",
 
@@ -77,11 +83,11 @@ return [
     "noreply" => "noreply@kylaksizov.com",
 
     // SMTP
-    "SMTPHost" => "mail.adm.tools",
-    "SMTPLogin" => "info@kylaksizov.com",
-    "SMTPPassword" => "не скажу",
+    "SMTPHost" => "smtp.mailtrap.io",
+    "SMTPLogin" => "55aeba55b268e6",
+    "SMTPPassword" => "077917546beb79",
     "SMTPSecure" => "ssl",
-    "SMTPPort" => 465,
+    "SMTPPort" => 2525,
     "SMTPFrom" => "info@kylaksizov.com",
 
     "version" => "0.0.1",

@@ -4,6 +4,8 @@ namespace app\core\protected;
 
 use app\traits\Log;
 
+
+# TODO данный класс работает, нужно доделать установку лагинов, если он был загружен вручную
 class InstallApplications{
 
     private $params;
