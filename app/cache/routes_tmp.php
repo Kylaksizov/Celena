@@ -39,7 +39,7 @@ return [
 		'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'Logs'],
 		'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'DbLogs'],
 		'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
-		'examplePlugin/$' => ['controller' => 'plugins\Kylaksizov\Example\Index', 'action' => 'index'],
+		'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
         
     ],
     
@@ -53,6 +53,7 @@ return [
 		'search/(page-[0-9]+/)?$' => ['controller' => 'search'],
 		'(.+?)/$' => ['controller' => 'category'],
 		'news/shop$' => ['controller' => 'news', 'action' => 'shop'],
+		'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
     ],
     
 ];

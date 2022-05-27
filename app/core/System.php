@@ -331,6 +331,8 @@ class System{
         }
     }
 
+    // {"Меню моего плагина":{"link":"{panel}/examplePlugin/","class":"ico_space","icon":"","submenu":{"Пункт меню 1":"{panel}/examplePlugin/","Пункт меню 2":"#","Пункт меню 3":"#"}}}
+
 
     /**
      * @name добавление роутов

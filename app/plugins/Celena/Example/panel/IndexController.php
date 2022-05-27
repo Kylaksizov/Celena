@@ -1,6 +1,6 @@
 <?php
 
-namespace app\plugins\Kylaksizov\Example\panel;
+namespace app\plugins\Celena\Example\panel;
 
 use app\core\PanelController;
 

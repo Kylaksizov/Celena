@@ -52,16 +52,13 @@ return [
 
         'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 
-        'examplePlugin/$' => ['controller' => 'plugins\Kylaksizov\Example\Index', 'action' => 'index'],
+        'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
 
     ],
 
     'web' => [
 
-        'kyl/$' => [
-            'controller' => 'plugins\Kylaksizov\Example\Index',
-            'action' => 'index'
-        ],
+        'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
 
         '(page-[0-9]+/)?$' => ['controller' => 'index'],
         '404/$' => ['controller' => 'NotFound'],

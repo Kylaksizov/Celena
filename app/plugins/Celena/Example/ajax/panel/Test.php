@@ -1,6 +1,6 @@
 <?php
 
-namespace app\plugins\Kylaksizov\Example\ajax\panel;
+namespace app\plugins\Celena\Example\ajax\panel;
 
 use app\core\System;
 

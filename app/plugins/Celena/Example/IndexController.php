@@ -1,6 +1,6 @@
 <?php
 
-namespace app\plugins\Kylaksizov\Example;
+namespace app\plugins\Celena\Example;
 
 use app\controllers\classes\Functions;
 use app\core\Controller;

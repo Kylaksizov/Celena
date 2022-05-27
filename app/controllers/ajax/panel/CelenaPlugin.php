@@ -48,31 +48,6 @@ class CelenaPlugin{
      */
     private function installPlugin(){
 
-        $resultAdd = System::addRoute([
-            'panel' => [
-                'newPath/$' => ['controller' => 'plugins\Kylaksizov\Example\New', 'action' => 'Test'],
-                'newPath2/$' => ['controller' => 'plugins\Kylaksizov\Example\New2']
-            ],
-            'web' => [
-                'test1/$' => ['controller' => 'plugins\Kylaksizov\Example\New'],
-                'test2/$' => ['controller' => 'plugins\Kylaksizov\Example\New2', 'action' => 'Test2']
-            ]
-        ]);
-
-        $resultAdd = System::removeRoute([
-            'panel' => [
-                'newPath/$',
-                'newPath2/$'
-            ],
-            'web' => [
-                'test1/$',
-                'test2/$'
-            ]
-        ]);
-
-        if($resultAdd === true) die("info::success::ok");
-        else  die("info::error::".$resultAdd);
-
         $plugin_id = intval($_POST["id"]);
 
         $result = ShopController::installPlugin($plugin_id);
@@ -141,6 +116,7 @@ class CelenaPlugin{
             die("info::error::Ошибка загрузки плагина с сервера!");
         }
 
+        // удаляем временный архив
         unlink(ROOT . '/' . $pluginInstallZip);
 
         $PI = 'app\plugins\\'.str_replace('/', '\\', $pluginBrandName).'\Init';
