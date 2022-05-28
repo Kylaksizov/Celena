@@ -30,8 +30,8 @@ class ShopController{
     }
 
 
-    public static function getUpdate(){
-        return self::request("getUpdate/");
+    public static function getUpdate($newVersion = false){
+        return self::request("getUpdate/", $newVersion ? "checkNewVersion=".$newVersion : "");
     }
 
 

@@ -90,6 +90,6 @@ return [
     "SMTPPort" => 2525,
     "SMTPFrom" => "info@kylaksizov.com",
 
-    "version" => "0.0.1",
+	"version" => "0.0.4",
 
 ];

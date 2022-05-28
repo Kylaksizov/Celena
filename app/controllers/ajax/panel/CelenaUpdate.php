@@ -5,7 +5,6 @@ namespace app\controllers\ajax\panel;
 
 use app\core\System;
 use app\core\system\shop\ShopController;
-use app\models\panel\PluginModel;
 use app\traits\Log;
 use Exception;
 use ZipArchive;
@@ -48,55 +47,51 @@ class CelenaUpdate{
 
         } else {
 
-            Log::add("Ошибка загрузки плагина с сервера!", 2);
-            die("info::error::Ошибка загрузки плагина с сервера!");
+            Log::add("Ошибка загрузки обновления <b>$newVersion</b> с сервера!", 2);
+            die("info::error::Ошибка загрузки обновления <b>$newVersion</b> с сервера!");
         }
-
-        die("info::success::Обновил!");
 
         // удаляем временный архив
-        unlink(ROOT . '/' . $NewZipSystem);
+        unlink(ROOT . '/' . $updateZip);
 
-        $PI = 'app\plugins\\'.str_replace('/', '\\', $pluginBrandName).'\Init';
+        $Update = 'app\core\system\update\Update';
 
-        if(class_exists($PI)){
+        if(class_exists($Update)){
 
-            if(method_exists($PI, 'install')){
+            $UpdateClass = new $Update();
 
-                $PluginInit = new $PI();
-                $installed = $PluginInit->install();
+            if(method_exists($UpdateClass, 'update')){
 
-                if($installed === true){
+                $updated = $UpdateClass->update();
 
-                    die("info::success::Все супер!");
+                if($updated === true){
 
-                } else{
+                    // удаляем директорию с обновлением
+                    //System::removeDir(CORE . '/system/update');
 
-                    Log::add("Ошибка <b style='color:#e82a2a'>$installed</b> при установке плагина <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
-                    die("info::error::Отсутствует при установке!<br>Обратитесь к разработчику плагина.");
+                    Log::add('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
                 }
 
-            } else{
+            }  else{
 
-                Log::add("Отсутствует метод установки в плагине <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
-                die("info::error::Отсутствует метод установки!<br>Обратитесь к разработчику плагина.");
+                Log::add('Возникла ошибка при установке обновления <b>'.$newVersion.'</b> !', 2);
+                die("info::success::Ошибка при обновлении!");
             }
+
+        } else{
+
+            Log::add('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
         }
 
-        if(strripos($result, "<script>") === false) die($result);
-        else{
+        sleep(1);
+        $content = ShopController::getUpdate($newVersion);
 
-            Log::add("Обновление системы до версии <b>$newVersion</b>", 1);
+        $script = '<script>
+            $.server_say({say: "Обновление <b>'.$newVersion.'</b> успешно установлено!", status: "success"});
+            $("#space").html(`'.$content.'`);
+        </script>';
 
-            $script = '<script>
-                $.server_say({say: "Плагин установлен!", status: "success"});
-                setTimeout(function(){
-                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/plugins/";
-                }, 1000)
-            </script>';
-
-            System::script($script);
-        }
+        System::script($script);
     }
 
 }
