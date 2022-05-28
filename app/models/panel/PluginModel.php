@@ -65,7 +65,14 @@ class PluginModel extends Model{
 
 
 
-    public function getPlugin($brand, $name){
+    public function getPluginById($id, $fields = '*'){
+
+        return Base::run("SELECT $fields FROM " . PREFIX . "plugins WHERE id = ?", [intval($id)])->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public function getPluginByBrandName($brand, $name){
 
         return Base::run("SELECT name, status FROM " . PREFIX . "plugins WHERE name = ?", [trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
     }
@@ -102,6 +109,13 @@ class PluginModel extends Model{
         unset($params);
 
         return Base::lastInsertId();
+    }
+
+
+
+    public function power($id, $action){
+
+        return Base::run("UPDATE " . PREFIX . "plugins SET status = ? WHERE id = ?", [$action, $id])->rowCount();
     }
 
 

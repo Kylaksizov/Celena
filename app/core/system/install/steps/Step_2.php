@@ -86,6 +86,7 @@ class Step_2{
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `plugin_id` int(11) NOT NULL,
             `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Название плагина или модуля',
+            `version` varchar(13) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0.0.1' COMMENT 'Версия плагина',
             `menu` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT NULL COMMENT 'Меню для админки JSON',
             `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Конфиг для плагина',
             `hashfile` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',

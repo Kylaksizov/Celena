@@ -8,8 +8,8 @@ use app\core\System;
 use app\traits\Log;
 
 /**
- * @name Установка_обновление_удаление_плагина
- * ===========================================
+ * @name Установка/включение/выключение/удаление/плагина
+ * =====================================================
  */
 class Init implements InitPlugin {
 
@@ -70,13 +70,6 @@ class Init implements InitPlugin {
 
     // power off...
     public function powerOff()
-    {
-        return true;
-    }
-
-
-    // update...
-    public function update()
     {
         return true;
     }

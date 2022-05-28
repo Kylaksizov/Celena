@@ -157,7 +157,7 @@ class Router{
 
                 // проверяем установлен ли плагин и активен ли он
                 $PluginModel = new PluginModel();
-                $pluginActive = $PluginModel->getPlugin($this->plugin["brand"], $this->plugin["name"]);
+                $pluginActive = $PluginModel->getPluginByBrandName($this->plugin["brand"], $this->plugin["name"]);
 
                 // если плагин зарегистрирован в базе
                 if($pluginActive){

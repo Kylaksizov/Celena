@@ -18,7 +18,9 @@ class CelenaPlugin{
 
             switch ($_POST["action"]){
                 case 'getPlugin': self::getPlugin(); break;
-                case 'install': self::installPlugin(); break;
+                case 'install':   self::install(); break;
+                case 'enable':    self::power(true); break;
+                case 'disable':   self::power(false); break;
             }
         }
 
@@ -46,7 +48,7 @@ class CelenaPlugin{
      * @return void
      * @throws Exception
      */
-    private function installPlugin(){
+    private function install(){
 
         $plugin_id = intval($_POST["id"]);
 
@@ -148,10 +150,66 @@ class CelenaPlugin{
             }
         }
 
-        die("info::success::Ok");
+        if(strripos($result, "<script>") === false) die($result);
+        else{
 
-        //if(strripos($result, "<script>") === false) die($result);
-        //else System::script($result);
+            $script = '<script>
+                $.server_say({say: "Плагин установлен!", status: "success"});
+                setTimeout(function(){
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/plugins/";
+                }, 1000)
+            </script>';
+
+            System::script($script);
+        }
+    }
+
+
+    /**
+     * @name Включение/выключение плагина
+     * ==================================
+     * @return void
+     */
+    private function power($power){
+
+        $pluginId = intval($_POST["id"]);
+
+        $PluginModel = new PluginModel();
+        $PluginInfo = $PluginModel->getPluginById($pluginId, 'name');
+        $activated = $PluginModel->power($pluginId, $power ? 1 : 0);
+
+        if($activated){
+
+            $pluginPath = 'app\plugins\\'.str_replace('/', '\\', $PluginInfo["name"]).'\Init';
+
+            if(!class_exists($pluginPath)){
+                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> отсутствует клас Init', 2);
+                die("info::error::Ошибка плагина!<br>Смотрите логи...");
+            }
+
+            $PluginInit = new $pluginPath();
+            $resultPower = $PluginInit->powerOn();
+
+            if($resultPower !== true){
+                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при включении', 2);
+                die("info::error::Ошибка плагина!<br>Смотрите логи...");
+            }
+
+            if($power){
+                $script = '<script>
+                    $.server_say({say: "Плагин активирован!", status: "success"});
+                    $(\'[data-a="CelenaPlugin:action=enable&id='.$pluginId.'"]\').replaceWith(`<a href="#" class="btn btn_plugin_deactivate" data-a="CelenaPlugin:action=disable&id='.$pluginId.'">Выключить</a>`);
+                </script>';
+            } else{
+                $script = '<script>
+                    $.server_say({say: "Плагин отключен!", status: "success"});
+                    $(\'[data-a="CelenaPlugin:action=disable&id='.$pluginId.'"]\').replaceWith(`<a href="#" class="btn btn_plugin_activate" data-a="CelenaPlugin:action=enable&id='.$pluginId.'">Активировать</a>`);
+                </script>';
+            }
+
+            System::script($script);
+
+        } else die("info::error::Не удалось активировать плагин!");
     }
 
 }

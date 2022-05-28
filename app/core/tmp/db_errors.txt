@@ -48,3 +48,9 @@
 
 27.05.2022 19:52:22 | SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'nex_example' already exists<br><span class="file_log">1: app\plugins\Celena\Example\Init.php &#10148; 22</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 132</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 21</span><br><span class="file_log">4: app\core\Router.php &#10148; 202</span>
 
+28.05.2022 11:15:23 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_plugins`.`status` at row 1<br><span class="file_log">1: app\models\panel\PluginModel.php &#10148; 118</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 179</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 23</span><br><span class="file_log">4: app\core\Router.php &#10148; 205</span>
+
+28.05.2022 11:16:05 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_plugins`.`status` at row 1<br><span class="file_log">1: app\models\panel\PluginModel.php &#10148; 118</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 179</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 23</span><br><span class="file_log">4: app\core\Router.php &#10148; 205</span>
+
+28.05.2022 11:34:12 | SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '' for column `nexshop`.`nex_plugins`.`status` at row 1<br><span class="file_log">1: app\models\panel\PluginModel.php &#10148; 118</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 179</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 23</span><br><span class="file_log">4: app\core\Router.php &#10148; 205</span>
+

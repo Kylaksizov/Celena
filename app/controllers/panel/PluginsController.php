@@ -28,7 +28,7 @@ class PluginsController extends PanelController {
 
             foreach ($Plugins["plugins"] as $row) {
 
-                $buttonStatus = ($row["status"] == '1') ? '<a href="#" class="btn btn_plugin_deactivate">Выключить</a>' : '<a href="#" class="btn btn_plugin_activate">Активировать</a>';
+                $buttonStatus = ($row["status"] == '1') ? '<a href="#" class="btn btn_plugin_deactivate" data-a="CelenaPlugin:action=disable&id='.$row["id"].'">Выключить</a>' : '<a href="#" class="btn btn_plugin_activate" data-a="CelenaPlugin:action=enable&id='.$row["id"].'">Активировать</a>';
 
                 $content .= '<div class="plugin_table">
                     <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/'.$row["id"].'/">
@@ -39,7 +39,7 @@ class PluginsController extends PanelController {
                         <p class="plugin_description">'.$this->pluginsSystems->{$row["name"]}->description.'</p>
                         <div class="plugin_actions">
                             '.$buttonStatus.'
-                            <a href="#" class="btn btn_plugin_remove fr">Удалить</a>
+                            <a href="#" class="btn btn_plugin_remove fr" data-a="CelenaPlugin:action=remove">Удалить</a>
                         </div>
                     </div>
                 </div>';
