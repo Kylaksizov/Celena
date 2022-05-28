@@ -39,6 +39,7 @@ return [
 		'system/routes/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'routes'],
 		'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'logs'],
 		'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'dbLogs'],
+		'system/updates/$' => ['controller' => 'CelenaUpdates'],
 		'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 		'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
         

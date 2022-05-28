@@ -178,6 +178,7 @@ abstract class PanelController{
                         <li><a href="{panel}/system/routes/">Роуты</a></li>
                         <li><a href="{panel}/system/logs/">Журнал логов</a></li>
                         <li><a href="{panel}/system/db-logs/">Ошибки базы</a></li>
+                        <li><a href="{panel}/system/updates/">Обновление <b>Celena</b></a></li>
                     </ul>
                 </li>
                 <li><a href="{panel}/support/" class="ico_support">Поддержка</a></li>

@@ -30,6 +30,21 @@ class ShopController{
     }
 
 
+    public static function getUpdate(){
+        return self::request("getUpdate/");
+    }
+
+
+    public static function getUpdateVersion(){
+        return self::request("getUpdate/", "getVersion=1");
+    }
+
+
+    public static function installUpdate(){
+        return self::request("update/install/");
+    }
+
+
     private static function request($method, $post = "", $format = false){
 
         /*$headers = array(
@@ -45,7 +60,7 @@ class ShopController{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36');
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7").($post?"&".$post:"")."&format=$format");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7")."&host=".CONFIG_SYSTEM["home"]."&celenaVersion=".CONFIG_SYSTEM["version"].($post?"&".$post:"")."&format=$format");
         //curl_setopt($ch, CURLOPT_HEADER, true);
         //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
