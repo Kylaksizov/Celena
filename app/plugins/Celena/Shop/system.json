@@ -4,7 +4,6 @@
   "description": "Полноценный интернет магазин",
   "icon": "img/poster.png",
   "menu": {
-
     "Товары": {
       "link": "{panel}/products/",
       "class": "ico_products",
@@ -16,7 +15,6 @@
         "Свойства": "{panel}/products/properties/"
       }
     },
-
     "Заказы и покупки <span data-informer=\"orders\" class=\"informer_active\">3</span>": {
       "link": "{panel}/orders/",
       "class": "ico_cart",
@@ -26,7 +24,6 @@
         "Быстрые заказы": "{panel}/orders/click/"
       }
     },
-
     "Новости и страницы": {
       "link": "#",
       "class": "ico_news",
@@ -37,6 +34,21 @@
         "Категории новостей": "{panel}/posts/pages/"
       }
     }
-
+  },
+  "menuEdit": {
+    "Пользователи": {
+      "submenu": {
+        "Покупатели": "{panel}/users/customer/"
+      }
+    },
+    "Настройки": {
+      "submenu": {
+        "SEO": "{panel}/---------/",
+        "Промокоды": "{panel}/settings/promo-codes/",
+        "Валюта": "{panel}/settings/currency/",
+        "Способы оплаты": "{panel}/settings/payment-methods/",
+        "Способы доставки": "{panel}/settings/delivery-methods/"
+      }
+    }
   }
 }

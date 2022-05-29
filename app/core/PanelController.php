@@ -39,7 +39,28 @@ abstract class PanelController{
              * @name MENU
              * ==========
              */
-            $menu = [];
+            $menu = [
+                "Пользователи" => [
+                    "link" => "{panel}/users/",
+                    "class" => "ico_users",
+                    "submenu" => [
+                        "Сотрудники" => "{panel}/users/employee/",
+                        "Группы" => "{panel}/users/roles/",
+                    ]
+                ],
+                "Настройки" => [
+                    "link" => "{panel}/settings/",
+                    "class" => "ico_settings",
+                    "submenu" => [
+                        "Общие настройки" => "{panel}/settings/",
+                        "SEO" => "{panel}/settings/seo/",
+                        "Языки" => "{panel}/settings/lang/",
+                        "" => "{panel}/settings//",
+                        "" => "{panel}/settings//",
+                        "" => "{panel}/settings//",
+                    ]
+                ]
+            ];
 
             // tmp
             /*die(json_encode(["Меню моего плагина" => [
@@ -77,7 +98,7 @@ abstract class PanelController{
                 # TODO хз, чето надо придумать ещё тут...
                 $this->pluginsSystems = json_decode(json_encode($this->pluginsSystems));
 
-                $menu = array_merge($menu, $pluginsMenu);
+                $menu = array_merge($pluginsMenu, $menu);
             }
 
             $addMenu = '';
@@ -103,13 +124,6 @@ abstract class PanelController{
             $menuResult = '<ul>
                 <li id="home_link"><a href="{panel}/" class="ico_space">Рабочий стол</a></li>
                 '.$addMenu.'
-                <li><a href="{panel}/users/" class="ico_users">Пользователи</a>
-                    <ul>
-                        <li><a href="{panel}/users/customer/">Покупатели</a></li>
-                        <li><a href="{panel}/users/employee/">Сотрудники</a></li>
-                        <li><a href="{panel}/users/roles/">Группы</a></li>
-                    </ul>
-                </li>
                 <li>
                     <a href="{panel}/plugins/" class="ico_applications">Плагины и модули</a>
                     <ul>
@@ -124,18 +138,6 @@ abstract class PanelController{
                     <ul>
                         <li><a href="{panel}/celena_shop/templates/">Шаблоны</a></li>
                         <li><a href="{panel}/celena_shop/order-development/">Заказать разработку</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{panel}/settings/" class="ico_settings">Настройки</a>
-                    <ul>
-                        <li><a href="{panel}/settings/">Общие настройки</a></li>
-                        <li><a href="{panel}/settings/seo/">SEO</a></li>
-                        <li><a href="{panel}/settings/promo-codes/">Промокоды</a></li>
-                        <li><a href="{panel}/settings/lang/">Языки</a></li>
-                        <li><a href="{panel}/settings/currency/">Валюта</a></li>
-                        <li><a href="{panel}/settings/payment-methods/">Способы оплаты</a></li>
-                        <li><a href="{panel}/settings/delivery-methods/">Способы доставки</a></li>
                     </ul>
                 </li>
                 <li>
