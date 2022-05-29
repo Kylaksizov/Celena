@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers\classes;
+namespace app\plugins\Celena\Shop\classes;
 
 
 class Functions{

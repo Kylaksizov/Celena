@@ -22,14 +22,14 @@
 
     <main id="camby_content">
 
-        [show="index"]
+        [show="plugins/Celena/Shop/Index"]
         <div id="slider" class="owl-carousel">
             <a href="#"><img src="{THEME}/img/slide.jpg" alt=""></a>
             <a href="#"><img src="{THEME}/img/slide.jpg" alt=""></a>
             <a href="#"><img src="{THEME}/img/slide.jpg" alt=""></a>
         </div>
         [/show]
-        [show="category"]
+        [show="plugins/Celena/Shop/Category"]
         <div class="flex cat_info">
             <h1 class="category_name">{category-name}</h1>
             {sort}
@@ -37,9 +37,9 @@
         <div class="clr"></div>
         [/show]
 
-        [show="index,category,search"]<div class="all_goods">[/show]
+        [show="plugins/Celena/Shop/Index,plugins/Celena/Shop/Category,plugins/Celena/Shop/Search"]<div class="all_goods">[/show]
             {CONTENT}
-        [show="index,category,search"]</div>[/show]
+        [show="plugins/Celena/Shop/Index,plugins/Celena/Shop/Category,plugins/Celena/Shop/Search"]</div>[/show]
 
         [show="index"]<br>
         <div class="description_page">

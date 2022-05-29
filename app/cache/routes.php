@@ -45,13 +45,13 @@ return [
     ],
     
     'web' => [
-        '(page-[0-9]+/)?$' => ['controller' => 'index'],
+        '(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
-		'([a-z-/0-9]+).html$' => ['controller' => 'product'],
-		'cart/$' => ['controller' => 'cart'],
-		'search/(page-[0-9]+/)?$' => ['controller' => 'search'],
-		'(.+?)/$' => ['controller' => 'category'],
+		'([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
+		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
+		'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
+		'(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
 		'news/shop$' => ['controller' => 'news', 'action' => 'shop'],
     ],
     

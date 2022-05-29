@@ -39,48 +39,7 @@ abstract class PanelController{
              * @name MENU
              * ==========
              */
-            $menu = [
-                'Товары' => [
-                    "link" => "{panel}/products/",
-                    "class" => "ico_products",
-                    "icon" => "",
-                    "submenu" => [
-                        "Товары" => "{panel}/products/",
-                        "Категории" => "{panel}/products/categories/",
-                        "Бренды" => "{panel}/products/brands/",
-                        "Свойства" => "{panel}/products/properties/",
-                    ]
-                ],
-                'Заказы и покупки <span data-informer="orders" class="informer_active">3</span>' => [
-                    "link" => "{panel}/orders/",
-                    "class" => "ico_cart",
-                    "icon" => "",
-                    "submenu" => [
-                        "Заказы" => "{panel}/orders/",
-                        "Быстрые заказы" => "{panel}/orders/click/",
-                    ]
-                ],
-                'Новости и страницы' => [
-                    "link" => "#",
-                    "class" => "ico_news",
-                    "icon" => "",
-                    "submenu" => [
-                        "Новости" => "{panel}/posts/news/",
-                        "Страницы" => "{panel}/posts/pages/",
-                        "Категории новостей" => "{panel}/posts/categories/",
-                    ]
-                ],
-                'Пользователи' => [
-                    "link" => "{panel}/users/",
-                    "class" => "ico_users",
-                    "icon" => "",
-                    "submenu" => [
-                        "Покупатели" => "{panel}/users/customer/",
-                        "Сотрудники" => "{panel}/users/employee/",
-                        "Группы" => "{panel}/users/roles/",
-                    ]
-                ]
-            ];
+            $menu = [];
 
             // tmp
             /*die(json_encode(["Меню моего плагина" => [
@@ -144,6 +103,13 @@ abstract class PanelController{
             $menuResult = '<ul>
                 <li id="home_link"><a href="{panel}/" class="ico_space">Рабочий стол</a></li>
                 '.$addMenu.'
+                <li><a href="{panel}/users/" class="ico_users">Пользователи</a>
+                    <ul>
+                        <li><a href="{panel}/users/customer/">Покупатели</a></li>
+                        <li><a href="{panel}/users/employee/">Сотрудники</a></li>
+                        <li><a href="{panel}/users/roles/">Группы</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{panel}/plugins/" class="ico_applications">Плагины и модули</a>
                     <ul>

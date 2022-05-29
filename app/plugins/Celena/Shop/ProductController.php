@@ -1,12 +1,12 @@
 <?php
 
-namespace app\controllers;
+namespace app\plugins\Celena\Shop;
 
-use app\controllers\classes\Functions;
 use app\core\Controller;
 use app\core\System;
 use app\core\View;
-use app\models\ProductModel;
+use app\models\plugins\Celena\Shop\ProductModel;
+use app\plugins\Celena\Shop\classes\Functions;
 
 
 class ProductController extends Controller {
@@ -14,6 +14,9 @@ class ProductController extends Controller {
 
 
     public function indexAction(){
+
+        $this->view->styles = ['css/shop.css'];
+        $this->view->scripts = ['js/shop.js'];
 
         Functions::preTreatment($this);
 

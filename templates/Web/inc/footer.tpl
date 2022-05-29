@@ -55,10 +55,9 @@
 <script src="/templates/_system/js/owl.carousel.min.js"></script>
 <script src="/templates/_system/js/jquery.maskedinput.min.js"></script>
 <script src="/templates/_system/js/rater.min.js"></script>{* <- обязательная системная библиотека*}
-<script src="/templates/_system/js/shop.js"></script>{* <- обязательная системная библиотека*}
-[show="index"]
-<link rel="stylesheet" href="/public/camby/css/jquery-ui.min.css">
-<script src="/public/camby/js/jquery-ui.min.js"></script>
-<script src="/public/camby/js/jquery.ui.touch-punch.min.js"></script>
+[show="plugins/Celena/Shop/Index"]
+<link rel="stylesheet" href="/templates/_system/css/jquery-ui.min.css">
+<script src="/templates/_system/js/jquery-ui.min.js"></script>
+<script src="/templates/_system/js/jquery.ui.touch-punch.min.js"></script>
 [/show]
 <script src="{THEME}/js/script.js"></script>

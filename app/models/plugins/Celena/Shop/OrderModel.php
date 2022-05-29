@@ -1,12 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\models\plugins\Celena\Shop;
 
 
-use app\_classes\Functions;
 use app\core\Base;
 use app\core\Model;
 use app\core\System;
+use app\plugins\Celena\Shop\classes\Functions;
 use Exception;
 use PDO;
 use PDOStatement;

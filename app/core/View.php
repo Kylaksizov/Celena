@@ -46,7 +46,7 @@ class View{
      */
     public function include($view, $cache = false){
 
-        $viewPlugin = (!empty($this->route["plugin"]->celena->status) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->celena->name.'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]->system->status) && $this->route["plugin"]->system->status !== false) ? 'plugins/'.$this->route["plugin"]->system->name.'/' : '';
 
         if($view != $this->lastInc || $cache){
 
@@ -465,14 +465,20 @@ class View{
 
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {
+
+                $style = !empty($this->route["plugin"]->system->status) ? '//'.CONFIG_SYSTEM['home'].'/templates/plugins/' . $this->route["plugin"]->system->name . '/web/' . $style : '{THEME}/' . $style;
+
                 $styles .= '
-    <link rel="stylesheet" href="{THEME}/'.$style.'">';
+    <link rel="stylesheet" href="'.$style.'">';
             }
         }
         if(!empty($this->scripts)){
             foreach ($this->scripts as $script) {
-                $styles .= '
-    <script src="{THEME}/'.$script.'"></script>';
+
+                $script = !empty($this->route["plugin"]->system->status) ? '//'.CONFIG_SYSTEM['home'].'/templates/plugins/' . $this->route["plugin"]->system->name . '/web/' . $script : '{THEME}/' . $script;
+
+                $scripts .= '
+    <script src="'.$script.'"></script>';
             }
         }
 

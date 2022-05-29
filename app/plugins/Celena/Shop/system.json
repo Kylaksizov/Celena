@@ -1,0 +1,42 @@
+{
+  "name": "Celena Shop",
+  "author": "Kylaksizov",
+  "description": "Полноценный интернет магазин",
+  "icon": "img/poster.png",
+  "menu": {
+
+    "Товары": {
+      "link": "{panel}/products/",
+      "class": "ico_products",
+      "icon": "",
+      "submenu": {
+        "Товары": "{panel}/products/",
+        "Категории": "{panel}/products/categories/",
+        "Бренды": "{panel}/products/brands/",
+        "Свойства": "{panel}/products/properties/"
+      }
+    },
+
+    "Заказы и покупки <span data-informer=\"orders\" class=\"informer_active\">3</span>": {
+      "link": "{panel}/orders/",
+      "class": "ico_cart",
+      "icon": "",
+      "submenu": {
+        "Заказы": "{panel}/orders/",
+        "Быстрые заказы": "{panel}/orders/click/"
+      }
+    },
+
+    "Новости и страницы": {
+      "link": "#",
+      "class": "ico_news",
+      "icon": "",
+      "submenu": {
+        "Новости": "{panel}/posts/news/",
+        "Страницы": "{panel}/posts/categories/",
+        "Категории новостей": "{panel}/posts/pages/"
+      }
+    }
+
+  }
+}

@@ -41,7 +41,7 @@ class ViewPanel{
 
     public function include($view){
 
-        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->celena->status !== false) ? 'plugins/'.$this->route["plugin"]->config->brand.'/'.$this->route["plugin"]->config->name.'/' : false;
+        $viewPlugin = (!empty($this->route["plugin"]) && $this->route["plugin"]->system->status !== false) ? 'plugins/'.$this->route["plugin"]->system->name.'/' : false;
 
         if($view != $this->lastInc){
             

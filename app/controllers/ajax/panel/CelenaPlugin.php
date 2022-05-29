@@ -128,8 +128,6 @@ class CelenaPlugin{
 
         $PI = 'app\plugins\\'.str_replace('/', '\\', $pluginBrandName).'\Init';
 
-        $pluginInstalled = true;
-
         if(class_exists($PI)){
 
             if(method_exists($PI, 'install')){
@@ -177,6 +175,9 @@ class CelenaPlugin{
     }
 
 
+
+
+
     /**
      * @name Включение/выключение плагина
      * ==================================
@@ -200,7 +201,7 @@ class CelenaPlugin{
             }
 
             $PluginInit = new $pluginPath();
-            $resultPower = $PluginInit->powerOn();
+            $resultPower = ($power) ? $PluginInit->powerOn() : $PluginInit->powerOff();
 
             if($resultPower !== true){
                 Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при включении', 2);
@@ -223,9 +224,16 @@ class CelenaPlugin{
 
         } else die("info::error::Не удалось активировать плагин!");
     }
-    
-    
-    
+
+
+
+
+
+    /**
+     * @name удаление плагина
+     * ======================
+     * @return void
+     */
     private function remove(){
         
         $plugin_id = intval($_POST["id"]);

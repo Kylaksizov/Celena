@@ -1,10 +1,10 @@
 <?php
 
-namespace app\controllers\classes;
+namespace app\plugins\Celena\Shop\classes;
 
 use app\core\System;
 use app\core\View;
-use app\models\ProductModel;
+use app\models\plugins\Celena\Shop\ProductModel;
 
 class CustomProducts{
 
@@ -28,7 +28,7 @@ class CustomProducts{
 
         if(!empty($Products["products"])){
 
-            if($e->route["controller"] == 'category'){ // если категория
+            if($e->route["controller"] == 'plugins\Celena\Shop\Category'){ // если категория
 
                 // CRUMBS
                 $CategoryStep = System::setKeys($Products["categories"], "url");

@@ -6,7 +6,7 @@
 
     <div class="sticky">
 
-        [show="category"]
+        [show="plugins/Celena/Shop/Category"]
         <div id="filter_goods" class="site_bar_box">
             <div class="box_title">Фильтр товаров <a href="#" class="close_filter"></a></div>
             <div class="box_content">
@@ -18,7 +18,7 @@
         </div>
         <a href="#" id="open_filter"></a>
         [/show]
-        [show="index,category,product"]
+        [show="plugins/Celena/Shop/Index,plugins/Celena/Shop/Category,plugins/Celena/Shop/Product"]
         <div class="site_bar_box">
             <div class="box_title">Новые товары</div>
             <div class="box_content">
