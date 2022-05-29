@@ -51,18 +51,9 @@ class Step_2{
         }
 
         // удаляем все таблицы если есть
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}brands");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}categories");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}images");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders_ex");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}orders_status");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}products");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}products_cat");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}product_prop");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}properties_v");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}roles");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}plugins");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
@@ -104,127 +95,6 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}properties_v` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `pid` int(11) NOT NULL COMMENT 'property_id',
-            `val` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `def` tinyint(1) DEFAULT NULL COMMENT 'null - нет умолчания',
-            `position` int(11) NOT NULL DEFAULT 0,
-            PRIMARY KEY (`id`),
-            KEY `pid` (`pid`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}properties` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `url` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'null - не участвует в фильтре',
-            `f_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1-select, 2-checkbox, 3-radio',
-            `cid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Categories ids. null - во всех категориях.',
-            `option` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 - не выводить, 1-выводить сразу',
-            `sep` tinyint(1) DEFAULT 0 COMMENT '0 - нельзя произвольный вариант, 1 можно',
-            `req_p` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 - не обязательно заполнять, 1 - обязательно',
-            `req` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 - не обязательно заполнять при покупке, 1 - обязательно',
-            `position` int(11) NOT NULL DEFAULT 0,
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}product_prop` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `pid` int(11) NOT NULL DEFAULT 0 COMMENT 'ID товара',
-            `id_p` int(11) NOT NULL COMMENT 'ID свойства',
-            `id_pv` int(11) NOT NULL DEFAULT 0 COMMENT 'ID значения свойства',
-            `sep` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'произвольное значение',
-            `vendor` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'артикул',
-            `price` decimal(10,2) NOT NULL DEFAULT 0.00,
-            `pv` tinyint(1) DEFAULT NULL COMMENT 'price variant: null - новая цена, 0 - минус, 1 - плюс, 2 - -%, 3 - +%',
-            `stock` int(11) DEFAULT NULL COMMENT 'null - без лимит',
-            PRIMARY KEY (`id`),
-            KEY `pid` (`pid`),
-            KEY `id_p` (`id_p`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}products_cat` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `pid` int(11) NOT NULL,
-            `cid` int(11) NOT NULL,
-            PRIMARY KEY (`id`),
-            KEY `pid` (`pid`),
-            KEY `cid` (`cid`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}products` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `uid` int(11) NOT NULL,
-            `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `m_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `m_description` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
-            `category` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `vendor` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'артикул',
-            `brand` int(11) DEFAULT NULL,
-            `price` decimal(10,2) NOT NULL DEFAULT 0.00,
-            `sale` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            `stock` int(11) DEFAULT NULL COMMENT 'null - неограничено',
-            `url` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `poster` int(11) NOT NULL DEFAULT 0,
-            `created` int(11) NOT NULL,
-            `last_modify` int(11) DEFAULT NULL,
-            `status` tinyint(1) NOT NULL DEFAULT 1,
-            PRIMARY KEY (`id`),
-            KEY `uid` (`uid`),
-            KEY `brand` (`brand`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}orders_status` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `color` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ffffff',
-            `pos` int(11) NOT NULL DEFAULT 0 COMMENT 'position',
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}orders_ex` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `oid` int(11) NOT NULL COMMENT 'order id',
-            `pid` int(11) NOT NULL COMMENT 'product id',
-            `count` int(10) NOT NULL DEFAULT 1,
-            `props` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'properties ids',
-            PRIMARY KEY (`id`),
-            KEY `oid` (`oid`),
-            KEY `pid` (`pid`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}orders` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `uid` int(11) NOT NULL DEFAULT 0 COMMENT 'id того кто создал',
-            `buyer_id` int(11) NOT NULL DEFAULT 0 COMMENT 'id покупателя',
-            `order_id` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `tel` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `payment_id` int(11) NOT NULL DEFAULT 0,
-            `prod_ids` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `total` decimal(10,2) NOT NULL DEFAULT 0.00,
-            `comment` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `hash` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''''',
-            `created` int(11) NOT NULL,
-            `paid` tinyint(1) NOT NULL DEFAULT 0,
-            `status` int(11) NOT NULL DEFAULT 0,
-            PRIMARY KEY (`id`),
-            KEY `uid` (`uid`),
-            KEY `buyer_id` (`buyer_id`),
-            KEY `order_id` (`order_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
         $query = $db->prepare("CREATE TABLE `{$PREFIX}log` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uid` int(11) DEFAULT NULL COMMENT 'User ID',
@@ -261,16 +131,6 @@ class Step_2{
             `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
             `pid` int(11) DEFAULT NULL COMMENT 'parent id',
             `status` tinyint(1) NOT NULL DEFAULT 1,
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}brands` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `icon` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-            `categories` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();

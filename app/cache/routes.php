@@ -46,15 +46,16 @@ return [
     ],
     
     'web' => [
+
+        '(page-[0-9]+/)?$' => ['controller' => 'index'],
+		'404/$' => ['controller' => 'NotFound'],
+		'([a-z-0-9]+).html$' => ['controller' => 'page'],
+
         '(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
         '([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
         'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
-
-		'404/$' => ['controller' => 'NotFound'],
-		'([a-z-0-9]+).html$' => ['controller' => 'page'],
-		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
-		'(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
-		'news/shop$' => ['controller' => 'news', 'action' => 'shop'],
+        'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
+        '(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
     ],
     
 ];

@@ -55,9 +55,6 @@ abstract class PanelController{
                         "Общие настройки" => "{panel}/settings/",
                         "SEO" => "{panel}/settings/seo/",
                         "Языки" => "{panel}/settings/lang/",
-                        "" => "{panel}/settings//",
-                        "" => "{panel}/settings//",
-                        "" => "{panel}/settings//",
                     ]
                 ]
             ];
@@ -85,8 +82,22 @@ abstract class PanelController{
                     if(file_exists(APP . '/plugins/'.$row["name"].'/system.json')){
 
                         $PluginSystem = json_decode(file_get_contents(APP . '/plugins/'.$row["name"].'/system.json'), true);
+
                         $this->pluginsSystems[$row["name"]] = $PluginSystem;
                         $this->pluginsSystems[$row["name"]]["brandName"] = $row["name"];
+
+                        if($row["name"] == 'Celena/Shop'){
+
+                            if(!empty($PluginSystem["editMenu"])){
+
+                                foreach ($PluginSystem["editMenu"] as $menuName => $itemMenu) {
+
+                                    if(!empty($itemMenu["link"])) $menu[$menuName]["link"] = $itemMenu["link"];
+                                    if(!empty($itemMenu["submenu"])) $menu[$menuName]["submenu"] = array_merge($menu[$menuName]["submenu"], $itemMenu["submenu"]);
+                                }
+                            }
+                        }
+
                         if($row["status"] == '1') $pluginsMenu = array_merge($pluginsMenu, $PluginSystem["menu"]);
 
                     } else{
