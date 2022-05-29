@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers\ajax\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\System;
-use app\models\panel\CategoryModel;
+use app\models\plugins\Celena\Shop\panel\CategoryModel;
 use Exception;
 
 class CategoryShop{

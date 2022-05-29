@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\panel;
+namespace app\models\plugins\Celena\Shop\panel;
 
 
 use app\core\Base;

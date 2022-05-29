@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers\ajax\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\System;
 

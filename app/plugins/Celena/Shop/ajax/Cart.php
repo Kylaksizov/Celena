@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers\ajax;
+namespace app\plugins\Celena\Shop\ajax;
 
 use app\core\System;
-use app\models\OrderModel;
+use app\models\plugins\Celena\Shop\OrderModel;
 use app\traits\Mail;
 
 class Cart{

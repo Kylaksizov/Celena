@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers\ajax\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\System;
-use app\models\panel\BrandModel;
+use app\models\plugins\Celena\Shop\panel\BrandModel;
 use Exception;
 
 class Brand{

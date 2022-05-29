@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace app\plugins\Celena\Shop;
 
-use app\controllers\classes\Functions;
 use app\core\Controller;
+use app\plugins\Celena\Shop\classes\Functions;
 use Exception;
 
 

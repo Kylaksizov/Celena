@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers\ajax\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\System;
-use app\models\panel\ProductModel;
+use app\models\plugins\Celena\Shop\panel\ProductModel;
 use Exception;
 use Intervention\Image\ImageManager;
 

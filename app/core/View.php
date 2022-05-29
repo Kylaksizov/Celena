@@ -284,36 +284,6 @@ class View{
             }
         }
 
-        if(strripos($this->tplIndex, 'Module}}') !== false){
-
-            // скрытие контента в зависимости от типа страницы
-            preg_match_all('/\{\{(.+?)Module\}\}/is', $this->tplIndex, $module);
-
-
-            // $show[0][0] - {{MenuModule}}
-            // $show[1][0] - Menu
-
-            if(!empty($module[1])){
-
-                foreach ($module[1] as $module) {
-
-                    $pathModule = 'app\controllers\modules\\'.ucfirst($module).'Module';
-
-                    // если модуль найден
-                    if(class_exists($pathModule)){
-
-
-                        $moduleClass = new $pathModule();
-                        if(method_exists($pathModule, "init"))$moduleClass->init($this);
-                        if(method_exists($pathModule, "turn")){
-                            $this->tplIndex = str_replace('{{'.$module.'Module}}', $moduleClass->turn($this), $this->tplIndex);
-                        }
-
-                    }
-                }
-            }
-        }
-
         if(strripos($this->tplIndex, '[show') !== false){
 
             // отображение контента в зависимости от типа страницы
