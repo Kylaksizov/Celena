@@ -1,13 +1,13 @@
 <?php
 
 
-namespace app\controllers\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\PanelController;
-use app\models\panel\BrandModel;
-use app\models\panel\CategoryModel;
-use app\models\panel\ProductModel;
-use app\models\panel\PropertyModel;
+use app\models\plugins\Celena\Shop\panel\BrandModel;
+use app\models\plugins\Celena\Shop\panel\CategoryModel;
+use app\models\plugins\Celena\Shop\panel\ProductModel;
+use app\models\plugins\Celena\Shop\panel\PropertyModel;
 use Exception;
 
 
