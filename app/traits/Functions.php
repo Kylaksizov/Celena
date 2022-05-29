@@ -1,8 +1,8 @@
 <?php
 
-namespace app\_classes;
+namespace app\traits;
 
-class Functions{
+trait Functions{
 
 
     /**
@@ -36,7 +36,7 @@ class Functions{
     }
 
 
-    
+
     /**
      * @name генерация паролей
      * =======================

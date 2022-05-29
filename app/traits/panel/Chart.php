@@ -1,8 +1,8 @@
 <?php
 
-namespace app\_classes;
+namespace app\traits\panel;
 
-class Chart{
+trait Chart{
 
 
     public static function start(){

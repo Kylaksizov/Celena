@@ -4,6 +4,7 @@ namespace app\controllers\ajax\panel;
 
 
 use app\core\System;
+use app\core\system\DeclareNames;
 use app\core\system\shop\ShopController;
 use app\models\panel\PluginModel;
 use app\traits\Log;
@@ -127,6 +128,8 @@ class CelenaPlugin{
 
         $PI = 'app\plugins\\'.str_replace('/', '\\', $pluginBrandName).'\Init';
 
+        $pluginInstalled = true;
+
         if(class_exists($PI)){
 
             if(method_exists($PI, 'install')){
@@ -136,7 +139,15 @@ class CelenaPlugin{
 
                 if($installed === true){
 
-                    die("info::success::Все супер!");
+                    // TODO IS DOUBLE
+                    $script = '<script>
+                        $.server_say({say: "Плагин установлен!", status: "success"});
+                        setTimeout(function(){
+                            window.location.href = "/'.CONFIG_SYSTEM["panel"].'/plugins/";
+                        }, 1000)
+                    </script>';
+
+                    System::script($script);
 
                 } else{
 
@@ -217,10 +228,42 @@ class CelenaPlugin{
     
     private function remove(){
         
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-        exit;
+        $plugin_id = intval($_POST["id"]);
+        $PluginModel = new PluginModel();
+        $PluginInfo = $PluginModel->getPluginByPluginId($plugin_id);
+
+        if(!empty($PluginInfo["name"])){
+
+            // DeclareNames::FOLDERS
+
+            $pluginClass = 'app\plugins\\'.str_replace('/', '\\', $PluginInfo["name"]).'\Init';
+            $pluginClass = new $pluginClass();
+            $resultClassDelete = true/*$pluginClass->delete()*/;
+
+            if($resultClassDelete !== true){
+                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при удалении', 2);
+                die("info::error::Ошибка при удалении плагина!<br>Смотрите логи...");
+            }
+
+            #TODO отложим удаление загруженных через плагин файлов на попозже
+            //$pluginFiles = file_get_contents(APP . '/cache/system/plugins/'.$PluginInfo["hashfile"].'.txt');
+
+            if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
+                System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
+
+
+            if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
+                System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
+
+
+            if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
+                System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
+
+
+
+        }
+
+        die("info::error::Плагин не найден!");
     }
 
 }

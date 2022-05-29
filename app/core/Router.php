@@ -194,7 +194,7 @@ class Router{
                 // преобразуем строку вида a=1&b=2 в нормальный вид пост запроса
                 if(!empty($_POST["params"])) mb_parse_str($_POST["params"], $_POST);
 
-                if($this->plugin) $path = 'app\plugins\\'.str_replace('/', '\\', $this->plugin->celena->name).'\ajax\\'.$panel.$ajax_file;
+                if($this->plugin) $path = 'app\plugins\\'.str_replace('/', '\\', $this->plugin->system->name).'\ajax\\'.$panel.$ajax_file;
                 else $path = 'app\controllers\ajax\\'.$panel.$ajax_file;
 
                 if(class_exists($path)){

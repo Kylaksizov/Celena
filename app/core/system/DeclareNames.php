@@ -59,7 +59,8 @@ class DeclareNames{
     ];
 
 
+    // будет дорабатываться
     const FOLDERS = [
-        "app/controllers/..."
+        "app/"
     ];
 }

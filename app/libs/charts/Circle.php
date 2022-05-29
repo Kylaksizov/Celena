@@ -2,7 +2,7 @@
 
 namespace app\libs\charts;
 
-use app\_classes\Chart;
+use app\traits\panel\Chart;
 
 class Circle{
 

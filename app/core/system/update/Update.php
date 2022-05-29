@@ -12,7 +12,7 @@ class Update{
 
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.0.4']);
+        System::editSystemConfig(["version" => '0.0.2']);
         return true;
     }
 }

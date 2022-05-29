@@ -1,6 +1,6 @@
 <?php
 
-namespace app\_classes;
+namespace app\traits;
 
 /**
  * @name Authorization
