@@ -41,13 +41,11 @@ return [
 		'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'dbLogs'],
 		'system/updates/$' => ['controller' => 'CelenaUpdates'],
 		'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
-		'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
         
     ],
     
     'web' => [
-        'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
-		'(page-[0-9]+/)?$' => ['controller' => 'index'],
+        '(page-[0-9]+/)?$' => ['controller' => 'index'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
 		'([a-z-/0-9]+).html$' => ['controller' => 'product'],

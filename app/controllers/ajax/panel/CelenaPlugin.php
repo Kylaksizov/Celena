@@ -238,7 +238,7 @@ class CelenaPlugin{
 
             $pluginClass = 'app\plugins\\'.str_replace('/', '\\', $PluginInfo["name"]).'\Init';
             $pluginClass = new $pluginClass();
-            $resultClassDelete = true/*$pluginClass->delete()*/;
+            $resultClassDelete = $pluginClass->delete();
 
             if($resultClassDelete !== true){
                 Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при удалении', 2);
@@ -251,15 +251,17 @@ class CelenaPlugin{
             if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
                 System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
 
+            if(file_exists(APP . '/models/plugins/'.$PluginInfo["name"]))
+                System::removeDir(APP . '/models/plugins/'.$PluginInfo["name"]);
 
-            if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
-                System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
+            if(file_exists(ROOT . '/templates/plugins/'.$PluginInfo["name"]))
+                System::removeDir(ROOT . '/templates/plugins/'.$PluginInfo["name"]);
 
+            unlink(APP . '/cache/system/plugins/'.$PluginInfo["hashfile"].'.txt');
 
-            if(file_exists(APP . '/plugins/'.$PluginInfo["name"]))
-                System::removeDir(APP . '/plugins/'.$PluginInfo["name"]);
+            $PluginModel->removePlugin($plugin_id);
 
-
+            die("info::success::Удален!");
 
         }
 

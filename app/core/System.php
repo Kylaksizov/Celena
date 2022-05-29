@@ -175,7 +175,7 @@ class System{
         if(file_exists($dir)){
             $files = array_diff(scandir($dir), array('.','..'));
             foreach ($files as $file){
-                (is_dir("$dir/$file")) ? self::remove_dir("$dir/$file") : unlink("$dir/$file");
+                (is_dir("$dir/$file")) ? self::removeDir("$dir/$file") : unlink("$dir/$file");
             }
             if($removeThisDir) return rmdir($dir);
         }

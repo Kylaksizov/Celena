@@ -126,6 +126,13 @@ class PluginModel extends Model{
     }
 
 
+
+    public function removePlugin($plugin_id){
+
+        return Base::run("DELETE FROM " . PREFIX . "plugins WHERE plugin_id = ?", [$plugin_id]);
+    }
+
+
     private function instanceFetch($query, $params = []){
         if(!empty($this->get($query))) return $this->get($query);
         return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
