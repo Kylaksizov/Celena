@@ -25,8 +25,8 @@ class PostsController extends PanelController {
 
     public function pagesAction(){
 
-        $this->view->styles = ['css/addon/page.css'];
-        $this->view->scripts = ['js/addon/page.js'];
+        $this->view->styles = ['css/page.css'];
+        $this->view->scripts = ['js/page.js'];
 
         $content = '<div class="fx">
             <h1>Категории товаров</h1>
@@ -81,8 +81,8 @@ class PostsController extends PanelController {
 
     public function addPageAction(){
 
-        $this->view->styles = ['css/addon/page.css'];
-        $this->view->scripts = ['js/addon/page.js'];
+        $this->view->styles = ['css/page.css'];
+        $this->view->scripts = ['js/page.js'];
         $this->view->plugins = ['datepicker', 'fancybox'];
 
         $title = $h1 = 'Добавление страницы';

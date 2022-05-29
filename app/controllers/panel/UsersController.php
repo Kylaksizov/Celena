@@ -12,8 +12,8 @@ class UsersController extends PanelController {
 
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/users.css'];
-        $this->view->scripts = ['js/addon/users.js'];
+        $this->view->styles = ['css/users.css'];
+        $this->view->scripts = ['js/users.js'];
 
         $content = '<div class="fx">
             <h1>Пользователи</h1>

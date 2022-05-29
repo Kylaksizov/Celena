@@ -12,8 +12,8 @@ class CelenaPluginsController extends PanelController {
 
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/celenaShop.css'];
-        $this->view->scripts = ['js/addon/celenaShop.js'];
+        $this->view->styles = ['css/celenaShop.css'];
+        $this->view->scripts = ['js/celenaShop.js'];
         $this->view->plugins = ['rating', 'fancybox'];
 
         $content = ShopController::getPlugins();

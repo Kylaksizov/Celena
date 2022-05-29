@@ -19,7 +19,7 @@ class SystemController extends PanelController {
      */
     public function RoutesAction(){
 
-        $this->view->styles = ["css/addon/routes.css"];
+        $this->view->styles = ["css/routes.css"];
 
         $content = '<h1>Роуты</h1>';
         

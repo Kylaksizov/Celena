@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\controllers\panel;
+namespace app\plugins\Celena\Shop\panel;
 
 use app\core\PanelController;
-use app\models\OrderModel;
+use app\models\plugins\Celena\Shop\OrderModel;
 
 
 class OrdersController extends PanelController {
@@ -12,8 +12,8 @@ class OrdersController extends PanelController {
 
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/orders.css'];
-        $this->view->scripts = ['js/addon/orders.js'];
+        $this->view->styles = ['css/orders.css'];
+        $this->view->scripts = ['js/orders.js'];
 
         $content = '<div class="fx">
             <h1>Заказы</h1>
@@ -114,8 +114,8 @@ class OrdersController extends PanelController {
     
     public function orderAction(){
 
-        $this->view->styles = ['css/addon/orders.css'];
-        $this->view->scripts = ['js/addon/orders.js'];
+        $this->view->styles = ['css/orders.css'];
+        $this->view->scripts = ['js/orders.js'];
 
         $OrdersModel = new OrderModel();
         $Order = $OrdersModel->get(intval($this->urls[2]));

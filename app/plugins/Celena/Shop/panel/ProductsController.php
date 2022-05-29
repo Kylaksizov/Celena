@@ -22,8 +22,8 @@ class ProductsController extends PanelController {
      */
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
-        $this->view->scripts = ['js/addon/product.js'];
+        $this->view->styles = ['css/product.css'];
+        $this->view->scripts = ['js/product.js'];
 
         $content = '<div class="fx">
             <h1>Товары</h1>
@@ -106,8 +106,8 @@ class ProductsController extends PanelController {
      */
     public function addProductAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
-        $this->view->scripts = ['js/addon/product.js'];
+        $this->view->styles = ['css/product.css'];
+        $this->view->scripts = ['js/product.js'];
         $this->view->plugins = ['jquery-ui', 'select2', 'datepicker', 'fancybox'];
 
         $title = $h1 = 'Добавление товара';
@@ -467,8 +467,8 @@ class ProductsController extends PanelController {
      */
     public function categoriesAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
-        $this->view->scripts = ['js/addon/product.js'];
+        $this->view->styles = ['css/product.css'];
+        $this->view->scripts = ['js/product.js'];
 
         $content = '<div class="fx">
             <h1>Категории товаров</h1>
@@ -532,7 +532,7 @@ class ProductsController extends PanelController {
      */
     public function addCategoryAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
+        $this->view->styles = ['css/product.css'];
 
         $title = 'Добавление категории для товаров';
 
@@ -636,8 +636,8 @@ class ProductsController extends PanelController {
      */
     public function brandsAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
-        $this->view->scripts = ['js/addon/product.js'];
+        $this->view->styles = ['css/product.css'];
+        $this->view->scripts = ['js/product.js'];
 
         $content = '<div class="fx">
             <h1>Бренды</h1>
@@ -694,7 +694,7 @@ class ProductsController extends PanelController {
      */
     public function addBrandAction(){
 
-        $this->view->styles = ['css/addon/product.css'];
+        $this->view->styles = ['css/product.css'];
         $this->view->plugins = ['select2'];
 
         $title = 'Добавление бренда';
@@ -816,8 +816,8 @@ class ProductsController extends PanelController {
      */
     public function addPropertyAction(){
 
-        $this->view->styles = ['css/addon/property.css'];
-        $this->view->scripts = ['js/addon/property.js'];
+        $this->view->styles = ['css/property.css'];
+        $this->view->scripts = ['js/property.js'];
         $this->view->plugins = ['select2'];
 
         $title = 'Добавление свойства';

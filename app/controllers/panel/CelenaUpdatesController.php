@@ -12,8 +12,8 @@ class CelenaUpdatesController extends PanelController {
 
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/celenaUpdate.css'];
-        $this->view->scripts = ['js/addon/celenaUpdate.js'];
+        $this->view->styles = ['css/celenaUpdate.css'];
+        $this->view->scripts = ['js/celenaUpdate.js'];
 
         $content = ShopController::getUpdate();
 
