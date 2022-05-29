@@ -95,7 +95,7 @@ class Init implements InitPlugin {
 
         if(!$resultRemoved){
             Log::add('Не удалось удалить роуты при удалении плагина', 2);
-            return 'Не удалось добавить роуты';
+            return 'Не удалось удалить роуты';
         }
 
         return true;

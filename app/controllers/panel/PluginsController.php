@@ -39,7 +39,7 @@ class PluginsController extends PanelController {
                         <p class="plugin_description">'.$this->pluginsSystems->{$row["name"]}->description.'</p>
                         <div class="plugin_actions">
                             '.$buttonStatus.'
-                            <a href="#" class="btn btn_plugin_remove fr" data-a="CelenaPlugin:action=remove">Удалить</a>
+                            <a href="#" class="btn btn_plugin_remove fr" data-a="CelenaPlugin:action=remove&id='.$row["plugin_id"].'">Удалить</a>
                         </div>
                     </div>
                 </div>';

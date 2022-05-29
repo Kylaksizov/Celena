@@ -21,6 +21,7 @@ class CelenaPlugin{
                 case 'install':   self::install(); break;
                 case 'enable':    self::power(true); break;
                 case 'disable':   self::power(false); break;
+                case 'remove':   self::remove(); break;
             }
         }
 
@@ -210,6 +211,16 @@ class CelenaPlugin{
             System::script($script);
 
         } else die("info::error::Не удалось активировать плагин!");
+    }
+    
+    
+    
+    private function remove(){
+        
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+        exit;
     }
 
 }

@@ -145,7 +145,7 @@ abstract class PanelController{
                 <li id="home_link"><a href="{panel}/" class="ico_space">Рабочий стол</a></li>
                 '.$addMenu.'
                 <li>
-                    <a href="{panel}/celenaShop/plugins/" class="ico_applications">Плагины и модули</a>
+                    <a href="{panel}/plugins/" class="ico_applications">Плагины и модули</a>
                     <ul>
                         <li><a href="{panel}/plugins/">Плагины</a></li>
                         <li><a href="{panel}/modules/">Модули</a></li>
