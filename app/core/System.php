@@ -265,9 +265,8 @@ class System{
 
 
 
-    public static function editSystemConfig($newSettings){
+    public static function editSystemConfig($newSettings, $file = CORE . '/data/config.php'){
 
-        $file = CORE . '/data/config.php';
         $new_settings = '';
 
         $handle = @fopen($file, "r");
@@ -329,6 +328,13 @@ class System{
             if(ADMIN) die($file . ' - не найден!');
             return false;
         }
+    }
+
+
+
+    public static function editPluginConfig($newSettings){
+
+        return self::editSystemConfig($newSettings, APP . '/plugins/'.PLUGIN_NAME.'/config.php');
     }
 
 

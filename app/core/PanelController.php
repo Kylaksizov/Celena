@@ -44,7 +44,7 @@ abstract class PanelController{
                     "link" => "{panel}/users/",
                     "class" => "ico_users",
                     "submenu" => [
-                        "Сотрудники" => "{panel}/users/employee/",
+                        "Пользователи" => "{panel}/users/",
                         "Группы" => "{panel}/users/roles/",
                     ]
                 ],

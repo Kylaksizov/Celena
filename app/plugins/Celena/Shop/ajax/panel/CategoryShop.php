@@ -1,6 +1,6 @@
 <?php
 
-namespace app\plugins\Celena\Shop\panel;
+namespace app\plugins\Celena\Shop\ajax\panel;
 
 use app\core\System;
 use app\models\plugins\Celena\Shop\panel\CategoryModel;

@@ -43,6 +43,7 @@
     },
     "Настройки": {
       "submenu": {
+        "Настройки магазина": "{panel}/settings/shop/",
         "Промокоды": "{panel}/settings/promo-codes/",
         "Валюта": "{panel}/settings/currency/",
         "Способы оплаты": "{panel}/settings/payment-methods/",

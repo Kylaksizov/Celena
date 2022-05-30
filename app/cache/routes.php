@@ -11,7 +11,7 @@ return [
 		'posts/categories/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'categories'],
 		'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
 		'users/customer/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'customer'],
-		'users/employee/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'employee'],
+		'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
 		'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
 		'plugins/(page-[0-9]+/)?$' => ['controller' => 'plugins'],
 		'plugin/[0-9]+/settings/$' => ['controller' => 'pluginSettings'],
@@ -38,15 +38,14 @@ return [
         'orders/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders'],
         'orders/[0-9]+/$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'order'],
         'orders/click/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'click'],
+        'settings/shop/$' => ['controller' => 'plugins\Celena\Shop\Settings'],
         'settings/promo-codes/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'promoCodes'],
         'settings/currency/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'currency'],
         'settings/payment-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'paymentMethods'],
         'settings/delivery-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'deliveryMethods'],
-        
     ],
     
     'web' => [
-
         '(page-[0-9]+/)?$' => ['controller' => 'index'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],

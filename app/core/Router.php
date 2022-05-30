@@ -175,6 +175,8 @@ class Router{
                         ], JSON_UNESCAPED_UNICODE)
                     );
 
+                    define("PLUGIN_NAME", $this->plugin->system->name);
+
                     // если плагин активен
                     if($this->plugin->system->status != '1' && !ADMIN){
 

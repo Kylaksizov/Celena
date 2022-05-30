@@ -62,7 +62,7 @@ class ProductsController extends PanelController {
                         <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$row["id"].'/">'.$row["title"].'</a>
                         <span class="br_min">'.$category.'</span>
                     </td>
-                    <td><b>'.$row["price"].' '.CONFIG_SYSTEM["currency"].'</b></td>
+                    <td><b>'.$row["price"].' '.$this->plugin->config->currency.'</b></td>
                     <td class="fs12">'.date("d.m.Y H:i", $row["created"]).'</td>
                     <td>'.$stock.'</td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_product" data-id="'.$row["id"].'"  id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>

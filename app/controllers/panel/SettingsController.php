@@ -41,7 +41,6 @@ class SettingsController extends PanelController {
                     <li class="active">Общие настройки</li>
                     <li>Почта</li>
                     <li>Пользователи</li>
-                    <li>Корзина</li>
                     <li>Разработчикам</li>
                 </ul>
                 <div class="tabs_content active">
@@ -91,30 +90,6 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
-                                <h3>Знак валюты</h3>
-                            </div>
-                            <div>
-                                <input type="text" name="config[currency]" value="'.CONFIG_SYSTEM["currency"].'">
-                            </div>
-                        </div>
-                        <div class="set_item">
-                            <div>
-                                <h3>Количество знаков в ID товара</h3>
-                            </div>
-                            <div>
-                                <input type="text" name="config[str_pad_id]" value="'.CONFIG_SYSTEM["str_pad_id"].'">
-                            </div>
-                        </div>
-                        <div class="set_item">
-                            <div>
-                                <h3>Количество товаров на главной и в категориях</h3>
-                            </div>
-                            <div>
-                                <input type="text" name="config[count_prod_by_cat]" value="'.CONFIG_SYSTEM["count_prod_by_cat"].'">
-                            </div>
-                        </div>
-                        <div class="set_item">
-                            <div>
                                 <h3>До какого размера (в px) уменьшать загружаемые изображения</h3>
                                 <div class="setDescription">Если оставить пустым, то будут загружаться оригинальные изображения.</div>
                             </div>
@@ -147,15 +122,6 @@ class SettingsController extends PanelController {
                             </div>
                             <div>
                                 <input type="text" name="config[quality_thumb]" value="'.CONFIG_SYSTEM["quality_thumb"].'">
-                            </div>
-                        </div>
-                        <div class="set_item">
-                            <div>
-                                <h3>Редирект после оформления заказа</h3>
-                                <div class="setDescription">Можно указать как относительный путь, так и любую ссылку.</div>
-                            </div>
-                            <div>
-                                <input type="text" name="config[after_cart]" value="'.CONFIG_SYSTEM["after_cart"].'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -257,24 +223,6 @@ class SettingsController extends PanelController {
                             <div>
                                 <input type="checkbox" name="config[email_confirm]" value="1"'.System::check(CONFIG_SYSTEM["email_confirm"]).' id="ch_email_confirm">
                                 <label for="ch_email_confirm"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- tab Cart -->
-                <div class="tabs_content">
-                    <div class="dg settings">
-                        <div class="set_item">
-                            <div>
-                                <h3>Тип номера заказа</h3>
-                            </div>
-                            <div>
-                                <select name="config[cart_id]">
-                                    <option value="int">Порядковый номер</option>
-                                    <option value="rand"'.(CONFIG_SYSTEM["cart_id"]=='rand'?' selected':'').'>Произвольное число</option>
-                                    <option value="standard"'.(CONFIG_SYSTEM["cart_id"]=='standard'?' selected':'').'>С произвольным префиксом</option>
-                                </select>
                             </div>
                         </div>
                     </div>

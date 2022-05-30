@@ -49,15 +49,15 @@ class OrdersController extends PanelController {
 
                 if($key == 0 || $lastOrder != $row["id"]){
 
-                    if (CONFIG_SYSTEM["cart_id"] == 'int'){
-                        $order_id = !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"];
+                    if ($this->plugin->config->str_pad_id == 'int'){
+                        $order_id = !empty($this->plugin->config->str_pad_id) ? str_pad($row["id"], $this->plugin->config->str_pad_id, '0', STR_PAD_LEFT) : $row["id"];
                     } else $order_id = $row["order_id"];
 
                     $nextOrder = ' class="newOrder"';
                     $id = $row["id"];
                     $order_id = '<a href="/'.CONFIG_SYSTEM["panel"].'/orders/'.$row["id"].'/">'.$order_id.'</a>';
                     $buyer = $row["name"];
-                    $total = $row["total"].' '.CONFIG_SYSTEM["currency"];
+                    $total = $row["total"].' '.$this->plugin->config->currency;
                     $created = date("d.m.Y H:i", $row["created"]);
                     $status = '<td class="tc" style="background:#'.(!empty($OrdersStatus[$row["status"]]["color"]) ? $OrdersStatus[$row["status"]]["color"] : '72798b').';color:#fff">'.(!empty($OrdersStatus[$row["status"]]["name"]) ? $OrdersStatus[$row["status"]]["name"] : '-').'</td>';
                     $actions = '<ul class="tc">
@@ -176,13 +176,13 @@ class OrdersController extends PanelController {
                 $products .= '<tr>
                     <td>'.$propsOpen.'<a href="#">'.$row["title"].'</a>'.$properties.'</td>
                     <td>'.$row["count"].'</td>
-                    <td>'.$row["price"].' '.CONFIG_SYSTEM["currency"].'</td>
+                    <td>'.$row["price"].' '.$this->plugin->config->currency.'</td>
                 </tr>';
 
                 $total += $row["price"];
             }
             $products .= '<tr>
-                <td colspan="3" class="tr total">Всего: <b>'.$Order["order"][0]["total"].' '.CONFIG_SYSTEM["currency"].'</b></td>
+                <td colspan="3" class="tr total">Всего: <b>'.$Order["order"][0]["total"].' '.$this->plugin->config->currency.'</b></td>
             </tr>';
 
             $content .= '<div class="dg order_box">
