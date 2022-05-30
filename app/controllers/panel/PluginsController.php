@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\controllers\panel;
 
 use app\core\PanelController;

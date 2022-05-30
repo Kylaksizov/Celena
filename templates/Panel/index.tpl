@@ -16,7 +16,7 @@
 
     {SCRIPTS}
 
-    <script type="text/javascript" src="/templates/_system/js/froala/froala_editor.pkgd.min.js"></script>
+    {*<script type="text/javascript" src="/templates/_system/js/froala/froala_editor.pkgd.min.js"></script>*}
 
 </head>
 <body>

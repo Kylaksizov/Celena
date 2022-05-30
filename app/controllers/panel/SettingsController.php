@@ -23,8 +23,8 @@ class SettingsController extends PanelController {
                 is_dir(ROOT . '/templates/' . $template) &&
                 $template != '.' &&
                 $template != '..' &&
-                $template != '_system' &&
-                $template != '_plugins' &&
+                $template != 'system' &&
+                $template != 'plugins' &&
                 $template != 'Panel' &&
                 $template != 'PanelAuth'
             ){

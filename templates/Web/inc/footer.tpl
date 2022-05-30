@@ -50,14 +50,14 @@
     <a href="#" class="close"></a>
 </div>
 
-<link rel="stylesheet" href="/templates/_system/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/templates/system/css/owl.carousel.min.css">
 
-<script src="/templates/_system/js/owl.carousel.min.js"></script>
-<script src="/templates/_system/js/jquery.maskedinput.min.js"></script>
-<script src="/templates/_system/js/rater.min.js"></script>{* <- обязательная системная библиотека*}
+<script src="/templates/system/js/owl.carousel.min.js"></script>
+<script src="/templates/system/js/jquery.maskedinput.min.js"></script>
+<script src="/templates/system/js/rater.min.js"></script>{* <- обязательная системная библиотека*}
 [show="plugins/Celena/Shop/Index"]
-<link rel="stylesheet" href="/templates/_system/css/jquery-ui.min.css">
-<script src="/templates/_system/js/jquery-ui.min.js"></script>
-<script src="/templates/_system/js/jquery.ui.touch-punch.min.js"></script>
+<link rel="stylesheet" href="/templates/system/css/jquery-ui.min.css">
+<script src="/templates/system/js/jquery-ui.min.js"></script>
+<script src="/templates/system/js/jquery.ui.touch-punch.min.js"></script>
 [/show]
 <script src="{THEME}/js/script.js"></script>

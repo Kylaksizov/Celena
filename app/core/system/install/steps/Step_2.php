@@ -56,6 +56,7 @@ class Step_2{
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}roles");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}plugins");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}modules");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
@@ -84,6 +85,30 @@ class Step_2{
             `status` tinyint(1) DEFAULT 0,
             PRIMARY KEY (`id`),
             UNIQUE KEY `plugin_id` (`plugin_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}modules` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `module_id` INT(11) NULL DEFAULT NULL COMMENT 'null-не из магазина',
+            `name` VARCHAR(50) NOT NULL,
+            `descr` VARCHAR(300) NOT NULL,
+            `version` VARCHAR(15) NOT NULL,
+            `cv` VARCHAR(15) NULL DEFAULT NULL COMMENT 'celena version? null - любая',
+            `poster` VARCHAR(30) NULL DEFAULT NULL COMMENT 'null - без постера',
+            `comment` TEXT NOT NULL ,  `status` TINYINT(1) NOT NULL DEFAULT '0',
+            PRIMARY KEY  (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}modules_ex` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `mid` INT(11) NOT NULL COMMENT 'module id',
+            `searchcode` TEXT NOT NULL,
+            `replacecode` TEXT NOT NULL,
+            `filepath` VARCHAR(255) NOT NULL,
+            `action` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '0-замена всего файла, 1 - замена кода, 2 - вставить перед, 3 - вставить после',
+            PRIMARY KEY  (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 

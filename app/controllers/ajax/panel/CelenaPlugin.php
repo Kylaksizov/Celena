@@ -107,7 +107,7 @@ class CelenaPlugin{
             $zip->close();
 
             // создаем файл кеша
-            $cache = fopen(ROOT . '/app/cache/system/plugins/' . $hashFile . '.txt', "w");
+            $cache = fopen(ROOT . '/app/cache/system/plugins_scan/' . $hashFile . '.txt', "w");
             flock($cache, LOCK_EX);
             fwrite($cache, trim($hashFileContent));
             flock($cache, LOCK_UN);

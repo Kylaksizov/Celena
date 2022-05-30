@@ -80,7 +80,7 @@ class View{
     public function findTag($tagName, bool $viewType = false){
 
         if($viewType) return substr_count($this->tplIndex, $tagName);
-        else return substr_count($this->include[$this->lastInc], $tagName);
+        else return !empty($this->include[$this->lastInc]) ? substr_count($this->include[$this->lastInc], $tagName) : '';
     }
 
 
@@ -426,12 +426,12 @@ class View{
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
-        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/nex.css">
+        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/nex.css">
     <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.'/css/'.$style.'">';
 
         $scripts = '
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/jquery.min.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/nex.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/nex.js"></script>';
 
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {
@@ -467,10 +467,10 @@ class View{
         if(ADMIN){
 
             $styles .= '
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/_system/css/admin.css">';
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/admin.css">';
 
             $scripts .= '
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/_system/js/admin.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/admin.js"></script>';
 
             if(CONFIG_SYSTEM["dev_tools"]) $scripts .= $this->dev();
 
