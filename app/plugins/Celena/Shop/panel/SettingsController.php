@@ -12,7 +12,7 @@ class SettingsController extends PanelController {
 
     public function indexAction(){
 
-        $content = '<h1>Общие настройки магазина</h1>';
+        $content = '<h1>Настройки магазина</h1>';
 
         $content .= '<form action="" method="POST">
             <div class="tabs">

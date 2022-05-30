@@ -2,7 +2,7 @@
   "name": "Celena Example",
   "author": "Kylaksizov",
   "description": "Это тестовый плагин, который служит для примера. Он создан специально для разработчиков, кто хочет разрабатывать плагины. Данный плагин можете спокойно удалить.",
-  "icon": "img/img.png",
+  "icon": "img/poster.png",
   "menu": {
     "Меню тестового плагина": {
       "link": "{panel}/examplePlugin/",
