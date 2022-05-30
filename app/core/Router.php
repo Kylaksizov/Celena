@@ -42,9 +42,8 @@ class Router{
             exit;
         }
 
-        $config = require CORE . '/data/config.php'; // подключаем главный конфиг
         $db_conf = require CORE . '/data/db_config.php';
-        define('CONFIG_SYSTEM', $config);
+        define('CONFIG_SYSTEM', require CORE . '/data/config.php');
         define("PREFIX", $db_conf["PREFIX"]);
 
         $this->url = !empty($_GET["url"]) ? trim(htmlspecialchars(strip_tags($_GET["url"]))) : '';
@@ -154,6 +153,8 @@ class Router{
 
             // если это плагин
             if($this->plugin){
+
+                define('CONFIG_PLUGIN', require APP . '/plugins/'.$this->plugin["brand"].'/'.$this->plugin["name"].'/config.php');
 
                 // проверяем установлен ли плагин и активен ли он
                 $PluginModel = new PluginModel();

@@ -201,7 +201,7 @@ class ProductModel extends Model{
 
         $pagination = [
             "start" => 0,
-            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
+            "limit" => CONFIG_PLUGIN["count_prod_by_cat"],
             "pagination" => ""
         ];
 

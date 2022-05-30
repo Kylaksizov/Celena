@@ -285,6 +285,7 @@ class Init implements InitPlugin {
                 'orders/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders'],
                 'orders/[0-9]+/$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'order'],
                 'orders/click/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'click'],
+                'settings/shop/$' => ['controller' => 'plugins\Celena\Shop\Settings'],
                 'settings/promo-codes/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'promoCodes'],
                 'settings/currency/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'currency'],
                 'settings/payment-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'paymentMethods'],

@@ -153,7 +153,7 @@ class ProductController extends Controller {
             if(!empty($Product["product"]["sale"])){
 
                 $this->view->setPreg('/\[no-sale\](.*?)\[\/no-sale\]/is', '');
-                $this->view->set('{sale}', $Product["product"]["sale"].''.(strripos($Product["product"]["sale"],"%")!==false?'':CONFIG_SYSTEM["currency"]));
+                $this->view->set('{sale}', $Product["product"]["sale"].''.(strripos($Product["product"]["sale"],"%")!==false?'':$this->plugin->config->currency));
                 $this->view->set('[sale]', '');
                 $this->view->set('[/sale]', '');
 
@@ -176,7 +176,7 @@ class ProductController extends Controller {
             $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
 
 
-            $this->view->set('{currency}', CONFIG_SYSTEM["currency"]);
+            $this->view->set('{currency}', $this->plugin->config->currency);
             $this->view->set('{poster}', $poster);
 
 
@@ -241,7 +241,7 @@ class ProductController extends Controller {
             $this->view->set('{rating-count}', '1');
             $this->view->set('{reviews}', '1');
 
-            $Product["product"]["price"] = $price = (CONFIG_SYSTEM["penny"]) ? floatval($Product["product"]["price"]) : round($Product["product"]["price"]);
+            $Product["product"]["price"] = $price = ($this->plugin->config->penny) ? floatval($Product["product"]["price"]) : round($Product["product"]["price"]);
 
 
             $properties = '';
@@ -295,7 +295,7 @@ class ProductController extends Controller {
                         $c = 0;
                         foreach ($props as $prop) {
 
-                            $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
+                            $priceProp = ($this->plugin->config->penny) ? floatval($prop["price"]) : round($prop["price"]);
 
                             if($prop["pv"] === null) $calc = 'new';
                             else $calc = $prop["pv"];
@@ -324,7 +324,7 @@ class ProductController extends Controller {
                 if(is_numeric($Product["product"]["sale"])){
 
                     $price = $price - intval($Product["product"]["sale"]);
-                    $Product["product"]["sale"] .= CONFIG_SYSTEM["currency"];
+                    $Product["product"]["sale"] .= $this->plugin->config->currency;
 
                 } else if(strripos($Product["product"]["sale"], "%") !== false){
 

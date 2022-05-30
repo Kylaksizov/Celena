@@ -21,7 +21,7 @@ class CustomProducts{
         $tpl->load();
         $tpl->include($template);
 
-        if(!is_array($categories) || $categories == 'index') $limit = CONFIG_SYSTEM["count_prod_by_cat"];
+        if(!is_array($categories) || $categories == 'index') $limit = $e->plugin->config->count_prod_by_cat;
 
         if(!empty($_GET["search"])) $Products = $ProductModel->search($_GET["search"], $categories, $limit, $order, $sort);
         else $Products = $ProductModel->getProducts($categories, $paginationPow, $limit, $order, $sort);
@@ -116,7 +116,7 @@ class CustomProducts{
                     if(is_numeric($row["sale"])){
 
                         $price = round($price - intval($row["sale"]), 2);
-                        $row["sale"] .= CONFIG_SYSTEM["currency"];
+                        $row["sale"] .= $e->plugin->config->currency;
 
                     } else if(strripos($row["sale"], "%") !== false){
 
@@ -128,7 +128,7 @@ class CustomProducts{
                 if($tagOldPrice) $tpl->set('{old-price}', $row["price"]);
                 if($tagStock)    $tpl->set('{stock}', $row["stock"]);
 
-                $tpl->set('{currency}', CONFIG_SYSTEM["currency"]);
+                $tpl->set('{currency}', $e->plugin->config->currency);
                 $tpl->set('{poster}', '//'.CONFIG_SYSTEM["home"].'/uploads/products/'.$poster);
 
 
