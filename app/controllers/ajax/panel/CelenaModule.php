@@ -45,7 +45,25 @@ class CelenaModule{
         $poster = '';
 
         $ModuleModel = new ModuleModel();
-        $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment, $status);
+        $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment, $status);
+
+        if(!empty($_POST["filePath"])){
+
+            foreach ($_POST["filePath"] as $fileKey => $filePath) {
+
+                foreach ($_POST["actionsFile"][$fileKey] as $actionKey => $action) {
+
+                    if(!empty($action)){
+
+                        $searchcode = !empty($_POST[$fileKey]["search"][$actionKey]) ? $_POST[$fileKey]["search"][$actionKey] : '';
+                        $replacecode = !empty($_POST[$fileKey]["act"][$actionKey]) ? $_POST[$fileKey]["act"][$actionKey] : '';
+
+                        $ModuleModel->addAction($mid, $filePath, $action, $searchcode, $replacecode);
+                    }
+                }
+
+            }
+        }
 
         die("OK");
     }

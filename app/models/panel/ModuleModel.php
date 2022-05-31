@@ -55,6 +55,33 @@ class ModuleModel extends Model{
 
 
 
+    public function addAction($mid, $filepath, $action, $searchcode, $replacecode){
+
+        $params = [
+            $mid,
+            $filepath,
+            $action,
+            $searchcode,
+            $replacecode
+        ];
+
+        Base::run("INSERT INTO " . PREFIX . "modules_ex (
+            mid,
+            filepath,
+            action,
+            searchcode,
+            replacecode
+        ) VALUES (
+            ?, ?, ?, ?, ?
+        )", $params);
+
+        unset($params);
+
+        return Base::lastInsertId();
+    }
+
+
+
 
     /**
      * @name получение системных значений

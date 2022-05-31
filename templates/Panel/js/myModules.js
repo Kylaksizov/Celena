@@ -82,7 +82,7 @@ $(function(){
     $(document).on("change", '.actionsFileSelect', function(){
 
         let milliseconds = new Date();
-        let fieldsId = milliseconds.getTime();
+        let uniqueId = milliseconds.getTime();
 
         let fileId = $(this).closest(".fileMod").attr("data-fileId");
         let actionSelected = $(this).find("option:selected").val();
@@ -91,55 +91,55 @@ $(function(){
 
             $(this).parent().next().html(`<div class="actionBox_">
                 <label for="">Найти:</label>
-                <textarea name="search[`+fileId+`][]" id="code`+fieldsId+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[search][]" id="code`+uniqueId+`" rows="1"></textarea>
             </div>
             <div class="actionBox_">
                 <label for="">Заменить на:</label>
-                <textarea name="replace[`+fileId+`][]" id="code`+fieldsId+1+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[act][]" id="code`+uniqueId+1+`" rows="1"></textarea>
             </div>`);
 
         } else if(actionSelected == '2'){
 
             $(this).parent().next().html(`<div class="actionBox_">
                 <label for="">Найти:</label>
-                <textarea name="search[`+fileId+`][]" id="code`+fieldsId+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[search][]" id="code`+uniqueId+`" rows="1"></textarea>
             </div>
             <div class="actionBox_">
                 <label for="">Добавить выше:</label>
-                <textarea name="before[`+fileId+`][]" id="code`+fieldsId+1+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[act][]" id="code`+uniqueId+1+`" rows="1"></textarea>
             </div>`);
 
         } else if(actionSelected == '3'){
 
             $(this).parent().next().html(`<div class="actionBox_">
                 <label for="">Найти:</label>
-                <textarea name="search[`+fileId+`][]" id="code`+fieldsId+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[search][]" id="code`+uniqueId+`" rows="1"></textarea>
             </div>
             <div class="actionBox_">
                 <label for="">Добавить ниже:</label>
-                <textarea name="after[`+fileId+`][]" id="code`+fieldsId+1+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[act][]" id="code`+uniqueId+1+`" rows="1"></textarea>
             </div>`);
 
         } else if(actionSelected == '4'){
 
             $(this).parent().next().html(`<div class="actionBox_">
                 <label for="">Заменить на:</label>
-                <textarea name="replaceWith[`+fileId+`][]" id="code`+fieldsId+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[act][]" id="code`+uniqueId+`" rows="1"></textarea>
             </div>`);
 
         } else if(actionSelected == '5'){
 
             $(this).parent().next().html(`<div class="actionBox_">
                 <label for="">Содержимое файла:</label>
-                <textarea name="newFile[`+fileId+`][]" id="code`+fieldsId+`" rows="1"></textarea>
+                <textarea name="`+fileId+`[act][]" id="code`+uniqueId+`" rows="1"></textarea>
             </div>`);
 
         }
 
-        CodeMirror.fromTextArea(document.getElementById("code"+fieldsId), php);
+        CodeMirror.fromTextArea(document.getElementById("code"+uniqueId), php);
 
         if(actionSelected == '1' || actionSelected == '2' || actionSelected == '3')
-            CodeMirror.fromTextArea(document.getElementById("code"+fieldsId+1), php);
+            CodeMirror.fromTextArea(document.getElementById("code"+uniqueId+1), php);
 
         return false;
     })

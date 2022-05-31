@@ -76,3 +76,13 @@
 
 31.05.2022 17:57:20 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'module_id' in 'field list'<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 49</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 49</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 14</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
 
+31.05.2022 18:55:23 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'searchcode' cannot be null<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 76</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 61</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 13</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 18:55:23 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'searchcode' cannot be null<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 76</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 61</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 13</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 18:55:23 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'searchcode' cannot be null<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 76</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 61</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 13</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 18:55:23 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'searchcode' cannot be null<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 76</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 61</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 13</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 18:58:25 | SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'searchcode' cannot be null<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 76</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 61</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 13</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
