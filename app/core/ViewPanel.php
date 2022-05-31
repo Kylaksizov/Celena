@@ -185,6 +185,7 @@ class ViewPanel{
                 <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/javascript/javascript.js"></script>
                 <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/css/css.js"></script>
                 <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/htmlmixed/htmlmixed.js"></script>
+                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/sql/sql.js"></script>
                 <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/php/php.js"></script>';
             }
         }

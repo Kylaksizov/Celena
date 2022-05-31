@@ -70,3 +70,9 @@
 
 29.05.2022 14:43:13 | SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'nex_example' already exists<br><span class="file_log">1: app\plugins\Celena\Example\Init.php &#10148; 22</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 138</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaPlugin.php &#10148; 22</span><br><span class="file_log">4: app\core\Router.php &#10148; 205</span>
 
+31.05.2022 17:55:07 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'module_id' in 'field list'<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 49</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 49</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 14</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 17:55:25 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'module_id' in 'field list'<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 49</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 49</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 14</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+31.05.2022 17:57:20 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'module_id' in 'field list'<br><span class="file_log">1: app\models\panel\ModuleModel.php &#10148; 49</span><br><span class="file_log">2: app\controllers\ajax\panel\CelenaModule.php &#10148; 49</span><br><span class="file_log">3: app\controllers\ajax\panel\CelenaModule.php &#10148; 14</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+

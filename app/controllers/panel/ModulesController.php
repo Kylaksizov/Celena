@@ -57,36 +57,120 @@ class ModulesController extends PanelController {
         $this->view->scripts = ['js/myModules.js'];
         $this->view->plugins = ['codemirror'];
 
-        $modulesModel = new moduleModel();
-        $modules = $modulesModel->getmodules();
+        $title = 'Создание плагина';
 
         $content = '<div class="fx">
-            <h1>Название плагина</h1>
+            <h1>'.$title.'</h1>
         </div>
         
-        <div class="tabs">
-            <ul class="tabs_caption">
-                <li class="active">Инфо</li>
-                <li>Файловая система</li>
-                <li>MySql</li>
-            </ul>
-            <div class="tabs_content active">
-                1
+        <form action method="POST">
+            <div class="tabs">
+                <ul class="tabs_caption">
+                    <li class="active">Основа</li>
+                    <li>Файловая система</li>
+                    <li>MySql</li>
+                </ul>
+                
+                <div class="tabs_content active">
+                
+                    <div class="dg dg_auto">
+                        <div>
+                            <label for="" class="rq">Название модуля</label>
+                            <input type="text" name="name" required>
+                            <label for="" class="rq">Версия модуля</label>
+                            <input type="text" name="version" placeholder="0.0.1" required>
+                            <label for="">Версия <b>Celena</b></label>
+                            <input type="text" name="cv" placeholder="Если пусто, то любая">
+                        </div>
+                        <div class="tr">
+                            <label for="icon" class="upload_files">
+                                <input type="file" name="icon" id="icon"> иконка модуля
+                            </label>
+                            <p class="title_box hr_d">Комментарий</p>
+                            <textarea name="comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <p class="title_box hr_d">Описание</p>
+                    <textarea name="descr" rows="5"></textarea>
+                    <input type="checkbox" name="status" value="1" id="statusModule"><label for="statusModule">Статус</label>
+                </div>
+                
+                <div class="tabs_content">
+                
+                    <div id="filesMod">
+                        <!--<div class="fileMod">
+                            <div class="fx ai_c">
+                                <div class="fpb">
+                                    <label for="">Путь к файлу:</label>
+                                    <input type="text" name="filePath[]" class="filePath" placeholder="controllers/...">
+                                </div>
+                                <a href="#" class="remove remove_file"></a>
+                            </div>
+                            <div class="actionsFile">
+                                <div class="fx ai_c">
+                                    <select name="actionsFile[]">
+                                        <option value="">Выбрать действие</option>
+                                        <option value="1">Найти и заменить</option>
+                                        <option value="2">Найти и добавить выше</option>
+                                        <option value="3">Найти и добавить ниже</option>
+                                        <option value="4">Заменить файл</option>
+                                        <option value="5">Создать новый файл</option>
+                                    </select>
+                                    <a href="#" class="remove remove_action"></a>
+                                </div>
+                                <div class="actionsBox">
+                                    <div class="actionBox_">
+                                        <label for="">Найти:</label>
+                                        <textarea name="search[]" id="code" rows="1"></textarea>
+                                    </div>
+                                    <div class="actionBox_">
+                                        <label for="">Заменить на:</label>
+                                        <textarea name="replace[]" id="code2" rows="1"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="add_action">Добавить действие</a>
+                        </div>-->
+                    </div>
+                    
+                    <a href="#" class="btn add_file">Добавить файл</a>
+                    
+                </div>
+                
+                <div class="tabs_content">
+                    <div class="baseQueries">
+                        <label for="">При установке:</label>
+                        <textarea name="base[install]" rows="5" id="baseInstall"></textarea>
+                    </div>
+                    <div class="baseQueries">
+                        <label for="">При обновлении:</label>
+                        <textarea name="base[update]" rows="5" id="baseUpdate"></textarea>
+                    </div>
+                    <div class="baseQueries">
+                        <label for="">При включении:</label>
+                        <textarea name="base[on]" rows="5" id="baseOn"></textarea>
+                    </div>
+                    <div class="baseQueries">
+                        <label for="">При выключении:</label>
+                        <textarea name="base[off]" rows="5" id="baseOff"></textarea>
+                    </div>
+                    <div class="baseQueries">
+                        <label for="">При удалении:</label>
+                        <textarea name="base[del]" rows="5" id="baseDel"></textarea>
+                    </div>
+                </div>
+                
             </div>
-            <div class="tabs_content">
-                <textarea name="" id="code1" cols="30" rows="10"></textarea>
-                <a href="#" class="add btn">+</a>
-            </div>
-            <div class="tabs_content">
-                2
-            </div>
-        </div>
+            <br>
+            <input type="hidden" name="ajax" value="CelenaModule">
+            <input type="submit" class="btn" value="Сохранить">
+        </form>
         
         <div class="my_modules">';
 
         $content .= '</div>';
 
-        $this->view->render('Мои плагины', $content);
+        $this->view->render($title, $content);
     }
 
 }

@@ -107,7 +107,7 @@ class Step_2{
             `searchcode` TEXT NOT NULL,
             `replacecode` TEXT NOT NULL,
             `filepath` VARCHAR(255) NOT NULL,
-            `action` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '0-замена всего файла, 1 - замена кода, 2 - вставить перед, 3 - вставить после',
+            `action` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 - замена, 2 - добавить выше, 3 - добавить ниже, 4 - замена файла, 5 - новый файл',
             PRIMARY KEY  (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();

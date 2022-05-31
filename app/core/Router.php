@@ -190,7 +190,7 @@ class Router{
             
 
             // AJAX
-            if(self::isAjax() && !empty($_POST["ajax"])){
+            if(self::isAjax()){
 
                 $ajax_file = trim(htmlspecialchars(strip_tags($_POST["ajax"])));
 
@@ -260,7 +260,7 @@ class Router{
 
 
     private static function isAjax(){
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' || !empty($_POST["ajax"]);
     }
 
 
