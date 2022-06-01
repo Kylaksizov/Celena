@@ -49,7 +49,7 @@ class SystemController extends PanelController {
             <tr>
                 <th>URL</th>
                 <th>Controller</th>
-                <th>Method</th>
+                <th>Action</th>
             </tr>';
         foreach ($Routes["web"] as $path => $controllerAction) {
 
@@ -64,7 +64,7 @@ class SystemController extends PanelController {
         $content .= '</table>';
 
 
-        $this->view->render('Логи', $content);
+        $this->view->render('Роуты', $content);
     }
 
 

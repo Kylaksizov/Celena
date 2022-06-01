@@ -161,6 +161,57 @@ class ModuleModel extends Model{
 
 
     /**
+     * @name получение для инициализации
+     * =================================
+     * @return mixed|null
+     */
+    public function getByInitialize(){
+
+        return System::setKeysArray(
+            self::instanceFetchAll("
+            SELECT
+                -- m.base_install,
+                ex.filepath,
+                ex.action,
+                ex.searchcode,
+                ex.replacecode
+            FROM " . PREFIX . "modules m
+                LEFT JOIN " . PREFIX . "modules_ex ex ON ex.mid = m.id
+            WHERE m.status = 1
+            "),
+            "filepath"
+        );
+    }
+
+
+    /**
+     * @name получение для упаковки
+     * ============================
+     * @return mixed|null
+     */
+    public function getByPackage(){
+
+        return self::instanceFetchAll("
+            SELECT
+                name,
+                descr,
+                version,
+                cv,
+                poster,
+                base_install,
+                base_update,
+                base_on,
+                base_off,
+                base_del,
+                comment,
+                status
+            FROM " . PREFIX . "modules
+            WHERE id = ?
+            ");
+    }
+
+
+    /**
      * @param $id
      * @param array $fields
      * @return int

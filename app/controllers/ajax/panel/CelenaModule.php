@@ -13,7 +13,10 @@ class CelenaModule{
 
 
     public function index(){
-
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+exit;
         if(!empty($_POST["name"])) self::create();
 
         if(!empty($_POST["action"])){

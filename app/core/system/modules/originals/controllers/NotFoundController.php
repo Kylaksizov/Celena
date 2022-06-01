@@ -9,11 +9,9 @@ class NotFoundController extends Controller{
 
     public function indexAction(){
 
-        $this->view->load("Yes");
+        $this->view->load();
 
-        // test
-$this->view->include('notFound');
-echo '123';
+        $this->view->include('notFound');
         $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="//'.CONFIG_SYSTEM["home"].'/">'.CONFIG_SYSTEM["site_title"].'</a></div>');
 
         $this->view->setMeta('Главная страница', 'Описание страницы', [

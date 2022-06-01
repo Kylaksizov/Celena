@@ -110,3 +110,21 @@
 .baseQueries:not(:first-child){
     margin-top: 15px;
 }
+#routes h2{
+    margin-bottom: 5px;
+}
+#routes td{
+    padding: 0;
+}
+#routes td input[type="text"]{
+    background: none;
+    border: none;
+    margin: 0;
+}
+#routes td:last-child label{
+    margin: 3px 0 0 10px;
+}
+.addRoute{
+    padding: 5px 10px;
+    margin-top: 10px;
+}

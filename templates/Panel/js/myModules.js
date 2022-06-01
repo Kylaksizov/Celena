@@ -156,4 +156,34 @@ $(function(){
         $(this).closest(".actionsFile").remove();
         return false;
     })
+
+    $(document).on("click", ".addRoute", function(){
+
+        let milliseconds = new Date();
+        let uniqueId = milliseconds.getTime();
+
+        $(this).prev().find("tr:last").after(`<tr>
+            <td><input type="text" name="panel[url][`+uniqueId+`]" placeholder="example/url.html$"></td>
+            <td><input type="text" name="panel[controller][`+uniqueId+`]" placeholder="Example"></td>
+            <td><input type="text" name="panel[action][`+uniqueId+`]" placeholder="Index"></td>
+            <td><input type="checkbox" name="panel[position][`+uniqueId+`]" class="ch_min" id="position`+uniqueId+`" value="1"><label for="position`+uniqueId+`">в начале</label></td>
+        </tr>`);
+        $(this).prev().find("tr:last input:first").focus();
+        return false;
+    })
+
+    $(document).on("click", ".addRouteWeb", function(){
+
+        let milliseconds = new Date();
+        let uniqueId = milliseconds.getTime();
+
+        $(this).prev().find("tr:last").after(`<tr>
+            <td><input type="text" name="web[url][`+uniqueId+`]" placeholder="example/url.html$"></td>
+            <td><input type="text" name="web[controller][`+uniqueId+`]" placeholder="Example"></td>
+            <td><input type="text" name="web[action][`+uniqueId+`]" placeholder="Index"></td>
+            <td><input type="checkbox" name="web[position][`+uniqueId+`]" class="ch_min" id="position`+uniqueId+`" value="1"><label for="position`+uniqueId+`">в начале</label></td>
+        </tr>`);
+        $(this).prev().find("tr:last input:first").focus();
+        return false;
+    })
 })

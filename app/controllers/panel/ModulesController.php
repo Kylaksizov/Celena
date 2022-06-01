@@ -3,6 +3,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
+use app\core\system\modules\Modules;
 use app\models\panel\ModuleModel;
 
 
@@ -10,6 +11,12 @@ class ModulesController extends PanelController {
 
 
     public function indexAction(){
+
+
+
+        Modules::initialize();
+
+
 
         $this->view->styles = ['css/myModules.css'];
         $this->view->scripts = ['js/myModules.js'];
@@ -140,7 +147,17 @@ class ModulesController extends PanelController {
                 $fileId++;
             }
         }
-        
+
+
+        $panelRoutes = '';
+        $webRoutes = '';
+        /*$panelRoutes = '<tr>
+            <td><input type="text" name="panel[url][]" placeholder="example/url.html$"></td>
+            <td><input type="text" name="panel[controller][]" placeholder="Example"></td>
+            <td><input type="text" name="panel[action][]" placeholder="Index"></td>
+            <td><input type="checkbox" name="panel[position][]" class="ch_min" id="position"><label for="position">в начале</label></td>
+        </tr>';*/
+
 
         $content = '<div class="fx">
             <h1>'.$title.'</h1>
@@ -151,6 +168,7 @@ class ModulesController extends PanelController {
                 <ul class="tabs_caption">
                     <li class="active">Основа</li>
                     <li>Файловая система</li>
+                    <li>Роуты</li>
                     <li>MySql</li>
                 </ul>
                 
@@ -185,6 +203,35 @@ class ModulesController extends PanelController {
                     </div>
                     
                     <a href="#" class="btn add_file">Добавить файл</a>
+                    
+                </div>
+                
+                <div class="tabs_content" id="routes">
+                    
+                    <h2>Panel</h2>
+                    <table>
+                        <tr>
+                            <th>URL</th>
+                            <th>Controller</th>
+                            <th>Action</th>
+                            <th>Позиция</th>
+                        </tr>
+                        '.$panelRoutes.'
+                    </table>
+                    <a href="#" class="btn addRoute">Добавить</a>
+                    
+                    <br><br><br>
+                    <h2>WEB</h2>
+                    <table>
+                        <tr>
+                            <th>URL</th>
+                            <th>Controller</th>
+                            <th>Action</th>
+                            <th>Позиция</th>
+                        </tr>
+                        '.$webRoutes.'
+                    </table>
+                    <a href="#" class="btn addRouteWeb">Добавить</a>
                     
                 </div>
                 
