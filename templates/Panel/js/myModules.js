@@ -1,7 +1,6 @@
 $(function(){
 
     let php = {
-        //lineWrapping: true
         lineNumbers: true,
         matchBrackets: true,
         mode: "text/x-php",
@@ -17,14 +16,18 @@ $(function(){
         theme: "celena"
     }
 
-    /*CodeMirror.fromTextArea(document.getElementById("code"), php);
-    CodeMirror.fromTextArea(document.getElementById("code2"), php);*/
+    $(".mirror").each(function(){
+        let mirrorId = $(this).attr("id");
+        CodeMirror.fromTextArea(document.getElementById(mirrorId), php);
+    })
 
-    CodeMirror.fromTextArea(document.getElementById("baseInstall"), base);
-    CodeMirror.fromTextArea(document.getElementById("baseUpdate"), base);
-    CodeMirror.fromTextArea(document.getElementById("baseOn"), base);
-    CodeMirror.fromTextArea(document.getElementById("baseOff"), base);
-    CodeMirror.fromTextArea(document.getElementById("baseDel"), base);
+    if($("#baseInstall").length > 0){
+        CodeMirror.fromTextArea(document.getElementById("baseInstall"), base);
+        CodeMirror.fromTextArea(document.getElementById("baseUpdate"), base);
+        CodeMirror.fromTextArea(document.getElementById("baseOn"), base);
+        CodeMirror.fromTextArea(document.getElementById("baseOff"), base);
+        CodeMirror.fromTextArea(document.getElementById("baseDel"), base);
+    }
 
     $(document).on("click", ".add_file", function(){
 

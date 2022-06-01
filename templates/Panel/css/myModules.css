@@ -1,4 +1,4 @@
-.modules_table{
+.module_table{
     background: #fff;
     display: grid;
     align-items: center;
@@ -14,7 +14,7 @@
     margin-bottom: 5px;
 }
 .module_version{
-    font-size: 17px;
+    font-size: 15px;
     display: inline-block;
     margin-left: 10px;
     float: right;
@@ -51,10 +51,12 @@
 }
 .filePath{
     background: none;
+    color: #e35c55 !important;
     border: none !important;
     border-bottom: 1px #d3d8e5 solid !important;
     padding: 4px !important;
     margin: 0 !important;
+    font-weight: 500;
 }
 .actionsFile{
     background: #fff;

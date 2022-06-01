@@ -19,7 +19,7 @@ class PluginsController extends PanelController {
         $Plugins = $PluginsModel->getPlugins();
 
         $content = '<div class="fx">
-            <h1>Мои плагины</h1>
+            <h1>Установленные плагины</h1>
         </div>
         <div class="my_plugins">';
 
@@ -34,7 +34,7 @@ class PluginsController extends PanelController {
                         <img src="//'.CONFIG_SYSTEM["home"].'/templates/plugins/'.$row["name"].'/panel/'.$this->pluginsSystems->{$row["name"]}->icon.'" alt="">
                     </a>
                     <div class="plugin_box">
-                        <h2><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/'.$row["id"].'/">'.$this->pluginsSystems->{$row["name"]}->name.'</a> <span class="plugin_version">v '.$row["version"].'</span></h2>
+                        <h2><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/plugin/'.$row["id"].'/">'.$this->pluginsSystems->{$row["name"]}->name.'</a> <span class="plugin_version">'.$row["version"].'</span></h2>
                         <p class="plugin_description">'.$this->pluginsSystems->{$row["name"]}->description.'</p>
                         <div class="plugin_actions">
                             '.$buttonStatus.'

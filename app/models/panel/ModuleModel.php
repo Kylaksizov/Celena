@@ -86,25 +86,102 @@ class ModuleModel extends Model{
     /**
      * @name получение системных значений
      * ==================================
-     * @param string $fields
+     * @param int $id
      * @return mixed|null
      */
-    public function getModuleField($fields = '*'){
+    public function getModule(int $id){
 
-        return self::instanceFetchAll("SELECT $fields FROM " . PREFIX . "plugins");
+        $result = [];
+
+        $result["module"] = self::instanceFetch("
+            SELECT
+                name,
+                descr,
+                version,
+                cv,
+                poster,
+                base_install,
+                base_update,
+                base_on,
+                base_off,
+                base_del,
+                comment,
+                status
+            FROM " . PREFIX . "modules
+            WHERE id = ?
+            ", [$id]);
+
+        $result["ex"] = System::setKeysArray(
+            self::instanceFetchAll("
+            SELECT
+                id,
+                filepath,
+                action,
+                searchcode,
+                replacecode
+            FROM " . PREFIX . "modules_ex
+            WHERE mid = ?
+                ORDER BY id ASC
+            ", [$id]),
+            "filepath"
+        );
+
+        return $result;
+    }
+
+
+
+
+    /**
+     * @name получение системных значений
+     * ==================================
+     * @param int $id
+     * @return mixed|null
+     */
+    public function getModuleMain(int $id){
+
+        return self::instanceFetch("
+            SELECT
+                name,
+                descr,
+                version,
+                cv,
+                poster,
+                base_install,
+                base_update,
+                base_on,
+                base_off,
+                base_del,
+                comment,
+                status
+            FROM " . PREFIX . "modules
+            WHERE id = ?
+            ", [$id]);
     }
 
 
     /**
-     * @name получение всех id плагинов
-     * ================================
-     * @return array|false
+     * @param $id
+     * @param array $fields
+     * @return int
      * @throws Exception
      */
-    public function getMyModulesIds(){
+    public function editFields($id, array $fields){
 
-        return Base::run("SELECT plugin_id FROM " . PREFIX . "plugins")->fetchAll(PDO::FETCH_COLUMN);
+        $set = "";
+        $params = [];
+
+        foreach ($fields as $fieldName => $val) {
+            $set .= "$fieldName = ?, ";
+            array_push($params, $val);
+        }
+        $set = trim($set, ", ");
+        array_push($params, $id);
+
+        return Base::run("UPDATE " . PREFIX . "modules SET $set WHERE id = ?", $params)->rowCount();
     }
+
+
 
     /**
      * @return array
@@ -121,12 +198,12 @@ class ModuleModel extends Model{
             "pagination" => ""
         ];
 
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "plugins c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "modules c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
 
-        $result["plugins"] = Base::run(
+        $result["modules"] = Base::run(
             "SELECT
                 *
-            FROM " . PREFIX . "plugins
+            FROM " . PREFIX . "modules
             ORDER BY id DESC
             LIMIT {$pagination["start"]}, {$pagination["limit"]}
             ", $params)->fetchAll(PDO::FETCH_ASSOC);
@@ -137,65 +214,16 @@ class ModuleModel extends Model{
     }
 
 
+    public function clear($mid){
 
-    public function getModuleById($id, $fields = '*'){
-
-        return Base::run("SELECT $fields FROM " . PREFIX . "plugins WHERE id = ?", [intval($id)])->fetch(PDO::FETCH_ASSOC);
-    }
-
-
-
-    public function getModuleByModuleId($id, $fields = '*'){
-
-        return Base::run("SELECT $fields FROM " . PREFIX . "plugins WHERE plugin_id = ?", [intval($id)])->fetch(PDO::FETCH_ASSOC);
-    }
-
-
-
-    public function getModuleByBrandName($brand, $name){
-
-        return Base::run("SELECT name, status FROM " . PREFIX . "plugins WHERE name = ?", [trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * @name добавление плагина
-     * ========================
-     * @param $plugin_id
-     * @param $name
-     * @param $version
-     * @param $hashfile
-     * @return bool|string
-     * @throws Exception
-     */
-    public function addModule($plugin_id, $name, $version, $hashfile){
-
-        Base::run("INSERT INTO " . PREFIX . "plugins (
-            plugin_id,
-            name,
-            version,
-            hashfile,
-            status
-        ) VALUES (
-            ?, ?, ?, ?, ?
-        )", [
-            $plugin_id,
-            $name,
-            $version,
-            $hashfile,
-            0
-        ]);
-
-        unset($params);
-
-        return Base::lastInsertId();
+        return Base::run("DELETE FROM " . PREFIX . "modules_ex WHERE mid = ?", [$mid]);
     }
 
 
 
     public function power($id, $action){
 
-        return Base::run("UPDATE " . PREFIX . "plugins SET status = ? WHERE id = ?", [$action, $id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "modules SET status = ? WHERE id = ?", [$action, $id])->rowCount();
     }
 
 

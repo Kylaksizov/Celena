@@ -16,7 +16,7 @@ return [
 		'plugins/(page-[0-9]+/)?$' => ['controller' => 'plugins'],
 		'plugin/[0-9]+/settings/$' => ['controller' => 'pluginSettings'],
 		'modules/(page-[0-9]+/)?$' => ['controller' => 'modules'],
-		'modules/(add/|edit/)?$' => ['controller' => 'modules', 'action' => 'add'],
+		'modules/(add/|edit/[0-9]+/)?$' => ['controller' => 'modules', 'action' => 'add'],
 		'celenaShop/plugins/(page-[0-9]+/)?$' => ['controller' => 'celenaPlugins'],
 		'celenaShop/order-development/(page-[0-9]+/)?$' => ['controller' => 'orderDevelopment'],
 		'settings/$' => ['controller' => 'settings'],

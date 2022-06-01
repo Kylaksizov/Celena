@@ -3,7 +3,11 @@
 namespace app\controllers\ajax\panel;
 
 
+use app\core\Base;
+use app\core\System;
 use app\models\panel\ModuleModel;
+use app\traits\Log;
+use Exception;
 
 class CelenaModule{
 
@@ -11,6 +15,16 @@ class CelenaModule{
     public function index(){
 
         if(!empty($_POST["name"])) self::create();
+
+        if(!empty($_POST["action"])){
+
+            switch ($_POST["action"]){
+                case 'enable':    self::power(true); break;
+                case 'disable':   self::power(false); break;
+                case 'remove':    self::remove(); break;
+            }
+        }
+
         die("info::error::Неизвестный запрос!");
     }
 
@@ -23,6 +37,9 @@ class CelenaModule{
      * @return void
      */
     private function create(){
+
+        preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $id);
+        if(!empty($id[1])) $id = intval($id[1]);
 
         $name = trim(htmlspecialchars(strip_tags($_POST["name"])));
         $version = !empty($_POST["version"]) ? trim(htmlspecialchars(strip_tags($_POST["version"]))) : die("Заполните версию плагина");
@@ -45,9 +62,34 @@ class CelenaModule{
         $poster = '';
 
         $ModuleModel = new ModuleModel();
-        $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment, $status);
+
+        if(empty($id))
+            $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment, $status);
+        else{
+
+            $mid = $id;
+            $ModuleModel->editFields(
+                $id,
+                [
+                    "name" => $name,
+                    "descr" => $descr,
+                    "version" => $version,
+                    "cv" => $cv,
+                    "poster" => $poster,
+                    "base_install" => $base_install,
+                    "base_update" => $base_update,
+                    "base_on" => $base_on,
+                    "base_off" => $base_off,
+                    "base_del" => $base_del,
+                    "comment" => $comment,
+                    "status" => $status
+                ]
+            );
+        }
 
         if(!empty($_POST["filePath"])){
+
+            if(!empty($id)) $ModuleModel->clear($id);
 
             foreach ($_POST["filePath"] as $fileKey => $filePath) {
 
@@ -65,7 +107,52 @@ class CelenaModule{
             }
         }
 
-        die("OK");
+        header("Location:".$_SERVER["HTTP_REFERER"]);
+        die();
+    }
+
+
+    /**
+     * @name Включение/выключение модуля
+     * =================================
+     * @param $power
+     * @return void
+     * @throws Exception
+     */
+    private function power($power){
+
+        $moduleId = intval($_POST["id"]);
+
+        $ModuleModel = new ModuleModel();
+        $ModuleInfo = $ModuleModel->getModuleMain($moduleId);
+        $ModuleModel->power($moduleId, $power ? 1 : 0);
+
+        if($power){
+
+            if(!empty($ModuleInfo["base_on"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_on"]));
+
+            Log::add('Модуль <b>'.$ModuleInfo["name"].'</b> включен', 1);
+
+            $script = '<script>
+                $.server_say({say: "Плагин активирован!", status: "success"});
+                $(\'[data-a="CelenaModule:action=enable&id='.$moduleId.'"]\').replaceWith(`<a href="#" class="btn btn_module_deactivate" data-a="CelenaModule:action=disable&id='.$moduleId.'">Выключить</a>`);
+            </script>';
+
+            System::script($script);
+
+        } else{
+
+            if(!empty($ModuleInfo["base_off"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_off"]));
+
+            Log::add('Модуль <b>'.$ModuleInfo["name"].'</b> отключен', 1);
+
+            $script = '<script>
+                $.server_say({say: "Плагин отключен!", status: "success"});
+                $(\'[data-a="CelenaModule:action=disable&id='.$moduleId.'"]\').replaceWith(`<a href="#" class="btn btn_module_activate" data-a="CelenaModule:action=enable&id='.$moduleId.'">Активировать</a>`);
+            </script>';
+
+            System::script($script);
+        }
     }
 
 }
