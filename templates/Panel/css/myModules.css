@@ -67,6 +67,7 @@
 }
 .actionsFileSelect{
     background-color: #fff;
+    color: #a9b0bf;
     border: none !important;
     border-bottom: 1px #d3d8e5 solid !important;
     max-width: 300px;
@@ -78,7 +79,7 @@
 }
 .actionBox_{
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 120px 1fr;
     margin-bottom: 20px;
 }
 .add_action{
@@ -124,7 +125,7 @@
 #routes td:last-child label{
     margin: 3px 0 0 10px;
 }
-.addRoute{
+.addRoute, .addRouteWeb{
     padding: 5px 10px;
     margin-top: 10px;
 }

@@ -16,11 +16,12 @@ class DeclareNames{
             'posts/categories/(page-[0-9]+/)?$' => ['controller' => 'posts', 'action' => 'categories'],
             'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
             'users/customer/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'customer'],
-            'users/employee/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'employee'],
+            'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
             'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
             'plugins/(page-[0-9]+/)?$' => ['controller' => 'plugins'],
             'plugin/[0-9]+/settings/$' => ['controller' => 'pluginSettings'],
             'modules/(page-[0-9]+/)?$' => ['controller' => 'modules'],
+            'modules/(add/|edit/[0-9]+/)?$' => ['controller' => 'modules', 'action' => 'add'],
             'celenaShop/plugins/(page-[0-9]+/)?$' => ['controller' => 'celenaPlugins'],
             'celenaShop/order-development/(page-[0-9]+/)?$' => ['controller' => 'orderDevelopment'],
             'settings/$' => ['controller' => 'settings'],
@@ -30,7 +31,7 @@ class DeclareNames{
             'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'logs'],
             'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'dbLogs'],
             'system/updates/$' => ['controller' => 'CelenaUpdates'],
-            'support/(page-[0-9]+/)?$' => ['controller' => 'support']
+            'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 
         ],
 

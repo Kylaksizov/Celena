@@ -81,19 +81,21 @@ class ModulesController extends PanelController {
             $fileId = 1;
             foreach ($Module["ex"] as $filePath => $actions) {
 
-                $filesMod .= '<div class="fileMod" data-fileId="'.$fileId.'">
+                $filesMod .= '
+                <div class="fileMod" data-fileId="'.$fileId.'">
                     <div class="fx ai_c">
                         <div class="fpb">
                             <label for="">Путь к файлу:</label>
                             <input type="text" name="filePath['.$fileId.']" class="filePath" value="'.$filePath.'" placeholder="controllers/...">
                         </div>
                         <a href="#" class="remove remove_file"></a>
-                    </div>
-                    <div class="actionsFile">';
+                    </div>';
 
                 foreach ($actions as $actionRow) {
 
-                    $filesMod .= '<div class="fx ai_c">
+                    $filesMod .= '
+                    <div class="actionsFile">
+                        <div class="fx ai_c">
                             <select name="actionsFile['.$fileId.'][]" class="actionsFileSelect">
                                 <option value="">Выбрать действие</option>
                                 <option value="1"'.($actionRow["action"] == '1' ? ' selected' : '').'>Найти и заменить</option>
@@ -114,14 +116,15 @@ class ModulesController extends PanelController {
                             if($actionRow["action"] == '2') $repl = 'Добавить выше';
                             if($actionRow["action"] == '3') $repl = 'Добавить ниже';
 
-                            $filesMod .= '<div class="actionBox_">
-                                    <label for="">Найти:</label>
-                                    <textarea name="'.$fileId.'[search][]" id="code'.$actionRow["id"].'" class="mirror" rows="1">'.$actionRow["searchcode"].'</textarea>
-                                </div>
-                                <div class="actionBox_">
-                                    <label for="">'.$repl.':</label>
-                                    <textarea name="'.$fileId.'[act][]" id="code'.$actionRow["id"].'1" class="mirror" rows="1">'.$actionRow["replacecode"].'</textarea>
-                                </div>';
+                            $filesMod .= '
+                            <div class="actionBox_">
+                                <label for="">Найти:</label>
+                                <textarea name="'.$fileId.'[search][]" id="code'.$actionRow["id"].'" class="mirror" rows="1">'.$actionRow["searchcode"].'</textarea>
+                            </div>
+                            <div class="actionBox_">
+                                <label for="">'.$repl.':</label>
+                                <textarea name="'.$fileId.'[act][]" id="code'.$actionRow["id"].'1" class="mirror" rows="1">'.$actionRow["replacecode"].'</textarea>
+                            </div>';
 
                             break;
 
@@ -137,10 +140,12 @@ class ModulesController extends PanelController {
                             break;
                     }
 
-                    $filesMod .= '</div>';
+                    $filesMod .= '
+                        </div>
+                    </div>';
                 }
 
-                $filesMod .= '</div>
+                $filesMod .= '
                     <a href="#" class="add_action">Добавить действие</a>
                 </div>';
 
@@ -148,15 +153,45 @@ class ModulesController extends PanelController {
             }
         }
 
-
         $panelRoutes = '';
         $webRoutes = '';
-        /*$panelRoutes = '<tr>
-            <td><input type="text" name="panel[url][]" placeholder="example/url.html$"></td>
-            <td><input type="text" name="panel[controller][]" placeholder="Example"></td>
-            <td><input type="text" name="panel[action][]" placeholder="Index"></td>
-            <td><input type="checkbox" name="panel[position][]" class="ch_min" id="position"><label for="position">в начале</label></td>
-        </tr>';*/
+        
+        if(!empty($Module["module"]["routes"])){
+            
+            $routes = json_decode($Module["module"]["routes"], true);
+
+            $counterRoute = 1;
+            if(!empty($routes["panel"])){
+
+                foreach ($routes["panel"]["url"] as $key => $url) {
+
+                    $action = !empty($routes["panel"]["action"][$key]) ? $routes["panel"]["action"][$key] : '';
+
+                    $panelRoutes .= '<tr>
+                        <td><input type="text" name="route[panel][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
+                        <td><input type="text" name="route[panel][controller]['.$counterRoute.']" value="'.$routes["panel"]["controller"][$key].'" placeholder="Example"></td>
+                        <td><input type="text" name="route[panel][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
+                        <td><input type="checkbox" name="route[panel][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["panel"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в начале</label></td>
+                    </tr>';
+
+                    $counterRoute++;
+                }
+
+                foreach ($routes["web"]["url"] as $key => $url) {
+
+                    $action = !empty($routes["web"]["action"][$key]) ? $routes["web"]["action"][$key] : '';
+
+                    $webRoutes .= '<tr>
+                        <td><input type="text" name="route[web][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
+                        <td><input type="text" name="route[web][controller]['.$counterRoute.']" value="'.$routes["web"]["controller"][$key].'" placeholder="Example"></td>
+                        <td><input type="text" name="route[web][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
+                        <td><input type="checkbox" name="route[web][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["web"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в начале</label></td>
+                    </tr>';
+
+                    $counterRoute++;
+                }
+            }
+        }
 
 
         $content = '<div class="fx">
@@ -238,23 +273,23 @@ class ModulesController extends PanelController {
                 <div class="tabs_content">
                     <div class="baseQueries">
                         <label for="">При установке:</label>
-                        <textarea name="base[install]" rows="5" id="baseInstall">'.(!empty($Module["module"]["base_install"]) ? $Module["module"]["base_install"] : '').'</textarea>
+                        <textarea name="base[install]" rows="1" id="baseInstall">'.(!empty($Module["module"]["base_install"]) ? $Module["module"]["base_install"] : '').'</textarea>
                     </div>
                     <div class="baseQueries">
                         <label for="">При обновлении:</label>
-                        <textarea name="base[update]" rows="5" id="baseUpdate">'.(!empty($Module["module"]["base_update"]) ? $Module["module"]["base_update"] : '').'</textarea>
+                        <textarea name="base[update]" rows="1" id="baseUpdate">'.(!empty($Module["module"]["base_update"]) ? $Module["module"]["base_update"] : '').'</textarea>
                     </div>
                     <div class="baseQueries">
                         <label for="">При включении:</label>
-                        <textarea name="base[on]" rows="5" id="baseOn">'.(!empty($Module["module"]["base_on"]) ? $Module["module"]["base_on"] : '').'</textarea>
+                        <textarea name="base[on]" rows="1" id="baseOn">'.(!empty($Module["module"]["base_on"]) ? $Module["module"]["base_on"] : '').'</textarea>
                     </div>
                     <div class="baseQueries">
                         <label for="">При выключении:</label>
-                        <textarea name="base[off]" rows="5" id="baseOff">'.(!empty($Module["module"]["base_off"]) ? $Module["module"]["base_off"] : '').'</textarea>
+                        <textarea name="base[off]" rows="1" id="baseOff">'.(!empty($Module["module"]["base_off"]) ? $Module["module"]["base_off"] : '').'</textarea>
                     </div>
                     <div class="baseQueries">
                         <label for="">При удалении:</label>
-                        <textarea name="base[del]" rows="5" id="baseDel">'.(!empty($Module["module"]["base_del"]) ? $Module["module"]["base_del"] : '').'</textarea>
+                        <textarea name="base[del]" rows="1" id="baseDel">'.(!empty($Module["module"]["base_del"]) ? $Module["module"]["base_del"] : '').'</textarea>
                     </div>
                 </div>
                 

@@ -101,8 +101,7 @@ class Step_2{
             `base_on` TEXT NOT NULL,
             `base_off` TEXT NOT NULL,
             `base_del` TEXT NOT NULL,
-            `routes_on` TEXT NOT NULL,
-            `routes_off` TEXT NOT NULL,
+            `routes` TEXT NOT NULL,
             `comment` TEXT NOT NULL ,  `status` TINYINT(1) NOT NULL DEFAULT '0',
             PRIMARY KEY  (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");

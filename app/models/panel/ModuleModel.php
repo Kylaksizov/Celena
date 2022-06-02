@@ -12,7 +12,7 @@ class ModuleModel extends Model{
 
 
 
-    public function add($module_id, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment = '', $status = 0){
+    public function add($module_id, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes = '', $comment = '', $status = 0){
 
         $params = [
             $module_id,
@@ -26,6 +26,7 @@ class ModuleModel extends Model{
             $base_on,
             $base_off,
             $base_del,
+            $routes,
             $comment,
             $status
         ];
@@ -42,10 +43,11 @@ class ModuleModel extends Model{
             base_on,
             base_off,
             base_del,
+            routes,
             comment,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -105,6 +107,7 @@ class ModuleModel extends Model{
                 base_on,
                 base_off,
                 base_del,
+                routes,
                 comment,
                 status
             FROM " . PREFIX . "modules

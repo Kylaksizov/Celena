@@ -16,18 +16,43 @@ $(function(){
         theme: "celena"
     }
 
-    $(".mirror").each(function(){
-        let mirrorId = $(this).attr("id");
-        CodeMirror.fromTextArea(document.getElementById(mirrorId), php);
-    })
+    let active1 = false;
+    let active3 = false;
 
-    if($("#baseInstall").length > 0){
+    if(window.location.hash == '#1' && !active1){
+        $(".mirror").each(function(){
+            let mirrorId = $(this).attr("id");
+            active1 = CodeMirror.fromTextArea(document.getElementById(mirrorId), php);
+        })
+        active1 = true;
+    }
+
+    if($("#baseInstall").length > 0 && window.location.hash == '#3' && !active3){
         CodeMirror.fromTextArea(document.getElementById("baseInstall"), base);
         CodeMirror.fromTextArea(document.getElementById("baseUpdate"), base);
         CodeMirror.fromTextArea(document.getElementById("baseOn"), base);
         CodeMirror.fromTextArea(document.getElementById("baseOff"), base);
         CodeMirror.fromTextArea(document.getElementById("baseDel"), base);
+        active3 = true;
     }
+
+    $(document).on("click", ".tabs_caption li", function(){
+        if(window.location.hash == '#1' && !active1){
+            $(".mirror").each(function(){
+                let mirrorId = $(this).attr("id");
+                CodeMirror.fromTextArea(document.getElementById(mirrorId), php);
+            })
+            active1 = true;
+        }
+        if(window.location.hash == '#3' && !active3){
+            CodeMirror.fromTextArea(document.getElementById("baseInstall"), base);
+            CodeMirror.fromTextArea(document.getElementById("baseUpdate"), base);
+            CodeMirror.fromTextArea(document.getElementById("baseOn"), base);
+            CodeMirror.fromTextArea(document.getElementById("baseOff"), base);
+            CodeMirror.fromTextArea(document.getElementById("baseDel"), base);
+            active3 = true;
+        }
+    })
 
     $(document).on("click", ".add_file", function(){
 
@@ -157,33 +182,31 @@ $(function(){
         return false;
     })
 
+    let counterRoute = 1;
     $(document).on("click", ".addRoute", function(){
 
-        let milliseconds = new Date();
-        let uniqueId = milliseconds.getTime();
-
         $(this).prev().find("tr:last").after(`<tr>
-            <td><input type="text" name="panel[url][`+uniqueId+`]" placeholder="example/url.html$"></td>
-            <td><input type="text" name="panel[controller][`+uniqueId+`]" placeholder="Example"></td>
-            <td><input type="text" name="panel[action][`+uniqueId+`]" placeholder="Index"></td>
-            <td><input type="checkbox" name="panel[position][`+uniqueId+`]" class="ch_min" id="position`+uniqueId+`" value="1"><label for="position`+uniqueId+`">в начале</label></td>
+            <td><input type="text" name="route[panel][url][`+counterRoute+`]" placeholder="example/url.html$"></td>
+            <td><input type="text" name="route[panel][controller][`+counterRoute+`]" placeholder="Example"></td>
+            <td><input type="text" name="route[panel][action][`+counterRoute+`]" placeholder="Index"></td>
+            <td><input type="checkbox" name="route[panel][position][`+counterRoute+`]" class="ch_min" id="position`+counterRoute+`" value="1"><label for="position`+counterRoute+`">в начале</label></td>
         </tr>`);
         $(this).prev().find("tr:last input:first").focus();
+
+        counterRoute++;
         return false;
     })
 
     $(document).on("click", ".addRouteWeb", function(){
 
-        let milliseconds = new Date();
-        let uniqueId = milliseconds.getTime();
-
         $(this).prev().find("tr:last").after(`<tr>
-            <td><input type="text" name="web[url][`+uniqueId+`]" placeholder="example/url.html$"></td>
-            <td><input type="text" name="web[controller][`+uniqueId+`]" placeholder="Example"></td>
-            <td><input type="text" name="web[action][`+uniqueId+`]" placeholder="Index"></td>
-            <td><input type="checkbox" name="web[position][`+uniqueId+`]" class="ch_min" id="position`+uniqueId+`" value="1"><label for="position`+uniqueId+`">в начале</label></td>
+            <td><input type="text" name="route[web][url][`+counterRoute+`]" placeholder="example/url.html$"></td>
+            <td><input type="text" name="route[web][controller][`+counterRoute+`]" placeholder="Example"></td>
+            <td><input type="text" name="route[web][action][`+counterRoute+`]" placeholder="Index"></td>
+            <td><input type="checkbox" name="route[web][position][`+counterRoute+`]" class="ch_min" id="position`+counterRoute+`" value="1"><label for="position`+counterRoute+`">в начале</label></td>
         </tr>`);
         $(this).prev().find("tr:last input:first").focus();
+        counterRoute++;
         return false;
     })
 })

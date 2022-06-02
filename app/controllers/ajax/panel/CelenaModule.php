@@ -13,10 +13,7 @@ class CelenaModule{
 
 
     public function index(){
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
-exit;
+
         if(!empty($_POST["name"])) self::create();
 
         if(!empty($_POST["action"])){
@@ -32,12 +29,11 @@ exit;
     }
 
 
-
-
     /**
-     * @name удаление плагина
-     * ======================
+     * @name создание модуля
+     * =====================
      * @return void
+     * @throws Exception
      */
     private function create(){
 
@@ -63,11 +59,13 @@ exit;
         $base_del     = !empty($_POST["base"]["del"]) ? trim(htmlspecialchars(strip_tags($_POST["base"]["del"]))) : '';
 
         $poster = '';
+        
+        $routes = !empty($_POST["route"]) ? json_encode($_POST["route"], JSON_UNESCAPED_UNICODE) : '';
 
         $ModuleModel = new ModuleModel();
 
         if(empty($id))
-            $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $comment, $status);
+            $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes, $comment, $status);
         else{
 
             $mid = $id;
@@ -84,6 +82,7 @@ exit;
                     "base_on" => $base_on,
                     "base_off" => $base_off,
                     "base_del" => $base_del,
+                    "routes" => $routes,
                     "comment" => $comment,
                     "status" => $status
                 ]

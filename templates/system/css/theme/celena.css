@@ -1,4 +1,5 @@
-.CodeMirror { background: #f1f4fb; color: #74788d; font-size: 14px; max-height: 200px }
+.CodeMirror { background: #f1f4fb; color: #74788d; font-size: 14px; height: auto; max-height: 200px }
+.baseQueries .CodeMirror { height: 300px; }
 div.CodeMirror-selected { background: #cad3eb }
 .CodeMirror-line::selection,  .CodeMirror-line > span::selection,  .CodeMirror-line > span > span::selection { background: #161A1F }
 .CodeMirror-line::-moz-selection,  .CodeMirror-line > span::-moz-selection,  .CodeMirror-line > span > span::-moz-selection { background: #161A1F }

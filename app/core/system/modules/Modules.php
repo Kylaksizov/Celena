@@ -71,7 +71,6 @@ class Modules{
                         break;
 
                 }
-
             }
 
             self::createOriginalFile('core/system/modules/originals/' . $filePath, $originalFileContent);
