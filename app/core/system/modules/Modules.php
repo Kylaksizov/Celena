@@ -35,7 +35,7 @@ class Modules{
 
                     if($listActions[0]["action"] == 5){
 
-                        self::createOriginalFile($filePath, $listActions[0]["replacecode"]);
+                        self::createDirFile($filePath, $listActions[0]["replacecode"]);
                         continue;
 
                     } else{
@@ -80,9 +80,10 @@ class Modules{
                 }
             }
 
-            self::createDirFile('app/core/system/modules/originals/' . $filePath, $originalFileContent);
-            self::createDirFile($filePath, $resultFileContent);
-
+            if(!empty($filePath)){
+                self::createDirFile('app/core/system/modules/originals/' . $filePath, $originalFileContent);
+                self::createDirFile($filePath, $resultFileContent);
+            }
         }
 
         // перебираем файлы, которые нужно поставить в оригинал
@@ -98,16 +99,20 @@ class Modules{
 
 
 
-    public static function buildRoutes($oldRoutes, $newRoutes){
+    public static function buildRoutes($newRoutes, $oldRoutes = []){
 
-        $oldRoutes = json_decode($oldRoutes, true);
         $newRoutes = json_decode($newRoutes, true);
-        $routePrepare = [];
-        if(!empty($oldRoutes["panel"]["url"])) $routePrepare["panel"] = $oldRoutes["panel"]["url"];
-        if(!empty($oldRoutes["web"]["url"])) $routePrepare["web"] = $oldRoutes["web"]["url"];
 
-        // удаляем старые роуты данного модуля
-        System::removeRoute($routePrepare);
+        if(!empty($oldRoutes)){
+
+            $oldRoutes = json_decode($oldRoutes, true);
+            $routePrepare = [];
+            if(!empty($oldRoutes["panel"]["url"])) $routePrepare["panel"] = $oldRoutes["panel"]["url"];
+            if(!empty($oldRoutes["web"]["url"])) $routePrepare["web"] = $oldRoutes["web"]["url"];
+
+            // удаляем старые роуты данного модуля
+            System::removeRoute($routePrepare);
+        }
 
         $panelRoutes = [];
         $panelRoutesEnd = [];
@@ -160,7 +165,7 @@ class Modules{
 
 
     private static function createDirFile($filePath, $content){
-        
+
         $filePath = explode("/", $filePath);
         $fileName = array_pop($filePath);
 

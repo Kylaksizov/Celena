@@ -42,23 +42,17 @@ return [
 		'settings/currency/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'currency'],
 		'settings/payment-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'paymentMethods'],
 		'settings/delivery-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'deliveryMethods'],
-		'test1/' => ['controller' => 'Test1'],
-		'test2/test-[0-9]+?' => ['controller' => 'Test2', 'action' => 'tes'],
-		'systemssss/routes/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'routes'],
-		'myRoute/' => ['controller' => 'FIrst'],
         
     ],
     
     'web' => [
-        'sss/brands/(page-[0-9]+/)?$' => ['controller' => 'ex2121231'],
-		'(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
+        '(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
 		'([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
 		'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
 		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
 		'(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
-		'productssss/brands/(page-[0-9]+/)?$' => ['controller' => 'Ex1', 'action' => 'ex'],
     ],
     
 ];

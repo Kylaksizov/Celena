@@ -69,15 +69,20 @@ class CelenaModule{
         $routes = !empty($_POST["route"]) ? json_encode($_POST["route"], JSON_UNESCAPED_UNICODE) : '';
 
         $ModuleModel = new ModuleModel();
-        $ModuleInfo = $ModuleModel->getInfo($id);
 
-        // если были изменены или добавлены роуты
-        if(!empty($ModuleInfo["routes"]) && $ModuleInfo["routes"] != $routes)
-            Modules::buildRoutes($ModuleInfo["routes"], $routes); // перестраиваем роуты
+        if(empty($id)){
 
-        if(empty($id))
             $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes, $comment, $status);
+
+            if(!empty($base_install)) Base::run(str_replace("{prefix}", PREFIX, $base_install));
+        }
         else{
+
+            $ModuleInfo = $ModuleModel->getInfo($id);
+
+            // если были изменены или добавлены роуты
+            if(!empty($ModuleInfo["routes"]) && $ModuleInfo["routes"] != $routes)
+                Modules::buildRoutes($routes, $ModuleInfo["routes"]); // перестраиваем роуты
 
             $params = [
                 "name" => $name,
@@ -128,7 +133,7 @@ class CelenaModule{
 
         Modules::initialize();
 
-        header("Location:".$_SERVER["HTTP_REFERER"]);
+        header("Location: /".CONFIG_SYSTEM["panel"]."/modules/");
         die();
     }
 
@@ -152,8 +157,9 @@ class CelenaModule{
 
         if($power){
 
-            if(!empty($ModuleInfo["base_on"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_on"]));
+            Modules::buildRoutes($ModuleInfo["routes"]); // перестраиваем роуты
 
+            if(!empty($ModuleInfo["base_on"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_on"]));
             Log::add('Модуль <b>'.$ModuleInfo["name"].'</b> включен', 1);
 
             $script = '<script>
@@ -175,6 +181,78 @@ class CelenaModule{
         }
 
         System::script($script);
+    }
+
+
+    /**
+     * @name удаление модуля
+     * =====================
+     * @return void
+     * @throws Exception
+     */
+    private function remove(){
+
+        $module_id = intval($_POST["id"]);
+
+        if(empty($_POST['confirm'])){
+
+            $script = '<script>
+                $.confirm("Вы уверены, что хотите удалить?", function(e){
+                    if(e) $.ajaxSend($(this), {"ajax": "CelenaModule", "action": "remove", "id": "'.$module_id.'", "confirm": 1});
+                })
+            </script>';
+
+            die(System::script($script));
+
+        } else {
+
+            $ModuleModel = new ModuleModel();
+            $ModuleInfo = $ModuleModel->getInfoByDel($module_id);
+
+            # TODO нужно будет как-то перенести это в Modules::initialize();
+            foreach ($ModuleInfo as $row) {
+                if($row["action"] == '5' && !empty($row["filepath"]) && file_exists(ROOT . '/' . $row["filepath"])) unlink(ROOT . '/' . $row["filepath"]);
+            }
+
+            $ModuleModel->editFields($module_id, ["status" => 0]);
+
+            if(!empty($ModuleInfo[0]["poster"])) unlink(ROOT . '/uploads/modules/' . $ModuleInfo[0]["poster"]);
+
+            if(!empty($ModuleInfo[0]["routes"])){
+
+                $routes = json_decode($ModuleInfo[0]["routes"], true);
+
+                $routePrepare = [];
+                if(!empty($routes["panel"]["url"])) $routePrepare["panel"] = $routes["panel"]["url"];
+                if(!empty($routes["web"]["url"])) $routePrepare["web"] = $routes["web"]["url"];
+
+                System::removeRoute($routePrepare);
+            }
+
+            if(!empty($ModuleInfo[0]["base_del"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo[0]["base_del"]));
+
+            // удаляем модуль
+            $result = $ModuleModel->remove($module_id);
+
+            if($result){
+
+                Modules::initialize();
+
+                Log::add('Модуль <b>'.$ModuleInfo[0]["name"].'</b> удален', 1);
+
+                $script = '<script>
+                    $(\'[data-a="CelenaModule:action=remove&id='.$module_id.'"]\').closest(".module_table").remove();
+                    $.server_say({say: "Модуль удален!", status: "success"});
+                </script>';
+                System::script($script);
+
+            } else{
+
+                die("info::error::Не удалось удалить модуль!");
+            }
+        }
+
+        die("info::error::Модуль не найден!");
     }
 
 

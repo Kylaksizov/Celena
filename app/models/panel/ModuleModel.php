@@ -150,6 +150,7 @@ class ModuleModel extends Model{
                 version,
                 cv,
                 poster,
+                routes,
                 base_install,
                 base_update,
                 base_on,
@@ -170,6 +171,8 @@ class ModuleModel extends Model{
      */
     public function getByInitialize(){
 
+        //$where = (!$isDel) ? "WHERE m.status = 1" : "";
+
         return System::setKeysArray(
             self::instanceFetchAll("
             SELECT
@@ -180,7 +183,6 @@ class ModuleModel extends Model{
                 ex.replacecode
             FROM " . PREFIX . "modules m
                 LEFT JOIN " . PREFIX . "modules_ex ex ON ex.mid = m.id
-            -- WHERE m.status = 1
             "),
             "filepath"
         );
@@ -228,6 +230,32 @@ class ModuleModel extends Model{
             FROM " . PREFIX . "modules
             WHERE id = ?
             ", [$id]);
+    }
+
+
+    /**
+     * @name получение инфы при удалении модуля
+     * ========================================
+     * @param $id
+     * @return array|false
+     * @throws Exception
+     */
+    public function getInfoByDel($id){
+
+        return Base::run("
+            SELECT
+                m.name,
+                m.poster,
+                m.routes,
+                m.base_del,
+                ex.filepath,
+                ex.action,
+                ex.searchcode,
+                ex.replacecode
+            FROM " . PREFIX . "modules m
+                LEFT JOIN " . PREFIX . "modules_ex ex ON ex.mid = m.id
+            WHERE m.id = ?
+            ", [$id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -299,9 +327,10 @@ class ModuleModel extends Model{
 
 
 
-    public function removePlugin($plugin_id){
+    public function remove($module_id){
 
-        return Base::run("DELETE FROM " . PREFIX . "plugins WHERE plugin_id = ?", [$plugin_id]);
+        Base::run("DELETE FROM " . PREFIX . "modules_ex WHERE mid = ?", [$module_id]);
+        return Base::run("DELETE FROM " . PREFIX . "modules WHERE id = ?", [$module_id]);
     }
 
 
