@@ -193,12 +193,14 @@ class ModulesController extends PanelController {
             }
         }
 
+        $poster = !empty($Module["module"]["poster"]) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/modules/'.$Module["module"]["poster"].'" alt="" class="poster">' : '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/system/celena_photo.png" alt="" class="poster">';
+
 
         $content = '<div class="fx">
             <h1>'.$title.'</h1>
         </div>
         
-        <form action method="POST">
+        <form action method="POST" enctype="multipart/form-data">
             <div class="tabs">
                 <ul class="tabs_caption">
                     <li class="active">Основа</li>
@@ -217,13 +219,16 @@ class ModulesController extends PanelController {
                             <input type="text" name="version" placeholder="0.0.1" value="'.(!empty($Module["module"]["version"]) ? $Module["module"]["version"] : '').'" required>
                             <label for="">Версия <b>Celena</b></label>
                             <input type="text" name="cv" value="'.(!empty($Module["module"]["cv"]) ? $Module["module"]["cv"] : '').'" placeholder="Если пусто, то любая">
+                            <p class="title_box hr_d">Комментарий</p>
+                            <textarea name="comment" rows="3">'.(!empty($Module["module"]["comment"]) ? $Module["module"]["comment"] : '').'</textarea>
                         </div>
                         <div class="tr">
+                            <p class="icon_desc">Иконка должна быть 256x256</p>
+                            '.$poster.'
+                            <div class="clr"></div>
                             <label for="icon" class="upload_files">
                                 <input type="file" name="icon" id="icon"> иконка модуля
                             </label>
-                            <p class="title_box hr_d">Комментарий</p>
-                            <textarea name="comment" rows="3">'.(!empty($Module["module"]["comment"]) ? $Module["module"]["comment"] : '').'</textarea>
                         </div>
                     </div>
                     <p class="title_box hr_d">Описание</p>

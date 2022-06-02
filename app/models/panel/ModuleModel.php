@@ -215,6 +215,22 @@ class ModuleModel extends Model{
 
 
     /**
+     * @name получение постера
+     * =======================
+     * @return mixed|null
+     */
+    public function getPoster($id){
+
+        return self::instanceFetch("
+            SELECT
+                poster
+            FROM " . PREFIX . "modules
+            WHERE id = ?
+            ", [$id]);
+    }
+
+
+    /**
      * @param $id
      * @param array $fields
      * @return int

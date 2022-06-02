@@ -6,8 +6,10 @@ namespace app\controllers\ajax\panel;
 use app\core\Base;
 use app\core\System;
 use app\models\panel\ModuleModel;
+use app\traits\Functions;
 use app\traits\Log;
 use Exception;
+use Intervention\Image\ImageManager;
 
 class CelenaModule{
 
@@ -59,7 +61,10 @@ class CelenaModule{
         $base_del     = !empty($_POST["base"]["del"]) ? trim(htmlspecialchars(strip_tags($_POST["base"]["del"]))) : '';
 
         $poster = '';
-        
+
+        if(!empty($_FILES["icon"]))
+            $poster = $this->uploadImages();
+
         $routes = !empty($_POST["route"]) ? json_encode($_POST["route"], JSON_UNESCAPED_UNICODE) : '';
 
         $ModuleModel = new ModuleModel();
@@ -67,6 +72,11 @@ class CelenaModule{
         if(empty($id))
             $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes, $comment, $status);
         else{
+
+            if(!empty($poster)){ // удаляем старую иконку
+                $Poster = $ModuleModel->getPoster($id);
+                if(!empty($Poster["poster"])) unlink(ROOT . '/uploads/modules/' . $Poster["poster"]);
+            }
 
             $mid = $id;
             $ModuleModel->editFields(
@@ -155,6 +165,57 @@ class CelenaModule{
 
             System::script($script);
         }
+    }
+
+
+
+
+    /**
+     * @name загрузка иконки
+     * =====================
+     * @return false|string
+     */
+    private function uploadImages(){
+
+        $ext = mb_strtolower(pathinfo($_FILES["icon"]["name"], PATHINFO_EXTENSION), 'UTF-8'); // расширение файла
+
+        if(
+            $ext == 'png' ||
+            $ext == 'jpeg' ||
+            $ext == 'jpg' ||
+            $ext == 'webp' ||
+            $ext == 'bmp' ||
+            $ext == 'gif'
+        ) {
+
+            $dir = ROOT . '/uploads/modules'; // если директория не создана
+            if(!file_exists($dir)) mkdir($dir, 0777, true);
+
+            //$milliseconds = round(microtime(true) * 1000);
+            $image_name = Functions::generationCode(3).'_'.uniqid()./*'_'.System::translit(strstr($_FILES["icon"]["name"], ".", true)).*/'.'.$ext;
+
+            $imageSize = getimagesize($_FILES["icon"]["tmp_name"]);
+
+            if(!empty($imageSize[0]) && !empty($imageSize[1]) && $imageSize[0] == '256' && $imageSize[1] == '256'){
+
+                move_uploaded_file($_FILES["icon"]["tmp_name"], $dir . '/' . $image_name);
+
+            } else {
+
+                $image = new ImageManager();
+                $img = $image->make($_FILES["icon"]["tmp_name"])->resize(
+                    256,
+                    256, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                });
+                $img->orientate();
+                $img->save($dir . '/' . $image_name, (!empty(CONFIG_SYSTEM["quality_image"]) ? intval(CONFIG_SYSTEM["quality_image"]) : 100));
+            }
+
+        } else return false;
+
+        return $image_name;
     }
 
 }
