@@ -126,6 +126,8 @@ class CelenaModule{
             }
         }
 
+        Modules::initialize();
+
         header("Location:".$_SERVER["HTTP_REFERER"]);
         die();
     }
@@ -146,6 +148,8 @@ class CelenaModule{
         $ModuleInfo = $ModuleModel->getModuleMain($moduleId);
         $ModuleModel->power($moduleId, $power ? 1 : 0);
 
+        Modules::initialize();
+
         if($power){
 
             if(!empty($ModuleInfo["base_on"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_on"]));
@@ -157,8 +161,6 @@ class CelenaModule{
                 $(\'[data-a="CelenaModule:action=enable&id='.$moduleId.'"]\').replaceWith(`<a href="#" class="btn btn_module_deactivate" data-a="CelenaModule:action=disable&id='.$moduleId.'">Выключить</a>`);
             </script>';
 
-            System::script($script);
-
         } else{
 
             if(!empty($ModuleInfo["base_off"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_off"]));
@@ -167,11 +169,12 @@ class CelenaModule{
 
             $script = '<script>
                 $.server_say({say: "Плагин отключен!", status: "success"});
-                $(\'[data-a="CelenaModule:action=disable&id='.$moduleId.'"]\').replaceWith(`<a href="#" class="btn btn_module_activate" data-a="CelenaModule:action=enable&id='.$moduleId.'">Активировать</a>`);
+                $(\'[data-a="CelenaModule:action=disable&id='.$moduleId.'"]\').replaceWith(`<a href="#" class="btn btn_module_activate" data-a="CelenaModule:action=enable&id='.$moduleId.'">Включить</a>`);
             </script>';
 
-            System::script($script);
         }
+
+        System::script($script);
     }
 
 

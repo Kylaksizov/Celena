@@ -11,7 +11,6 @@ class NotFoundController extends Controller{
 
         $this->view->load();
 
-        $this->view->include('notFound');
         $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="//'.CONFIG_SYSTEM["home"].'/">'.CONFIG_SYSTEM["site_title"].'</a></div>');
 
         $this->view->setMeta('Главная страница', 'Описание страницы', [

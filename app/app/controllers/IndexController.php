@@ -13,6 +13,7 @@ class IndexController extends Controller {
     public function indexAction(){
 
         Functions::preTreatment($this);
+// ура, все работает!
 
 
         // если тег ля вывода продуктов присутствует

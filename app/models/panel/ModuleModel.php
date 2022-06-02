@@ -173,14 +173,14 @@ class ModuleModel extends Model{
         return System::setKeysArray(
             self::instanceFetchAll("
             SELECT
-                -- m.base_install,
+                m.status,
                 ex.filepath,
                 ex.action,
                 ex.searchcode,
                 ex.replacecode
             FROM " . PREFIX . "modules m
                 LEFT JOIN " . PREFIX . "modules_ex ex ON ex.mid = m.id
-            WHERE m.status = 1
+            -- WHERE m.status = 1
             "),
             "filepath"
         );

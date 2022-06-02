@@ -45,6 +45,7 @@ return [
 		'test1/' => ['controller' => 'Test1'],
 		'test2/test-[0-9]+?' => ['controller' => 'Test2', 'action' => 'tes'],
 		'systemssss/routes/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'routes'],
+		'myRoute/' => ['controller' => 'FIrst'],
         
     ],
     

@@ -3,7 +3,6 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
-use app\core\system\modules\Modules;
 use app\models\panel\ModuleModel;
 
 
@@ -11,12 +10,6 @@ class ModulesController extends PanelController {
 
 
     public function indexAction(){
-
-
-
-        Modules::initialize();
-
-
 
         $this->view->styles = ['css/myModules.css'];
         $this->view->scripts = ['js/myModules.js'];
@@ -34,7 +27,7 @@ class ModulesController extends PanelController {
 
             foreach ($Modules["modules"] as $row) {
 
-                $buttonStatus = ($row["status"] == '1') ? '<a href="#" class="btn btn_module_deactivate" data-a="CelenaModule:action=disable&id='.$row["id"].'">Выключить</a>' : '<a href="#" class="btn btn_module_activate" data-a="CelenaModule:action=enable&id='.$row["id"].'">Активировать</a>';
+                $buttonStatus = ($row["status"] == '1') ? '<a href="#" class="btn btn_module_deactivate" data-a="CelenaModule:action=disable&id='.$row["id"].'">Выключить</a>' : '<a href="#" class="btn btn_module_activate" data-a="CelenaModule:action=enable&id='.$row["id"].'">Включить</a>';
 
                 $poster = !empty($row["poster"]) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/modules/'.$row["poster"].'" alt="">' : '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/system/celena_photo.png" alt="">';
 
@@ -163,32 +156,36 @@ class ModulesController extends PanelController {
             $counterRoute = 1;
             if(!empty($routes["panel"])){
 
-                foreach ($routes["panel"]["url"] as $key => $url) {
+                if(!empty($routes["panel"]["url"])){
+                    foreach ($routes["panel"]["url"] as $key => $url) {
 
-                    $action = !empty($routes["panel"]["action"][$key]) ? $routes["panel"]["action"][$key] : '';
+                        $action = !empty($routes["panel"]["action"][$key]) ? $routes["panel"]["action"][$key] : '';
 
-                    $panelRoutes .= '<tr>
-                        <td><input type="text" name="route[panel][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
-                        <td><input type="text" name="route[panel][controller]['.$counterRoute.']" value="'.$routes["panel"]["controller"][$key].'" placeholder="Example"></td>
-                        <td><input type="text" name="route[panel][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
-                        <td><input type="checkbox" name="route[panel][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["panel"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
-                    </tr>';
+                        $panelRoutes .= '<tr>
+                            <td><input type="text" name="route[panel][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
+                            <td><input type="text" name="route[panel][controller]['.$counterRoute.']" value="'.$routes["panel"]["controller"][$key].'" placeholder="Example"></td>
+                            <td><input type="text" name="route[panel][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
+                            <td><input type="checkbox" name="route[panel][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["panel"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
+                        </tr>';
 
-                    $counterRoute++;
+                        $counterRoute++;
+                    }
                 }
 
-                foreach ($routes["web"]["url"] as $key => $url) {
+                if(!empty($routes["web"]["url"])){
+                    foreach ($routes["web"]["url"] as $key => $url) {
 
-                    $action = !empty($routes["web"]["action"][$key]) ? $routes["web"]["action"][$key] : '';
+                        $action = !empty($routes["web"]["action"][$key]) ? $routes["web"]["action"][$key] : '';
 
-                    $webRoutes .= '<tr>
-                        <td><input type="text" name="route[web][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
-                        <td><input type="text" name="route[web][controller]['.$counterRoute.']" value="'.$routes["web"]["controller"][$key].'" placeholder="Example"></td>
-                        <td><input type="text" name="route[web][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
-                        <td><input type="checkbox" name="route[web][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["web"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
-                    </tr>';
+                        $webRoutes .= '<tr>
+                            <td><input type="text" name="route[web][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
+                            <td><input type="text" name="route[web][controller]['.$counterRoute.']" value="'.$routes["web"]["controller"][$key].'" placeholder="Example"></td>
+                            <td><input type="text" name="route[web][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
+                            <td><input type="checkbox" name="route[web][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["web"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
+                        </tr>';
 
-                    $counterRoute++;
+                        $counterRoute++;
+                    }
                 }
             }
         }

@@ -426,12 +426,12 @@ class View{
 
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
-        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/nex.css">
+        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/celena.css">
     <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.'/css/'.$style.'">';
 
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/nex.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/celena.js"></script>';
 
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {

@@ -20,14 +20,16 @@ class Modules{
 
         if(empty($Modules)) return null;
 
+        $filesTurnOriginal = [];
+
         // перебираем файлы
         foreach ($Modules as $filePath => $listActions) {
 
             if(file_exists(CORE . '/system/modules/originals/' . $filePath)) $originalFileContent = file_get_contents(CORE . '/system/modules/originals/' . $filePath);
             else{
 
-                if(file_exists(APP . '/' . $filePath))
-                    $originalFileContent = file_get_contents(APP . '/' . $filePath);
+                if(file_exists(ROOT . '/' . $filePath))
+                    $originalFileContent = file_get_contents(ROOT . '/' . $filePath);
 
                 else{
 
@@ -38,7 +40,7 @@ class Modules{
 
                     } else{
 
-                        Log::add('Файл <b>'.APP . '/' . $filePath.'</b> не найден для изменения');
+                        Log::add('Файл <b>'.$filePath.'</b> не найден для изменения');
                         return false;
                     }
                 }
@@ -48,6 +50,10 @@ class Modules{
 
             // перебираем список действий
             foreach ($listActions as $row) {
+
+                $filesTurnOriginal[CORE . '/system/modules/originals/' . $filePath][] = $row["status"];
+
+                if($row["status"] == '0') continue;
 
                 switch ($row["action"]){
 
@@ -74,9 +80,18 @@ class Modules{
                 }
             }
 
-            self::createOriginalFile('core/system/modules/originals/' . $filePath, $originalFileContent);
-            self::createOriginalFile($filePath, $resultFileContent);
+            self::createDirFile('app/core/system/modules/originals/' . $filePath, $originalFileContent);
+            self::createDirFile($filePath, $resultFileContent);
 
+        }
+
+        // перебираем файлы, которые нужно поставить в оригинал
+        foreach ($filesTurnOriginal as $filePath => $arr) {
+            if(array_search('1', $arr) === false){
+                $originalPath = explode("system/modules/originals/", $filePath);
+                if(file_exists($filePath)) copy($filePath, ROOT . '/' . $originalPath[1]);
+                unlink($filePath);
+            }
         }
     }
 
@@ -87,10 +102,9 @@ class Modules{
 
         $oldRoutes = json_decode($oldRoutes, true);
         $newRoutes = json_decode($newRoutes, true);
-        $routePrepare = [
-            'panel' => $oldRoutes["panel"]["url"],
-            'web' => $oldRoutes["web"]["url"]
-        ];
+        $routePrepare = [];
+        if(!empty($oldRoutes["panel"]["url"])) $routePrepare["panel"] = $oldRoutes["panel"]["url"];
+        if(!empty($oldRoutes["web"]["url"])) $routePrepare["web"] = $oldRoutes["web"]["url"];
 
         // удаляем старые роуты данного модуля
         System::removeRoute($routePrepare);
@@ -131,8 +145,8 @@ class Modules{
         $routes = array_merge($panelRoutes, $webRoutes);
         $routesEnd = array_merge($panelRoutesEnd, $webRoutesEnd);
 
-        if(!empty($routesEnd)) System::addRoute($routes);
-        if(!empty($routes)) System::addRoute($routesEnd, false);
+        if(!empty($routes)) System::addRoute($routes);
+        if(!empty($routesEnd)) System::addRoute($routesEnd, false);
     }
 
 
@@ -145,7 +159,7 @@ class Modules{
 
 
 
-    private static function createOriginalFile($filePath, $content){
+    private static function createDirFile($filePath, $content){
         
         $filePath = explode("/", $filePath);
         $fileName = array_pop($filePath);
@@ -153,10 +167,12 @@ class Modules{
         $next = '';
         foreach ($filePath as $dir) {
             $next .= '/' . $dir;
-            if(!file_exists(APP . $next)) @mkdir(APP . $next);
+            if(!file_exists(ROOT . $next)){
+                mkdir(ROOT . $next);
+            }
         }
 
-        $fp = fopen(APP . $next . '/' . $fileName, "w");
+        $fp = fopen(ROOT . $next . '/' . $fileName, "w");
         flock($fp, LOCK_EX);
         fwrite($fp, $content);
         flock($fp, LOCK_UN);

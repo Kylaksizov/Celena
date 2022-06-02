@@ -25,16 +25,16 @@
     margin-bottom: 10px;
 }
 .btn_module_activate{
-    background: #83cd3f;
+    background: #a1acc9;
 }
 .btn_module_activate:hover{
-    background: #6ab327;
+    background: #545a6a;
 }
 .btn_module_deactivate{
-    background: #72798b;
+    background: #83cd3f;
 }
 .btn_module_deactivate:hover{
-    background: #5a6279;
+    background: #6ab327;
 }
 .btn_module_remove{
     background: #e74a4a;

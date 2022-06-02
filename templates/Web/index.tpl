@@ -6,7 +6,6 @@
     <link rel="icon" href="/app/core/system/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="{THEME}/css/shop.css">
     <link rel="stylesheet" href="{THEME}/css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
     {STYLES}
     {SCRIPTS}
 </head>
