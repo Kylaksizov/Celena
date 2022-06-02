@@ -5,6 +5,7 @@ namespace app\controllers\ajax\panel;
 
 use app\core\Base;
 use app\core\System;
+use app\core\system\modules\Modules;
 use app\models\panel\ModuleModel;
 use app\traits\Functions;
 use app\traits\Log;
@@ -68,34 +69,40 @@ class CelenaModule{
         $routes = !empty($_POST["route"]) ? json_encode($_POST["route"], JSON_UNESCAPED_UNICODE) : '';
 
         $ModuleModel = new ModuleModel();
+        $ModuleInfo = $ModuleModel->getInfo($id);
+
+        // если были изменены или добавлены роуты
+        if(!empty($ModuleInfo["routes"]) && $ModuleInfo["routes"] != $routes)
+            Modules::buildRoutes($ModuleInfo["routes"], $routes); // перестраиваем роуты
 
         if(empty($id))
             $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes, $comment, $status);
         else{
 
-            if(!empty($poster)){ // удаляем старую иконку
-                $Poster = $ModuleModel->getPoster($id);
-                if(!empty($Poster["poster"])) unlink(ROOT . '/uploads/modules/' . $Poster["poster"]);
+            $params = [
+                "name" => $name,
+                "descr" => $descr,
+                "version" => $version,
+                "cv" => $cv,
+                "base_install" => $base_install,
+                "base_update" => $base_update,
+                "base_on" => $base_on,
+                "base_off" => $base_off,
+                "base_del" => $base_del,
+                "routes" => $routes,
+                "comment" => $comment,
+                "status" => $status
+            ];
+
+            if(!empty($poster)) { // удаляем старую иконку
+                $params["poster"] = $poster;
+                if(!empty($ModuleInfo["poster"])) unlink(ROOT . '/uploads/modules/' . $ModuleInfo["poster"]);
             }
 
             $mid = $id;
             $ModuleModel->editFields(
                 $id,
-                [
-                    "name" => $name,
-                    "descr" => $descr,
-                    "version" => $version,
-                    "cv" => $cv,
-                    "poster" => $poster,
-                    "base_install" => $base_install,
-                    "base_update" => $base_update,
-                    "base_on" => $base_on,
-                    "base_off" => $base_off,
-                    "base_del" => $base_del,
-                    "routes" => $routes,
-                    "comment" => $comment,
-                    "status" => $status
-                ]
+                $params
             );
         }
 

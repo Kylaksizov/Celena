@@ -171,7 +171,7 @@ class ModulesController extends PanelController {
                         <td><input type="text" name="route[panel][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
                         <td><input type="text" name="route[panel][controller]['.$counterRoute.']" value="'.$routes["panel"]["controller"][$key].'" placeholder="Example"></td>
                         <td><input type="text" name="route[panel][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
-                        <td><input type="checkbox" name="route[panel][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["panel"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в начале</label></td>
+                        <td><input type="checkbox" name="route[panel][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["panel"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
                     </tr>';
 
                     $counterRoute++;
@@ -185,7 +185,7 @@ class ModulesController extends PanelController {
                         <td><input type="text" name="route[web][url]['.$counterRoute.']" value="'.$url.'" placeholder="example/url.html$"></td>
                         <td><input type="text" name="route[web][controller]['.$counterRoute.']" value="'.$routes["web"]["controller"][$key].'" placeholder="Example"></td>
                         <td><input type="text" name="route[web][action]['.$counterRoute.']" value="'.$action.'" placeholder="Index"></td>
-                        <td><input type="checkbox" name="route[web][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["web"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в начале</label></td>
+                        <td><input type="checkbox" name="route[web][position]['.$counterRoute.']" class="ch_min" id="position'.$counterRoute.'" value="1"'.(!empty($routes["web"]["position"][$key]) ? ' checked' : '').'><label for="position'.$counterRoute.'">в конец</label></td>
                     </tr>';
 
                     $counterRoute++;

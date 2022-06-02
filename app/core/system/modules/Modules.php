@@ -2,6 +2,7 @@
 
 namespace app\core\system\modules;
 
+use app\core\System;
 use app\models\panel\ModuleModel;
 use app\traits\Log;
 
@@ -77,7 +78,61 @@ class Modules{
             self::createOriginalFile($filePath, $resultFileContent);
 
         }
+    }
 
+
+
+
+    public static function buildRoutes($oldRoutes, $newRoutes){
+
+        $oldRoutes = json_decode($oldRoutes, true);
+        $newRoutes = json_decode($newRoutes, true);
+        $routePrepare = [
+            'panel' => $oldRoutes["panel"]["url"],
+            'web' => $oldRoutes["web"]["url"]
+        ];
+
+        // удаляем старые роуты данного модуля
+        System::removeRoute($routePrepare);
+
+        $panelRoutes = [];
+        $panelRoutesEnd = [];
+        $webRoutes = [];
+        $webRoutesEnd = [];
+
+        if(!empty($newRoutes["panel"]["url"])){
+            foreach ($newRoutes["panel"]["url"] as $key => $url) {
+                if(isset($newRoutes["panel"]["position"][$key])){
+                    $panelRoutes["panel"][$url]['controller'] = $newRoutes["panel"]["controller"][$key];
+                    if(!empty($newRoutes["panel"]["action"][$key]))
+                        $panelRoutes["panel"][$url]['action'] = $newRoutes["panel"]["action"][$key];
+                } else {
+                    $panelRoutesEnd["panel"][$url]['controller'] = $newRoutes["panel"]["controller"][$key];
+                    if(!empty($newRoutes["panel"]["action"][$key]))
+                        $panelRoutesEnd["panel"][$url]['action'] = $newRoutes["panel"]["action"][$key];
+                }
+            }
+        }
+
+        if(!empty($newRoutes["web"]["url"])){
+            foreach ($newRoutes["web"]["url"] as $key => $url) {
+                if(isset($newRoutes["web"]["position"][$key])){
+                    $webRoutes["web"][$url]['controller'] = $newRoutes["web"]["controller"][$key];
+                    if(!empty($newRoutes["web"]["action"][$key]))
+                        $webRoutes["web"][$url]['action'] = $newRoutes["web"]["action"][$key];
+                } else {
+                    $webRoutesEnd["web"][$url]['controller'] = $newRoutes["web"]["controller"][$key];
+                    if(!empty($newRoutes["panel"]["action"][$key]))
+                        $webRoutesEnd["web"][$url]['action'] = $newRoutes["web"]["action"][$key];
+                }
+            }
+        }
+
+        $routes = array_merge($panelRoutes, $webRoutes);
+        $routesEnd = array_merge($panelRoutesEnd, $webRoutesEnd);
+
+        if(!empty($routesEnd)) System::addRoute($routes);
+        if(!empty($routes)) System::addRoute($routesEnd, false);
     }
 
 

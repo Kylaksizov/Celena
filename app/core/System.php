@@ -340,7 +340,7 @@ class System{
 
     /**
      * @param array $routes
-     * @param int $position
+     * @param bool|int $position
      * @return bool
      * @example
      * System::addRoute([
@@ -354,7 +354,7 @@ class System{
      * ]
      * ]);
      */
-    public static function addRoute(array $routes, $position = 1){
+    public static function addRoute(array $routes, bool|int $position = true){
 
         $resultRoutes = "";
         $file = ROOT . '/app/cache/routes.php';

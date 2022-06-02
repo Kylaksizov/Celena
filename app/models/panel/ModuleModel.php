@@ -219,11 +219,12 @@ class ModuleModel extends Model{
      * =======================
      * @return mixed|null
      */
-    public function getPoster($id){
+    public function getInfo($id){
 
         return self::instanceFetch("
             SELECT
-                poster
+                poster,
+                routes
             FROM " . PREFIX . "modules
             WHERE id = ?
             ", [$id]);
