@@ -1,0 +1,4 @@
+03.06.2022 09:54:22 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pid' in 'where clause'<br><span class="file_log">1: app\models\panel\NewsModel.php &#10148; 171</span><br><span class="file_log">2: app\controllers\ajax\panel\News.php &#10148; 81</span><br><span class="file_log">3: app\controllers\ajax\panel\News.php &#10148; 18</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+
+03.06.2022 10:03:39 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pid' in 'where clause'<br><span class="file_log">1: app\models\panel\NewsModel.php &#10148; 296</span><br><span class="file_log">2: app\controllers\ajax\panel\News.php &#10148; 144</span><br><span class="file_log">3: app\controllers\ajax\panel\News.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
+

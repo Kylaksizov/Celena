@@ -166,6 +166,34 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}news` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `uid` INT(11) NOT NULL COMMENT 'author id',
+            `title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `m_title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `m_description` VARCHAR(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `short` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+            `content` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+            `poster` int(11) NOT NULL DEFAULT 0,
+            `category` VARCHAR(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `url` VARCHAR(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `created` INT(11) NOT NULL,
+            `last_modify` INT(11) NULL DEFAULT NULL,
+            `status` TINYINT(1) NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}news_cat` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `nid` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `pid` (`nid`),
+            KEY `cid` (`cid`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
         $query = $db->prepare("CREATE TABLE `{$PREFIX}pages` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
             `uid` INT(11) NOT NULL,

@@ -25,6 +25,9 @@ class Modules{
         // перебираем файлы
         foreach ($Modules as $filePath => $listActions) {
 
+            #TODO нужно наверное исправить запрос в БД, так как идет пустой массив, если модуль не имеет действий над файлами
+            if(empty($filePath)) continue;
+
             if(file_exists(CORE . '/system/modules/originals/' . $filePath)) $originalFileContent = file_get_contents(CORE . '/system/modules/originals/' . $filePath);
             else{
 

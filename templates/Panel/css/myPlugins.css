@@ -25,16 +25,16 @@
     margin-bottom: 10px;
 }
 .btn_plugin_activate{
-    background: #83cd3f;
-}
-.btn_plugin_activate:hover{
-    background: #6ab327;
-}
-.btn_plugin_deactivate{
     background: #72798b;
 }
-.btn_plugin_deactivate:hover{
+.btn_plugin_activate:hover{
     background: #5a6279;
+}
+.btn_plugin_deactivate{
+    background: #83cd3f;
+}
+.btn_plugin_deactivate:hover{
+    background: #6ab327;
 }
 .btn_plugin_remove{
     background: #e74a4a;

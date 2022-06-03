@@ -40,6 +40,25 @@ abstract class PanelController{
              * ==========
              */
             $menu = [
+                "Новости" => [
+                    "link" => "{panel}/news/",
+                    "class" => "ico_news",
+                    "submenu" => [
+                        "Добавить новость" => "{panel}/news/add/",
+                        "Категории" => "{panel}/category/",
+                    ]
+                ],
+                "Страницы" => [
+                    "link" => "{panel}/pages/",
+                    "class" => "ico_pages",
+                ],
+                "Категории" => [
+                    "link" => "{panel}/category/",
+                    "class" => "ico_news",
+                    "submenu" => [
+                        "Добавить категорию" => "{panel}/category/add/",
+                    ]
+                ],
                 "Пользователи" => [
                     "link" => "{panel}/users/",
                     "class" => "ico_users",

@@ -70,6 +70,12 @@ class CelenaModule{
 
         $ModuleModel = new ModuleModel();
 
+        if(!empty($id)) $ModuleInfo = $ModuleModel->getInfo($id);
+
+        // если были изменены или добавлены роуты
+        if(!empty($ModuleInfo["routes"]) && $ModuleInfo["routes"] != $routes || empty($id))
+            Modules::buildRoutes($routes, !empty($ModuleInfo["routes"]) ? $ModuleInfo["routes"] : []); // перестраиваем роуты
+
         if(empty($id)){
 
             $mid = $ModuleModel->add(null, $name, $descr, $version, $cv, $poster, $base_install, $base_update, $base_on, $base_off, $base_del, $routes, $comment, $status);
@@ -77,12 +83,6 @@ class CelenaModule{
             if(!empty($base_install)) Base::run(str_replace("{prefix}", PREFIX, $base_install));
         }
         else{
-
-            $ModuleInfo = $ModuleModel->getInfo($id);
-
-            // если были изменены или добавлены роуты
-            if(!empty($ModuleInfo["routes"]) && $ModuleInfo["routes"] != $routes)
-                Modules::buildRoutes($routes, $ModuleInfo["routes"]); // перестраиваем роуты
 
             $params = [
                 "name" => $name,

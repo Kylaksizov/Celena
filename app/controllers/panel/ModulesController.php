@@ -229,7 +229,7 @@ class ModulesController extends PanelController {
                         </div>
                     </div>
                     <p class="title_box hr_d">Описание</p>
-                    <textarea name="descr" rows="5"></textarea>
+                    <textarea name="descr" rows="5">'.(!empty($Module["module"]["descr"]) ? $Module["module"]["descr"] : '').'</textarea>
                     <input type="checkbox" name="status" value="1"'.(!empty($Module["module"]["status"]) ? ' checked' : '').' id="statusModule"><label for="statusModule">Статус</label>
                 </div>
                 

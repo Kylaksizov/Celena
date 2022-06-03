@@ -1,0 +1,10 @@
+.category_icon{
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+.category_icon img{
+    max-height: 100%;
+}
