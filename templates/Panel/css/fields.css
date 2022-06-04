@@ -1,0 +1,20 @@
+.table_settings > div:not(.fieldsSetts){
+    display: grid;
+    grid-gap: 15px;
+    align-items: center;
+    grid-template-columns: 200px 1fr;
+    margin-bottom: 15px;
+}
+.table_settings > div input, .table_settings > div textarea, .table_settings > div select, .table_settings > div .select2{
+    max-width: 400px;
+    margin-bottom: 0;
+}
+.fieldsSetts{
+    display: none;
+}
+.fieldsSetts .descr{
+    font-size: 12px;
+    font-style: italic;
+    color: #9ca4bd;
+    margin: 5px 0 0;
+}

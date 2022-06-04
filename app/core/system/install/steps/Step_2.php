@@ -142,7 +142,7 @@ class Step_2{
         $query = $db->prepare("CREATE TABLE `{$PREFIX}images` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `itype` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 - product, 2 - news',
-            `nid` int(11) NOT NULL DEFAULT 0 COMMENT 'id product or news...',
+            `pid` int(11) NOT NULL DEFAULT 0 COMMENT 'id product or news...',
             `src` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
             `alt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
             `position` tinyint(10) NOT NULL DEFAULT 0,
@@ -166,7 +166,7 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}news` (
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}posts` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
             `uid` INT(11) NOT NULL COMMENT 'author id',
             `title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -184,9 +184,9 @@ class Step_2{
         ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}news_cat` (
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}posts_cat` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
-            `nid` int(11) NOT NULL,
+            `pid` int(11) NOT NULL,
             `cid` int(11) NOT NULL,
             PRIMARY KEY (`id`),
             KEY `pid` (`nid`),
@@ -327,7 +327,7 @@ return [
 return [
 
     // вывод ошибок
-	"errors" => 1,
+	"errors" => 0,
 
     // вести журнал ошибок
 	"db_log" => 1,
@@ -360,23 +360,8 @@ return [
     // разделитель чпу
     "separator" => " &#10148; ",
 
-    // знак валюты
-	"currency" => "$",
-
-    // тип номера заказа
-	"cart_id" => "int",
-
-    // копейки
-    "penny" => true,
-
-    // знаков в ID товара
-	"str_pad_id" => 6,
-
-    // знаков в артикуле товара
-    "str_pad_vendor" => 6,
-
-    // количество товаров в категориях
-	"count_prod_by_cat" => 5,
+    // кол-во товаров в категории
+	"count_in_cat" => 20,
 
     // размер обрезки загружаемых изображений
 	"origin_image" => 1500,
@@ -393,11 +378,8 @@ return [
     // шаблон по умолчанию
 	"template" => "Web",
 
-    // перекидывать на страницу после оформления заказа
-	"after_cart" => "/",
-
     // подтверждение почты
-	"email_confirm" => 1,
+	"email_confirm" => 0,
 
     // email админа
 	"admin_email" => "'.$email.'",

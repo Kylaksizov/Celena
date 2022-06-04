@@ -2,8 +2,6 @@
 
 namespace app\traits;
 
-use app\models\SystemModel;
-
 trait Curl {
 
 

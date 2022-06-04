@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\controllers\classes\CustomProducts;
+use app\controllers\classes\Custom;
 use app\controllers\classes\Functions;
 use app\core\Controller;
 use Exception;
@@ -34,7 +34,7 @@ class SearchController extends Controller {
         // если тег ля вывода продуктов присутствует
         if(!empty($_GET["str"])){
             $_GET["search"] = trim(htmlspecialchars(stripslashes($_GET["str"]))); // repeat
-            $Products = new CustomProducts();
+            $Products = new Custom();
             $products = $Products->get($this, true, end($this->urls), 'products');
             $this->view->setMain('{CONTENT}', $products);
             $this->view->clear();

@@ -6,25 +6,13 @@
 
     <div class="sticky">
 
-        [show="plugins/Celena/Shop/Category"]
-        <div id="filter_goods" class="site_bar_box">
-            <div class="box_title">Фильтр товаров <a href="#" class="close_filter"></a></div>
-            <div class="box_content">
-
-                {filter}
-                <br>
-
-            </div>
-        </div>
-        <a href="#" id="open_filter"></a>
-        [/show]
-        [show="plugins/Celena/Shop/Index,plugins/Celena/Shop/Category,plugins/Celena/Shop/Product"]
+        [show="index,category,news"]
         <div class="site_bar_box">
-            <div class="box_title">Новые товары</div>
+            <div class="box_title">Новости</div>
             <div class="box_content">
-                {products category="0" template="customProducts" limit="3" order="price" sort="asc"}
+                {custom category="0" template="custom" limit="3" sort="asc"}
                 <br><br><br><br>
-                {products category="0" template="customProducts" limit="1"}
+                {custom category="0" template="custom" limit="1"}
             </div>
         </div>
         [/show]

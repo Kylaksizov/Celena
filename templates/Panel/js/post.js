@@ -21,25 +21,25 @@ $(function(){
     })
 
     // активация дезактивация товара
-    $(document).on("change", ".status_news", function(){
-        let newsId = $(this).attr("data-id");
-        let statusNews = $(this).prop("checked");
-        $.ajaxSend($(this), {"ajax": "News", "newsId": newsId, "statusNews": statusNews});
+    $(document).on("change", ".status_post", function(){
+        let postId = $(this).attr("data-id");
+        let statusPost = $(this).prop("checked");
+        $.ajaxSend($(this), {"ajax": "Post", "postId": postId, "statusPost": statusPost});
     })
 
     // сортировка изображений товаров
-    if($("#news_images").length){
-        $("#news_images").sortable({
+    if($("#post_images").length){
+        $("#post_images").sortable({
             placeholder: "ui-state-highlight",
             stop: function() {
                 let newSortImages = [];
-                $("#news_images .img_item").each(function(){
+                $("#post_images .img_item").each(function(){
                     newSortImages.push($(this).attr('data-img-id'));
                 })
-                $.ajaxSend($(this), {"ajax": "News", "newSortImages": newSortImages});
+                $.ajaxSend($(this), {"ajax": "Post", "newSortImages": newSortImages});
             }
         });
-        $("#news_images").disableSelection();
+        $("#post_images").disableSelection();
     }
 
 })

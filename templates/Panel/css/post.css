@@ -1,4 +1,4 @@
-#news_images{
+#post_images{
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -13,7 +13,7 @@
     padding: 2px;
     position: relative;
 }
-#news_images img{
+#post_images img{
     max-height: 70px;
     display: block;
     margin: 0 auto;

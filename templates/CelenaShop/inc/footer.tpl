@@ -55,7 +55,7 @@
 <script src="/templates/system/js/owl.carousel.min.js"></script>
 <script src="/templates/system/js/jquery.maskedinput.min.js"></script>
 <script src="/templates/system/js/rater.min.js"></script>{* <- обязательная системная библиотека*}
-[show="index"]
+[show="plugins/Celena/Shop/Index"]
 <link rel="stylesheet" href="/templates/system/css/jquery-ui.min.css">
 <script src="/templates/system/js/jquery-ui.min.js"></script>
 <script src="/templates/system/js/jquery.ui.touch-punch.min.js"></script>

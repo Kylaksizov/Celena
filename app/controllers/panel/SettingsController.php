@@ -90,6 +90,14 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Количество постов в категориях</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[count_in_cat]" value="'.CONFIG_SYSTEM["count_in_cat"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>До какого размера (в px) уменьшать загружаемые изображения</h3>
                                 <div class="setDescription">Если оставить пустым, то будут загружаться оригинальные изображения.</div>
                             </div>

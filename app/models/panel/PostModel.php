@@ -10,7 +10,7 @@ use Exception;
 use PDO;
 use PDOStatement;
 
-class NewsModel extends Model{
+class PostModel extends Model{
 
 
     public function create($title, array $meta = [], string $short = '', string $content = '', array $categories = [], $url = null, $created = null, int $status = 1){
@@ -32,7 +32,7 @@ class NewsModel extends Model{
             $status
         ];
 
-        Base::run("INSERT INTO " . PREFIX . "news (
+        Base::run("INSERT INTO " . PREFIX . "posts (
             uid,
             title,
             m_title,
@@ -54,7 +54,7 @@ class NewsModel extends Model{
 
         if(!empty($categories)){
             foreach ($categories as $categoryId) {
-                Base::run("INSERT INTO " . PREFIX . "news_cat (nid, cid) VALUES (?, ?)", [$news_id, $categoryId]);
+                Base::run("INSERT INTO " . PREFIX . "posts_cat (pid, cid) VALUES (?, ?)", [$news_id, $categoryId]);
             }
         }
 
@@ -73,8 +73,8 @@ class NewsModel extends Model{
 
         $result = [];
 
-        $result["news"] = Base::run("SELECT * FROM " . PREFIX . "news WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
+        $result["posts"] = Base::run("SELECT * FROM " . PREFIX . "posts WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
     }
@@ -89,7 +89,7 @@ class NewsModel extends Model{
      */
     public function getImages($news_id){
 
-        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$news_id])->fetchAll(PDO::FETCH_ASSOC);
+        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ?", [$news_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -103,7 +103,7 @@ class NewsModel extends Model{
 
         if($all){
 
-            $result = Base::run("SELECT * FROM " . PREFIX . "news ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $result = Base::run("SELECT * FROM " . PREFIX . "posts ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         } else{
 
@@ -116,9 +116,9 @@ class NewsModel extends Model{
                 "pagination" => ""
             ];
 
-            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "news n ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "posts n ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
 
-            $result["news"] = Base::run(
+            $result["posts"] = Base::run(
                 "SELECT
                         id,
                         uid,
@@ -127,7 +127,7 @@ class NewsModel extends Model{
                         url,
                         created,
                         status
-                    FROM " . PREFIX . "news n
+                    FROM " . PREFIX . "posts n
                     GROUP BY id
                     ORDER BY id DESC
                     LIMIT {$pagination["start"]}, {$pagination["limit"]}
@@ -168,27 +168,27 @@ class NewsModel extends Model{
 
             $cats = explode(",", $fields["category"]);
 
-            $News_cat = System::setKeys(Base::run("SELECT id, cid FROM " . PREFIX . "news_cat WHERE nid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "cid");
+            $News_cat = System::setKeys(Base::run("SELECT id, cid FROM " . PREFIX . "posts_cat WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "cid");
 
             foreach ($cats as $catId) {
 
                 if(!empty($News_cat[$catId])){
 
-                    Base::run("UPDATE " . PREFIX . "news_cat SET cid = ? WHERE id = ?", [$catId, $News_cat[$catId]["id"]])->rowCount();
+                    Base::run("UPDATE " . PREFIX . "posts_cat SET cid = ? WHERE id = ?", [$catId, $News_cat[$catId]["id"]])->rowCount();
                     unset($News_cat[$catId]);
 
-                } else Base::run("INSERT INTO " . PREFIX . "news_cat (nid, cid) VALUES (?, ?)", [$id, $catId]);
+                } else Base::run("INSERT INTO " . PREFIX . "posts_cat (pid, cid) VALUES (?, ?)", [$id, $catId]);
             }
 
             if(!empty($News_cat)){ // если остались лишние, удаляем
                 foreach ($News_cat as $pc) {
-                    Base::run("DELETE FROM " . PREFIX . "news_cat WHERE id = ?", [$pc["id"]]);
+                    Base::run("DELETE FROM " . PREFIX . "posts_cat WHERE id = ?", [$pc["id"]]);
                 }
             }
         }
 
 
-        return Base::run("UPDATE " . PREFIX . "news SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "posts SET $set WHERE id = ?", $params)->rowCount();
     }
 
 
@@ -241,7 +241,7 @@ class NewsModel extends Model{
      */
     public function setPoster($news_id, $imageId){
 
-        return Base::run("UPDATE " . PREFIX . "news SET poster = ? WHERE id = ?", [$imageId, $news_id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "posts SET poster = ? WHERE id = ?", [$imageId, $news_id])->rowCount();
     }
 
 
@@ -259,7 +259,7 @@ class NewsModel extends Model{
 
         Base::run("INSERT INTO " . PREFIX . "images (
             itype,
-            nid,
+            pid,
             src,
             alt
         ) VALUES (
@@ -292,9 +292,9 @@ class NewsModel extends Model{
      */
     public function delete($id){
 
-        Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id]);
-        Base::run("DELETE FROM " . PREFIX . "news_cat WHERE pid = ?", [$id]);
-        return Base::run("DELETE FROM " . PREFIX . "news WHERE id = ?", [$id]);
+        Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND pid = ?", [$id]);
+        Base::run("DELETE FROM " . PREFIX . "posts_cat WHERE pid = ?", [$id]);
+        return Base::run("DELETE FROM " . PREFIX . "posts WHERE id = ?", [$id]);
     }
 
 

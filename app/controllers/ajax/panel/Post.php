@@ -3,23 +3,23 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\panel\NewsModel;
+use app\models\panel\PostModel;
 use Exception;
 use Intervention\Image\ImageManager;
 
 
-class News{
+class Post{
 
     public function index(){
 
-        preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $news);
-        $newsId = !empty($news[1]) ? intval($news[1]) : null;
+        preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $post);
+        $postId = !empty($post[1]) ? intval($post[1]) : null;
 
-        if(!empty($_POST["news"])) self::createEditNews($newsId); // создание редактирование новости
-        if(!empty($_POST["deleteNews"])) self::deleteNews(); // удаление новости
-        if(!empty($_POST["statusNews"])) self::editStatus(); // изменение активности
+        if(!empty($_POST["post"])) self::createEditPost($postId); // создание редактирование новости
+        if(!empty($_POST["deletePost"])) self::deletePost(); // удаление новости
+        if(!empty($_POST["statusPost"])) self::editStatus(); // изменение активности
         if(!empty($_POST["newSortImages"])) self::sortImages(); // сортировка изображения новости
-        if(!empty($_POST["setMainImage"])) self::setMainImage($newsId); // установка постера
+        if(!empty($_POST["setMainImage"])) self::setMainImage($postId); // установка постера
         if(!empty($_POST["deleteImage"])) self::deleteImage(); // удаление фото новости
         if(!empty($_POST["photo"])) self::editImage(); // редактирование фото новости
     }
@@ -30,7 +30,7 @@ class News{
      * @return void
      * @throws Exception
      */
-    private function createEditNews($newsId){
+    private function createEditPost($postId){
 
         $title = !empty($_POST["title"]) ? trim(htmlspecialchars(strip_tags($_POST["title"]))) : die("info::error::Укажите название!");
         $url = !empty($_POST["url"]) ? System::translit(trim(htmlspecialchars(strip_tags($_POST["url"])))) : System::translit($title);
@@ -45,18 +45,18 @@ class News{
 
         $addScript = '';
 
-        $NewsModel = new NewsModel();
+        $PostModel = new PostModel();
 
-        if(!$newsId){ // если это добавление новой категории
+        if(!$postId){ // если это добавление новой категории
 
-            $id = $NewsModel->create($title, $meta, $short, $content, $category, $url, $created, $status);
+            $id = $PostModel->create($title, $meta, $short, $content, $category, $url, $created, $status);
 
             if(!empty($_FILES["images"])){
                 $images = $this->uploadImages($id);
-                $addScript = '$("#news_images").append(`';
+                $addScript = '$("#post_images").append(`';
                 foreach ($images as $image) {
-                    $imgId = $NewsModel->addImage(1, $id, $image);
-                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/news/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/news/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="News:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
+                    $imgId = $PostModel->addImage(1, $id, $image);
+                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="Post:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -65,12 +65,12 @@ class News{
             $script = '<script>
                 '.$addScript.'
                 $.server_say({say: "Новость создана!", status: "success"});
-                history.pushState(null, "Редактирование новости", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/news/edit/'.$id.'/");
+                history.pushState(null, "Редактирование новости", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/");
             </script>';
 
         } else{ // если редактирование
 
-            $NewsModel->editFields($newsId, [
+            $PostModel->editFields($postId, [
                 'title' => $title,
                 'm_title' => $meta["title"],
                 'm_description' => $meta["description"],
@@ -82,11 +82,11 @@ class News{
             ]);
 
             if(!empty($_FILES["images"])){
-                $images = $this->uploadImages($newsId);
-                $addScript = '$("#news_images").append(`';
+                $images = $this->uploadImages($postId);
+                $addScript = '$("#post_images").append(`';
                 foreach ($images as $image) {
-                    $imgId = $NewsModel->addImage(1, $newsId, $image);
-                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/news/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/news/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="News:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
+                    $imgId = $PostModel->addImage(1, $postId, $image);
+                    $addScript .= '<div class="img_item"><a href="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image.'" data-fancybox="gallery"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.str_replace('/', '/thumbs/', $image).'"></a><a href="#" class="edit_image" data-img-id="'.$imgId.'"></a><a href="#" class="delete_image" data-a="Post:deleteImage='.$imgId.'&link='.$image.'"></a></div>';
                 }
                 $addScript .= '`);$(".files_preload").html("").hide();';
             }
@@ -115,14 +115,14 @@ class News{
      * @return void
      * @throws Exception
      */
-    private function deleteNews(){
+    private function deletePost(){
 
-        $newsId = intval($_POST["deleteNews"]);
+        $postId = intval($_POST["deletePost"]);
 
         if(empty($_POST['confirm'])){
             $script = '<script>
                 $.confirm("Вы уверены, что хотите удалить?", function(e){
-                    if(e) $.ajaxSend($(this), {"ajax": "News", "deleteNews": "'.$newsId.'", "confirm": 1});
+                    if(e) $.ajaxSend($(this), {"ajax": "Post", "deletePost": "'.$postId.'", "confirm": 1});
                 })
             </script>';
 
@@ -131,22 +131,22 @@ class News{
 
         if(!empty($_POST['confirm'])){
 
-            $NewsModel = new NewsModel();
-            $images = $NewsModel->getImages($newsId);
+            $PostModel = new PostModel();
+            $images = $PostModel->getImages($postId);
 
             if(!empty($images)){
                 foreach ($images as $image) {
-                    @unlink(ROOT . '/uploads/news/'.$image["src"]);
-                    @unlink(ROOT . '/uploads/news/'.str_replace("/", "/thumbs/", $image["src"]));
+                    @unlink(ROOT . '/uploads/post/'.$image["src"]);
+                    @unlink(ROOT . '/uploads/post/'.str_replace("/", "/thumbs/", $image["src"]));
                 }
             }
 
-            $result = $NewsModel->delete($newsId);
+            $result = $PostModel->delete($postId);
 
             if($result){
 
                 $script = '<script>
-                    $(\'[data-a="News:deleteNews='.$newsId.'"]\').closest("tr").remove();
+                    $(\'[data-a="Post:deletePost='.$postId.'"]\').closest("tr").remove();
                     $.server_say({say: "Удалено!", status: "success"});
                 </script>';
                 System::script($script);
@@ -169,10 +169,10 @@ class News{
 
         if(!empty($_POST["newSortImages"])){
 
-            $NewsModel = new NewsModel();
+            $PostModel = new PostModel();
             foreach ($_POST["newSortImages"] as $position => $imageId) {
 
-                $NewsModel->editPositionImage($imageId, $position);
+                $PostModel->editPositionImage($imageId, $position);
             }
         }
 
@@ -188,10 +188,10 @@ class News{
      * @return void
      * @throws Exception
      */
-    private function setMainImage($newsId){
+    private function setMainImage($postId){
 
-        $NewsModel = new NewsModel();
-        $NewsModel->setPoster($newsId, intval($_POST["setMainImage"]));
+        $PostModel = new PostModel();
+        $PostModel->setPoster($postId, intval($_POST["setMainImage"]));
         $script = '<script>
                 $(".is_main").removeClass("is_main");
                 $(".nex_tmp").addClass("is_main");
@@ -212,11 +212,11 @@ class News{
      */
     private function editStatus(){
 
-        $newsId = intval($_POST["newsId"]);
-        $statusNews = ($_POST["statusNews"] == 'true') ? 1 : 0;
+        $postId = intval($_POST["postId"]);
+        $statusPost = ($_POST["statusPost"] == 'true') ? 1 : 0;
 
-        $NewsModel = new NewsModel();
-        $result = $NewsModel->editFields($newsId, ["status" => $statusNews]);
+        $PostModel = new PostModel();
+        $result = $PostModel->editFields($postId, ["status" => $statusPost]);
 
         if($result){
 
@@ -246,8 +246,8 @@ class News{
         $id = intval($_POST["photo"]["id"]);
         $alt = trim(htmlspecialchars(strip_tags($_POST["photo"]["alt"])));
 
-        $NewsModel = new NewsModel();
-        $NewsModel->editFieldsImages($id, ["alt" => $alt]);
+        $PostModel = new PostModel();
+        $PostModel->editFieldsImages($id, ["alt" => $alt]);
 
         $script = '<script>
             $("#editPhoto, .bg_0").fadeOut(300);
@@ -271,10 +271,10 @@ class News{
         $deleteImage = intval($_POST["deleteImage"]);
         $link = trim(htmlspecialchars(strip_tags($_POST["link"])));
 
-        unlink(ROOT . "/uploads/news/".$link);
+        unlink(ROOT . "/uploads/posts/".$link);
 
-        $NewsModel = new NewsModel();
-        $NewsModel->deleteImage($deleteImage);
+        $PostModel = new PostModel();
+        $PostModel->deleteImage($deleteImage);
 
         $script = '<script>
             $(".nex_tmp").closest(".img_item").remove();
@@ -309,7 +309,7 @@ class News{
                 $ext == 'gif'
             ) {
 
-                $dir = ROOT . '/uploads/news'; // если директория не создана
+                $dir = ROOT . '/uploads/posts'; // если директория не создана
                 $dir_rel = date("Y-m", time());
 
                 if(!file_exists($dir)) mkdir($dir, 0777, true);

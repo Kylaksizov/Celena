@@ -40,11 +40,11 @@ abstract class PanelController{
              * ==========
              */
             $menu = [
-                "Новости" => [
-                    "link" => "{panel}/news/",
+                "Посты" => [
+                    "link" => "{panel}/posts/",
                     "class" => "ico_news",
                     "submenu" => [
-                        "Добавить новость" => "{panel}/news/add/",
+                        "Добавить пост" => "{panel}/posts/add/",
                         "Категории" => "{panel}/category/",
                     ]
                 ],
@@ -72,6 +72,7 @@ abstract class PanelController{
                     "class" => "ico_settings",
                     "submenu" => [
                         "Общие настройки" => "{panel}/settings/",
+                        "Дополнительные поля" => "{panel}/fields/",
                         "SEO" => "{panel}/settings/seo/",
                         "Языки" => "{panel}/settings/lang/",
                     ]
@@ -105,7 +106,7 @@ abstract class PanelController{
                         $this->pluginsSystems[$row["name"]] = $PluginSystem;
                         $this->pluginsSystems[$row["name"]]["brandName"] = $row["name"];
 
-                        if($row["name"] == 'Celena/Shop'){
+                        if($row["status"] != 0){
 
                             if(!empty($PluginSystem["editMenu"])){
 

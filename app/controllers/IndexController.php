@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\controllers\classes\CustomProducts;
+use app\controllers\classes\Custom;
 use app\controllers\classes\Functions;
 use app\core\Controller;
 
@@ -16,13 +16,13 @@ class IndexController extends Controller {
 
 
         // если тег ля вывода продуктов присутствует
-        $products = '';
+        $news = '';
         if($this->view->findTag('{CONTENT}', 1)){
-            $Products = new CustomProducts();
-            $products = $Products->get($this, 1, 'index', 'products');
+            $Custom = new Custom();
+            $news = $Custom->get($this, 1, 'index', 'custom');
         }
 
-        $this->view->setMain('{CONTENT}', $products);
+        $this->view->setMain('{CONTENT}', $news);
         $this->view->clear();
 
         $this->view->setMain('{crumbs}', '');
