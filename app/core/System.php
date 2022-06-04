@@ -187,7 +187,7 @@ class System{
     public static function pagination($sql, $params, $start = 0, $limit = 25){
 
         $page_number = 0;
-        $category = $pagination = "";
+        $category = "";
 
         if(!empty($_GET["url"])){
             preg_match('/\/?page\-([0-9]+)\/$/i', $_GET["url"], $page);
@@ -251,10 +251,8 @@ class System{
             // <li class="count_db">записей: <b>'.$count.'</b></li>
             $pagination .= '</ul>';
 
-        } else{
+        } else $pagination = "";
 
-            $pagination = "";
-        }
         $result["count"] = $count;
         $result["pagination"] = $pagination;
 
@@ -494,6 +492,66 @@ return [
         fclose($fp);
 
         return true;
+    }
+
+
+
+    public static function getFields(){
+
+        return file_exists(CORE . '/data/fields.json') ? json_decode(file_get_contents(CORE . '/data/fields.json'), true) : null;
+    }
+
+
+
+    public static function getField(string $tag){
+
+        $fields = self::getFields();
+        return !empty($fields[$tag]) ? $fields[$tag] : null;
+    }
+
+
+
+    public static function deleteField(string $tag){
+
+        $fields = self::getFields();
+        if(!empty($fields[$tag])) unset($fields[$tag]);
+
+        $fp = fopen(CORE . '/data/fields.json', "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, json_encode($fields, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        flock($fp, LOCK_UN);
+        fclose($fp);
+    }
+
+
+
+    public static function editField(string $tag, string $optionName, $optionValue){
+
+        $fields = self::getFields();
+        if(empty($fields[$tag])) return null;
+
+        $fields[$tag][$optionName] = $optionValue;
+
+        $fp = fopen(CORE . '/data/fields.json', "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, json_encode($fields, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        flock($fp, LOCK_UN);
+        fclose($fp);
+    }
+
+
+
+    public static function addField(array $fieldArray){
+
+        $fields = file_exists(CORE . '/data/fields.json') ? json_decode(file_get_contents(CORE . '/data/fields.json'), true) : [];
+
+        $fields = array_merge($fields, $fieldArray);
+
+        $fp = fopen(CORE . '/data/fields.json', "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, json_encode($fields, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        flock($fp, LOCK_UN);
+        fclose($fp);
     }
 
 }

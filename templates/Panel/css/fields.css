@@ -11,6 +11,10 @@
 }
 .fieldsSetts{
     display: none;
+    grid-gap: 15px;
+    align-items: center;
+    grid-template-columns: 200px 1fr;
+    margin-bottom: 15px;
 }
 .fieldsSetts .descr{
     font-size: 12px;

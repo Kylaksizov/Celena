@@ -14,7 +14,7 @@ return [
 		'users/(page-[0-9]+/)?$' => ['controller' => 'users'],
 		'users/roles/(page-[0-9]+/)?$' => ['controller' => 'users', 'action' => 'roles'],
         'fields/$' => ['controller' => 'fields'],
-        'fields/(add/|edit/([0-9]+/)?)$' => ['controller' => 'fields', 'action' => 'add'],
+        'fields/(add/|edit/(.+?/)?)$' => ['controller' => 'fields', 'action' => 'add'],
         'plugins/(page-[0-9]+/)?$' => ['controller' => 'plugins'],
 		'plugin/[0-9]+/settings/$' => ['controller' => 'pluginSettings'],
 		'modules/(page-[0-9]+/)?$' => ['controller' => 'modules'],

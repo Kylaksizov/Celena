@@ -127,9 +127,8 @@ class Post{
             </script>';
 
             die(System::script($script));
-        }
 
-        if(!empty($_POST['confirm'])){
+        } else {
 
             $PostModel = new PostModel();
             $images = $PostModel->getImages($postId);

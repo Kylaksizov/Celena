@@ -20,7 +20,7 @@ $(function(){
         return false
     })
 
-    // активация дезактивация товара
+    // активация дезактивация поста
     $(document).on("change", ".status_post", function(){
         let postId = $(this).attr("data-id");
         let statusPost = $(this).prop("checked");
