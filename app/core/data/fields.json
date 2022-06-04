@@ -1,0 +1,52 @@
+{
+    "new_field": {
+        "name": "Это новое поле",
+        "tag": "new_field",
+        "hint": "rhg",
+        "category": [
+            "4"
+        ],
+        "type": "input",
+        "default": "Хз",
+        "rq": 1,
+        "status": 1
+    },
+    "tretye-pole": {
+        "name": "Третье поле",
+        "tag": "tretye-pole",
+        "hint": "",
+        "category": [],
+        "type": "input",
+        "rq": 0,
+        "status": 0
+    },
+    "chetvertoe-pole": {
+        "name": "Четвертое поле",
+        "tag": "chetvertoe-pole",
+        "hint": "",
+        "category": [],
+        "type": "input",
+        "rq": 0,
+        "status": 0
+    },
+    "pyatoe-pole": {
+        "name": "Пятое поле",
+        "tag": "pyatoe-pole",
+        "hint": "",
+        "category": [],
+        "type": "code",
+        "default": "курпяукпым",
+        "rq": 1,
+        "status": 1
+    },
+    "sedymoe-pole": {
+        "name": "Седьмое поле",
+        "tag": "sedymoe-pole",
+        "hint": "",
+        "category": [],
+        "type": "code",
+        "default": "&lt;script&gt;alert();&lt;\/script&gt;\r\n&lt;input type=&quot;submit&quot; class=&quot;btn&quot; data-a=&quot;Fields&quot; value=&quot;Сохранить&quot;&gt;",
+        "rq": 1,
+        "status": 1
+    }
+}
