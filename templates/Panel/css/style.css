@@ -176,8 +176,8 @@ ul{
     position: relative;
 }
 #menu nav > ul > li > ul{
-    background: #f6f7fb;
-    box-shadow: 0 3px 5px #dcdfed inset;
+    background: #edf0fb;
+    box-shadow: 0 3px 5px #c6cbe1 inset;
     display: none;
 }
 #menu li a{

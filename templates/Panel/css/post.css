@@ -78,3 +78,20 @@
     font-style: italic;
     color: #8f98a5;
 }
+#fields > div{
+    display: grid;
+    grid-gap: 15px;
+    align-items: center;
+    grid-template-columns: 200px 1fr;
+    margin-bottom: 15px;
+}
+#fields > div input, #fields > div textarea, #fields > div select, #fields > div .select2{
+    max-width: 400px;
+    margin-bottom: 0;
+}
+.type_checkbox input[type="checkbox"] + label{
+    top: -12px;
+}
+#fields .upload_files{
+    max-width: 250px;
+}

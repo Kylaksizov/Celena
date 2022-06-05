@@ -4,6 +4,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
+use app\core\System;
 use app\models\panel\CategoryModel;
 use app\models\panel\PostModel;
 use Exception;
@@ -153,6 +154,118 @@ class PostsController extends PanelController {
             if(empty($Post["posts"]["status"])) $PostStatus = '';
         }
 
+
+        /**
+         * @name FIELDS
+         * ============
+         */
+        $Fields = System::getFields();
+
+        $fieldsContent = '';
+
+        if(!empty($Fields)){
+
+            foreach ($Fields as $field) {
+
+                if($field["status"] == '0') continue;
+
+                $fieldElement = '';
+
+                $default = !empty($field["default"]) ? $field["default"] : '';
+                $dataCategory = !empty($field["category"]) ? ' data-category="'.implode(",", $field["category"]).'"' : '';
+
+                switch ($field["type"]){
+
+                    case 'input':
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <input type="text" name="field['.$field["tag"].']" value="'.$default.'">';
+
+                        break;
+
+                    case 'textarea': case 'code':
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <textarea name="field['.$field["tag"].']" rows="5">'.$default.'</textarea>';
+
+                        break;
+
+                    case 'select':
+
+                        $options = '<option value="">-- выберите --</option>';
+
+                        foreach ($field["list"] as $item) {
+                            $item = explode("|", $item);
+                            $options .= '<option value="'.(!empty($item[1]) ? $item[1] : $item[0]).'">'.$item[0].'</option>';
+                        }
+
+                        $multiple = !empty($field["multiple"]) ? ' class="multipleSelect" multiple' : '';
+                        
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <select name="field['.$field["tag"].']"'.$multiple.'>
+                                '.$options.'
+                            </select>';
+
+                        break;
+
+                    case 'image':
+
+                        $multiple = !empty($field[" multiple"]) ? ' multiple' : '';
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <label for="field_'.$field["tag"].'" class="upload_files">
+                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"'.$multiple.'> выбрать изображения
+                            </label>';
+
+                        break;
+
+                    case 'file':
+
+                        $multiple = !empty($field[" multiple"]) ? ' multiple' : '';
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <label for="field_'.$field["tag"].'" class="upload_files">
+                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"'.$multiple.'> выбрать файл
+                            </label>';
+
+                        break;
+
+                    case 'checkbox':
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <div>
+                                <input type="checkbox" name="field['.$field["tag"].']" class="ch_min" id="field_'.$field["tag"].'">
+                                <label for="field_'.$field["tag"].'"></label>
+                            </div>';
+
+                        break;
+
+                    case 'date':
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <input type="text" name="field['.$field["tag"].']" class="date" data-position="top right" value="'.$default.'">';
+
+                        break;
+
+                    case 'dateTime':
+
+                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <input type="text" name="field['.$field["tag"].']" class="dateTime" data-position="top left" value="'.$default.'">';
+
+                        break;
+                }
+
+                $fieldsContent .= '<div'.$dataCategory.' class="type_'.$field["type"].'">
+                    '.$fieldElement.'
+                </div>';
+            }
+        }
+        /**
+         * ================
+         * @name FIELDS END
+         */
+        
+
         $content .= '<form action method="POST">
             <div class="tabs">
                 <ul class="tabs_caption">
@@ -195,24 +308,16 @@ class PostsController extends PanelController {
                     <div>
                         <textarea name="short" id="post_short" rows="5">'.(!empty($Post["posts"]["short"])?$Post["posts"]["short"]:'').'</textarea>
                         <br>
-                        <script>
-                            let editor = new FroalaEditor("#post_short", {
-                                inlineMode: true,
-                                countCharacters: false
-                            });
-                        </script>
                     </div>
                     <p class="title_box hr_d">Описание</p>
                     <div>
                         <textarea name="content" id="post_content" rows="10">'.(!empty($Post["posts"]["content"])?$Post["posts"]["content"]:'').'</textarea>
                         <br>
-                        <script>
-                            let editor = new FroalaEditor("#post_content", {
-                                inlineMode: true,
-                                countCharacters: false
-                            });
-                        </script>
                     </div>
+                    <div id="fields">
+                        '.$fieldsContent.'
+                    </div>
+                    <br>
                     <input type="checkbox" name="status" id="p_status"'.$PostStatus.' value="1"><label for="p_status">Активно</label>
                 </div>
                 

@@ -146,55 +146,67 @@ class ViewPanel{
         $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
 
         $styles = '<link rel="icon" href="//'.CONFIG_SYSTEM['home'].'/app/core/system/img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/panel.css">';
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/panel.css?v='.CONFIG_SYSTEM['version'].'">';
 
         // https://air-datepicker.com/ru/examples
 
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/prevent.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/panel.js"></script>';
+    <!--<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/prevent.js"></script>-->
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/panel.js?v='.CONFIG_SYSTEM['version'].'"></script>';
 
         if(!empty($this->plugins)){
 
             if(in_array("jquery-ui", $this->plugins)){
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery-ui.min.js"></script>';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery-ui.min.js"></script>';
             }
             if(in_array("select2", $this->plugins)){
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/select2.min.css">';
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/select2.full.min.js"></script>';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/select2.min.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/select2.full.min.js"></script>';
             }
             if(in_array("datepicker", $this->plugins)){
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/air-datepicker.css">';
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/air-datepicker.js"></script>';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/air-datepicker.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/air-datepicker.js"></script>';
             }
             if(in_array("fancybox", $this->plugins)){
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/fancybox.css">';
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/fancybox.umd.js"></script>';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/fancybox.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/fancybox.umd.js"></script>';
             }
             if(in_array("rating", $this->plugins)){
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/jquery.rateyo.min.css">';
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.rateyo.min.js"></script>';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/jquery.rateyo.min.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.rateyo.min.js"></script>';
             }
             if(in_array("codemirror", $this->plugins)){
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/codemirror.css">';
-                $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/theme/celena.css">';
-                $scripts .= '<script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/codemirror.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/clike/clike.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/xml/xml.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/javascript/javascript.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/css/css.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/htmlmixed/htmlmixed.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/sql/sql.js"></script>
-                <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/php/php.js"></script>';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/codemirror.css">';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/theme/celena.css?v='.CONFIG_SYSTEM['version'].'">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/codemirror.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/clike/clike.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/xml/xml.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/javascript/javascript.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/css/css.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/sql/sql.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/php/php.js"></script>';
             }
         }
 
         $scripts .= '
-    <script src="{THEME}/js/script.js"></script>';
+    <script src="{THEME}/js/script.js?v='.CONFIG_SYSTEM['version'].'"></script>';
 
-        $styles .= '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/air-datepicker.css">
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/Panel/css/'.$style.'">';
+        $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/Panel/css/'.$style.'?v='.CONFIG_SYSTEM['version'].'">';
 
         #TODO тут нужно подумать что сначала что с конца, учитывая что стили и скрипты могут подключаться как в tpl так и в контроллере !!!!!!!!
         if(!empty($this->styles)){
@@ -228,9 +240,9 @@ class ViewPanel{
 
 
         $styles .= '
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/admin.css">';
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/admin.css?v='.CONFIG_SYSTEM['version'].'">';
         $scripts .= '
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/admin.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/admin.js?v='.CONFIG_SYSTEM['version'].'"></script>';
 
         if(CONFIG_SYSTEM["dev_tools"]) $scripts .= $this->dev();
 

@@ -378,11 +378,17 @@ $(function(){
     })
 
     // https://air-datepicker.com/ru/docs
-    if($('.date').length) new AirDatepicker('.date');
+    if($('.date').length){
+        $('.date').each(function(){
+            let calendarPosition = ($(this).attr("data-position") != undefined) ? {position: $(this).attr("data-position")} : {}
+            new AirDatepicker(this, calendarPosition);
+        })
+    }
     if($('.dateTime').length) {
-        new AirDatepicker('.dateTime', {
-            timepicker: true,
-        });
+        $('.dateTime').each(function(){
+            let calendarData = ($(this).attr("data-position") != undefined) ? {position: $(this).attr("data-position"), timepicker: true} : {timepicker: true}
+            new AirDatepicker(this, calendarData);
+        })
     }
 
 })

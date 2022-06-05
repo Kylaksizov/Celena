@@ -47,6 +47,7 @@ class FieldsController extends PanelController {
                     case 'image':    $type = 'Изображение';     break;
                     case 'file':     $type = 'Файл';            break;
                     case 'checkbox': $type = 'Переключатель \'Да\' или \'Нет\''; break;
+                    case 'date':     $type = 'Дата';            break;
                     case 'dateTime': $type = 'Дата и время';    break;
                 }
 
@@ -160,6 +161,7 @@ class FieldsController extends PanelController {
                             <option value="image"'.(!empty($Field["type"])&&$Field["type"]=='image'?' selected':'').'>Изображение</option>
                             <option value="file"'.(!empty($Field["type"])&&$Field["type"]=='file'?' selected':'').'>Файл</option>
                             <option value="checkbox"'.(!empty($Field["type"])&&$Field["type"]=='checkbox'?' selected':'').'>Переключатель \'Да\' или \'Нет\'</option>
+                            <option value="date"'.(!empty($Field["type"])&&$Field["type"]=='date'?' selected':'').'>Дата</option>
                             <option value="dateTime"'.(!empty($Field["type"])&&$Field["type"]=='dateTime'?' selected':'').'>Дата и время</option>
                         </select>
                     </div>
@@ -176,6 +178,16 @@ class FieldsController extends PanelController {
                         <div>
                             <textarea name="list" rows="5" id="list">'.(!empty($Field["list"])?implode(PHP_EOL, $Field["list"]):'').'</textarea>
                             <p class="descr">Одно значение - одна строка. Укажите разделитель прямой черты |, если хотите в выбранном варианте получить другое значение. Например, укажите: Да|Yes. Таким образом, в списке пользователь увидит Да, а при выборе в результате придет ответ Yes.</p>
+                        </div>
+                    </div>
+                    <div class="fieldsSetts" data-type="select">
+                        <input type="checkbox" name="multiple" id="multiple" class="ch_min" value="1"'.(!empty($Field["multiple"])?' checked':'').'><label for="multiple">Мультиселект</label>
+                    </div>
+                    <div class="fieldsSetts" data-type="image,file">
+                        <label for="maxCount">Максимальное кол-во:</label>
+                        <div>
+                            <input type="number" step="1" name="maxCount" id="maxCount" value="'.(!empty($Field["maxCount"])?$Field["maxCount"]:'').'" placeholder="" style="width:150px">
+                            <p class="descr">Если не указано, можно загружать неограниченое кол-во шт.</p>
                         </div>
                     </div>
                     <div class="fieldsSetts" data-type="image">
@@ -196,7 +208,7 @@ class FieldsController extends PanelController {
                         <input type="checkbox" name="thumb" id="thumb" class="ch_min" value="1"'.(!empty($Field["thumb"])?' checked':'').'><label for="thumb">Создавать уменьшенную копию</label>
                     </div>
                     <div class="fieldsSetts imageThumb"'.(!empty($Field["thumb"])?' style="display:grid"':'').'>
-                        <label for="resizeThumb">Уменьшить размер уменьшеной копии до:</label>
+                        <label for="resizeThumb">Размер уменьшенной копии:</label>
                         <div>
                             <input type="number" step="1" name="resizeThumb" id="resizeThumb" value="'.(!empty($Field["resizeThumb"])?$Field["resizeThumb"]:'').'" placeholder="px" style="width:150px">
                             <p class="descr">Укажите до каких размеров уменьшать изображение. Если оставить пустым, то размеры будут браться из общих настроек.</p>
@@ -207,6 +219,13 @@ class FieldsController extends PanelController {
                         <div>
                             <input type="number" step="1" name="qualityThumb" id="qualityThumb" value="'.(!empty($Field["qualityThumb"])?$Field["qualityThumb"]:'').'" placeholder="%" style="width:150px">
                             <p class="descr">Сжать зображение до указанного. Если оставить пустым, то размеры будут браться из общих настроек.</p>
+                        </div>
+                    </div>
+                    <div class="fieldsSetts" data-type="file">
+                        <label for="format">Разрешенные форматы:</label>
+                        <div>
+                            <input type="text" name="format" id="format" value="'.(!empty($Field["format"])?$Field["format"]:'').'" placeholder="" style="width:150px">
+                            <p class="descr">Укажите форматы файлов через запятую, допустимые к загрузке. Если не указано, будут загружатся форматы: zip, rar, docx, excel</p>
                         </div>
                     </div>
                     <div class="fieldsSetts" data-type="checkbox">

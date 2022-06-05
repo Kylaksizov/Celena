@@ -1,52 +1,155 @@
 {
-    "new_field": {
-        "name": "Это новое поле",
-        "tag": "new_field",
-        "hint": "rhg",
+    "tekstovoe-pole": {
+        "name": "Текстовое поле",
+        "tag": "tekstovoe-pole",
+        "hint": "Тут подсказка",
         "category": [
-            "4"
+            "3"
         ],
         "type": "input",
-        "default": "Хз",
+        "default": "По умолчанию тут",
         "rq": 1,
         "status": 1
     },
-    "tretye-pole": {
-        "name": "Третье поле",
-        "tag": "tretye-pole",
-        "hint": "",
-        "category": [],
-        "type": "input",
+    "bolyshoe-pole": {
+        "name": "Большое поле",
+        "tag": "bolyshoe-pole",
+        "hint": "Тут подсказка 2",
+        "category": [
+            "4",
+            "3"
+        ],
+        "type": "textarea",
+        "default": "Тут по умолчанию строка",
         "rq": 0,
-        "status": 0
+        "status": 1
     },
-    "chetvertoe-pole": {
-        "name": "Четвертое поле",
-        "tag": "chetvertoe-pole",
-        "hint": "",
+    "list": {
+        "name": "Список для всех категорий",
+        "tag": "list",
+        "hint": "Тут подсказка 3",
         "category": [],
-        "type": "input",
-        "rq": 0,
-        "status": 0
-    },
-    "pyatoe-pole": {
-        "name": "Пятое поле",
-        "tag": "pyatoe-pole",
-        "hint": "",
-        "category": [],
-        "type": "code",
-        "default": "курпяукпым",
+        "type": "select",
+        "list": [
+            "Первый|1",
+            "Второй|2",
+            "Третий|3",
+            "Четвертый",
+            "Пятый"
+        ],
         "rq": 1,
         "status": 1
     },
-    "sedymoe-pole": {
-        "name": "Седьмое поле",
-        "tag": "sedymoe-pole",
+    "html": {
+        "name": "HTML",
+        "tag": "html",
         "hint": "",
         "category": [],
         "type": "code",
-        "default": "&lt;script&gt;alert();&lt;\/script&gt;\r\n&lt;input type=&quot;submit&quot; class=&quot;btn&quot; data-a=&quot;Fields&quot; value=&quot;Сохранить&quot;&gt;",
+        "default": "&lt;script&gt;alert();&lt;\/script&gt;\r\n&lt;b&gt;-------------------&lt;\/b&gt;",
+        "rq": 0,
+        "status": 1
+    },
+    "img2": {
+        "name": "Два изображения",
+        "tag": "img2",
+        "hint": "Загрузите два изображения",
+        "category": [],
+        "type": "image",
+        "maxCount": "2",
+        "resizeOriginal": "500",
+        "qualityOriginal": 80,
+        "thumb": 1,
+        "resizeThumb": "200",
         "rq": 1,
+        "status": 1
+    },
+    "gallery": {
+        "name": "Много изображений",
+        "tag": "gallery",
+        "hint": "Загрузите много изображений",
+        "category": [],
+        "type": "image",
+        "thumb": 1,
+        "rq": 0,
+        "status": 1
+    },
+    "odin-fayl": {
+        "name": "Один файл",
+        "tag": "odin-fayl",
+        "hint": "",
+        "category": [],
+        "type": "file",
+        "rq": 0,
+        "status": 1
+    },
+    "mnogo-faylov": {
+        "name": "Много файлов",
+        "tag": "mnogo-faylov",
+        "hint": "",
+        "category": [],
+        "type": "file",
+        "rq": 0,
+        "status": 1
+    },
+    "pereklyuchately-vkl": {
+        "name": "Переключатель вкл",
+        "tag": "pereklyuchately-vkl",
+        "hint": "",
+        "category": [],
+        "type": "checkbox",
+        "default": 0,
+        "rq": 0,
+        "status": 1
+    },
+    "pereklyuchately-vykl": {
+        "name": "Переключатель выкл",
+        "tag": "pereklyuchately-vykl",
+        "hint": "",
+        "category": [],
+        "type": "checkbox",
+        "default": 1,
+        "rq": 0,
+        "status": 1
+    },
+    "data": {
+        "name": "Дата",
+        "tag": "data",
+        "hint": "",
+        "category": [],
+        "type": "date",
+        "rq": 0,
+        "status": 1
+    },
+    "data-i-vremya": {
+        "name": "Дата и время",
+        "tag": "data-i-vremya",
+        "hint": "",
+        "category": [],
+        "type": "dateTime",
+        "rq": 0,
+        "status": 1
+    },
+    "spisok-mulyti": {
+        "name": "Список мульти",
+        "tag": "spisok-mulyti",
+        "hint": "",
+        "category": [],
+        "type": "select",
+        "list": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+        ],
+        "multiple": 1,
+        "rq": 0,
         "status": 1
     }
 }

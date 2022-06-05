@@ -62,6 +62,7 @@ class Fields{
 
                 if(!empty($_POST["list"])) $resultField[$tag]["list"] = explode(PHP_EOL, trim(htmlspecialchars(strip_tags($_POST["list"]))));
                 else die("info::error::Вы не указали сам список!");
+                $resultField[$tag]["multiple"] = !empty($_POST["multiple"]) ? 1 : 0;
 
                 break;
 
@@ -73,6 +74,7 @@ class Fields{
 
             case 'image':
 
+                if(!empty($_POST["maxCount"])) $resultField[$tag]["maxCount"] = trim(htmlspecialchars(strip_tags($_POST["maxCount"])));
                 if(!empty($_POST["resizeOriginal"])) $resultField[$tag]["resizeOriginal"] = trim(htmlspecialchars(strip_tags($_POST["resizeOriginal"])));
                 if(!empty($_POST["qualityOriginal"])){
                     $resultField[$tag]["qualityOriginal"] = intval($_POST["qualityOriginal"]);
