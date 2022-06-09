@@ -42,6 +42,16 @@ class Post{
 
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
+        
+
+        $fieldsData = !empty($_POST["field"]) ? System::getPostFields($_POST["field"], $category) : [];
+
+        echo "<pre>";
+        print_r($fieldsData);
+        echo "</pre>";
+        exit;
+        
+        die("info::error::---");
 
         $addScript = '';
 

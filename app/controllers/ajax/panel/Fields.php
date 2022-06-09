@@ -93,6 +93,13 @@ class Fields{
 
                 break;
 
+            case 'file':
+
+                if(!empty($_POST["maxCount"])) $resultField[$tag]["maxCount"] = intval($_POST["maxCount"]);
+                if(!empty($_POST["format"])) $resultField[$tag]["format"] = trim(htmlspecialchars(strip_tags($_POST["format"])));
+
+                break;
+
             case 'checkbox':
 
                 $resultField[$tag]["default"] = empty($_POST["chDefault"]) ? 1 : 0;

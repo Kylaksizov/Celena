@@ -554,4 +554,119 @@ return [
         fclose($fp);
     }
 
+
+
+    public static function getPostFields($postFields, $categories = []){
+
+        $Fields = self::getFields();
+
+        $fieldsData = [];
+
+        if(!empty($postFields)){
+
+            function strCaseCmp($v1, $v2){
+                if ($v1 === $v2) return 0;
+                return 1;
+            }
+
+            foreach ($Fields as $field) {
+
+                if($field["status"] && (empty($field["category"]) || array_uintersect($categories, $field["category"], "strCaseCmp"))){
+
+                    switch ($field["type"]){
+
+                        case 'input': case 'textarea':
+
+                        if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                        if(!empty($postFields[$field["tag"]]))
+                            $fieldsData[$field["tag"]] = trim(strip_tags($postFields[$field["tag"]]));
+
+                        break;
+
+                        case 'select':
+
+                            if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                            if(!empty($postFields[$field["tag"]])){
+
+                                $selectResult = !empty($field["multiple"]) ? $postFields[$field["tag"]] : $postFields[$field["tag"]];
+                                $fieldsData[$field["tag"]] = $selectResult;
+                            }
+
+                            break;
+
+                        case 'image': case 'file':
+
+                        if($field["rq"] && empty($_FILES["field"]["name"][$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                        if(!empty($_FILES["field"]["name"][$field["tag"]])){
+
+                            if(!empty($field["maxCount"]) && $field["maxCount"] == '1'){
+
+                                $fieldsData[$field["tag"]] = [
+                                    'tag'      => $field["tag"],
+                                    'name'     => $_FILES["field"]["name"][$field["tag"]],
+                                    'type'     => $_FILES["field"]["type"][$field["tag"]],
+                                    'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
+                                    'error'    => $_FILES["field"]["error"][$field["tag"]],
+                                    'size'     => $_FILES["field"]["size"][$field["tag"]],
+                                ];
+
+                            } else{
+
+                                $fieldsData[$field["tag"]] = [
+                                    'tag'      => $field["tag"],
+                                    'name'     => [],
+                                    'type'     => [],
+                                    'tmp_name' => [],
+                                    'error'    => [],
+                                    'size'     => [],
+                                ];
+
+                                $countMax = !empty($field["maxCount"]) ? intval($field["maxCount"]) : null;
+
+                                $i = 0;
+                                foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
+
+                                    if(!$countMax || $i < $countMax){
+                                        array_push($fieldsData[$field["tag"]]["name"], $file);
+                                        array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
+                                        array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
+                                        array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
+                                        array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
+                                    }
+
+                                    $i++;
+                                }
+                            }
+                        }
+
+                        break;
+
+                        case 'checkbox':
+
+                            if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                            if(!empty($postFields[$field["tag"]]))
+                                $fieldsData[$field["tag"]] = 1;
+
+                            break;
+
+                        case 'date': case 'dateTime':
+
+                        if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                        if(!empty($postFields[$field["tag"]]))
+                            $fieldsData[$field["tag"]] = strtotime($postFields[$field["tag"]]);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $fieldsData;
+    }
+
 }

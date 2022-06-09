@@ -86,7 +86,7 @@ class FieldsController extends PanelController {
             </table>
         </div>';
 
-        $this->view->render('Посты', $content);
+        $this->view->render('Дополнительные поля', $content);
     }
 
 

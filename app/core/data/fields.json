@@ -37,7 +37,8 @@
             "Четвертый",
             "Пятый"
         ],
-        "rq": 1,
+        "multiple": 0,
+        "rq": 0,
         "status": 1
     },
     "html": {
@@ -48,6 +49,20 @@
         "type": "code",
         "default": "&lt;script&gt;alert();&lt;\/script&gt;\r\n&lt;b&gt;-------------------&lt;\/b&gt;",
         "rq": 0,
+        "status": 1
+    },
+    "img1": {
+        "name": "Одно изображение",
+        "tag": "img1",
+        "hint": "Загрузите одно изображение",
+        "category": [],
+        "type": "image",
+        "maxCount": "1",
+        "resizeOriginal": "500",
+        "qualityOriginal": 80,
+        "thumb": 1,
+        "resizeThumb": "200",
+        "rq": 1,
         "status": 1
     },
     "img2": {
@@ -80,6 +95,8 @@
         "hint": "",
         "category": [],
         "type": "file",
+        "maxCount": 1,
+        "format": "zip,rar",
         "rq": 0,
         "status": 1
     },
@@ -139,7 +156,7 @@
         "list": [
             "1",
             "2",
-            "3",
+            "3|Это три",
             "4",
             "5",
             "6",

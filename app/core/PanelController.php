@@ -54,7 +54,7 @@ abstract class PanelController{
                 ],
                 "Категории" => [
                     "link" => "{panel}/category/",
-                    "class" => "ico_news",
+                    "class" => "ico_category",
                     "submenu" => [
                         "Добавить категорию" => "{panel}/category/add/",
                     ]

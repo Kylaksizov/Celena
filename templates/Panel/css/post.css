@@ -78,14 +78,14 @@
     font-style: italic;
     color: #8f98a5;
 }
-#fields > div{
+.field{
     display: grid;
     grid-gap: 15px;
     align-items: center;
     grid-template-columns: 200px 1fr;
     margin-bottom: 15px;
 }
-#fields > div input, #fields > div textarea, #fields > div select, #fields > div .select2{
+.field input, .field textarea, .field select, .field .select2{
     max-width: 400px;
     margin-bottom: 0;
 }
@@ -94,4 +94,7 @@
 }
 #fields .upload_files{
     max-width: 250px;
+}
+[data-category]{
+    display: none;
 }

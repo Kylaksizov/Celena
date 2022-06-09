@@ -4,11 +4,11 @@ $(function(){
         
         let fieldType = $("#fieldType option:selected").val();
 
-        $(".fieldsSetts:not(.imageThumb)").slideUp();
+        $(".fieldsSetts:not(.imageThumb)").slideUp(200);
         $('[data-type]').each(function(){
             let dataType = $(this).attr("data-type").split(",");
             if(dataType.indexOf(fieldType) + 1){
-                $(this).slideDown({
+                $(this).delay(200).slideDown({
                     start: function(){
                         $(this).css('display', 'grid');
                     }

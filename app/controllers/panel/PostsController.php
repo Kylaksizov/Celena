@@ -199,34 +199,58 @@ class PostsController extends PanelController {
                             $options .= '<option value="'.(!empty($item[1]) ? $item[1] : $item[0]).'">'.$item[0].'</option>';
                         }
 
-                        $multiple = !empty($field["multiple"]) ? ' class="multipleSelect" multiple' : '';
-                        
-                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <select name="field['.$field["tag"].']"'.$multiple.'>
+                        if(!empty($field["multiple"])){
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <select name="field['.$field["tag"].'][]" class="multipleSelect" multiple>
                                 '.$options.'
                             </select>';
+
+                        } else{
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <select name="field['.$field["tag"].']">
+                                '.$options.'
+                            </select>';
+                        }
 
                         break;
 
                     case 'image':
 
-                        $multiple = !empty($field[" multiple"]) ? ' multiple' : '';
+                        if(empty($field["maxCount"]) || intval($field["maxCount"]) > 1){
 
-                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
                             <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"'.$multiple.'> выбрать изображения
+                                <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать изображения
                             </label>';
+
+                        } else{
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <label for="field_'.$field["tag"].'" class="upload_files">
+                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать изображение
+                            </label>';
+                        }
 
                         break;
 
                     case 'file':
 
-                        $multiple = !empty($field[" multiple"]) ? ' multiple' : '';
+                        if(empty($field["maxCount"]) || intval($field["maxCount"]) > 1){
 
-                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
                             <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"'.$multiple.'> выбрать файл
+                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'" multiple> выбрать файлы
                             </label>';
+
+                        } else{
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <label for="field_'.$field["tag"].'" class="upload_files">
+                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать файл
+                            </label>';
+                        }
 
                         break;
 
@@ -255,7 +279,7 @@ class PostsController extends PanelController {
                         break;
                 }
 
-                $fieldsContent .= '<div'.$dataCategory.' class="type_'.$field["type"].'">
+                $fieldsContent .= '<div'.$dataCategory.' class="field type_'.$field["type"].'">
                     '.$fieldElement.'
                 </div>';
             }
