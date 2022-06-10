@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-use app\core\system\DeclareNames;
 use PDO;
 
 class System{
@@ -666,7 +665,10 @@ return [
             }
         }
 
-        return $fieldsData;
+        return [
+            "fields" => $Fields,
+            "result" => $fieldsData
+        ];
     }
 
 }

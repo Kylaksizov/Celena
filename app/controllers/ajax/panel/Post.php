@@ -3,6 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
+use app\models\panel\FieldsModel;
 use app\models\panel\PostModel;
 use Exception;
 use Intervention\Image\ImageManager;
@@ -42,17 +43,9 @@ class Post{
 
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
+
+        $fieldsData = !empty($_POST["field"]) ? System::getPostFields($_POST["field"], $category) : null;
         
-
-        $fieldsData = !empty($_POST["field"]) ? System::getPostFields($_POST["field"], $category) : [];
-
-        echo "<pre>";
-        print_r($fieldsData);
-        echo "</pre>";
-        exit;
-        
-        die("info::error::---");
-
         $addScript = '';
 
         $PostModel = new PostModel();
@@ -60,6 +53,8 @@ class Post{
         if(!$postId){ // если это добавление новой категории
 
             $id = $PostModel->create($title, $meta, $short, $content, $category, $url, $created, $status);
+
+            $postId = $id;
 
             if(!empty($_FILES["images"])){
                 $images = $this->uploadImages($id);
@@ -112,7 +107,172 @@ class Post{
             #TODO из-за свойств временно сделал автообновление страницы после сохранения - исправить...
         }
 
-        System::script($script);
+
+        // обработка доп полей
+        if($fieldsData){
+
+            $FieldsModel = new FieldsModel();
+            $FieldsModel->clear($postId);
+
+            foreach ($fieldsData["result"] as $tag => $field) {
+
+                $val = false;
+
+                switch ($fieldsData["fields"][$tag]["type"]){
+                    
+                    case 'input': case 'textarea': case 'checkbox':
+
+                        $val = trim(strip_tags($field));
+
+                        break;
+
+                    case 'code':
+
+                        $val = trim(htmlspecialchars($field));
+
+                        break;
+
+                    case 'date': case 'dateTime':
+
+                        $val = intval($field);
+
+                        break;
+
+                    case 'select':
+
+                        if($fieldsData["fields"][$tag]["multiple"])
+                            $val = implode("|", $field);
+                        else
+                            $val = trim(strip_tags($field));
+
+                        break;
+
+                    case 'image':
+
+                        if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
+
+                            $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
+                            $qualityOriginal = !empty($fieldsData["fields"][$tag]["qualityOriginal"]) ? intval($fieldsData["fields"][$tag]["qualityOriginal"]) : 100;
+
+                            $val = self::saveImageField($field["tmp_name"], $field["name"], $resizeOriginal, $qualityOriginal);
+
+                            if(!empty($fieldsData["fields"][$tag]["thumb"])){
+
+                                $resize = !empty($fieldsData["fields"][$tag]["resizeThumb"]) ? intval($fieldsData["fields"][$tag]["resizeThumb"]) : false;
+                                if(!$resize) $resize = !empty(CONFIG_SYSTEM["thumb"]) ? intval(CONFIG_SYSTEM["thumb"]) : false;
+
+                                $quality = !empty($fieldsData["fields"][$tag]["qualityThumb"]) ? intval($fieldsData["fields"][$tag]["qualityThumb"]) : false;
+                                if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
+
+                                if($resize){
+                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val, $field["name"], $resize, $quality, true);
+                                }
+                            }
+                            
+                        } else{
+
+                            $val = '';
+                            foreach ($field["name"] as $key => $imgName) {
+
+                                $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
+                                $qualityOriginal = !empty($fieldsData["fields"][$tag]["qualityOriginal"]) ? intval($fieldsData["fields"][$tag]["qualityOriginal"]) : 100;
+
+                                $uploaded = self::saveImageField($field["tmp_name"][$key], $imgName, $resizeOriginal, $qualityOriginal);
+
+                                if(!empty($fieldsData["fields"][$tag]["thumb"])){
+
+                                    $resize = !empty($fieldsData["fields"][$tag]["resizeThumb"]) ? intval($fieldsData["fields"][$tag]["resizeThumb"]) : false;
+                                    if(!$resize) $resize = !empty(CONFIG_SYSTEM["thumb"]) ? intval(CONFIG_SYSTEM["thumb"]) : false;
+
+                                    $quality = !empty($fieldsData["fields"][$tag]["qualityThumb"]) ? intval($fieldsData["fields"][$tag]["qualityThumb"]) : false;
+                                    if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
+
+                                    if($resize){
+                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded, $imgName, $resize, $quality, true);
+                                    }
+                                }
+
+                                if($uploaded) $val .= $uploaded . '|';
+                            }
+                            $val = trim($val, '|');
+                        }
+
+                        break;
+                }
+
+                if($val){
+
+                    $FieldsModel->add($tag, $val, $postId);
+                }
+            }
+        }
+
+
+
+        die("info::success::---");
+        //System::script($script);
+    }
+
+
+    /**
+     * @name сохранение картинки из доп поля
+     * =====================================
+     * @param $tmp_name
+     * @param $name
+     * @param int|null $resize
+     * @param int $quality
+     * @param bool $thumb
+     * @return false|string
+     */
+    private function saveImageField($tmp_name, $name, int $resize = null, int $quality = 100, bool $thumb = false){
+
+        $result = false;
+
+        $dir = ROOT . '/uploads/fields'; // если директория не создана
+        $dir_rel = date("Y-m", time());
+
+        //if(!file_exists($dir)) mkdir($dir, 0777, true);
+
+        $dir .= '/'.$dir_rel;
+        if(!file_exists($dir)) @mkdir($dir, 0777, true);
+
+        if($thumb){
+            $dir = $dir.'/thumbs';
+            if(!file_exists($dir)) @mkdir($dir, 0777, true);
+        }
+
+        $ext = mb_strtolower(pathinfo($name, PATHINFO_EXTENSION), 'UTF-8'); // расширение файла
+
+        if(
+            $ext == 'png' ||
+            $ext == 'jpeg' ||
+            $ext == 'jpg' ||
+            $ext == 'webp' ||
+            $ext == 'bmp' ||
+            $ext == 'gif'
+        ) {
+
+            //$milliseconds = round(microtime(true) * 1000);
+            $image_name = time().'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
+
+            $result = $dir_rel . '/' . $image_name;
+
+            if($resize){
+
+                $image = new ImageManager();
+                $img = $image->make($tmp_name)->resize(
+                    $resize,
+                    null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                });
+                $img->orientate();
+                $img->save($dir . '/' . $image_name, $quality);
+
+            } else move_uploaded_file($tmp_name, $dir . '/' . $image_name);
+        }
+
+        return $result;
     }
 
 
