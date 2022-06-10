@@ -172,6 +172,7 @@ class Post{
                         } else{
 
                             $val = '';
+
                             foreach ($field["name"] as $key => $imgName) {
 
                                 $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
