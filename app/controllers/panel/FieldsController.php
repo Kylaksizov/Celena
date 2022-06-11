@@ -52,8 +52,9 @@ class FieldsController extends PanelController {
                 }
 
                 $status = !empty($field["status"]) ? ' checked' : '';
+                $rq = !empty($field["rq"]) ? 'field_rq' : '';
 
-                $fieldsContent .= '<tr>
+                $fieldsContent .= '<tr class="'.$rq.'">
                     <td>
                         <a href="/'.CONFIG_SYSTEM["panel"].'/fields/edit/'.$field["tag"].'/">'.$field["name"].'</a>
                     </td>
@@ -225,7 +226,7 @@ class FieldsController extends PanelController {
                         <label for="format">Разрешенные форматы:</label>
                         <div>
                             <input type="text" name="format" id="format" value="'.(!empty($Field["format"])?$Field["format"]:'').'" placeholder="" style="width:150px">
-                            <p class="descr">Укажите форматы файлов через запятую, допустимые к загрузке. Если не указано, будут загружатся форматы: zip, rar, docx, excel</p>
+                            <p class="descr">Укажите форматы файлов через запятую, допустимые к загрузке. Если не указано, будут загружатся форматы, разрешенные по умолчанию: zip, rar, docx, excel, txt</p>
                         </div>
                     </div>
                     <div class="fieldsSetts" data-type="checkbox">

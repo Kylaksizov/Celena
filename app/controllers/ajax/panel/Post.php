@@ -199,6 +199,45 @@ class Post{
                         }
 
                         break;
+
+
+                    case 'file':
+
+
+                        $dir = ROOT . '/uploads/fields'; // если директория не создана
+                        $dir_rel = date("Y-m", time());
+
+                        $dir .= '/'.$dir_rel;
+                        if(!file_exists($dir)) @mkdir($dir, 0777, true);
+
+
+                        if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
+
+                            $milliseconds = round(microtime(true) * 1000);
+                            $ext = mb_strtolower(pathinfo($field["name"], PATHINFO_EXTENSION), 'UTF-8');
+                            $file_name = $milliseconds.'_'.System::translit(strstr($field["name"], ".", true)).'.'.$ext;
+
+                            move_uploaded_file($field["tmp_name"], $dir . '/' . $file_name);
+                            $val = $dir_rel . '/' . $file_name;
+
+                        } else{
+
+                            $val = '';
+
+                            foreach ($field["name"] as $key => $fileName) {
+
+                                $milliseconds = round(microtime(true) * 1000);
+                                $ext = mb_strtolower(pathinfo($fileName, PATHINFO_EXTENSION), 'UTF-8');
+                                $file_name = $milliseconds.'_'.System::translit(strstr($fileName, ".", true)).'.'.$ext;
+
+                                move_uploaded_file($field["tmp_name"][$key], $dir . '/' . $file_name);
+                                $val .= $dir_rel . '/' . $file_name . '|';
+                            }
+                            $val = trim($val, '|');
+
+                        }
+
+                        break;
                 }
 
                 if($val){
@@ -249,12 +288,13 @@ class Post{
             $ext == 'jpeg' ||
             $ext == 'jpg' ||
             $ext == 'webp' ||
+            $ext == 'svg' ||
             $ext == 'bmp' ||
             $ext == 'gif'
         ) {
 
-            //$milliseconds = round(microtime(true) * 1000);
-            $image_name = time().'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
+            $milliseconds = round(microtime(true) * 1000);
+            $image_name = $milliseconds.'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
 
             $result = $dir_rel . '/' . $image_name;
 

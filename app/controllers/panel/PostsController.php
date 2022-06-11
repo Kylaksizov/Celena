@@ -241,7 +241,7 @@ class PostsController extends PanelController {
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
                             <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'" multiple> выбрать файлы
+                                <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать файлы
                             </label>';
 
                         } else{

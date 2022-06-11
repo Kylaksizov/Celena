@@ -603,16 +603,43 @@ return [
 
                             if(!empty($field["maxCount"]) && $field["maxCount"] == '1'){
 
-                                $fieldsData[$field["tag"]] = [
-                                    'tag'      => $field["tag"],
-                                    'name'     => $_FILES["field"]["name"][$field["tag"]],
-                                    'type'     => $_FILES["field"]["type"][$field["tag"]],
-                                    'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
-                                    'error'    => $_FILES["field"]["error"][$field["tag"]],
-                                    'size'     => $_FILES["field"]["size"][$field["tag"]],
-                                ];
+                                if($field["type"] == 'image'){
 
-                            } else{
+                                    $fieldsData[$field["tag"]] = [
+                                        'tag'      => $field["tag"],
+                                        'name'     => $_FILES["field"]["name"][$field["tag"]],
+                                        'type'     => $_FILES["field"]["type"][$field["tag"]],
+                                        'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
+                                        'error'    => $_FILES["field"]["error"][$field["tag"]],
+                                        'size'     => $_FILES["field"]["size"][$field["tag"]],
+                                    ];
+
+                                } else{
+
+                                    $ext = mb_strtolower(pathinfo($_FILES["field"]["name"][$field["tag"]], PATHINFO_EXTENSION), 'UTF-8');
+
+                                    $format = !empty($field["format"]) ? explode(",", $field["format"]) : [
+                                        "zip",
+                                        "rar",
+                                        "docx",
+                                        "excel",
+                                        "txt"
+                                    ];
+
+                                    if(in_array($ext, $format)){
+
+                                        $fieldsData[$field["tag"]] = [
+                                            'tag'      => $field["tag"],
+                                            'name'     => $_FILES["field"]["name"][$field["tag"]],
+                                            'type'     => $_FILES["field"]["type"][$field["tag"]],
+                                            'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
+                                            'error'    => $_FILES["field"]["error"][$field["tag"]],
+                                            'size'     => $_FILES["field"]["size"][$field["tag"]],
+                                        ];
+                                    }
+                                }
+
+                            } else {
 
                                 $fieldsData[$field["tag"]] = [
                                     'tag'      => $field["tag"],
@@ -626,18 +653,51 @@ return [
                                 $countMax = !empty($field["maxCount"]) ? intval($field["maxCount"]) : null;
 
                                 $i = 0;
-                                foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
 
-                                    if(!$countMax || $i < $countMax){
-                                        array_push($fieldsData[$field["tag"]]["name"], $file);
-                                        array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
-                                        array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
-                                        array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
-                                        array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
+                                if($field["type"] == 'image'){
+
+                                    foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
+
+                                        if(!$countMax || $i < $countMax){
+                                            array_push($fieldsData[$field["tag"]]["name"], $file);
+                                            array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
+                                            array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
+                                            array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
+                                            array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
+                                        }
+
+                                        $i++;
                                     }
 
-                                    $i++;
+                                } else{
+
+                                    foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
+
+                                        $ext = mb_strtolower(pathinfo($file, PATHINFO_EXTENSION), 'UTF-8');
+
+                                        $format = !empty($field["format"]) ? explode(",", $field["format"]) : [
+                                            "zip",
+                                            "rar",
+                                            "docx",
+                                            "excel",
+                                            "txt"
+                                        ];
+
+                                        if(in_array($ext, $format)){
+
+                                            if(!$countMax || $i < $countMax){
+                                                array_push($fieldsData[$field["tag"]]["name"], $file);
+                                                array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
+                                                array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
+                                                array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
+                                                array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
+                                            }
+                                        }
+
+                                        $i++;
+                                    }
                                 }
+
                             }
                         }
 
