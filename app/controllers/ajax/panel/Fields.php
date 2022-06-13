@@ -3,6 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
+use app\models\panel\FieldsModel;
 use Exception;
 
 
@@ -16,6 +17,7 @@ class Fields{
         if(!empty($_POST["name"])) self::createEditFields(); // создание редактирование поля
         if(!empty($_POST["delete"])) self::delete(); // удаление поля
         if(!empty($_POST["statusField"])) self::editStatus(); // изменение активности
+        if(!empty($_POST["deleteFieldB"])) self::deleteFieldB(); // удаление картинки или файла из базы
 
         die("info::error::Неизвестный запрос!");
     }
@@ -172,6 +174,54 @@ class Fields{
 
         $script = '<script>
             $.server_say({say: "Статус изменен!", status: "success"});
+        </script>';
+        System::script($script);
+    }
+
+
+
+    /**
+     * @name удаление картинки или файла из базы
+     * =========================================
+     * @return void
+     * @throws Exception
+     */
+    private function deleteFieldB(){
+
+        $fieldId = !empty($_POST["fieldId"]) ? intval($_POST["fieldId"]) : die("info::error::Что-то пошло не так!");
+        $fieldVal = !empty($_POST["deleteFieldB"]) ? trim(htmlspecialchars($_POST["deleteFieldB"])) : die("info::error::Что-то пошло не так!");
+
+        $FieldsModel = new FieldsModel();
+        $Field = $FieldsModel->getFieldById($fieldId);
+        
+        if(!empty($Field["val"])){
+
+            $fDbSource = explode("|", $Field["val"]);
+            foreach ($fDbSource as $key => $item) {
+                if(strripos($item, $fieldVal) !== false)
+                    unset($fDbSource[$key]);
+            }
+
+            if(!empty($fDbSource)){
+                $fDbSource = implode("|", $fDbSource);
+                $FieldsModel->editFieldVal($fieldId, $fDbSource);
+            } else{
+                $FieldsModel->remove($fieldId);
+            }
+        }
+
+        if(file_exists(ROOT . "/uploads/fields/" . $fieldVal))
+            unlink(ROOT . "/uploads/fields/" . $fieldVal);
+
+        if(strripos($fieldVal, "/thumbs/") !== false)
+            unlink(ROOT . "/uploads/fields/" . str_replace("/thumbs", "", $fieldVal));
+
+        $script = '<script>
+            $(".nex_tmp").parent().css({
+                "transform": "scale(0)",
+                "transition": ".5s"
+            });
+            $.server_say({say: "Удалено!", status: "success"});
         </script>';
         System::script($script);
     }

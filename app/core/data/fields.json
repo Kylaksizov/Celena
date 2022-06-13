@@ -8,7 +8,7 @@
         ],
         "type": "input",
         "default": "По умолчанию тут",
-        "rq": 1,
+        "rq": 0,
         "status": 1
     },
     "bolyshoe-pole": {
@@ -86,7 +86,12 @@
         "hint": "Загрузите много изображений",
         "category": [],
         "type": "image",
+        "maxCount": "3",
+        "resizeOriginal": "700",
+        "qualityOriginal": 90,
         "thumb": 1,
+        "resizeThumb": "300",
+        "qualityThumb": 10,
         "rq": 0,
         "status": 1
     },
@@ -99,7 +104,7 @@
         "maxCount": 1,
         "format": "zip,rar",
         "rq": 1,
-        "status": 1
+        "status": 0
     },
     "mnogo-faylov": {
         "name": "Много файлов",
@@ -114,10 +119,10 @@
     "pereklyuchately-vkl": {
         "name": "Переключатель вкл",
         "tag": "pereklyuchately-vkl",
-        "hint": "",
+        "hint": "Тут простой переключатель",
         "category": [],
         "type": "checkbox",
-        "default": 0,
+        "default": 1,
         "rq": 0,
         "status": 1
     },

@@ -112,7 +112,9 @@ class Post{
         if($fieldsData){
 
             $FieldsModel = new FieldsModel();
-            $FieldsModel->clear($postId);
+
+            $resultAddFields = [];
+            //$FieldsModel->clear($postId);
 
             foreach ($fieldsData["result"] as $tag => $field) {
 
@@ -120,21 +122,9 @@ class Post{
 
                 switch ($fieldsData["fields"][$tag]["type"]){
                     
-                    case 'input': case 'textarea': case 'checkbox':
+                    case 'input': case 'textarea': case 'checkbox': case 'code': case 'date': case 'dateTime':
 
-                        $val = trim(strip_tags($field));
-
-                        break;
-
-                    case 'code':
-
-                        $val = trim(htmlspecialchars($field));
-
-                        break;
-
-                    case 'date': case 'dateTime':
-
-                        $val = intval($field);
+                        $val = $field;
 
                         break;
 
@@ -165,13 +155,16 @@ class Post{
                                 if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
 
                                 if($resize){
-                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val, $field["name"], $resize, $quality, true);
+                                    $val = explode(":", $val);
+                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val[0], $val[0], $resize, $quality, true);
                                 }
                             }
                             
                         } else{
 
                             $val = '';
+
+                            if($field == '__ISSET__') break;
 
                             foreach ($field["name"] as $key => $imgName) {
 
@@ -189,7 +182,8 @@ class Post{
                                     if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
 
                                     if($resize){
-                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded, $imgName, $resize, $quality, true);
+                                        $uploaded = explode(":", $uploaded);
+                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded[0], $uploaded[0], $resize, $quality, true);
                                     }
                                 }
 
@@ -217,13 +211,18 @@ class Post{
                             $ext = mb_strtolower(pathinfo($field["name"], PATHINFO_EXTENSION), 'UTF-8');
                             $file_name = $milliseconds.'_'.System::translit(strstr($field["name"], ".", true)).'.'.$ext;
 
+                            $fileSize = filesize($field["tmp_name"]);
+                            $fileInfo = ':' . $fileSize . ':' . $field["name"];
+
                             move_uploaded_file($field["tmp_name"], $dir . '/' . $file_name);
-                            $val = $dir_rel . '/' . $file_name;
+                            $val = $dir_rel . '/' . $file_name . $fileInfo;
 
                         } else{
 
                             $val = '';
 
+                            if($field == '__ISSET__') break;
+                            
                             foreach ($field["name"] as $key => $fileName) {
 
                                 $milliseconds = round(microtime(true) * 1000);
@@ -231,7 +230,11 @@ class Post{
                                 $file_name = $milliseconds.'_'.System::translit(strstr($fileName, ".", true)).'.'.$ext;
 
                                 move_uploaded_file($field["tmp_name"][$key], $dir . '/' . $file_name);
-                                $val .= $dir_rel . '/' . $file_name . '|';
+
+                                $fileSize = filesize($dir . '/' . $file_name);
+                                $fileInfo = ':' . $fileSize . ':' . $fileName;
+
+                                $val .= $dir_rel . '/' . $file_name . $fileInfo . '|';
                             }
                             $val = trim($val, '|');
 
@@ -242,15 +245,14 @@ class Post{
 
                 if($val){
 
-                    $FieldsModel->add($tag, $val, $postId);
+                    $resultAddFields[$tag] = $val;
                 }
             }
+
+            $FieldsModel->add($resultAddFields, $fieldsData["result"], $postId);
         }
 
-
-
-        die("info::success::---");
-        //System::script($script);
+        System::script($script);
     }
 
 
@@ -293,10 +295,16 @@ class Post{
             $ext == 'gif'
         ) {
 
-            $milliseconds = round(microtime(true) * 1000);
-            $image_name = $milliseconds.'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
+            #TODO что-то намудрил, нужно переделать
+            if(!$thumb){
+                $milliseconds = round(microtime(true) * 1000);
+                $image_name = $milliseconds.'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
+            } else{
 
-            $result = $dir_rel . '/' . $image_name;
+                $image_name = str_replace($dir_rel."/", "", strstr($name, ".", true)).'.'.$ext;
+            }
+
+            $result = $dir_rel . '/' . ($thumb?'thumbs/':'') . $image_name;
 
             if($resize){
 
@@ -311,6 +319,13 @@ class Post{
                 $img->save($dir . '/' . $image_name, $quality);
 
             } else move_uploaded_file($tmp_name, $dir . '/' . $image_name);
+
+
+            // image info
+            $imageSize = getimagesize($dir . '/' . $image_name);
+            $fileSize = filesize($dir . '/' . $image_name);
+
+            $result .= ':' . $imageSize[0].'*'.$imageSize[1] . ':' . $fileSize . ':' . $name;
         }
 
         return $result;

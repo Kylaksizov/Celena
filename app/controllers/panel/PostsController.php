@@ -171,6 +171,7 @@ class PostsController extends PanelController {
 
                 $fieldElement = '';
 
+                $hint = !empty($field["hint"]) ? '<p class="field_descr">'.$field["hint"].'</p>' : '';
                 $default = !empty($field["default"]) ? $field["default"] : '';
                 $dataCategory = !empty($field["category"]) ? ' data-category="'.implode(",", $field["category"]).'"' : '';
 
@@ -178,15 +179,25 @@ class PostsController extends PanelController {
 
                     case 'input':
 
+                        $value = $Post["fields"][$field["tag"]]["val"] ?? $default;
+
                         $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <input type="text" name="field['.$field["tag"].']" value="'.$default.'">';
+                            <div>
+                                <input type="text" name="field['.$field["tag"].']" value="'.$value.'" autocomplete="off">
+                                '.$hint.'
+                            </div>';
 
                         break;
 
                     case 'textarea': case 'code':
 
+                        $value = $Post["fields"][$field["tag"]]["val"] ?? $default;
+
                         $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <textarea name="field['.$field["tag"].']" rows="5">'.$default.'</textarea>';
+                            <div>
+                                <textarea name="field['.$field["tag"].']" rows="5">'.$value.'</textarea>
+                                '.$hint.'
+                            </div>';
 
                         break;
 
@@ -194,87 +205,213 @@ class PostsController extends PanelController {
 
                         $options = '<option value="">-- выберите --</option>';
 
+                        if(!empty($field["multiple"]) && isset($Post["fields"][$field["tag"]]["val"])){
+                            $optSelected = explode("|", $Post["fields"][$field["tag"]]["val"]);
+                        }
+
                         foreach ($field["list"] as $item) {
                             $item = explode("|", $item);
-                            $options .= '<option value="'.(!empty($item[1]) ? $item[1] : $item[0]).'">'.$item[0].'</option>';
+                            $val = !empty($item[1]) ? $item[1] : $item[0];
+
+                            if(!empty($field["multiple"]) && !empty($optSelected) && in_array($val, $optSelected)){
+
+                                $selected = ' selected';
+
+                            } else $selected = (isset($Post["fields"][$field["tag"]]["val"]) && $Post["fields"][$field["tag"]]["val"] == $val) ? ' selected' : '';
+
+                            $options .= '<option value="'.$val.'"'.$selected.'>'.$item[0].'</option>';
                         }
 
                         if(!empty($field["multiple"])){
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <select name="field['.$field["tag"].'][]" class="multipleSelect" multiple>
-                                '.$options.'
-                            </select>';
+                            <div>
+                                <select name="field['.$field["tag"].'][]" class="multipleSelect" multiple>
+                                    '.$options.'
+                                </select>
+                                '.$hint.'
+                            </div>';
 
                         } else{
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <select name="field['.$field["tag"].']">
-                                '.$options.'
-                            </select>';
+                            <div>
+                                <select name="field['.$field["tag"].']">
+                                    '.$options.'
+                                </select>
+                                '.$hint.'
+                            </div>';
                         }
 
                         break;
 
                     case 'image':
 
+                        $fields_images = '';
+
+                        if(!empty($Post["fields"][$field["tag"]]["val"])){
+
+                            $fields_images = '<div class="fields_images">';
+
+                            if(strripos($Post["fields"][$field["tag"]]["val"], "|") === false){
+
+                                $imageData = explode(":", $Post["fields"][$field["tag"]]["val"]);
+
+                                $fields_images .= '<div title="'.$imageData[3].'">
+                                    <img src="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/'.$imageData[0].'" alt="'.$imageData[3].'">
+                                    <a href="#editPhoto" class="edit_image open_modal" data-src="'.$imageData[0].'"></a>
+                                    <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Post["fields"][$field["tag"]]["id"] . '"></a>
+                                </div>';
+                            }
+
+                            else{
+
+                                $imgs = explode("|", $Post["fields"][$field["tag"]]["val"]);
+                                foreach ($imgs as $img) {
+
+                                    $imageData = explode(":", $img);
+
+                                    $fields_images .= '<div title="'.$imageData[3].'">
+                                        <img src="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/'.$imageData[0].'" alt="'.$imageData[3].'">
+                                        <a href="#editPhoto" class="edit_image open_modal" data-src="'.$imageData[0].'"></a>
+                                        <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Post["fields"][$field["tag"]]["id"] . '""></a>
+                                    </div>';
+                                }
+                            }
+                            $fields_images .= '</div>
+                                <input type="hidden" name="field['.$field["tag"].'][isset]" value="1">';
+                        }
+
+
                         if(empty($field["maxCount"]) || intval($field["maxCount"]) > 1){
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать изображения
-                            </label>';
+                            <div>
+                                '.$fields_images.'
+                                <label for="field_'.$field["tag"].'" class="upload_files">
+                                    <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать изображения
+                                </label>
+                                '.$hint.'
+                            </div>';
 
                         } else{
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать изображение
-                            </label>';
+                            <div>
+                                '.$fields_images.'
+                                <label for="field_'.$field["tag"].'" class="upload_files">
+                                    <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать изображение
+                                </label>
+                                '.$hint.'
+                            </div>';
                         }
 
                         break;
 
                     case 'file':
 
+                        $files = '';
+
+                        if(!empty($Post["fields"][$field["tag"]]["val"])){
+
+                            $files = '<div class="fields_files">';
+
+                            if(strripos($Post["fields"][$field["tag"]]["val"], "|") === false){
+
+                                $fileData = explode(":", $Post["fields"][$field["tag"]]["val"]);
+                                $fileSize = System::getNormSize($fileData[1]);
+
+                                $files .= '<div title="'.$fileData[2].' ('.$fileSize.')">
+                                    <a href="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/' . $fileData[0] . '" target="_blank" class="isFile file_zip">
+                                        <span class="fileName">'.$fileData[2].'</span>
+                                    </a>
+                                    <a href="#editPhoto" class="edit_image open_modal" data-src="'.$fileData[0].'"></a>
+                                    <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Post["fields"][$field["tag"]]["id"] . '""></a>
+                                </div>';
+                            }
+
+                            else{
+
+                                $fls = explode("|", $Post["fields"][$field["tag"]]["val"]);
+                                foreach ($fls as $file) {
+
+                                    $fileData = explode(":", $file);
+                                    $fileSize = System::getNormSize($fileData[1]);
+
+                                    $files .= '<div title="'.$fileData[2].' ('.$fileSize.')">
+                                        <a href="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/' . $fileData[0] . '" target="_blank" class="isFile file_zip">
+                                            <span class="fileName">'.$fileData[2].'</span>
+                                        </a>
+                                        <a href="#editPhoto" class="edit_image open_modal" data-src="'.$fileData[0].'"></a>
+                                        <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Post["fields"][$field["tag"]]["id"] . '""></a>
+                                    </div>';
+                                }
+                            }
+                            $files .= '</div>
+                                <input type="hidden" name="field['.$field["tag"].'][isset]" value="1">';
+                        }
+
                         if(empty($field["maxCount"]) || intval($field["maxCount"]) > 1){
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать файлы
-                            </label>';
+                            <div>
+                                '.$files.'
+                                <label for="field_'.$field["tag"].'" class="upload_files">
+                                    <input type="file" name="field['.$field["tag"].'][]" id="field_'.$field["tag"].'" multiple> выбрать файлы
+                                </label>
+                                '.$hint.'
+                            </div>';
 
                         } else{
 
                             $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <label for="field_'.$field["tag"].'" class="upload_files">
-                                <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать файл
-                            </label>';
+                            <div>
+                                '.$files.'
+                                <label for="field_'.$field["tag"].'" class="upload_files">
+                                    <input type="file" name="field['.$field["tag"].']" id="field_'.$field["tag"].'"> выбрать файл
+                                </label>
+                                '.$hint.'
+                            </div>';
                         }
 
                         break;
 
                     case 'checkbox':
 
+                        $checked = '';
+                        if(!empty($Post["fields"][$field["tag"]]["val"])) $checked = ' checked';
+                        else if(!empty($default)) $checked = ' checked';
+
                         $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
                             <div>
-                                <input type="checkbox" name="field['.$field["tag"].']" class="ch_min" id="field_'.$field["tag"].'">
+                                <input type="checkbox" name="field['.$field["tag"].']" class="ch_min" id="field_'.$field["tag"].'"'.$checked.'>
                                 <label for="field_'.$field["tag"].'"></label>
+                                '.$hint.'
                             </div>';
 
                         break;
 
                     case 'date':
 
+                        $value = !empty($Post["fields"][$field["tag"]]["val"]) ? date("d.m.Y", $Post["fields"][$field["tag"]]["val"]) : $default;
+
                         $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <input type="text" name="field['.$field["tag"].']" class="date" data-position="top right" value="'.$default.'">';
+                            <div>
+                                <input type="text" name="field['.$field["tag"].']" class="date" data-position="top right" value="'.$value.'" autocomplete="off">
+                                '.$hint.'
+                            </div>';
 
                         break;
 
                     case 'dateTime':
 
+                        $value = !empty($Post["fields"][$field["tag"]]["val"]) ? date("d.m.Y H:i", $Post["fields"][$field["tag"]]["val"]) : $default;
+
                         $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
-                            <input type="text" name="field['.$field["tag"].']" class="dateTime" data-position="top left" value="'.$default.'">';
+                            <div>
+                                <input type="text" name="field['.$field["tag"].']" class="dateTime" data-position="top left" value="'.$value.'" autocomplete="off">
+                                '.$hint.'
+                            </div>';
 
                         break;
                 }

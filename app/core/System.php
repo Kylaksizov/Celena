@@ -132,10 +132,10 @@ class System{
      * @return string
      */
     public static function getNormSize($bytes){
-        if($bytes<1000*1024) return number_format($bytes/1024,2)." KB";
-        elseif($bytes<1000*1048576) return number_format($bytes/1048576,2)." MB";
-        elseif($bytes<1000*1073741824) return number_format($bytes/1073741824,2)." GB";
-        else return number_format($bytes/1099511627776,2)." TB";
+        if($bytes<1000*1024) return number_format($bytes/1024,2)." Kб";
+        elseif($bytes<1000*1048576) return number_format($bytes/1048576,2)." Mб";
+        elseif($bytes<1000*1073741824) return number_format($bytes/1073741824,2)." Гб";
+        else return number_format($bytes/1099511627776,2)." Tб";
     }
 
 
@@ -576,12 +576,21 @@ return [
 
                         case 'input': case 'textarea':
 
-                        if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+                            if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
 
-                        if(!empty($postFields[$field["tag"]]))
-                            $fieldsData[$field["tag"]] = trim(strip_tags($postFields[$field["tag"]]));
+                            if(!empty($postFields[$field["tag"]]))
+                                $fieldsData[$field["tag"]] = trim(strip_tags($postFields[$field["tag"]]));
 
-                        break;
+                            break;
+
+                        case 'code':
+
+                            if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+
+                            if(!empty($postFields[$field["tag"]]))
+                                $fieldsData[$field["tag"]] = trim(htmlspecialchars($postFields[$field["tag"]]));
+
+                            break;
 
                         case 'select':
 
@@ -597,36 +606,13 @@ return [
 
                         case 'image': case 'file':
 
-                        if($field["rq"] && empty($_FILES["field"]["name"][$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+                            if($field["rq"] && empty($postFields[$field["tag"]]) && empty($_FILES["field"]["name"][$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
 
-                        if(!empty($_FILES["field"]["name"][$field["tag"]])){
+                            if(!empty($_FILES["field"]["name"][$field["tag"]])){
 
-                            if(!empty($field["maxCount"]) && $field["maxCount"] == '1'){
+                                if(!empty($field["maxCount"]) && $field["maxCount"] == '1'){
 
-                                if($field["type"] == 'image'){
-
-                                    $fieldsData[$field["tag"]] = [
-                                        'tag'      => $field["tag"],
-                                        'name'     => $_FILES["field"]["name"][$field["tag"]],
-                                        'type'     => $_FILES["field"]["type"][$field["tag"]],
-                                        'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
-                                        'error'    => $_FILES["field"]["error"][$field["tag"]],
-                                        'size'     => $_FILES["field"]["size"][$field["tag"]],
-                                    ];
-
-                                } else{
-
-                                    $ext = mb_strtolower(pathinfo($_FILES["field"]["name"][$field["tag"]], PATHINFO_EXTENSION), 'UTF-8');
-
-                                    $format = !empty($field["format"]) ? explode(",", $field["format"]) : [
-                                        "zip",
-                                        "rar",
-                                        "docx",
-                                        "excel",
-                                        "txt"
-                                    ];
-
-                                    if(in_array($ext, $format)){
+                                    if($field["type"] == 'image'){
 
                                         $fieldsData[$field["tag"]] = [
                                             'tag'      => $field["tag"],
@@ -636,44 +622,10 @@ return [
                                             'error'    => $_FILES["field"]["error"][$field["tag"]],
                                             'size'     => $_FILES["field"]["size"][$field["tag"]],
                                         ];
-                                    }
-                                }
 
-                            } else {
+                                    } else{
 
-                                $fieldsData[$field["tag"]] = [
-                                    'tag'      => $field["tag"],
-                                    'name'     => [],
-                                    'type'     => [],
-                                    'tmp_name' => [],
-                                    'error'    => [],
-                                    'size'     => [],
-                                ];
-
-                                $countMax = !empty($field["maxCount"]) ? intval($field["maxCount"]) : null;
-
-                                $i = 0;
-
-                                if($field["type"] == 'image'){
-
-                                    foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
-
-                                        if(!$countMax || $i < $countMax){
-                                            array_push($fieldsData[$field["tag"]]["name"], $file);
-                                            array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
-                                            array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
-                                            array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
-                                            array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
-                                        }
-
-                                        $i++;
-                                    }
-
-                                } else{
-
-                                    foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
-
-                                        $ext = mb_strtolower(pathinfo($file, PATHINFO_EXTENSION), 'UTF-8');
+                                        $ext = mb_strtolower(pathinfo($_FILES["field"]["name"][$field["tag"]], PATHINFO_EXTENSION), 'UTF-8');
 
                                         $format = !empty($field["format"]) ? explode(",", $field["format"]) : [
                                             "zip",
@@ -685,6 +637,38 @@ return [
 
                                         if(in_array($ext, $format)){
 
+                                            $fieldsData[$field["tag"]] = [
+                                                'tag'      => $field["tag"],
+                                                'name'     => $_FILES["field"]["name"][$field["tag"]],
+                                                'type'     => $_FILES["field"]["type"][$field["tag"]],
+                                                'tmp_name' => $_FILES["field"]["tmp_name"][$field["tag"]],
+                                                'error'    => $_FILES["field"]["error"][$field["tag"]],
+                                                'size'     => $_FILES["field"]["size"][$field["tag"]],
+                                            ];
+                                        }
+                                    }
+
+                                    if(!empty($postFields[$field["tag"]])) $fieldsData[$field["tag"]]["__REPLACE__"] = 1;
+
+                                } else {
+
+                                    $fieldsData[$field["tag"]] = [
+                                        'tag'      => $field["tag"],
+                                        'name'     => [],
+                                        'type'     => [],
+                                        'tmp_name' => [],
+                                        'error'    => [],
+                                        'size'     => [],
+                                    ];
+
+                                    $countMax = !empty($field["maxCount"]) ? intval($field["maxCount"]) : null;
+
+                                    $i = 0;
+
+                                    if($field["type"] == 'image'){
+
+                                        foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
+
                                             if(!$countMax || $i < $countMax){
                                                 array_push($fieldsData[$field["tag"]]["name"], $file);
                                                 array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
@@ -692,16 +676,48 @@ return [
                                                 array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
                                                 array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
                                             }
+
+                                            $i++;
                                         }
 
-                                        $i++;
+                                    } else{
+
+                                        foreach ($_FILES["field"]["name"][$field["tag"]] as $key => $file) {
+
+                                            $ext = mb_strtolower(pathinfo($file, PATHINFO_EXTENSION), 'UTF-8');
+
+                                            $format = !empty($field["format"]) ? explode(",", $field["format"]) : [
+                                                "zip",
+                                                "rar",
+                                                "docx",
+                                                "excel",
+                                                "txt"
+                                            ];
+
+                                            if(in_array($ext, $format)){
+
+                                                if(!$countMax || $i < $countMax){
+                                                    array_push($fieldsData[$field["tag"]]["name"], $file);
+                                                    array_push($fieldsData[$field["tag"]]["type"], $_FILES["field"]["type"][$field["tag"]][$key]);
+                                                    array_push($fieldsData[$field["tag"]]["tmp_name"], $_FILES["field"]["tmp_name"][$field["tag"]][$key]);
+                                                    array_push($fieldsData[$field["tag"]]["error"], $_FILES["field"]["error"][$field["tag"]][$key]);
+                                                    array_push($fieldsData[$field["tag"]]["size"], $_FILES["field"]["size"][$field["tag"]][$key]);
+                                                }
+                                            }
+
+                                            $i++;
+                                        }
                                     }
+
+                                    if(empty($fieldsData[$field["tag"]]["name"])) unset($fieldsData[$field["tag"]]);
+
+                                    //if(!empty($postFields[$field["tag"]])) array_push($fieldsData[$field["tag"]]["name"], "__ADD__");
+                                    if(!empty($postFields[$field["tag"]])) $fieldsData[$field["tag"]]["__ADD__"] = 1;
                                 }
 
-                            }
-                        }
+                            } else if(!empty($postFields[$field["tag"]])) $fieldsData[$field["tag"]] = "__ISSET__";
 
-                        break;
+                            break;
 
                         case 'checkbox':
 
@@ -714,12 +730,12 @@ return [
 
                         case 'date': case 'dateTime':
 
-                        if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
+                            if($field["rq"] && empty($postFields[$field["tag"]])) die("info::error::Заполните доп.поле: " . $field["name"]);
 
-                        if(!empty($postFields[$field["tag"]]))
-                            $fieldsData[$field["tag"]] = strtotime($postFields[$field["tag"]]);
+                            if(!empty($postFields[$field["tag"]]))
+                                $fieldsData[$field["tag"]] = strtotime($postFields[$field["tag"]]);
 
-                        break;
+                            break;
                     }
                 }
             }
