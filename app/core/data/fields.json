@@ -47,7 +47,7 @@
         "hint": "",
         "category": [],
         "type": "code",
-        "default": "&lt;script&gt;alert();&lt;\/script&gt;\r\n&lt;b&gt;-------------------&lt;\/b&gt;",
+        "default": "&lt;script&gt;console.log(&quot;WORK!&quot;);&lt;\/script&gt;\r\n&lt;b&gt;----------WORKING---------&lt;\/b&gt;",
         "rq": 0,
         "status": 1
     },
@@ -104,7 +104,7 @@
         "maxCount": 1,
         "format": "zip,rar",
         "rq": 1,
-        "status": 0
+        "status": 1
     },
     "mnogo-faylov": {
         "name": "Много файлов",
@@ -112,7 +112,7 @@
         "hint": "",
         "category": [],
         "type": "file",
-        "format": "rar",
+        "format": "rar,mp3",
         "rq": 0,
         "status": 1
     },

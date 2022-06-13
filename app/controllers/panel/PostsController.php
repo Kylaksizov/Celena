@@ -7,6 +7,7 @@ use app\core\PanelController;
 use app\core\System;
 use app\models\panel\CategoryModel;
 use app\models\panel\PostModel;
+use app\traits\Fields;
 use Exception;
 
 
@@ -159,7 +160,7 @@ class PostsController extends PanelController {
          * @name FIELDS
          * ============
          */
-        $Fields = System::getFields();
+        $Fields = Fields::getFields();
 
         $fieldsContent = '';
 

@@ -6,7 +6,8 @@ use app\core\Controller;
 use app\core\System;
 use app\core\View;
 use app\models\PostModel;
-use app\plugins\Celena\Shop\classes\Functions;
+use app\controllers\classes\Functions;
+use app\traits\Fields;
 
 
 class PostController extends Controller {
@@ -163,6 +164,8 @@ class PostController extends Controller {
             $this->view->set('{rating-count}', '1');
 
             $this->view->set('{categories}', $Post["post"]["category"]);
+
+            $this->view->include["post"] = Fields::setTags($this->view->include["post"], $Post["post"]["id"]);
 
 
 

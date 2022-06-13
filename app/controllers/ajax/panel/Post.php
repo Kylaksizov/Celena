@@ -44,7 +44,10 @@ class Post{
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
-        $fieldsData = !empty($_POST["field"]) ? System::getPostFields($_POST["field"], $category) : null;
+        $fieldsData = null;
+        if(!empty($_POST["field"])){
+            $fieldsData = \app\traits\Fields::getPostFields($postId, $_POST["field"], $category);
+        }
         
         $addScript = '';
 
@@ -111,10 +114,7 @@ class Post{
         // обработка доп полей
         if($fieldsData){
 
-            $FieldsModel = new FieldsModel();
-
             $resultAddFields = [];
-            //$FieldsModel->clear($postId);
 
             foreach ($fieldsData["result"] as $tag => $field) {
 
@@ -139,10 +139,25 @@ class Post{
 
                     case 'image':
 
+                        if($field == '__ISSET__') break;
+
                         if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
 
                             $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
                             $qualityOriginal = !empty($fieldsData["fields"][$tag]["qualityOriginal"]) ? intval($fieldsData["fields"][$tag]["qualityOriginal"]) : 100;
+
+
+                            if(isset($field["__REPLACE__"])){ // если замена, то удаляем старую
+
+                                $imgPath = strstr($fieldsData["inBase"][$tag]["val"], ":", true);
+
+                                if(file_exists(ROOT . "/uploads/fields/" . $imgPath))
+                                    unlink(ROOT . "/uploads/fields/" . $imgPath);
+
+                                if(strripos($imgPath, "/thumbs/") !== false)
+                                    unlink(ROOT . "/uploads/fields/" . str_replace("/thumbs", "", $imgPath));
+                            }
+
 
                             $val = self::saveImageField($field["tmp_name"], $field["name"], $resizeOriginal, $qualityOriginal);
 
@@ -156,15 +171,13 @@ class Post{
 
                                 if($resize){
                                     $val = explode(":", $val);
-                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val[0], $val[0], $resize, $quality, true);
+                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val[0], end($val), $resize, $quality, true);
                                 }
                             }
                             
                         } else{
 
                             $val = '';
-
-                            if($field == '__ISSET__') break;
 
                             foreach ($field["name"] as $key => $imgName) {
 
@@ -173,6 +186,7 @@ class Post{
 
                                 $uploaded = self::saveImageField($field["tmp_name"][$key], $imgName, $resizeOriginal, $qualityOriginal);
 
+                                // сделать тут проверку на кол-во вместо вышестоящей функции
                                 if(!empty($fieldsData["fields"][$tag]["thumb"])){
 
                                     $resize = !empty($fieldsData["fields"][$tag]["resizeThumb"]) ? intval($fieldsData["fields"][$tag]["resizeThumb"]) : false;
@@ -183,7 +197,7 @@ class Post{
 
                                     if($resize){
                                         $uploaded = explode(":", $uploaded);
-                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded[0], $uploaded[0], $resize, $quality, true);
+                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded[0], end($uploaded), $resize, $quality, true);
                                     }
                                 }
 
@@ -197,6 +211,7 @@ class Post{
 
                     case 'file':
 
+                        if($field == '__ISSET__') break;
 
                         $dir = ROOT . '/uploads/fields'; // если директория не создана
                         $dir_rel = date("Y-m", time());
@@ -206,6 +221,16 @@ class Post{
 
 
                         if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
+
+
+                            if(isset($field["__REPLACE__"])){ // если замена, то удаляем старую
+
+                                $filePath = strstr($fieldsData["inBase"][$tag]["val"], ":", true);
+
+                                if(file_exists(ROOT . "/uploads/fields/" . $filePath))
+                                    unlink(ROOT . "/uploads/fields/" . $filePath);
+                            }
+
 
                             $milliseconds = round(microtime(true) * 1000);
                             $ext = mb_strtolower(pathinfo($field["name"], PATHINFO_EXTENSION), 'UTF-8');
@@ -221,8 +246,6 @@ class Post{
 
                             $val = '';
 
-                            if($field == '__ISSET__') break;
-                            
                             foreach ($field["name"] as $key => $fileName) {
 
                                 $milliseconds = round(microtime(true) * 1000);
@@ -249,7 +272,8 @@ class Post{
                 }
             }
 
-            $FieldsModel->add($resultAddFields, $fieldsData["result"], $postId);
+            $FieldsModel = new FieldsModel();
+            $FieldsModel->add($resultAddFields, $fieldsData["inBase"], $fieldsData["result"], $postId);
         }
 
         System::script($script);
@@ -300,8 +324,8 @@ class Post{
                 $milliseconds = round(microtime(true) * 1000);
                 $image_name = $milliseconds.'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
             } else{
-
-                $image_name = str_replace($dir_rel."/", "", strstr($name, ".", true)).'.'.$ext;
+                $tName = explode("/", $tmp_name);
+                $image_name = str_replace($dir_rel."/", "", strstr(end($tName), ".", true)).'.'.$ext;
             }
 
             $result = $dir_rel . '/' . ($thumb?'thumbs/':'') . $image_name;

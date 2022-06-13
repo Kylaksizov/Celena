@@ -6,6 +6,7 @@ namespace app\controllers\panel;
 use app\core\PanelController;
 use app\core\System;
 use app\models\panel\CategoryModel;
+use app\traits\Fields;
 use Exception;
 
 
@@ -29,7 +30,7 @@ class FieldsController extends PanelController {
             <a href="/'.CONFIG_SYSTEM["panel"].'/fields/add/" class="btn">Добавить поле</a>
         </div>';
 
-        $Fields = System::getFields();
+        $Fields = Fields::getFields();
 
         $fieldsContent = '';
 
@@ -116,7 +117,7 @@ class FieldsController extends PanelController {
 
         if(!empty($this->urls[3])){
             
-            $Field = System::getField($this->urls[3]);
+            $Field = Fields::getField($this->urls[3]);
             $h1 = 'Редактирование поля: <b>'.$Field["name"].'</b>';
         }
 

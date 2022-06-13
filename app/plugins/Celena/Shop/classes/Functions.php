@@ -1,6 +1,6 @@
 <?php
 
-namespace app\plugins\Celena\Shop\classes;
+namespace app\controllers\classes;
 
 
 class Functions{
@@ -58,32 +58,32 @@ class Functions{
 
     public static function scanTags($e){
 
-        if(!empty($e->view->include[$e->route["controller"]])) preg_match_all('/\{products(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->include[$e->route["controller"]], $customProducts);
+        if(!empty($e->view->include[$e->route["controller"]])) preg_match_all('/\{custom(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->include[$e->route["controller"]], $custom);
 
-        preg_match_all('/\{products(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->tplIndex, $customProductsIndex);
+        preg_match_all('/\{custom(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->tplIndex, $customIndex);
 
-        if(!empty($customProducts[0]) || !empty($customProductsIndex[0])){
+        if(!empty($custom[0]) || !empty($customIndex[0])){
 
-            $CustomProducts = new CustomProducts();
+            $Custom = new Custom();
 
-            if(!empty($customProducts[0])){
+            if(!empty($custom[0])){
 
-                foreach ($customProducts[0] as $tplKey => $tag) {
+                foreach ($custom[0] as $tplKey => $tag) {
 
-                    $categories = !empty($customProducts[2][$tplKey]) ? explode(",", $customProducts[2][$tplKey]) : [];
+                    $categories = !empty($custom[2][$tplKey]) ? explode(",", $custom[2][$tplKey]) : [];
 
-                    $res = $CustomProducts->get($e, false, $categories, $customProducts[4][$tplKey], intval($customProducts[6][$tplKey]), $customProducts[8][$tplKey], $customProducts[10][$tplKey]);
+                    $res = $Custom->get($e, false, $categories, $custom[4][$tplKey], intval($custom[6][$tplKey]), $custom[8][$tplKey], $custom[10][$tplKey]);
                     $e->view->include[$e->route["controller"]] = str_replace($tag, $res, $e->view->include[$e->route["controller"]]);
                 }
             }
 
-            if(!empty($customProductsIndex[0])){
+            if(!empty($customIndex[0])){
 
-                foreach ($customProductsIndex[0] as $tplKey => $tag) {
+                foreach ($customIndex[0] as $tplKey => $tag) {
 
-                    $categories = !empty($customProductsIndex[2][$tplKey]) ? explode(",", $customProductsIndex[2][$tplKey]) : [];
+                    $categories = !empty($customIndex[2][$tplKey]) ? explode(",", $customIndex[2][$tplKey]) : [];
 
-                    $res = $CustomProducts->get($e, false, $categories, $customProductsIndex[4][$tplKey], intval($customProductsIndex[6][$tplKey]), $customProductsIndex[8][$tplKey], $customProductsIndex[10][$tplKey]);
+                    $res = $Custom->get($e, false, $categories, $customIndex[4][$tplKey], intval($customIndex[6][$tplKey]), $customIndex[8][$tplKey], $customIndex[10][$tplKey]);
                     $e->view->tplIndex = str_replace($tag, $res, $e->view->tplIndex);
                 }
             }
