@@ -4,15 +4,16 @@ namespace app\core;
 
 class View{
 
-    public $route;
-    public $template;
-    public $tplIndex;
+    public  $route;
+    public  $template;
+    public  $tplIndex;
     private $includeSource = [];
-    public $include = [];
+    public  $include = [];
     private $includeCache; // TMP
     private $lastInc; // имя файла последнего подгруженного
-    public $styles = [];
-    public $scripts = [];
+    public  $styles = [];
+    public  $scripts = [];
+    public  $plugins = [];
 
 
     public function __construct($route){
@@ -432,6 +433,53 @@ class View{
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/celena.js"></script>';
+
+        if(!empty($this->plugins)){
+
+            if(in_array("jquery-ui", $this->plugins)){
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery-ui.min.js"></script>';
+            }
+            if(in_array("select2", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/select2.min.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/select2.full.min.js"></script>';
+            }
+            if(in_array("datepicker", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/air-datepicker.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/air-datepicker.js"></script>';
+            }
+            if(in_array("fancybox", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/fancybox.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/fancybox.umd.js"></script>';
+            }
+            if(in_array("rating", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/jquery.rateyo.min.css">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.rateyo.min.js"></script>';
+            }
+            if(in_array("codemirror", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/codemirror.css">';
+                $styles .= '
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/theme/celena.css?v='.CONFIG_SYSTEM['version'].'">';
+                $scripts .= '
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/codemirror.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/clike/clike.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/xml/xml.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/javascript/javascript.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/css/css.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/sql/sql.js"></script>
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/mode/php/php.js"></script>';
+            }
+        }
 
         if(!empty($this->styles)){
             foreach ($this->styles as $style) {

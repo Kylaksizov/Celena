@@ -92,6 +92,7 @@ class Fields{
                         if($resultField[$tag]["qualityThumb"] > 100) die("info::error::Качество уменьшенной копии не может превышать 100!");
                     }
                 }
+                if(!empty($_POST["gallery"])) $resultField[$tag]["gallery"] = '1';
 
                 break;
 

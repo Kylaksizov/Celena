@@ -1,0 +1,1 @@
+<a href="{link}" class="download_link">{name} <span class="download_count">(загрузок: {counter})</span></a><br>

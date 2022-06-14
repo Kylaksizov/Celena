@@ -239,6 +239,9 @@ class FieldsController extends PanelController {
                             </select>
                         </div>
                     </div>
+                    <div class="fieldsSetts" data-type="image">
+                        <input type="checkbox" name="gallery" id="gallery" class="ch_min" value="1"'.(!empty($Field["gallery"])?' checked':'').'><label for="gallery">Выводить как галерею</label>
+                    </div>
                 </div>
                 
                 <hr>

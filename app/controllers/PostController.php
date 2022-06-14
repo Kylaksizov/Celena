@@ -167,6 +167,10 @@ class PostController extends Controller {
 
             $this->view->include["post"] = Fields::setTags($this->view->include["post"], $Post["post"]["id"]);
 
+            // если есть галерея, то добавляем плагин
+            if(strripos($this->view->include["post"], 'data-fancybox') !== false)
+                $this->view->plugins = ['fancybox'];
+
 
 
             $edit = '';

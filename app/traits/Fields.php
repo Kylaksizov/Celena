@@ -309,17 +309,106 @@ trait Fields {
         // $tags[1] - name
 
         if(!empty($tags[1])){
+            
+            $FieldsSource = self::getFields();
 
             $FieldsModel = new FieldsModel();
             $Fields = $FieldsModel->getFieldsByPostIds($tags[1], $postIds, $plugin_id, $module_id);
 
             foreach ($tags[1] as $key => $tag) {
 
-                if(!empty($Fields[$postIds][$tag]["val"])){
+                if(!empty($Fields[$postIds][$tag]["val"]) && $FieldsSource[$tag]["status"]){
 
-                    $val = htmlspecialchars_decode($Fields[$postIds][$tag]["val"]);
+                    $replace = '';
 
-                    $template = str_replace($tags[0][$key], $val, $template);
+                    switch ($FieldsSource[$tag]["type"]){
+
+                        case 'input': case 'textarea': case 'checkbox':
+
+                            $replace = $Fields[$postIds][$tag]["val"];
+
+                            break;
+
+                        case 'select':
+
+                            if($FieldsSource[$tag]["multiple"]){
+
+                                $ms = explode("|", $Fields[$postIds][$tag]["val"]);
+
+                                foreach ($ms as $m) {
+                                    $replace .= '<span class="opt_item">'.$m.'</span>';
+                                }
+                                
+                            } else $replace = $Fields[$postIds][$tag]["val"];
+
+                            break;
+
+                        case 'code':
+
+                            $replace = htmlspecialchars_decode($Fields[$postIds][$tag]["val"]);
+
+                            break;
+
+                        case 'image':
+
+                            $images = explode("|", $Fields[$postIds][$tag]["val"]);
+
+                            foreach ($images as $image) {
+
+                                $imgInfo = explode(":", $image);
+
+                                $alt = !empty($imgInfo[3]) ? $imgInfo[3] : '';
+
+                                if(isset($FieldsSource[$tag]["gallery"]))
+                                    $replace .= '<a href="//'.CONFIG_SYSTEM["home"].'/uploads/fields/'.str_replace("/thumbs", "", $imgInfo[0]).'" data-fancybox="1"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/fields/'.$imgInfo[0].'" alt="'.$alt.'"></a>';
+                                else
+                                    $replace .= '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/fields/'.$imgInfo[0].'" alt="'.$alt.'">';
+                            }
+
+                            break;
+
+                        case 'file':
+
+                            $tplSource = file_exists(ROOT . '/templates/' . CONFIG_SYSTEM["template"] . '/download.tpl') ? file_get_contents(ROOT . '/templates/' . CONFIG_SYSTEM["template"] . '/download.tpl') : '<a href="{link}" class="download_link">{name} <span class="download_count">(загрузок: {counter})</span></a>';
+
+                            if(strripos("|", $replace) !== false){
+
+                                $files = explode("|", $Fields[$postIds][$tag]["val"]);
+
+                                foreach ($files as $file) {
+
+                                    $fileInfo = explode(":", $file);
+
+                                    $tplResult = str_replace('{link}', '//'.CONFIG_SYSTEM["home"].'/download/'.$Fields[$postIds][$tag]["id"].'/'.$fileInfo[2], $tplSource);
+                                    $tplResult = str_replace('{name}', $fileInfo[2], $tplResult);
+                                    $replace .= str_replace('{counter}', !empty($fileInfo[3]) ? intval($fileInfo[3]) : 0, $tplResult);
+                                }
+
+                            } else{
+
+                                $fileInfo = explode(":", $Fields[$postIds][$tag]["val"]);
+
+                                $tplResult = str_replace('{link}', '//'.CONFIG_SYSTEM["home"].'/download/'.$Fields[$postIds][$tag]["id"].'/'.$fileInfo[2], $tplSource);
+                                $tplResult = str_replace('{name}', $fileInfo[2], $tplResult);
+                                $replace = str_replace('{counter}', !empty($fileInfo[3]) ? intval($fileInfo[3]) : 0, $tplResult);
+                            }
+
+                            break;
+
+                        case 'date':
+
+                            $replace = date("d.m.Y", $Fields[$postIds][$tag]["val"]);
+
+                            break;
+
+                        case 'dateTime':
+
+                            $replace = date("d.m.Y H:i", $Fields[$postIds][$tag]["val"]);
+
+                            break;
+                    }
+
+                    $template = str_replace($tags[0][$key], $replace, $template);
 
                 } else $template = str_replace($tags[0][$key], "", $template);
             }

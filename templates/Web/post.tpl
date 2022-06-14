@@ -4,11 +4,32 @@
     <img src="{poster}" alt="">
     {content}
     {field:tekstovoe-pole}
+    <br>
+    {field:bolyshoe-pole}
+    <br>
+    {field:list}
+    <br>
     {field:html}
+    <br>
     {field:img1}
     <br>
+    {field:img1}
     <br>
+    {field:img2}
     <br>
+    {field:gallery}
     <br>
     {field:odin-fayl}
+    <br>
+    {field:mnogo-faylov}
+    <br>
+    {field:pereklyuchately-vkl}
+    <br>
+    {field:pereklyuchately-vykl}
+    <br>
+    {field:data}
+    <br>
+    {field:data-i-vremya}
+    <br>
+    {field:spisok-mulyti}
 </article>

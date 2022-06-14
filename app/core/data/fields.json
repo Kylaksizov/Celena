@@ -63,6 +63,7 @@
         "thumb": 1,
         "resizeThumb": "300",
         "qualityThumb": 50,
+        "gallery": "1",
         "rq": 0,
         "status": 1
     },
@@ -92,6 +93,7 @@
         "thumb": 1,
         "resizeThumb": "300",
         "qualityThumb": 10,
+        "gallery": "1",
         "rq": 0,
         "status": 1
     },
