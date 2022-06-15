@@ -14,21 +14,42 @@
 
 {crumbs}
 
-<section class="flex content">
+<section class="cont">
 
     {include file="inc/sitebar.tpl"}
 
     <main id="content">
 
-        {CONTENT}
+        [show="index"]
+            <h1>This is simple template by Celena</h1>
+            <div class="custom_header">
+                {custom template="inc/customHeader" limit="5" sort="desc"}
+            </div>
+            <h2 class="title_box">All news</h2>
+        [/show]
+
+        <div class="news">
+            {CONTENT}
+        </div>
+
+        [show="index"]
+        <h2 class="title_box">News in Ukraine</h2>
+        <div class="custom_footer">
+            <div class="custom_fl">
+                {custom template="inc/customFooterLeft" limit="5" sort="desc"}
+            </div>
+            <div class="custom_fr">
+                {custom template="inc/customFooterRight" limit="3" sort="desc"}
+            </div>
+        </div>
+        [/show]
 
     </main>
 
 </section>
 
-{login}
-
 {include file="inc/footer.tpl"}
+{login}
 
 {SYSTEMS}
 

@@ -35,7 +35,7 @@ class SearchController extends Controller {
         if(!empty($_GET["str"])){
             $_GET["search"] = trim(htmlspecialchars(stripslashes($_GET["str"]))); // repeat
             $Products = new Custom();
-            $products = $Products->get($this, true, end($this->urls), 'products');
+            $products = $Products->get($this, true, end($this->urls), 'custom');
             $this->view->setMain('{CONTENT}', $products);
             $this->view->clear();
         }

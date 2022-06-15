@@ -78,6 +78,7 @@
         "thumb": 1,
         "resizeThumb": "300",
         "qualityThumb": 90,
+        "gallery": "1",
         "rq": 0,
         "status": 1
     },

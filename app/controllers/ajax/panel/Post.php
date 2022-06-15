@@ -73,8 +73,11 @@ class Post{
             $script = '<script>
                 '.$addScript.'
                 $.server_say({say: "Новость создана!", status: "success"});
-                history.pushState(null, "Редактирование новости", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/");
+                setTimeout(function(){
+                    window.location.href = "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/";
+                }, 1000)
             </script>';
+            // history.pushState(null, "Редактирование новости", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/");
 
         } else{ // если редактирование
 

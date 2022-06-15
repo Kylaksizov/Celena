@@ -103,6 +103,9 @@ class Custom{
 
                 $tpl->set('{link}', $link);
                 $tpl->set('{title}', $row["title"]);
+                $tpl->set('{see}', $row["id"]);
+                $tpl->set('{description}', $row["short"]);
+                $tpl->set('{date}', date("d.m.Y", $row["created"]));
 
                 $tpl->set('{poster}', '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$poster);
 

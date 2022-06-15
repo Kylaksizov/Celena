@@ -34,10 +34,10 @@ return [
     "seo_type_end" => ".html",
 
     // разделитель чпу
-    "separator" => " &#10148; ",
+    "separator" => "&nbsp;&nbsp;&#10148;&nbsp;&nbsp;",
 
     // кол-во товаров в категории
-	"count_in_cat" => 20,
+	"count_in_cat" => 12,
 
     // размер обрезки загружаемых изображений
 	"origin_image" => 1500,

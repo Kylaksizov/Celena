@@ -222,6 +222,7 @@ class PostModel extends Model{
                 c.url AS category_url,
                 c.pid AS parent_category,
                 p.title AS title,
+                p.short,
                 p.url,
                 p.created,
                 i.src AS poster
@@ -229,7 +230,7 @@ class PostModel extends Model{
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
                 LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
-            WHERE " . $where . "/* GROUP BY $orderBy*/
+            WHERE " . $where . " ORDER BY $orderBy
             $limitQuery
                 ", $params)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -361,12 +362,12 @@ class PostModel extends Model{
     public function search($search, $categories, $limit = 10, $order = 'id', $sort = 'desc'){
 
         $search = trim(htmlspecialchars(stripslashes($search)));
-        $where = "p.title LIKE ? AND ";
-        $params = ["%$search%"];
+        $where = "(p.title LIKE ? OR p.short LIKE ? OR p.content LIKE ?) AND ";
+        $params = [];
 
         $pagination = [
             "start" => 0,
-            "limit" => CONFIG_SYSTEM["count_prod_by_cat"],
+            "limit" => CONFIG_SYSTEM["count_in_cat"],
             "pagination" => ""
         ];
 
@@ -380,6 +381,8 @@ class PostModel extends Model{
             FROM " . PREFIX . "categories", $params)->fetchAll(PDO::FETCH_ASSOC),
             "id"
         );
+
+        $params = ["%$search%", "%$search%", "%$search%"];
 
 
         if(is_array($categories)){ // если это массив из ID категорий
@@ -404,7 +407,7 @@ class PostModel extends Model{
             default: $orderBy = "p.id $sort";
         }
 
-        $whereP = "p.title LIKE ? AND p.status != 0";
+        $whereP = "(p.title LIKE ? OR p.short LIKE ? OR p.content LIKE ?) AND p.status != 0";
         $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "posts p
          WHERE " . $whereP, $params, $pagination["start"], $limit);
 
@@ -415,6 +418,7 @@ class PostModel extends Model{
                 c.url AS category_url,
                 c.pid AS parent_category,
                 p.title AS title,
+                p.short,
                 p.url,
                 p.created,
                 i.src AS poster
@@ -422,7 +426,7 @@ class PostModel extends Model{
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
                 LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
-            WHERE " . $where . " GROUP BY $orderBy
+            WHERE " . $where . " ORDER BY $orderBy
             LIMIT {$pagination["start"]}, $limit
                 ", $params)->fetchAll(PDO::FETCH_ASSOC);
 

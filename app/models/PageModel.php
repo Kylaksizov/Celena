@@ -53,7 +53,7 @@ class PageModel extends Model{
                     alt
                 FROM " . PREFIX . "images
                 WHERE
-                    nid = ? AND itype = 3
+                    pid = ? AND itype = 3
                     ORDER BY position ASC",
                     [$result["page"]["id"]])->fetchAll(PDO::FETCH_ASSOC),
                 "id"

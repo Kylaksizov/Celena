@@ -89,9 +89,9 @@ class PagesController extends PanelController {
 
         $images = '';
 
-        if(!empty($this->urls[4])){
+        if(!empty($this->urls[3])){
 
-            $id = intval($this->urls[4]);
+            $id = intval($this->urls[3]);
 
             $PageModel = new PageModel();
             $Page = $PageModel->get($id);

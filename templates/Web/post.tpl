@@ -1,8 +1,11 @@
 <article class="article" itemscope itemtype="http://schema.org/???">
     <h1>{title}</h1>
-    {id}
     <img src="{poster}" alt="">
-    {content}
+    <div class="post_content">
+        {content}
+    </div>
+
+    <h3>Тут дополнительные поля</h3>
     {field:tekstovoe-pole}
     <br>
     {field:bolyshoe-pole}
@@ -11,8 +14,7 @@
     <br>
     {field:html}
     <br>
-    {field:img1}
-    <br>
+    <p><b>{field:img1:name}:</b></p>
     {field:img1}
     <br>
     {field:img2}

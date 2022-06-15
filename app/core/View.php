@@ -539,6 +539,7 @@ class View{
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
 
+        #TODO тут проблема если ставить комментарий в include
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 
         if($display) echo $this->tplIndex;

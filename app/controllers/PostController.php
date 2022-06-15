@@ -188,14 +188,17 @@ class PostController extends Controller {
         }
 
 
-        $this->view->setMeta($Post["post"]["m_title"], $Post["post"]["m_description"], [
+        $metaTitle = !empty($Post["post"]["m_title"]) ? $Post["post"]["m_title"] : CONFIG_SYSTEM["site_title"];
+        $metaDescription = !empty($Post["post"]["m_description"]) ? $Post["post"]["m_description"] : CONFIG_SYSTEM["site_description"];
+
+        $this->view->setMeta($metaTitle, $metaDescription, [
             [
                 'property' => 'og:title',
-                'content' => $Post["post"]["m_title"],
+                'content' => $metaTitle,
             ],
             [
                 'property' => 'og:description',
-                'content' => $Post["post"]["m_description"],
+                'content' => $metaDescription,
             ]
         ]);
 

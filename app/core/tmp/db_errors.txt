@@ -1,0 +1,7 @@
+15.06.2022 21:40:12 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DESC
+            LIMIT 0, 12' at line 15<br><span class="file_log">1: app\models\PostModel.php &#10148; 430</span><br><span class="file_log">2: app\controllers\classes\Custom.php &#10148; 26</span><br><span class="file_log">3: app\controllers\SearchController.php &#10148; 38</span><br><span class="file_log">4: app\core\Router.php &#10148; 231</span>
+
+15.06.2022 21:44:03 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log">1: app\core\System.php &#10148; 214</span><br><span class="file_log">2: app\models\PostModel.php &#10148; 411</span><br><span class="file_log">3: app\controllers\classes\Custom.php &#10148; 26</span><br><span class="file_log">4: app\controllers\SearchController.php &#10148; 38</span><br><span class="file_log">5: app\core\Router.php &#10148; 231</span>
+
+15.06.2022 21:44:16 | SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens<br><span class="file_log">1: app\models\PostModel.php &#10148; 431</span><br><span class="file_log">2: app\controllers\classes\Custom.php &#10148; 26</span><br><span class="file_log">3: app\controllers\SearchController.php &#10148; 38</span><br><span class="file_log">4: app\core\Router.php &#10148; 231</span>
+

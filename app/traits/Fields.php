@@ -303,7 +303,8 @@ trait Fields {
      */
     public static function setTags($template, $postIds = null, $plugin_id = null, $module_id = null){
 
-        preg_match_all('/\{field\:(.*?)\}/is', $template, $tags);
+        preg_match_all('/\{field\:(.*?)(\:name)?\}/is', $template, $tags);
+
 
         // $tags[0] - {field:name}
         // $tags[1] - name
@@ -316,6 +317,12 @@ trait Fields {
             $Fields = $FieldsModel->getFieldsByPostIds($tags[1], $postIds, $plugin_id, $module_id);
 
             foreach ($tags[1] as $key => $tag) {
+
+                if($tags[2][$key] == ':name'){
+                    $replace = $FieldsSource[$tag]["name"];
+                    $template = str_replace($tags[0][$key], $replace, $template);
+                    continue;
+                }
 
                 if(!empty($Fields[$postIds][$tag]["val"]) && $FieldsSource[$tag]["status"]){
 
