@@ -32,6 +32,9 @@ class Fields{
      */
     private function createEditFields(){
 
+        preg_match('/edit\/(.+?)\//is', $_GET["url"], $edit);
+        $editTag = !empty($edit[1]) ? $edit[1] : null;
+        
         $name = trim(htmlspecialchars(strip_tags($_POST["name"])));
         $tag = !empty($_POST["tag"]) ? trim(htmlspecialchars(strip_tags($_POST["tag"]))) : System::translit($name);
         $hint = !empty($_POST["hint"]) ? trim(htmlspecialchars(strip_tags($_POST["hint"]))) : '';
@@ -115,10 +118,14 @@ class Fields{
 
         \app\traits\Fields::addField($resultField);
 
+        $titleSay = $editTag ? 'Поле отредактировано' : 'Новое поле создано!';
 
 
         $script = '<script>
-            $.server_say({say: "Новое поле создано!", status: "success"});
+            $.server_say({say: "'.$titleSay.'", status: "success"});
+            setTimeout(function(){
+                window.location.href = "/'.CONFIG_SYSTEM["panel"].'/fields/";
+            }, 500)
         </script>';
         System::script($script);
     }

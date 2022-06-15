@@ -425,10 +425,7 @@ class View{
      */
     public function render($display = true){
 
-        $style = (!empty($_COOKIE["style"]) && $_COOKIE["style"] == 'dark') ? 'dark.css' : 'white.css';
-
-        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/celena.css">
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template.'/css/'.$style.'">';
+        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/celena.css">';
 
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>

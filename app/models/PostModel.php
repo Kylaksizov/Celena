@@ -229,7 +229,7 @@ class PostModel extends Model{
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
                 LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
-            WHERE " . $where . " GROUP BY $orderBy
+            WHERE " . $where . "/* GROUP BY $orderBy*/
             $limitQuery
                 ", $params)->fetchAll(PDO::FETCH_ASSOC);
 

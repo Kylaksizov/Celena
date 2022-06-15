@@ -357,7 +357,7 @@ class System{
      * ]
      * ]);
      */
-    public static function addRoute(array $routes, bool|int $position = true){
+    public static function addRoute(array $routes, bool $position = true){
 
         $resultRoutes = "";
         $file = ROOT . '/app/cache/routes.php';

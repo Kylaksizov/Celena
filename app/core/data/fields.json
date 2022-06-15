@@ -47,7 +47,6 @@
         "hint": "",
         "category": [],
         "type": "code",
-        "default": "&lt;script&gt;console.log(&quot;WORK!&quot;);&lt;\/script&gt;\r\n&lt;b&gt;----------WORKING---------&lt;\/b&gt;",
         "rq": 0,
         "status": 1
     },
@@ -62,9 +61,9 @@
         "qualityOriginal": 90,
         "thumb": 1,
         "resizeThumb": "300",
-        "qualityThumb": 50,
+        "qualityThumb": 80,
         "gallery": "1",
-        "rq": 0,
+        "rq": 1,
         "status": 1
     },
     "img2": {
@@ -75,9 +74,10 @@
         "type": "image",
         "maxCount": "2",
         "resizeOriginal": "500",
-        "qualityOriginal": 80,
+        "qualityOriginal": 90,
         "thumb": 1,
-        "resizeThumb": "200",
+        "resizeThumb": "300",
+        "qualityThumb": 90,
         "rq": 0,
         "status": 1
     },
@@ -105,7 +105,7 @@
         "type": "file",
         "maxCount": 1,
         "format": "zip,rar",
-        "rq": 1,
+        "rq": 0,
         "status": 1
     },
     "mnogo-faylov": {
