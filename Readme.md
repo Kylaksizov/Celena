@@ -4,7 +4,7 @@
     </a>
 </p>
 <h1 align="center">
-  <a href="https://celena.io/" title="Celena CMS">Celena CMS</a>
+  <a href="https://celena.io/" title="Celena CMS" style="color:#47B3FF">Celena CMS</a>
 </h1>
 
 
