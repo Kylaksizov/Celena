@@ -1,15 +1,16 @@
 <p align="center">
     <a href="https://celena.io/" title="Celena">
-        <img alt="Celena Logo" src="https://api.celena.io/assets/images/celena.svg" width="100">
+        <img alt="Celena Logo" src="https://api.celena.io/assets/images/celena_logo.svg" width="250">
     </a>
 </p>
-<h1 align="center">
-  <a href="https://celena.io/" title="Celena CMS" style="color:#47B3FF">Celena System</a>
-</h1>
+<hr>
 
 <p align="center">
     <a href="https://celena.io/" title="Celena version">
         <img src="https://api.celena.io/system/informer/version/" alt="Celena version">
+    </a>&nbsp;&nbsp;
+    <a href="https://celena.io/" title="Celena version">
+        <img src="https://api.celena.io/system/informer/downloads/" alt="Celena version">
     </a>
 </p>
 
@@ -17,7 +18,7 @@
 ## Структура файлов
 Все шаблоны сайта находятся в папке **templates**.  
 > *Panel* - шаблон для админ-панели, не рекомендуется ничего в нем изменять.  
-Папки начинающиеся с нижнего подчеркивания так же не рекомендуется трогать.  
+> Папки начинающиеся с нижнего подчеркивания так же не рекомендуется трогать.  
 
 <font size="2">В папке вашего шаблона, например (Web), должна присутствовать такая структура файлов:</font>
 - _[index.tpl](#index_tpl)_ - главный файл, который может включать в себя другие подключаемые файлы и плагины.
