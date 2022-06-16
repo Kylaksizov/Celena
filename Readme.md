@@ -1,11 +1,17 @@
 <p align="center">
     <a href="https://celena.io/" title="Celena">
-        <img alt="Celena Logo" src="https://raw.githubusercontent.com/Kylaksizov/Celena/f429ab0b8caf2e1f11367518096dbbafb776aa91/app/core/system/img/celena.svg?token=ACAQNXEFFM5VSR4ZKBMUZ6TCVLEZS" width="100">
+        <img alt="Celena Logo" src="https://api.celena.io/assets/images/celena.svg" width="100">
     </a>
 </p>
 <h1 align="center">
-  <a href="https://celena.io/" title="Celena CMS" style="color:#47B3FF">Celena CMS</a>
+  <a href="https://celena.io/" title="Celena CMS" style="color:#47B3FF">Celena System</a>
 </h1>
+
+<p align="center">
+    <a href="https://celena.io/" title="Celena version">
+        <img src="https://api.celena.io/system/informer/version/" alt="Celena version">
+    </a>
+</p>
 
 
 ## Структура файлов
