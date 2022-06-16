@@ -70,6 +70,17 @@ body::-webkit-scrollbar-track{background:#FFFFFF}
 body::-webkit-scrollbar-thumb{background:#7192A9A5}
 
 input{outline:none;}
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"], input[type="tel"], textarea, select{
+    padding: 10px;
+    width: 100%;
+    border: 1px #d9d9d9 solid;
+    border-radius: 2px;
+    color: #000;
+    margin-bottom: 20px;
+}
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="date"]:focus, input[type="tel"]:focus, textarea:focus{
+    border: 1px #40caff solid;
+}
 select{
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -426,9 +437,9 @@ hr{
 .modal .close:hover, .modal_big .close:hover{
     opacity: 1;
 }
-.modal input, .modal_big input{
+/*.modal input, .modal_big input{
     margin-bottom: 10px;
-}
+}*/
 
 /* SERVER SAY */
 #main_answer_server {

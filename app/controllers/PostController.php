@@ -16,8 +16,8 @@ class PostController extends Controller {
 
     public function indexAction(){
 
-        $this->view->styles = ['css/post.css'];
-        $this->view->scripts = ['js/post.js'];
+        //$this->view->styles = ['css/post.css'];
+        //$this->view->scripts = ['js/post.js'];
 
         Functions::preTreatment($this);
 
@@ -108,9 +108,9 @@ class PostController extends Controller {
 
 
 
-            // --- категории товара
+            // --- категории поста
             if($this->view->findTag('{categories}')){
-                $categories = '<ul class="nex_categories">';
+                $categories = '<ul class="cel_categories">';
                 $addLink = '//'.CONFIG_SYSTEM["home"].'/';
                 foreach ($CategoryStep as $row) {
 

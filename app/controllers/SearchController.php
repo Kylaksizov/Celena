@@ -34,9 +34,11 @@ class SearchController extends Controller {
         // если тег ля вывода продуктов присутствует
         if(!empty($_GET["str"])){
             $_GET["search"] = trim(htmlspecialchars(stripslashes($_GET["str"]))); // repeat
-            $Products = new Custom();
-            $products = $Products->get($this, true, end($this->urls), 'custom');
-            $this->view->setMain('{CONTENT}', $products);
+            $Custom = new Custom();
+            $news = $Custom->get($this, true, end($this->urls), 'custom');
+
+            $this->view->setMain('{title}', '<h1>Результаты по запросы: '.$_GET["search"].'</h1>');
+            $this->view->setMain('{CONTENT}', $news);
             $this->view->clear();
         }
 

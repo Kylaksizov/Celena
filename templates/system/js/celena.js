@@ -378,9 +378,9 @@ $(function(){
     })
 
     // https://air-datepicker.com/ru/docs
-    if($('.date').length) new AirDatepicker('.date');
-    if($('.dateTime').length) {
-        new AirDatepicker('.dateTime', {
+    if($('.airDatepicker').length) new AirDatepicker('.airDatepicker');
+    if($('.airDatepickerTime').length) {
+        new AirDatepicker('.airDatepickerTime', {
             timepicker: true,
         });
     }

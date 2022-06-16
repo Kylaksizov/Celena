@@ -14,9 +14,7 @@
 
 {crumbs}
 
-<section class="cont">
-
-    {include file="inc/sitebar.tpl"}
+<section class="cont"[show="post"] id="article"[/show]>
 
     <main id="content">
 
@@ -28,6 +26,8 @@
             <h2 class="title_box">All news</h2>
         [/show]
 
+        [show="search"]{title}[/show]
+        [show="category"]<h1>{category-name}</h1>[/show]
         <div class="news">
             {CONTENT}
         </div>
@@ -45,6 +45,10 @@
         [/show]
 
     </main>
+
+    [show="post"]
+    {include file="inc/sitebar.tpl"}
+    [/show]
 
 </section>
 

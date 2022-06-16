@@ -1,7 +1,7 @@
 [role="0"]
 <div id="authorization" class="authorization modal">
     <h4 class="modal_title">Авторизация в системе</h4>
-    <form action="#" method="POST" class="inp100">
+    <form action="#" method="POST">
         <input type="email" name="email" placeholder="E-mail">
         <input type="password" name="password" placeholder="Пароль">
         <input type="hidden" name="action" value="auth"><br>
@@ -17,7 +17,7 @@
 
 <div id="member_pass" class="modal">
     <h4 class="modal_title">Восстановить пароль</h4>
-    <form action="#" method="POST" class="inp100">
+    <form action="#" method="POST">
         <input type="email" name="email" placeholder="E-mail">
         <input type="hidden" name="action" value="member_pass_finish"><br>
         <input type="submit" class="btn" data-a="Auth" value="Восстановить">
@@ -28,7 +28,7 @@
 
 <div id="registration" class="modal">
     <h4 class="modal_title">Регистрация в системе</h4>
-    <form action="#" method="POST" class="inp100">
+    <form action="#" method="POST">
         <input type="text" name="name" placeholder="Имя">
         <input type="email" name="email" placeholder="E-mail">
         <input type="password" name="password" placeholder="Пароль">

@@ -1,5 +1,6 @@
-<article class="article" itemscope itemtype="http://schema.org/???">
+<article class="article" itemscope itemtype="http://schema.org/Article">
     <h1>{title}</h1>
+    {categories}
     <img src="{poster}" alt="">
     <div class="post_content">
         {content}
@@ -29,9 +30,12 @@
     <br>
     {field:pereklyuchately-vykl}
     <br>
+    <b>{field:data:name}:</b>
     {field:data}
     <br>
+    <b>{field:data-i-vremya:name}:</b>
     {field:data-i-vremya}
     <br>
     {field:spisok-mulyti}
+
 </article>

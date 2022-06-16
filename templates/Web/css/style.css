@@ -74,6 +74,17 @@ h3{
     margin: 0 auto;
     padding: 20px;
 }
+.btn{
+    background: #50a5f1;
+    color: #fff;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.btn:hover{
+    background: #2a98e7;
+}
 
 /*Custom header*/
 .custom_header{
@@ -177,7 +188,7 @@ h3{
     color: #47b3ff;
     text-decoration: underline;
 }
-.news .news_stat{
+.news_stat{
     margin-top: 15px;
 }
 
@@ -277,4 +288,54 @@ h3{
     line-height: 25px;
     font-size: 16px;
     text-align: justify;
+}
+#article{
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 300px;
+}
+#site_bar{
+    position: relative;
+}
+.bar_box{
+    margin: 20px 0 40px;
+}
+.bar_box > h3{
+    font-size: 15px;
+    font-weight: 400;
+    color: #6d8089;
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+.bar_box article h3{
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+.bar_box .news_info{
+    margin-bottom: 15px;
+}
+.bar_box .post{
+    margin-bottom: 20px;
+}
+.cel_categories li{
+    display: inline-block;
+}
+.cel_categories li a{
+    background: #919aaf;
+    color: #fff;
+    display: inline-block;
+    padding: 2px 10px;
+    margin: 0 10px 20px 0;
+    border-radius: 2px;
+}
+.cel_categories li a:hover{
+    background: #47b3ff;
+}
+.member_password{
+    color: #50a5f1;
+}
+[for="agree"]{
+    display: block;
 }
