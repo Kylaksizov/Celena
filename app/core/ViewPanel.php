@@ -161,6 +161,12 @@ class ViewPanel{
                 $scripts .= '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery-ui.min.js"></script>';
             }
+            if(in_array("editor", $this->plugins)){
+                $styles .= '
+    <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css">';
+                $scripts .= '
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>';
+            }
             if(in_array("select2", $this->plugins)){
                 $styles .= '
     <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/select2.min.css">';

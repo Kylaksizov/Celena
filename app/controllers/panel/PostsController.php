@@ -97,7 +97,7 @@ class PostsController extends PanelController {
 
         $this->view->styles = ['css/post.css'];
         $this->view->scripts = ['js/post.js'];
-        $this->view->plugins = ['jquery-ui', 'select2', 'datepicker', 'fancybox'];
+        $this->view->plugins = ['editor', 'jquery-ui', 'select2', 'datepicker', 'fancybox'];
 
         $title = $h1 = 'Добавление поста';
 
@@ -475,6 +475,11 @@ class PostsController extends PanelController {
                     <div>
                         <textarea name="content" id="post_content" rows="10">'.(!empty($Post["posts"]["content"])?$Post["posts"]["content"]:'').'</textarea>
                         <br>
+                        <script>
+                          let quill = new Quill("#post_content", {
+                            theme: "snow"
+                          });
+                        </script>
                     </div>
                     <div id="fields">
                         '.$fieldsContent.'

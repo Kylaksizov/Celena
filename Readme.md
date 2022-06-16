@@ -1,4 +1,12 @@
-# Celena CMS
+<p align="center">
+    <a href="https://celena.io/" title="Celena">
+        <img alt="Celena Logo" src="https://raw.githubusercontent.com/Kylaksizov/Celena/f429ab0b8caf2e1f11367518096dbbafb776aa91/app/core/system/img/celena.svg?token=ACAQNXEFFM5VSR4ZKBMUZ6TCVLEZS" width="100">
+    </a>
+</p>
+<h1 align="center">
+  <a href="https://celena.io/" title="Celena CMS">Celena CMS</a>
+</h1>
+
 
 ## Структура файлов
 Все шаблоны сайта находятся в папке **templates**.  
