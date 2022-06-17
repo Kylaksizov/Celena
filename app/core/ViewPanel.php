@@ -277,6 +277,7 @@ class ViewPanel{
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);
 
+        $this->tplIndex = str_replace('{version}', CONFIG_SYSTEM["version"], $this->tplIndex);
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 
 

@@ -37,4 +37,4 @@
     </div>
 </footer>
 
-<script src="{THEME}/js/script.js"></script>
+<script src="{THEME}/js/script.js?v={version}"></script>

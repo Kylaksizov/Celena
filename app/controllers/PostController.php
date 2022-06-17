@@ -105,6 +105,7 @@ class PostController extends Controller {
 
             //$this->view->set('{link}', $link);
             $this->view->set('{title}', $Post["post"]["title"]);
+            $this->view->set('{see}', $Post["post"]["see"]);
 
 
 

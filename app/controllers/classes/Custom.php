@@ -93,7 +93,7 @@ class Custom{
                 $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
 
 
-                $poster = !empty($row["poster"]) ? $row["poster"] : 'no-image.png';
+                $poster = !empty($row["poster"]) ? '/uploads/posts/'.$row["poster"] : '/templates/system/img/no-image.svg';
 
 
                 $tpl->set('{id}', !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"]);
@@ -103,11 +103,11 @@ class Custom{
 
                 $tpl->set('{link}', $link);
                 $tpl->set('{title}', $row["title"]);
-                $tpl->set('{see}', $row["id"]);
+                $tpl->set('{see}', $row["see"]);
                 $tpl->set('{description}', $row["short"]);
                 $tpl->set('{date}', date("d.m.Y", $row["created"]));
 
-                $tpl->set('{poster}', '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$poster);
+                $tpl->set('{poster}', '//'.CONFIG_SYSTEM["home"].$poster);
 
                 $tpl->set('{images}', '');
                 $tpl->set('{rating}', '');

@@ -55,6 +55,7 @@ class PostsController extends PanelController {
                         <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$row["id"].'/">'.$row["title"].'</a>
                     </td>
                     <td>'.$category.'</td>
+                    <td class="tc"><a href="#" onclick="alert(\'В разработке\');">'.$row["see"].'</a></td>
                     <td class="fs12">'.date("d.m.Y", $row["created"]).'</td>
                     <td><input type="checkbox" name="status['.$row["id"].']" class="ch_min status_post" data-id="'.$row["id"].'"  id="status_'.$row["id"].'"'.$status.'><label for="status_'.$row["id"].'"></label></td>
                     <td>
@@ -73,6 +74,7 @@ class PostsController extends PanelController {
                     <th width="20">ID</th>
                     <th>Заголовок поста</th>
                     <th width="200">Категория</th>
+                    <th width="20">Просмотров</th>
                     <th width="130">Дата публикации</th>
                     <th width="30">Статус</th>
                     <th width="50"></th>

@@ -32,7 +32,7 @@ class PostModel extends Model{
             $status
         ];
 
-        Base::run("INSERT INTO " . PREFIX . "posts (
+        Base::run("INSERT INTO " . PREFIX . "post (
             uid,
             title,
             m_title,
@@ -52,9 +52,16 @@ class PostModel extends Model{
 
         $news_id =  Base::lastInsertId();
 
+        Base::run("INSERT INTO " . PREFIX . "post_ex (
+            pid,
+            see
+        ) VALUES (
+            ?, ?
+        )", [$news_id, 0]);
+
         if(!empty($categories)){
             foreach ($categories as $categoryId) {
-                Base::run("INSERT INTO " . PREFIX . "posts_cat (pid, cid) VALUES (?, ?)", [$news_id, $categoryId]);
+                Base::run("INSERT INTO " . PREFIX . "post_cat (pid, cid) VALUES (?, ?)", [$news_id, $categoryId]);
             }
         }
 
@@ -73,7 +80,7 @@ class PostModel extends Model{
 
         $result = [];
 
-        $result["posts"] = Base::run("SELECT * FROM " . PREFIX . "posts WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+        $result["posts"] = Base::run("SELECT * FROM " . PREFIX . "post WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
         $result["fields"] = System::setKeys(Base::run("SELECT id, tag, val FROM " . PREFIX . "fields WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "tag");
         $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
@@ -104,7 +111,7 @@ class PostModel extends Model{
 
         if($all){
 
-            $result = Base::run("SELECT * FROM " . PREFIX . "posts ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $result = Base::run("SELECT * FROM " . PREFIX . "post ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         } else{
 
@@ -117,20 +124,21 @@ class PostModel extends Model{
                 "pagination" => ""
             ];
 
-            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "posts n ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+            $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "post p ORDER BY p.id DESC", $params, $pagination["start"], $pagination["limit"]);
 
             $result["posts"] = Base::run(
                 "SELECT
-                        id,
-                        uid,
-                        title,
-                        category,
-                        url,
-                        created,
-                        status
-                    FROM " . PREFIX . "posts n
-                    GROUP BY id
-                    ORDER BY id DESC
+                        p.id,
+                        p.uid,
+                        p.title,
+                        p.category,
+                        p.url,
+                        p.created,
+                        p.status,
+                        pe.see
+                    FROM " . PREFIX . "post p
+                        LEFT JOIN " . PREFIX . "post_ex pe ON pe.pid = p.id
+                    ORDER BY p.id DESC
                     LIMIT {$pagination["start"]}, {$pagination["limit"]}
                     ", $params)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -175,21 +183,21 @@ class PostModel extends Model{
 
                 if(!empty($News_cat[$catId])){
 
-                    Base::run("UPDATE " . PREFIX . "posts_cat SET cid = ? WHERE id = ?", [$catId, $News_cat[$catId]["id"]])->rowCount();
+                    Base::run("UPDATE " . PREFIX . "post_cat SET cid = ? WHERE id = ?", [$catId, $News_cat[$catId]["id"]])->rowCount();
                     unset($News_cat[$catId]);
 
-                } else Base::run("INSERT INTO " . PREFIX . "posts_cat (pid, cid) VALUES (?, ?)", [$id, $catId]);
+                } else Base::run("INSERT INTO " . PREFIX . "post_cat (pid, cid) VALUES (?, ?)", [$id, $catId]);
             }
 
             if(!empty($News_cat)){ // если остались лишние, удаляем
                 foreach ($News_cat as $pc) {
-                    Base::run("DELETE FROM " . PREFIX . "posts_cat WHERE id = ?", [$pc["id"]]);
+                    Base::run("DELETE FROM " . PREFIX . "post_cat WHERE id = ?", [$pc["id"]]);
                 }
             }
         }
 
 
-        return Base::run("UPDATE " . PREFIX . "posts SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "post SET $set WHERE id = ?", $params)->rowCount();
     }
 
 
@@ -242,7 +250,7 @@ class PostModel extends Model{
      */
     public function setPoster($news_id, $imageId){
 
-        return Base::run("UPDATE " . PREFIX . "posts SET poster = ? WHERE id = ?", [$imageId, $news_id])->rowCount();
+        return Base::run("UPDATE " . PREFIX . "post SET poster = ? WHERE id = ?", [$imageId, $news_id])->rowCount();
     }
 
 
@@ -294,24 +302,8 @@ class PostModel extends Model{
     public function delete($id){
 
         Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND pid = ?", [$id]);
-        Base::run("DELETE FROM " . PREFIX . "posts_cat WHERE pid = ?", [$id]);
-        return Base::run("DELETE FROM " . PREFIX . "posts WHERE id = ?", [$id]);
-    }
-
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
+        Base::run("DELETE FROM " . PREFIX . "post_cat WHERE pid = ?", [$id]);
+        return Base::run("DELETE FROM " . PREFIX . "post WHERE id = ?", [$id]);
     }
 
 }

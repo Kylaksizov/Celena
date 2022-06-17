@@ -425,11 +425,11 @@ class View{
      */
     public function render($display = true){
 
-        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/celena.css">';
+        $styles = '<link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/celena.css?v='.CONFIG_SYSTEM["version"].'">';
 
         $scripts = '
     <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/jquery.min.js"></script>
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/celena.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/celena.js?v='.CONFIG_SYSTEM["version"].'"></script>';
 
         if(!empty($this->plugins)){
 
@@ -512,10 +512,10 @@ class View{
         if(ADMIN){
 
             $styles .= '
-    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/admin.css">';
+    <link rel="stylesheet" href="//'.CONFIG_SYSTEM['home'].'/templates/system/css/admin.css?v='.CONFIG_SYSTEM["version"].'">';
 
             $scripts .= '
-    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/admin.js"></script>';
+    <script src="//'.CONFIG_SYSTEM['home'].'/templates/system/js/admin.js?v='.CONFIG_SYSTEM["version"].'"></script>';
 
             if(CONFIG_SYSTEM["dev_tools"]) $scripts .= $this->dev();
 
@@ -540,6 +540,7 @@ class View{
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
 
         #TODO тут проблема если ставить комментарий в include
+        $this->tplIndex = str_replace('{version}', CONFIG_SYSTEM["version"], $this->tplIndex);
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
 
         if($display) echo $this->tplIndex;
@@ -550,6 +551,7 @@ class View{
 
 
     public function display(){
+        $this->tplIndex = preg_replace('{version}', CONFIG_SYSTEM["version"], $this->tplIndex);
         $this->tplIndex = preg_replace('/\{\*(.+?)\*\}/is', "", $this->tplIndex);
         echo $this->tplIndex;
     }

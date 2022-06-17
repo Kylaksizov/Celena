@@ -73,14 +73,19 @@ class PostModel extends Model{
 
         $result["post"] = Base::run("
             SELECT
-                $fieldsString
-            FROM " . PREFIX . "posts p
+                $fieldsString,
+                pe.see
+            FROM " . PREFIX . "post p
+                LEFT JOIN " . PREFIX . "post_ex pe ON pe.pid = p.id
                 $leftJoin
             WHERE $where
             ", $params)->fetch(PDO::FETCH_ASSOC);
 
         // достаем инфу о категориях
         if(!empty($result["post"])){
+
+            // обновляем кол-во просмотров
+            Base::run("UPDATE " . PREFIX . "post_ex SET see = see + 1 WHERE pid = ?", [$result["post"]["id"]])->rowCount();
 
             #TODO временно сделаю выборку всех категорий
             $result["categories"] = System::setKeys(
@@ -177,7 +182,7 @@ class PostModel extends Model{
         }
         #TODO сюда...
 
-        //$join_category = "INNER JOIN (SELECT DISTINCT(" . PREFIX . "posts_cat.news_id) FROM " . PREFIX . "posts_cat pc WHERE pc.cid IN ('" . $catId . "')) c ON (p.id=c.news_id) ";
+        //$join_category = "INNER JOIN (SELECT DISTINCT(" . PREFIX . "post_cat.news_id) FROM " . PREFIX . "post_cat pc WHERE pc.cid IN ('" . $catId . "')) c ON (p.id=c.news_id) ";
 
 
         $where .= "c.status != 0 AND p.status != 0";
@@ -197,9 +202,9 @@ class PostModel extends Model{
 
                 //$where = "p.status != 0";
 
-                $pagination = System::pagination("SELECT COUNT(DISTINCT pc.pid) AS count FROM " . PREFIX . "posts_cat pc
+                $pagination = System::pagination("SELECT COUNT(DISTINCT pc.pid) AS count FROM " . PREFIX . "post_cat pc
                     LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
-                    LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
+                    LEFT JOIN " . PREFIX . "post p ON p.id = pc.pid
                 WHERE " . $where, $params, $pagination["start"], $limit);
 
                 $limitQuery = "LIMIT {$pagination["start"]}, $limit";
@@ -208,7 +213,7 @@ class PostModel extends Model{
 
                 $where = "p.status != 0";
 
-                $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "posts p
+                $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "post p
              WHERE " . $where, $params, $pagination["start"], $limit);
 
                 $limitQuery = "LIMIT {$pagination["start"]}, $limit";
@@ -225,10 +230,12 @@ class PostModel extends Model{
                 p.short,
                 p.url,
                 p.created,
+                pe.see,
                 i.src AS poster
-            FROM " . PREFIX . "posts_cat pc
+            FROM " . PREFIX . "post_cat pc
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
-                LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "post p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "post_ex pe ON pe.pid = p.id
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
             WHERE " . $where . " ORDER BY $orderBy
             $limitQuery
@@ -287,7 +294,7 @@ class PostModel extends Model{
                 SELECT
                     pc.pid
                 FROM " . PREFIX . "categories c
-                    LEFT JOIN " . PREFIX . "posts_cat pc ON pc.cid = c.id
+                    LEFT JOIN " . PREFIX . "post_cat pc ON pc.cid = c.id
                 WHERE c.url = ?
             ", [$categories])->fetchAll(PDO::FETCH_COLUMN);
 
@@ -321,7 +328,7 @@ class PostModel extends Model{
 
             $where = "p.status != 0";
 
-            $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "posts p
+            $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "post p
              WHERE " . $where, $params, $pagination["start"], $limit);
 
             $limitQuery = "LIMIT {$pagination["start"]}, $limit";
@@ -337,9 +344,9 @@ class PostModel extends Model{
                 p.url,
                 p.created,
                 i.src AS poster
-            FROM " . PREFIX . "posts_cat pc
+            FROM " . PREFIX . "post_cat pc
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
-                LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "post p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
             WHERE " . $where . " GROUP BY $orderBy
             $limitQuery
@@ -408,7 +415,7 @@ class PostModel extends Model{
         }
 
         $whereP = "(p.title LIKE ? OR p.short LIKE ? OR p.content LIKE ?) AND p.status != 0";
-        $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "posts p
+        $pagination = System::pagination("SELECT COUNT(*) AS count FROM " . PREFIX . "post p
          WHERE " . $whereP, $params, $pagination["start"], $limit);
 
         $result["posts"] = Base::run("SELECT
@@ -422,9 +429,9 @@ class PostModel extends Model{
                 p.url,
                 p.created,
                 i.src AS poster
-            FROM " . PREFIX . "posts_cat pc
+            FROM " . PREFIX . "post_cat pc
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
-                LEFT JOIN " . PREFIX . "posts p ON p.id = pc.pid
+                LEFT JOIN " . PREFIX . "post p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
             WHERE " . $where . " ORDER BY $orderBy
             LIMIT {$pagination["start"]}, $limit
@@ -468,7 +475,7 @@ class PostModel extends Model{
             "pagination" => ""
         ];
 
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "posts c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "post c ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
 
         $result["posts"] = Base::run(
             "SELECT
@@ -481,7 +488,7 @@ class PostModel extends Model{
                     p.status,
                     i.src,
                     i.position
-                FROM " . PREFIX . "posts p
+                FROM " . PREFIX . "post p
                     LEFT JOIN " . PREFIX . "images i ON i.pid = p.id
                 GROUP BY p.id
                 ORDER BY p.id DESC
@@ -544,23 +551,7 @@ class PostModel extends Model{
         array_push($params, time());
         array_push($params, $id);
 
-        return Base::run("UPDATE " . PREFIX . "posts SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "post SET $set WHERE id = ?", $params)->rowCount();
     }*/
-
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
-    }
 
 }

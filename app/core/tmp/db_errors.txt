@@ -1,4 +1,0 @@
-17.06.2022 08:12:17 | SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'content' at row 1<br><span class="file_log">1: app\models\panel\PostModel.php &#10148; 192</span><br><span class="file_log">2: app\controllers\ajax\panel\Post.php &#10148; 92</span><br><span class="file_log">3: app\controllers\ajax\panel\Post.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
-
-17.06.2022 08:14:55 | SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'content' at row 1<br><span class="file_log">1: app\models\panel\PostModel.php &#10148; 192</span><br><span class="file_log">2: app\controllers\ajax\panel\Post.php &#10148; 92</span><br><span class="file_log">3: app\controllers\ajax\panel\Post.php &#10148; 19</span><br><span class="file_log">4: app\core\Router.php &#10148; 208</span>
-

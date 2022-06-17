@@ -5,6 +5,7 @@
     <div class="post_content">
         {content}
     </div>
+    <p>Просмотров: <b>{see}</b></p>
 
     <h3>Тут дополнительные поля</h3>
     {field:tekstovoe-pole}
