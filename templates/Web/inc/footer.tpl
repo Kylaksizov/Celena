@@ -27,8 +27,8 @@
         <div class="socials">
             <ul>
                 <li>Мы в социальных сетях:</li>
-                <li><a href="#" class="instagram"></a></li>
                 <li><a href="#" class="facebook"></a></li>
+                <li><a href="#" class="instagram"></a></li>
                 <li><a href="#" class="tweeter"></a></li>
             </ul>
             <p><a href="//celena.io/" class="developer">Разработка сайтов</a></p>

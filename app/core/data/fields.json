@@ -15,12 +15,10 @@
         "name": "Большое поле",
         "tag": "bolyshoe-pole",
         "hint": "Тут подсказка 2",
-        "category": [
-            "4",
-            "3"
-        ],
+        "category": [],
         "type": "textarea",
         "default": "Тут по умолчанию строка",
+        "editor": 0,
         "rq": 0,
         "status": 1
     },

@@ -194,11 +194,24 @@ class PostsController extends PanelController {
 
                         $value = $Post["fields"][$field["tag"]]["val"] ?? $default;
 
-                        $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                        if(!empty($field["editor"])){
+
+                            $field["type"] = 'textarea_editor';
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
+                            <div>
+                                <div id="field['.$field["tag"].']" data-editor="field['.$field["tag"].']">'.$value.'</div>
+                                '.$hint.'
+                            </div>';
+
+                        } else{
+
+                            $fieldElement = '<label for="field_'.$field["tag"].'">'.$field["name"].':</label>
                             <div>
                                 <textarea name="field['.$field["tag"].']" rows="5">'.$value.'</textarea>
                                 '.$hint.'
                             </div>';
+                        }
 
                         break;
 
@@ -468,18 +481,13 @@ class PostsController extends PanelController {
                     </div>
                     <p class="title_box hr_d">Анонс</p>
                     <div>
-                        <textarea name="short" id="post_short" rows="5">'.(!empty($Post["posts"]["short"])?$Post["posts"]["short"]:'').'</textarea>
+                        <div id="post_short" data-editor="short">'.(!empty($Post["posts"]["short"])?$Post["posts"]["short"]:'').'</div>
                         <br>
                     </div>
                     <p class="title_box hr_d">Описание</p>
                     <div>
-                        <textarea name="content" id="post_content" rows="10">'.(!empty($Post["posts"]["content"])?$Post["posts"]["content"]:'').'</textarea>
+                        <div id="post_content" data-editor="content">'.(!empty($Post["posts"]["content"])?$Post["posts"]["content"]:'').'</div>
                         <br>
-                        <script>
-                          let quill = new Quill("#post_content", {
-                            theme: "snow"
-                          });
-                        </script>
                     </div>
                     <div id="fields">
                         '.$fieldsContent.'

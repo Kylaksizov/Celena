@@ -81,14 +81,19 @@
     font-style: italic;
     color: #8f98a5;
 }
-.field{
+.field:not(.type_textarea_editor){
     display: grid;
     grid-gap: 15px;
     align-items: center;
     grid-template-columns: 200px 1fr;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 1px #d9deed dashed;
+    border-bottom: 1px #dce2ef dashed;
+}
+.type_textarea_editor{
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px #dce2ef dashed;
 }
 .field input, .field textarea, .field select, .field .select2{
     max-width: 400px;
@@ -107,7 +112,7 @@
     font-size: 12px;
     font-style: italic;
     color: #9ca4bd;
-    margin: 2px 0 0;
+    margin: 5px 0 0;
 }
 .fields_images, .fields_files{
     border-radius: 2px;

@@ -185,6 +185,9 @@ class FieldsController extends PanelController {
                     <div class="fieldsSetts" data-type="select">
                         <input type="checkbox" name="multiple" id="multiple" class="ch_min" value="1"'.(!empty($Field["multiple"])?' checked':'').'><label for="multiple">Мультиселект</label>
                     </div>
+                    <div class="fieldsSetts" data-type="textarea">
+                        <input type="checkbox" name="editor" id="editor" class="ch_min" value="1"'.(!empty($Field["editor"])?' checked':'').'><label for="editor">Подключить редактор</label>
+                    </div>
                     <div class="fieldsSetts" data-type="image,file">
                         <label for="maxCount">Максимальное кол-во:</label>
                         <div>

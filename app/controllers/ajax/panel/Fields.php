@@ -60,6 +60,7 @@ class Fields{
             case 'textarea':
 
                 if(!empty($_POST["defaultTextarea"])) $resultField[$tag]["default"] = trim(htmlspecialchars(strip_tags($_POST["defaultTextarea"])));
+                $resultField[$tag]["editor"] = !empty($_POST["editor"]) ? 1 : 0;
 
                 break;
 

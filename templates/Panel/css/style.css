@@ -555,7 +555,26 @@ table.min th{
 }
 
 
-
+/* TMP */
+.ql-toolbar.ql-snow{
+    background: #ecf0fa;
+    border-radius: 4px 4px 0 0;
+    border: none;
+}
+.ql-container{
+    font-size: 15px;
+    border: none;
+    border-right: 1px #ecf0fa solid !important;
+    border-left: 1px #ecf0fa solid !important;
+    border-bottom: 1px #d9deed solid !important;
+    border-radius: 4px;
+}
+.ql-editor p:not(:last-child){
+    margin-bottom: 10px;
+}
+.ql-editor{
+    max-height: 400px;
+}
 /* TPM */
 #chart_chart_column{
     width: 100%;

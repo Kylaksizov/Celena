@@ -73,5 +73,46 @@ $(function(){
     });
 
 
+    // TMP EDITOR
+    // https://quilljs.com/docs/api/#getcontents
+    let toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [ 'link', 'image', 'video', 'formula' ],          // add's image support
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                                         // remove formatting button
+    ];
+    $('[data-editor]').each(function(){
+        let editorId = $(this).attr('data-editor');
+        new Quill('[data-editor="'+editorId+'"]', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: "snow"
+        });
+    })
+    $(document).on("mouseover", '[data-a]', function(){
+        $('[data-editor]').each(function(){
+            let editorName = $(this).attr('data-editor');
+            let editorContent = $(this).find(".ql-editor").html();
+            $("#editor_"+editorName).remove();
+            $(this).append(`<textarea name="`+editorName+`" id="editor_`+editorName+`" style="display:none">`+editorContent+`</textarea>`);
+        })
+    })
+    // TMP EDITOR END
+
+
 
 })
