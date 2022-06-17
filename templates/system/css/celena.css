@@ -362,16 +362,15 @@ hr{
 }
 .modal, .modal_big{
     background: #fff;
-    width: 450px;
+    width: 100%;
     padding: 15px;
     border-radius: 2px;
     text-align: center;
     position: fixed;
     top: 12%;
-    left: 50%;
+    left: 0;
     max-height: calc(100vh - 18%);
     overflow-y: auto;
-    margin-left: -245px;
     z-index: 9999;
     display: none;
     transform: scale(1);
@@ -683,4 +682,12 @@ hr{
 }
 .pagination_edge:first-child a:hover{
     opacity: .5;
+}
+
+@media (min-width: 470px) {
+    .modal, .modal_big{
+        width: 450px;
+        left: 50%;
+        margin-left: -225px;
+    }
 }

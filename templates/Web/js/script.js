@@ -30,4 +30,21 @@ $(function(){
             div.fadeOut(300);
     });
 
+    $(".mob-but").on("click", function() {
+        if ($(this).hasClass("mob-but-active")) {
+            $(this).removeClass("mob-but-active");
+            $(".mob-menu-wrap").removeClass("mob-menu-wrap-active");
+            $("#menu").fadeOut(300);
+        } else {
+            $(this).addClass("mob-but-active");
+            $(".mob-menu-wrap").addClass("mob-menu-wrap-active");
+            $("#menu").fadeIn(300);
+        }
+    });
+    $("#shadow, .mob-menu a").on("click", function() {
+        $(".mob-but").removeClass("mob-but-active");
+        $(".mob-menu-wrap").removeClass("mob-menu-wrap-active");
+        $("#menu").fadeOut(300);
+    });
+
 })

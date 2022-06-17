@@ -1,7 +1,7 @@
-<header id="header" class="fx">
+<header id="header">
+    <div class="mob-but"><span></span><span></span><span></span></div>
+    <a href="/" id="logo" title="Celena"></a>
     <nav id="menu">
-        <a href="/" id="logo" title="Celena"></a>
-        <a href="#" id="media_menu"></a>
         <ul class="nav_top">
             <li><a href="/">Главная</a></li>
             <li><a href="/news-america/">Новости в Америке</a></li>
