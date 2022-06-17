@@ -71,6 +71,11 @@ class PostModel extends Model{
 
         $fieldsString = implode(", ", $fields);
 
+        if(!ADMIN){
+            $where .= " AND p.created <= ?";
+            array_push($params, time());
+        }
+
         $result["post"] = Base::run("
             SELECT
                 $fieldsString,
@@ -219,6 +224,9 @@ class PostModel extends Model{
                 $limitQuery = "LIMIT {$pagination["start"]}, $limit";
             }
         }
+
+        $where .= " AND p.created <= ?";
+        array_push($params, time());
 
         $result["posts"] = Base::run("SELECT
                 pc.pid AS id,

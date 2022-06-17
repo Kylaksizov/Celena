@@ -177,7 +177,7 @@ class PostModel extends Model{
 
             $cats = explode(",", $fields["category"]);
 
-            $News_cat = System::setKeys(Base::run("SELECT id, cid FROM " . PREFIX . "posts_cat WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "cid");
+            $News_cat = System::setKeys(Base::run("SELECT id, cid FROM " . PREFIX . "post_cat WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "cid");
 
             foreach ($cats as $catId) {
 

@@ -89,6 +89,7 @@ class Post{
                 'content' => $content,
                 'category' => implode(",", $category),
                 'url' => $url,
+                'created' => $created,
                 'status' => $status
             ]);
 

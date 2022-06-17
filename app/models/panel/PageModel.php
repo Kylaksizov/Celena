@@ -85,7 +85,7 @@ class PageModel extends Model{
      */
     public function getImages($page_id){
 
-        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 3 AND nid = ?", [$page_id])->fetchAll(PDO::FETCH_ASSOC);
+        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 3 AND pid = ?", [$page_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
