@@ -310,13 +310,20 @@ trait Fields {
         // $tags[1] - name
 
         if(!empty($tags[1])){
-            
+
             $FieldsSource = self::getFields();
+
+            if(empty($FieldsSource)) return preg_replace('/\{field\:(.*?)(\:name)?\}/is', "", $template);
 
             $FieldsModel = new FieldsModel();
             $Fields = $FieldsModel->getFieldsByPostIds($tags[1], $postIds, $plugin_id, $module_id);
 
             foreach ($tags[1] as $key => $tag) {
+
+                if(empty($FieldsSource[$tag])){
+                    $template = str_replace($tags[0][$key], "", $template);
+                    continue;
+                }
 
                 if($tags[2][$key] == ':name'){
                     $replace = $FieldsSource[$tag]["name"];
@@ -332,9 +339,9 @@ trait Fields {
 
                         case 'input': case 'textarea': case 'checkbox':
 
-                            $replace = $Fields[$postIds][$tag]["val"];
+                        $replace = $Fields[$postIds][$tag]["val"];
 
-                            break;
+                        break;
 
                         case 'select':
 
@@ -345,7 +352,7 @@ trait Fields {
                                 foreach ($ms as $m) {
                                     $replace .= '<span class="opt_item">'.$m.'</span>';
                                 }
-                                
+
                             } else $replace = $Fields[$postIds][$tag]["val"];
 
                             break;

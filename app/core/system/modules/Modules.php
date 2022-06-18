@@ -62,17 +62,27 @@ class Modules{
 
                     case '1': // найти и заменить
 
-                        $resultFileContent = str_replace($row["searchcode"], $row["replacecode"], $resultFileContent);
+                        $searchcode = self::prepare_search($row["searchcode"]);
+                        if(preg_match($searchcode, $resultFileContent)) {
+                            $resultFileContent = preg_replace($searchcode, $row["replacecode"], $resultFileContent);
+                        }
+
                         break;
 
                     case '2': // найти и добавит выше
 
-                        $resultFileContent = str_replace($row["searchcode"], $row["replacecode"].PHP_EOL.$row["searchcode"], $resultFileContent);
+                        $searchcode = self::prepare_search($row["searchcode"]);
+                        if(preg_match($searchcode, $resultFileContent)) {
+                            $resultFileContent = preg_replace($searchcode, $row["replacecode"].PHP_EOL.$row["searchcode"], $resultFileContent);
+                        }
                         break;
 
                     case '3': // найти и добавить ниже
 
-                        $resultFileContent = str_replace($row["searchcode"], $row["searchcode"].PHP_EOL.$row["replacecode"], $resultFileContent);
+                        $searchcode = self::prepare_search($row["searchcode"]);
+                        if(preg_match($searchcode, $resultFileContent)) {
+                            $resultFileContent = preg_replace($searchcode, $row["searchcode"].PHP_EOL.$row["replacecode"], $resultFileContent);
+                        }
                         break;
 
                     case '4': // заменить весь файл
@@ -100,6 +110,19 @@ class Modules{
     }
 
 
+    private static function prepare_search( $code ) {
+
+        $safe_code = array();
+        $codes = explode("\n", trim($code));
+
+        foreach($codes as $code) {
+            if( trim($code) ) {
+                $safe_code[] = preg_replace("/\s+/u", "\s*", preg_quote(trim($code), '#'));
+            }
+        }
+
+        return "#".implode("\s*", $safe_code)."#siu";
+    }
 
 
     public static function buildRoutes($newRoutes, $oldRoutes = []){

@@ -165,10 +165,10 @@ abstract class PanelController{
                     </ul>
                 </li>
                 <li>
-                    <a href="{panel}/celena_shop/templates/" class="ico_template">Шаблоны</a>
+                    <a href="{panel}/celenaShop/templates/" class="ico_template">Шаблоны</a>
                     <ul>
-                        <li><a href="{panel}/celena_shop/templates/">Шаблоны</a></li>
-                        <li><a href="{panel}/celena_shop/order-development/">Заказать разработку</a></li>
+                        <li><a href="{panel}/celenaShop/templates/">Шаблоны</a></li>
+                        <li><a href="{panel}/celenaShop/order-development/">Заказать разработку</a></li>
                     </ul>
                 </li>
                 <li>

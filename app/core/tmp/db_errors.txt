@@ -1,2 +1,0 @@
-17.06.2022 13:21:44 | SQLSTATE[42S22]: Column not found: 1054 Unknown column 'nid' in 'where clause'<br><span class="file_log">1: app\models\panel\PageModel.php &#10148; 88</span><br><span class="file_log">2: app\controllers\panel\PagesController.php &#10148; 98</span><br><span class="file_log">3: app\core\Router.php &#10148; 231</span>
-

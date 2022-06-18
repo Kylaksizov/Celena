@@ -65,8 +65,10 @@ class PostController extends Controller {
             $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';
 
             $catLink = $this->urls;
-            array_pop($catLink);
-            $catLink = implode("/", $catLink);
+            if(count($catLink) > 1){
+                array_pop($catLink);
+                $catLink = implode("/", $catLink);
+            } else $catLink = $catLink[0];
 
             $crumbs = '<div id="crumbs">';
             if(count($CategoryStep) > 1){

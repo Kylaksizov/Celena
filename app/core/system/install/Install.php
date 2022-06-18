@@ -128,8 +128,8 @@ class Install{
                 <link rel="shortcut icon" href="/app/core/system/img/favicon.ico">
                 <link rel="stylesheet" href="/app/core/system/install/css/style.css">
         
-                <script type="text/javascript" src="/templates/_system/js/jquery.min.js"></script>
-                <script type="text/javascript" src="/templates/_system/js/panel.js"></script>
+                <script type="text/javascript" src="/templates/system/js/jquery.min.js"></script>
+                <script type="text/javascript" src="/templates/system/js/panel.js"></script>
                 <script type="text/javascript" src="/app/core/system/install/js/script.js"></script>
             </head>
         </head>

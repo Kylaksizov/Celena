@@ -238,7 +238,6 @@
                     let tmp = this_.attr('data-a').split(":");
                     method = tmp[0];
                     params = tmp[1];
-                    console.log(1);
                 } else{
                     method = this_.attr('data-a');
                     params = this_.parents("form").serialize();

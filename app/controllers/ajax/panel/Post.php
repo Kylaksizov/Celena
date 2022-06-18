@@ -40,7 +40,7 @@ class Post{
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
         $category = !empty($_POST["category"]) ? $_POST["category"] : die("info::error::Выберите категорию!");
         $status = !empty($_POST["status"]) ? 1 : 0;
-
+        
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
@@ -281,6 +281,12 @@ class Post{
         }
 
         System::script($script);
+    }
+
+
+
+    private function parseImages($content){
+
     }
 
 

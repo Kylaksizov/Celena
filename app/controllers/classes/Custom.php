@@ -55,10 +55,13 @@ class Custom{
                 } else{
 
                     $catLink = $e->urls;
-                    array_pop($catLink);
-                    $catLink = implode("/", $catLink);
+                    if(count($catLink) > 1){
+                        array_pop($catLink);
+                        $catLink = implode("/", $catLink);
+                    } else $catLink = $catLink[0];
 
-                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
+                    if(!empty($CategoryStep[$catLink]["title"]))
+                        $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
                 }
 
                 $crumbs .= '</div>';

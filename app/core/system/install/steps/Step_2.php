@@ -2,7 +2,6 @@
 
 namespace app\core\system\install\steps;
 
-use app\_classes\Functions;
 use app\core\system\install\steps\addon\FillBase;
 use Exception;
 use PDO;
@@ -51,13 +50,14 @@ class Step_2{
         }
 
         // удаляем все таблицы если есть
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}categories");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}images");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}roles");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}plugins");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}modules");
-        $db->exec("DROP TABLE IF EXISTS {$PREFIX}users");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}categories");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}images");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}fields");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,13 +74,19 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}roles` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `rules` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
         $query = $db->prepare("CREATE TABLE `{$PREFIX}plugins` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `plugin_id` int(11) NOT NULL,
             `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Название плагина или модуля',
             `version` varchar(13) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0.0.1' COMMENT 'Версия плагина',
-            `menu` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT NULL COMMENT 'Меню для админки JSON',
-            `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Конфиг для плагина',
             `hashfile` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',
             `status` tinyint(1) DEFAULT 0,
             PRIMARY KEY (`id`),
@@ -102,7 +108,8 @@ class Step_2{
             `base_off` TEXT NOT NULL,
             `base_del` TEXT NOT NULL,
             `routes` TEXT NOT NULL,
-            `comment` TEXT NOT NULL ,  `status` TINYINT(1) NOT NULL DEFAULT '0',
+            `comment` TEXT NOT NULL,
+            `status` TINYINT(1) NOT NULL DEFAULT '0',
             PRIMARY KEY  (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
@@ -114,15 +121,8 @@ class Step_2{
             `replacecode` TEXT NOT NULL,
             `filepath` VARCHAR(255) NOT NULL,
             `action` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 - замена, 2 - добавить выше, 3 - добавить ниже, 4 - замена файла, 5 - новый файл',
+            `err` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0 - нет ошибок, 1 - ненайден файл, 2 - ненайден код',
             PRIMARY KEY  (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-        $query->execute();
-
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}roles` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-            `rules` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-            PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
@@ -148,7 +148,7 @@ class Step_2{
             `position` tinyint(10) NOT NULL DEFAULT 0,
             `status` tinyint(1) DEFAULT NULL COMMENT '1 - main image',
             PRIMARY KEY (`id`),
-            KEY `nid` (`nid`)
+            KEY `nid` (`pid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
@@ -166,7 +166,7 @@ class Step_2{
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}posts` (
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}post` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
             `uid` INT(11) NOT NULL COMMENT 'author id',
             `title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -184,13 +184,22 @@ class Step_2{
         ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
-        $query = $db->prepare("CREATE TABLE `{$PREFIX}posts_cat` (
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}post_cat` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `pid` int(11) NOT NULL,
             `cid` int(11) NOT NULL,
             PRIMARY KEY (`id`),
-            KEY `pid` (`nid`),
+            KEY `pid` (`pid`),
             KEY `cid` (`cid`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}post_ex` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `pid` int(11) NOT NULL,
+            `see` bigint(20) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `pid` (`pid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $query->execute();
 
@@ -201,11 +210,24 @@ class Step_2{
             `m_title` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             `m_description` VARCHAR(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             `content` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+            `poster` int(11) NOT NULL DEFAULT 0,
             `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             `created` INT(11) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT '1',
             PRIMARY KEY  (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}fields` (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `pid` int DEFAULT NULL COMMENT 'post id',
+            `plugin_id` int DEFAULT NULL COMMENT 'null - не плагин. Или ID плагина, который загрузил доп поле.',
+            `module_id` int DEFAULT NULL COMMENT 'null - не модуль. Или ID модуля, который загрузил доп поле.',
+            `tag` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+            `val` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+            PRIMARY KEY  (`id`),
+            KEY `tag` (`tag`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
         $query->execute();
 
 
@@ -218,7 +240,7 @@ class Step_2{
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
         $PANEL_PASSWORD = sha1(md5($PANEL_PASSWORD).':NEX');
-        $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(Functions::generationCode()), time(), 1]);
+        $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(\app\traits\Functions::generationCode()), time(), 1]);
 
         FillBase::fill($db, $PREFIX);
         # ===============
@@ -281,7 +303,7 @@ return [
                     </div>
                     <div>
                         <label for="">Префикс к таблицам</label>
-                        <input type="text" name="db[prefix]" value="sel_">
+                        <input type="text" name="db[prefix]" value="cel_">
                     </div>
                 </div>
                 <div></div>
@@ -352,16 +374,16 @@ return [
     // ЧПУ: 2 - ID-link
     // ЧПУ: 3 - /category/link
     // ЧПУ: 4 - /category/ID-link
-    "seo_type" => 3,
+    "seo_type" => 4,
 
     // концовка URL товара
     "seo_type_end" => ".html",
 
     // разделитель чпу
-    "separator" => " &#10148; ",
+    "separator" => "&nbsp;&nbsp;&#10148;&nbsp;&nbsp;",
 
     // кол-во товаров в категории
-	"count_in_cat" => 20,
+	"count_in_cat" => 12,
 
     // размер обрезки загружаемых изображений
 	"origin_image" => 1500,
@@ -386,7 +408,7 @@ return [
 
 	"mail_method" => "mail",
 
-    "noreply" => "noreply@kylaksizov.com",
+    "noreply" => "'.$email.'",
 
     // SMTP
 	"SMTPHost" => "",
@@ -396,7 +418,7 @@ return [
 	"SMTPPort" => 465,
 	"SMTPFrom" => "'.$email.'",
 
-    "version" => "0.0.1",
+    "version" => "0.0.3",
 
 ];';
 
