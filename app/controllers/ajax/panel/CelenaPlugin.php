@@ -265,7 +265,8 @@ class CelenaPlugin{
             if(file_exists(ROOT . '/templates/plugins/'.$PluginInfo["name"]))
                 System::removeDir(ROOT . '/templates/plugins/'.$PluginInfo["name"]);
 
-            unlink(APP . '/cache/system/plugins/'.$PluginInfo["hashfile"].'.txt');
+            if(file_exists(APP . '/cache/system/plugins/'.$PluginInfo["hashfile"].'.txt'))
+                unlink(APP . '/cache/system/plugins/'.$PluginInfo["hashfile"].'.txt');
 
             $PluginModel->removePlugin($plugin_id);
 
