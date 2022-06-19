@@ -419,7 +419,7 @@ return [
 	"SMTPPort" => 465,
 	"SMTPFrom" => "'.$email.'",
 
-    "version" => "0.0.3",
+    "version" => "0.0.6",
 
 ];';
 

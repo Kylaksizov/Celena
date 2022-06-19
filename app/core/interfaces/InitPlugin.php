@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core\interface;
+namespace app\core\interfaces;
 
 interface InitPlugin{
 

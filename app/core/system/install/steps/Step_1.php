@@ -70,7 +70,7 @@ class Step_1{
                     <tr>
                         <td>'.ROOT.'</td>
                         <td><b>'.$files.'</b></td>
-                        <td><span class="is_no"></span></td>
+                        <td><span class="<!--is_no-->is_ok"></span></td>
                     </tr>
                     <tr>
                         <td>'.ROOT.'</td>

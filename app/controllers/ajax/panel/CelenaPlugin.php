@@ -58,6 +58,8 @@ class CelenaPlugin{
         $pluginInfo = json_decode($pluginInfo);
 
         $result = ShopController::installPlugin($plugin_id);
+
+        if(empty($result)) die("info::error::Плохая связь с сервером, попробуйте ещё раз");
         $pluginInstallZip = 'install_plugin_'.time().'.zip';
 
         $hashFile = $plugin_id.'_'.sha1(rand(100, 9999));
@@ -99,8 +101,9 @@ class CelenaPlugin{
             if(empty($pluginBrandName)){
 
                 $zip->close();
-                unlink(ROOT . '/' . $pluginInstallZip);
-                die("info::error::В плагине отсутствует папка брендом и названием плагина!");
+                if(file_exists(ROOT . '/' . $pluginInstallZip))
+                    unlink(ROOT . '/' . $pluginInstallZip);
+                die("info::error::В плагине отсутствует папка с брендом и названием плагина!");
             }
 
             $zip->extractTo(ROOT . '/');

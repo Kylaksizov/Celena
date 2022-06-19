@@ -10,11 +10,12 @@ class Update{
     public function update(){
 
 
-        //Base::run("ALTER TABLE `".PREFIX."categories` ADD `plugin_id` VARCHAR(300) NULL DEFAULT '' AFTER `id`");
+        Base::run("TRUNCATE ".PREFIX."plugins");
 
+        System::removeDir(CORE . "/interface");
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.0.5']);
+        System::editSystemConfig(["version" => '0.0.6']);
         return true;
     }
 }

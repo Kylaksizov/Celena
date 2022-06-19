@@ -52,7 +52,7 @@ return [
 	"quality_thumb" => 80,
 
     // шаблон по умолчанию
-	"template" => "CelenaShop",
+	"template" => "Web",
 
     // подтверждение почты
 	"email_confirm" => 0,
@@ -72,6 +72,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "info@kylaksizov.com",
 
-	"version" => "0.0.3",
+	"version" => "0.0.6",
 
 ];
