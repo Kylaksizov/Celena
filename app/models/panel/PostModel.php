@@ -81,7 +81,7 @@ class PostModel extends Model{
         $result = [];
 
         $result["posts"] = Base::run("SELECT * FROM " . PREFIX . "post WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["fields"] = System::setKeys(Base::run("SELECT id, tag, val FROM " . PREFIX . "fields WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC), "tag");
+        $result["fields"] = System::setKeys(Base::run("SELECT id, tag, val FROM " . PREFIX . "fields WHERE pid = ? AND plugin_id IS NULL AND module_id IS NULL", [$id])->fetchAll(PDO::FETCH_ASSOC), "tag");
         $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;

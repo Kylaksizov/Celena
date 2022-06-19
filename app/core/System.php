@@ -377,7 +377,9 @@ class System{
 
             foreach ($newRoutes as $path => $newRouteAction) {
 
-                if(!empty($realRoutes[$type][$path])) continue;
+                #TODO было
+                //if(!empty($realRoutes[$type][$path])) continue;
+                if(!empty($realRoutes[$type][$path])) unset($realRoutes[$type][$path]);
 
                 if($type == 'panel'){
                     $action = (!empty($newRouteAction["action"]) && $newRouteAction["action"] != 'index') ? ", 'action' => '{$newRouteAction["action"]}'" : "";
@@ -459,33 +461,38 @@ return [
 
         $realRoutes = require $file;
 
-        $addPanelRoute = "";
-        $addWebRoute = "";
-
-        foreach ($routes as $type => $newRoutes) {
+        foreach ($routes as $type => $rows) {
 
             $type = ($type == 'panel') ? 'panel' : 'web';
 
             // DeclareNames::ROUTES
 
-            foreach ($newRoutes as $newRoute) {
+            foreach ($rows as $urlRoute => $newRoute) {
 
-                if(!isset($realRoutes[$type][$newRoute])) continue;
-                unset($realRoutes[$type][$newRoute]);
+                if(!isset($realRoutes[$type][$urlRoute])) continue;
+                unset($realRoutes[$type][$urlRoute]);
             }
         }
+
+        // по умолчанию
+        if(empty($realRoutes["web"]["(page-[0-9]+/)?$"])) $realRoutes["web"]["(page-[0-9]+/)?$"] = ["controller" => "index"];
+        if(empty($realRoutes["web"]["([a-z-0-9]+).html$"])) $realRoutes["web"]["([a-z-0-9]+).html$"] = ["controller" => "page"];
+        if(empty($realRoutes["web"]["([a-z-/0-9]+).html$"])) $realRoutes["web"]["([a-z-/0-9]+).html$"] = ["controller" => "post"];
+        if(empty($realRoutes["web"]["search/(page-[0-9]+/)?$"])) $realRoutes["web"]["search/(page-[0-9]+/)?$"] = ["controller" => "search"];
+        if(empty($realRoutes["web"]["(.+?)/$"])) $realRoutes["web"]["(.+?)/$"] = ["controller" => "category"];
+        if(empty($realRoutes["web"]["404/$"])) $realRoutes["web"]["404/$"] = ["controller" => "NotFound"];
 
         $resultRoutes = "<?php
 
 return [
 
     'panel' => [
-        ".self::rebuildRoutes($realRoutes["panel"])."$addPanelRoute
+        ".self::rebuildRoutes($realRoutes["panel"])."
         
     ],
     
     'web' => [
-        ".self::rebuildRoutes($realRoutes["web"])."$addWebRoute
+        ".self::rebuildRoutes($realRoutes["web"])."
     ],
     
 ];";

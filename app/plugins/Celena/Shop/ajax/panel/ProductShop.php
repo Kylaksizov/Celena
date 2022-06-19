@@ -3,6 +3,7 @@
 namespace app\plugins\Celena\Shop\ajax\panel;
 
 use app\core\System;
+use app\models\panel\FieldsModel;
 use app\models\plugins\Celena\Shop\panel\ProductModel;
 use Exception;
 use Intervention\Image\ImageManager;
@@ -50,6 +51,11 @@ class ProductShop{
 
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
+
+        $fieldsData = null;
+        if(!empty($_POST["field"])){
+            $fieldsData = \app\traits\Fields::getPostFields($productId, $_POST["field"], $category);
+        }
 
         $addScript = '';
 
@@ -202,7 +208,251 @@ class ProductShop{
             #TODO из-за свойств временно сделал автообновление страницы после сохранения - исправить...
         }
 
+
+        // обработка доп полей
+        if($fieldsData){
+
+            $resultAddFields = [];
+
+            foreach ($fieldsData["result"] as $tag => $field) {
+
+                $val = false;
+
+                switch ($fieldsData["fields"][$tag]["type"]){
+
+                    case 'input': case 'textarea': case 'checkbox': case 'code': case 'date': case 'dateTime':
+
+                    $val = $field;
+
+                    break;
+
+                    case 'select':
+
+                        if($fieldsData["fields"][$tag]["multiple"])
+                            $val = implode("|", $field);
+                        else
+                            $val = trim(strip_tags($field));
+
+                        break;
+
+                    case 'image':
+
+                        if($field == '__ISSET__') break;
+
+                        if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
+
+                            $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
+                            $qualityOriginal = !empty($fieldsData["fields"][$tag]["qualityOriginal"]) ? intval($fieldsData["fields"][$tag]["qualityOriginal"]) : 100;
+
+
+                            if(isset($field["__REPLACE__"])){ // если замена, то удаляем старую
+
+                                $imgPath = strstr($fieldsData["inBase"][$tag]["val"], ":", true);
+
+                                if(file_exists(ROOT . "/uploads/fields/" . $imgPath))
+                                    unlink(ROOT . "/uploads/fields/" . $imgPath);
+
+                                if(strripos($imgPath, "/thumbs/") !== false)
+                                    unlink(ROOT . "/uploads/fields/" . str_replace("/thumbs", "", $imgPath));
+                            }
+
+
+                            $val = self::saveImageField($field["tmp_name"], $field["name"], $resizeOriginal, $qualityOriginal);
+
+                            if(!empty($fieldsData["fields"][$tag]["thumb"])){
+
+                                $resize = !empty($fieldsData["fields"][$tag]["resizeThumb"]) ? intval($fieldsData["fields"][$tag]["resizeThumb"]) : false;
+                                if(!$resize) $resize = !empty(CONFIG_SYSTEM["thumb"]) ? intval(CONFIG_SYSTEM["thumb"]) : false;
+
+                                $quality = !empty($fieldsData["fields"][$tag]["qualityThumb"]) ? intval($fieldsData["fields"][$tag]["qualityThumb"]) : false;
+                                if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
+
+                                if($resize){
+                                    $val = explode(":", $val);
+                                    $val = self::saveImageField(ROOT . '/uploads/fields/' . $val[0], end($val), $resize, $quality, true);
+                                }
+                            }
+
+                        } else{
+
+                            $val = '';
+
+                            foreach ($field["name"] as $key => $imgName) {
+
+                                $resizeOriginal = !empty($fieldsData["fields"][$tag]["resizeOriginal"]) ? intval($fieldsData["fields"][$tag]["resizeOriginal"]) : null;
+                                $qualityOriginal = !empty($fieldsData["fields"][$tag]["qualityOriginal"]) ? intval($fieldsData["fields"][$tag]["qualityOriginal"]) : 100;
+
+                                $uploaded = self::saveImageField($field["tmp_name"][$key], $imgName, $resizeOriginal, $qualityOriginal);
+
+                                // сделать тут проверку на кол-во вместо вышестоящей функции
+                                if(!empty($fieldsData["fields"][$tag]["thumb"])){
+
+                                    $resize = !empty($fieldsData["fields"][$tag]["resizeThumb"]) ? intval($fieldsData["fields"][$tag]["resizeThumb"]) : false;
+                                    if(!$resize) $resize = !empty(CONFIG_SYSTEM["thumb"]) ? intval(CONFIG_SYSTEM["thumb"]) : false;
+
+                                    $quality = !empty($fieldsData["fields"][$tag]["qualityThumb"]) ? intval($fieldsData["fields"][$tag]["qualityThumb"]) : false;
+                                    if(!$quality) $quality = !empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100;
+
+                                    if($resize){
+                                        $uploaded = explode(":", $uploaded);
+                                        $uploaded = self::saveImageField(ROOT . '/uploads/fields/' . $uploaded[0], end($uploaded), $resize, $quality, true);
+                                    }
+                                }
+
+                                if($uploaded) $val .= $uploaded . '|';
+                            }
+                            $val = trim($val, '|');
+                        }
+
+                        break;
+
+
+                    case 'file':
+
+                        if($field == '__ISSET__') break;
+
+                        $dir = ROOT . '/uploads/fields'; // если директория не создана
+                        $dir_rel = date("Y-m", time());
+
+                        $dir .= '/'.$dir_rel;
+                        if(!file_exists($dir)) @mkdir($dir, 0777, true);
+
+
+                        if(!empty($fieldsData["fields"][$tag]["maxCount"]) && $fieldsData["fields"][$tag]["maxCount"] == '1' && !empty($field["name"])){
+
+
+                            if(isset($field["__REPLACE__"])){ // если замена, то удаляем старую
+
+                                $filePath = strstr($fieldsData["inBase"][$tag]["val"], ":", true);
+
+                                if(file_exists(ROOT . "/uploads/fields/" . $filePath))
+                                    unlink(ROOT . "/uploads/fields/" . $filePath);
+                            }
+
+
+                            $milliseconds = round(microtime(true) * 1000);
+                            $ext = mb_strtolower(pathinfo($field["name"], PATHINFO_EXTENSION), 'UTF-8');
+                            $file_name = $milliseconds.'_'.System::translit(strstr($field["name"], ".", true)).'.'.$ext;
+
+                            $fileSize = filesize($field["tmp_name"]);
+                            $fileInfo = ':' . $fileSize . ':' . $field["name"];
+
+                            move_uploaded_file($field["tmp_name"], $dir . '/' . $file_name);
+                            $val = $dir_rel . '/' . $file_name . $fileInfo;
+
+                        } else{
+
+                            $val = '';
+
+                            foreach ($field["name"] as $key => $fileName) {
+
+                                $milliseconds = round(microtime(true) * 1000);
+                                $ext = mb_strtolower(pathinfo($fileName, PATHINFO_EXTENSION), 'UTF-8');
+                                $file_name = $milliseconds.'_'.System::translit(strstr($fileName, ".", true)).'.'.$ext;
+
+                                move_uploaded_file($field["tmp_name"][$key], $dir . '/' . $file_name);
+
+                                $fileSize = filesize($dir . '/' . $file_name);
+                                $fileInfo = ':' . $fileSize . ':' . $fileName;
+
+                                $val .= $dir_rel . '/' . $file_name . $fileInfo . '|';
+                            }
+                            $val = trim($val, '|');
+
+                        }
+
+                        break;
+                }
+
+                if($val){
+
+                    $resultAddFields[$tag] = $val;
+                }
+            }
+
+            $FieldsModel = new FieldsModel();
+            $FieldsModel->add($resultAddFields, $fieldsData["inBase"], $fieldsData["result"], $productId, PLUGIN["plugin_id"]);
+        }
+
         System::script($script);
+    }
+
+
+
+
+    /**
+     * @name сохранение картинки из доп поля
+     * =====================================
+     * @param $tmp_name
+     * @param $name
+     * @param int|null $resize
+     * @param int $quality
+     * @param bool $thumb
+     * @return false|string
+     */
+    private function saveImageField($tmp_name, $name, int $resize = null, int $quality = 100, bool $thumb = false){
+
+        $result = false;
+
+        $dir = ROOT . '/uploads/fields'; // если директория не создана
+        $dir_rel = date("Y-m", time());
+
+        //if(!file_exists($dir)) mkdir($dir, 0777, true);
+
+        $dir .= '/'.$dir_rel;
+        if(!file_exists($dir)) @mkdir($dir, 0777, true);
+
+        if($thumb){
+            $dir = $dir.'/thumbs';
+            if(!file_exists($dir)) @mkdir($dir, 0777, true);
+        }
+
+        $ext = mb_strtolower(pathinfo($name, PATHINFO_EXTENSION), 'UTF-8'); // расширение файла
+
+        if(
+            $ext == 'png' ||
+            $ext == 'jpeg' ||
+            $ext == 'jpg' ||
+            $ext == 'webp' ||
+            $ext == 'svg' ||
+            $ext == 'bmp' ||
+            $ext == 'gif'
+        ) {
+
+            #TODO что-то намудрил, нужно переделать
+            if(!$thumb){
+                $milliseconds = round(microtime(true) * 1000);
+                $image_name = $milliseconds.'_'.System::translit(strstr($name, ".", true)).'.'.$ext;
+            } else{
+                $tName = explode("/", $tmp_name);
+                $image_name = str_replace($dir_rel."/", "", strstr(end($tName), ".", true)).'.'.$ext;
+            }
+
+            $result = $dir_rel . '/' . ($thumb?'thumbs/':'') . $image_name;
+
+            if($resize){
+
+                $image = new ImageManager();
+                $img = $image->make($tmp_name)->resize(
+                    $resize,
+                    null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                });
+                $img->orientate();
+                $img->save($dir . '/' . $image_name, $quality);
+
+            } else move_uploaded_file($tmp_name, $dir . '/' . $image_name);
+
+
+            // image info
+            $imageSize = getimagesize($dir . '/' . $image_name);
+            $fileSize = filesize($dir . '/' . $image_name);
+
+            $result .= ':' . $imageSize[0].'*'.$imageSize[1] . ':' . $fileSize . ':' . $name;
+        }
+
+        return $result;
     }
 
 

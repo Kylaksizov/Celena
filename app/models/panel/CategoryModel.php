@@ -79,7 +79,7 @@ class CategoryModel extends Model{
 
         if($all){
 
-            $result = System::setKeys(Base::run("SELECT id, title FROM " . PREFIX . "categories ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
+            $result = System::setKeys(Base::run("SELECT id, plugin_id, title FROM " . PREFIX . "categories ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
 
         } else{
 

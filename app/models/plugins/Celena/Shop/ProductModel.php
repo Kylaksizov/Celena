@@ -142,7 +142,7 @@ class ProductModel extends Model{
                     alt
                 FROM " . PREFIX . "images
                 WHERE
-                    nid = ? AND itype = 1
+                    pid = ? AND itype = 1
                     ORDER BY position ASC",
                     [$result["product"]["id"]])->fetchAll(PDO::FETCH_ASSOC),
                 "id"
@@ -298,7 +298,7 @@ class ProductModel extends Model{
                 LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
                 LEFT JOIN " . PREFIX . "products p ON p.id = pc.pid
                 LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
-            WHERE " . $where . " GROUP BY $orderBy
+            WHERE " . $where . " ORDER BY $orderBy
             $limitQuery
                 ", $params)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -521,7 +521,7 @@ class ProductModel extends Model{
      */
     public function getImages($product_id){
 
-        return Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position DESC", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
+        return Base::run("SELECT id, src, alt, position FROM " . PREFIX . "images WHERE itype = 1 AND pid = ? ORDER BY position DESC", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -560,7 +560,7 @@ class ProductModel extends Model{
                     i.src,
                     i.position
                 FROM " . PREFIX . "products p
-                    LEFT JOIN " . PREFIX . "images i ON i.nid = p.id
+                    LEFT JOIN " . PREFIX . "images i ON i.pid = p.id
                 GROUP BY p.id
                 ORDER BY p.id DESC
                 LIMIT {$pagination["start"]}, {$pagination["limit"]}

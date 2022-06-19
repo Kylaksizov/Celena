@@ -7,6 +7,7 @@ use app\core\System;
 use app\core\View;
 use app\models\plugins\Celena\Shop\ProductModel;
 use app\plugins\Celena\Shop\classes\Functions;
+use app\traits\Fields;
 
 
 class ProductController extends Controller {
@@ -203,6 +204,10 @@ class ProductController extends Controller {
             }
             $this->view->set('{images}', $images);
 
+            // если есть галерея, то добавляем плагин
+            if(strripos($this->view->include["product"], 'data-fancybox') !== false)
+                $this->view->plugins = ['fancybox'];
+
 
 
             // высчитываем средний бал по отзывам
@@ -338,7 +343,7 @@ class ProductController extends Controller {
             $this->view->set('{old-price}', $Product["product"]["price"]);
             $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
 
-
+            $this->view->include["product"] = Fields::setTags($this->view->include["product"], $Product["product"]["id"]);
 
             $edit = '';
             if(ADMIN) $edit = '<a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';

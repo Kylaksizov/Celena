@@ -61,7 +61,7 @@ class OrdersController extends PanelController {
                     $created = date("d.m.Y H:i", $row["created"]);
                     $status = '<td class="tc" style="background:#'.(!empty($OrdersStatus[$row["status"]]["color"]) ? $OrdersStatus[$row["status"]]["color"] : '72798b').';color:#fff">'.(!empty($OrdersStatus[$row["status"]]["name"]) ? $OrdersStatus[$row["status"]]["name"] : '-').'</td>';
                     $actions = '<ul class="tc">
-                            <li><a href="#" class="remove" data-a="ProductShop:deleteOrder='.$row["id"].'"></a></li>
+                            <li><a href="#" class="remove" data-a="Order:deleteOrder='.$row["id"].'"></a></li>
                         </ul>';
                 }
 

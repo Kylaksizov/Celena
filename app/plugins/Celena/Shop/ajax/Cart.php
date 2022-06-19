@@ -62,15 +62,15 @@ class Cart{
 
         if($orderId){
 
-            if(!empty($properties)){
-                foreach ($products_ids as $pid) {
-                    $OrderModel->ex($orderId, $pid, $counter[$pid], implode("|", $properties[$pid]));
-                }
+            foreach ($products_ids as $pid) {
+
+                $props = !empty($properties[$pid]) ? implode("|", $properties[$pid]) : '';
+                $OrderModel->ex($orderId, $pid, $counter[$pid], $props);
             }
 
             //  отправляем сообщение админу
             $theme = 'Новый заказ № ' . $orderId;
-            $body = 'На сайте оформлен новый заказ на сумму: <b>'.$total.' '.CONFIG_SYSTEM["currency"].'</b>';
+            $body = 'На сайте оформлен новый заказ на сумму: <b>'.$total.' '.CONFIG_PLUGIN["currency"].'</b>';
 
             Mail::send(CONFIG_SYSTEM["admin_email"], $theme, $body);
 
@@ -80,7 +80,7 @@ class Cart{
                 $.server_say({say: "Заказ оформлен!", status: "success"});
                 localStorage.removeItem("cart");
                 setTimeout(function(){
-                    window.location.href = "'.CONFIG_SYSTEM["after_cart"].'";
+                    window.location.href = "'.CONFIG_PLUGIN["after_cart"].'";
                 }, 1000)
             </script>';
 

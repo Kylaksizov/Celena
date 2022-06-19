@@ -4,7 +4,7 @@
         "tag": "tekstovoe-pole",
         "hint": "Тут подсказка",
         "category": [
-            "3"
+            "2"
         ],
         "type": "input",
         "default": "По умолчанию тут",

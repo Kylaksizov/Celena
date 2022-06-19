@@ -1,7 +1,7 @@
 *{margin:0;padding:0;outline:none}
 
 html, body{
-    background: #000;
+    background: #ecf0fa;
     color: #7C858B;
     /*font-family: 'Roboto', sans-serif;*/
     font-size: 15px;
@@ -411,12 +411,13 @@ hr{
     background: #b4c6d0;
 }
 .counter_goods input{
-    width: 25px;
+    width: 25px !important;
     padding: 4px 5px !important;
     text-align: center;
-    border: none;
-    border-top: 1px #d2dde3 solid;
-    border-bottom: 1px #d2dde3 solid;
+    margin: 0 !important;
+    border: none !important;
+    border-top: 1px #d2dde3 solid !important;
+    border-bottom: 1px #d2dde3 solid !important;
 }
 
 .btn_order{

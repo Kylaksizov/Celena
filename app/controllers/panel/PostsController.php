@@ -117,7 +117,6 @@ class PostsController extends PanelController {
 
             $title = $Post["posts"]["title"];
             $h1 = 'Редактирование поста: <b>'.$Post["posts"]["title"].'</b>';
-
         }
 
         // категории

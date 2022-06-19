@@ -126,7 +126,7 @@ $(function(){
                     '    </td>\n' +
                     '    <td class="cart_title">\n' +
                     '        <a href="'+cart[key].link+'">'+cart[key].title+'</a><br>\n' +
-                    '        <span class="cart_source_price">'+cart[key].price+' ₴</span>\n' +
+                    '        <span class="cart_source_price">'+cart[key].price+' '+config.currency+'</span>\n' +
                     '        <span class="open_properties" title="выбранные характеристики"></span>\n' +
                     properties +
                     '    </td>\n' +
@@ -137,7 +137,7 @@ $(function(){
                     '            <a href="#" class="max">+</a>\n' +
                     '        </div>\n' +
                     '    </td>\n' +
-                    '    <td class="cart_price">'+price+' ₴</td>\n' +
+                    '    <td class="cart_price">'+price+' '+config.currency+'</td>\n' +
                     '    <td class="cart_actions">\n' +
                     '        <a href="#" data-product-id="'+cart[key].id+'" class="remove_goods">Удалить</a>\n' +
                     '    </td>\n' +

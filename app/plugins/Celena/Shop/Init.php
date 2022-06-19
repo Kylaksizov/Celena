@@ -143,7 +143,7 @@ class Init implements InitPlugin {
 
 
         // добавление данных в таблицу
-        Base::run("INSERT INTO `".PREFIX."products`
+        /*Base::run("INSERT INTO `".PREFIX."products`
             (`uid`, `title`, `m_title`, `m_description`, `content`, `category`, `vendor`, `brand`, `price`, `sale`, `stock`, `url`, `poster`, `created`, `last_modify`, `status`)
         VALUES
             (1, 'Ноутбук Acer Swift 1 SF114-34 (NX.A77EU.00S) Pure Silver', 'Ноутбук Acer Swift 1 SF114-34 (NX.A77EU.00S) Pure Silver - купить в Украине', 'Отличный ноутбук фирмы Aser, который гарантирует приятную работу. Кчество на высоте! Покупаем быстренько.', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aperiam asperiores, autem deserunt dolore dolorum eaque eligendi excepturi, explicabo harum illo itaque minus modi saepe sequi tempore vitae voluptates. Atque incidunt inventore laborum optio?</p><p>A ab accusamus ad amet aperiam asperiores atque beatae commodi cum deleniti dolorem dolores et explicabo facere harum illo in ipsa iure laborum laudantium maiores minus molestias necessitatibus neque omnis perspiciatis porro provident, quaerat quas quo quos reiciendis sint unde velit veniam voluptate voluptatibus! Ab ad aliquid commodi dignissimos doloremque dolores ex iusto laudantium nesciunt, quidem quis quisquam, sequi vel? Corporis dolore ex fugiat incidunt neque.</p>', '2,1', '1794625', 1, '16999.00', '5%', 10, 'noutbuk-acer-swift-1-sf114-34-nxa77eu00s-pure-silver', 3, 1652973511, 1652981242, 1),
@@ -269,7 +269,54 @@ class Init implements InitPlugin {
             ('Новый', 'ff2d2d', 1),
             ('Принят', '17d5d5', 2),
             ('У курьера', '906ee3', 3),
-            ('Выполнен', '69d924', 4)");
+            ('Выполнен', '69d924', 4)");*/
+
+        // добавление роутов
+        self::addRoutes();
+
+        return true;
+    }
+
+
+    // power on...
+    public function powerOn()
+    {
+        self::addRoutes();
+        return true;
+    }
+
+
+    // power off...
+    public function powerOff()
+    {
+        self::deleteRoutes();
+        return true;
+    }
+
+
+    // delete...
+    public function delete()
+    {
+
+        // удаление таблиц
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "brands");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_ex");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_status");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "products");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "products_cat");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "product_prop");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "properties");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "properties_v");
+
+        self::deleteRoutes();
+
+        return true;
+    }
+
+
+
+    private function addRoutes(){
 
         // добавление роутов
         $resultAdd = System::addRoute([
@@ -304,40 +351,11 @@ class Init implements InitPlugin {
             Log::add('Не удалось добавить роуты при установке плагина', 2);
             return 'Не удалось добавить роуты';
         }
-
-        return true;
     }
 
 
-    // power on...
-    public function powerOn()
-    {
-        return true;
-    }
 
-
-    // power off...
-    public function powerOff()
-    {
-        return true;
-    }
-
-
-    // delete...
-    public function delete()
-    {
-
-        // удаление таблиц
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "brands");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_ex");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_status");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "products");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "products_cat");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "product_prop");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "properties");
-        Base::run("DROP TABLE IF EXISTS " . PREFIX . "properties_v");
-
+    private function deleteRoutes(){
 
         // удаление роутов
         $resultRemoved = System::removeRoute([
@@ -353,6 +371,7 @@ class Init implements InitPlugin {
                 'orders/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders'],
                 'orders/[0-9]+/$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'order'],
                 'orders/click/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'click'],
+                'settings/shop/$' => ['controller' => 'plugins\Celena\Shop\Settings'],
                 'settings/promo-codes/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'promoCodes'],
                 'settings/currency/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'currency'],
                 'settings/payment-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'paymentMethods'],
@@ -371,8 +390,6 @@ class Init implements InitPlugin {
             Log::add('Не удалось удалить роуты при удалении плагина', 2);
             return 'Не удалось удалить роуты';
         }
-
-        return true;
     }
 
 }

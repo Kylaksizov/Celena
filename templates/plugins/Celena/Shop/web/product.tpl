@@ -49,6 +49,7 @@
 
             <div class="tabs_content active">
                 {content}
+                {field:tekstovoe-pole}
             </div>
 
             <div class="tabs_content" id="reviews">

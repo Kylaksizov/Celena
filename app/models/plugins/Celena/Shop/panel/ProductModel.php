@@ -98,7 +98,8 @@ class ProductModel extends Model{
         $result = [];
 
         $result["product"] = Base::run("SELECT * FROM " . PREFIX . "products WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
-        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
+        $result["fields"] = System::setKeys(Base::run("SELECT id, tag, val FROM " . PREFIX . "fields WHERE pid = ? AND plugin_id = ?", [$id, PLUGIN["plugin_id"]])->fetchAll(PDO::FETCH_ASSOC), "tag");
+        $result["images"] = Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ? ORDER BY position ASC", [$id])->fetchAll(PDO::FETCH_ASSOC);
         $result["brands"] = Base::run("SELECT id, name, icon, categories FROM " . PREFIX . "brands ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
         $result["props"] = Base::run("SELECT
@@ -132,7 +133,7 @@ class ProductModel extends Model{
      */
     public function getImages($product_id){
 
-        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
+        return Base::run("SELECT id, src, alt FROM " . PREFIX . "images WHERE itype = 1 AND pid = ?", [$product_id])->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -342,7 +343,7 @@ class ProductModel extends Model{
 
         Base::run("INSERT INTO " . PREFIX . "images (
             itype,
-            nid,
+            pid,
             src,
             alt
         ) VALUES (
@@ -478,26 +479,21 @@ class ProductModel extends Model{
      */
     public function delete($id){
 
-        Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND nid = ?", [$id]);
+        Base::run("DELETE FROM " . PREFIX . "images WHERE itype = 1 AND pid = ?", [$id]);
         Base::run("DELETE FROM " . PREFIX . "product_prop WHERE pid = ?", [$id]);
         Base::run("DELETE FROM " . PREFIX . "products_cat WHERE pid = ?", [$id]);
+
+        $Orders = Base::run("SELECT oid FROM " . PREFIX . "orders_ex WHERE pid = ?", [$id])->fetchAll(PDO::FETCH_ASSOC);
+
+        if(!empty($Orders)){
+
+            Base::run("DELETE FROM " . PREFIX . "orders_ex WHERE pid = ?", [$id]);
+            foreach ($Orders as $order) {
+                Base::run("DELETE FROM " . PREFIX . "orders WHERE id = ?", [$order["oid"]]);
+            }
+        }
+
         return Base::run("DELETE FROM " . PREFIX . "products WHERE id = ?", [$id]);
-    }
-
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
     }
 
 }

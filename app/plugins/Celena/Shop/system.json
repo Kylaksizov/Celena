@@ -23,16 +23,6 @@
         "Заказы": "{panel}/orders/",
         "Быстрые заказы": "{panel}/orders/click/"
       }
-    },
-    "Новости и страницы": {
-      "link": "#",
-      "class": "ico_news",
-      "icon": "",
-      "submenu": {
-        "Новости": "{panel}/posts/news/",
-        "Страницы": "{panel}/posts/categories/",
-        "Категории новостей": "{panel}/posts/pages/"
-      }
     }
   },
   "editMenu": {

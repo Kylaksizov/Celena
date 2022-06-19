@@ -177,6 +177,7 @@ class Router{
                     );
 
                     define("PLUGIN_NAME", $this->plugin->system->name);
+                    define("PLUGIN", $pluginActive);
 
                     // если плагин активен
                     if($this->plugin->system->status != '1' && !ADMIN){

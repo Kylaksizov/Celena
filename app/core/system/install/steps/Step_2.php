@@ -154,6 +154,7 @@ class Step_2{
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}categories` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
+            `plugin_id` varchar(300) DEFAULT '',
             `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
             `m_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             `m_description` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',

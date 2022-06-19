@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers\classes;
+namespace app\plugins\Celena\Shop\classes;
 
 
 class Functions{
@@ -11,6 +11,9 @@ class Functions{
         //if(!USER) Auth::google_callback();
 
         //$Auth = Auth::google_init();
+
+        $config = json_encode(CONFIG_PLUGIN, JSON_UNESCAPED_UNICODE);
+        $e->view->setMain('</head>', '<script id="ks_config">let config = '.$config.'</script></head>');
 
         if(!USER){
 
@@ -58,13 +61,13 @@ class Functions{
 
     public static function scanTags($e){
 
-        if(!empty($e->view->include[$e->route["controller"]])) preg_match_all('/\{custom(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->include[$e->route["controller"]], $custom);
+        if(!empty($e->view->include[$e->route["controller"]])) preg_match_all('/\{products(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->include[$e->route["controller"]], $custom);
 
-        preg_match_all('/\{custom(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->tplIndex, $customIndex);
+        preg_match_all('/\{products(\s+category=\"(.+?)\")?(\s+template=\"(.+?)\")?(\s+limit=\"(.+?)\")?(\s+order=\"(.+?)\")?(\s+sort=\"(.+?)\")?\}/is', $e->view->tplIndex, $customIndex);
 
         if(!empty($custom[0]) || !empty($customIndex[0])){
 
-            $Custom = new Custom();
+            $Custom = new CustomProducts();
 
             if(!empty($custom[0])){
 

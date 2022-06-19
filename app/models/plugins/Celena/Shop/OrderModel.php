@@ -17,7 +17,7 @@ class OrderModel extends Model{
     public function create($buyer_id = null, $order_id = null, $name = '', $email = '', $tel = '', $address = '', $payment_id = 0, $prod_ids = [], $total = 0, $comment = '', $paid = 0, $status = 0){
 
         if(!$buyer_id) $buyer_id = USER ? USER["id"] : 0;
-        if(!$order_id) $order_id = Functions::generationCode(2).time();
+        if(!$order_id) $order_id = \app\traits\Functions::generationCode(2).time();
         if(empty($prod_ids)) return false;
 
         $hash = sha1(round(microtime(true) * 1000));

@@ -81,7 +81,7 @@ class PluginModel extends Model{
 
     public function getPluginByBrandName($brand, $name){
 
-        return Base::run("SELECT name, status FROM " . PREFIX . "plugins WHERE name = ?", [trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
+        return Base::run("SELECT plugin_id, name, version, status FROM " . PREFIX . "plugins WHERE name = ?", [trim(htmlspecialchars(stripslashes($brand."/".$name)))])->fetch(PDO::FETCH_ASSOC);
     }
 
 

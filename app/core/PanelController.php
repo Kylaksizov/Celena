@@ -40,11 +40,11 @@ abstract class PanelController{
              * ==========
              */
             $menu = [
-                "Посты" => [
+                "Новости" => [
                     "link" => "{panel}/posts/",
                     "class" => "ico_news",
                     "submenu" => [
-                        "Добавить пост" => "{panel}/posts/add/",
+                        "Добавить новость" => "{panel}/posts/add/",
                         "Категории" => "{panel}/category/",
                     ]
                 ],
@@ -92,7 +92,7 @@ abstract class PanelController{
             ]], JSON_UNESCAPED_UNICODE));*/
 
             $PluginModel = new PluginModel();
-            $PluginsInfo = $PluginModel->getPluginField('name, status');
+            $PluginsInfo = $PluginModel->getPluginField('plugin_id, name, version, status');
 
             if(!empty($PluginsInfo)){
 
@@ -107,6 +107,8 @@ abstract class PanelController{
                         $this->pluginsSystems[$row["name"]]["brandName"] = $row["name"];
 
                         if($row["status"] != 0){
+
+                            //if(!empty($this->plugin->system->name) && $this->plugin->system->name == $row["name"]) define("PLUGIN", $row);
 
                             if(!empty($PluginSystem["editMenu"])){
 

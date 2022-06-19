@@ -15,6 +15,9 @@ class CartController extends Controller {
      */
     public function indexAction(){
 
+        $this->view->styles = ['css/shop.css'];
+        $this->view->scripts = ['js/shop.js'];
+
         $this->view->include('cart');
 
         Functions::preTreatment($this);
