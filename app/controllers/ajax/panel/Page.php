@@ -192,7 +192,7 @@ class Page{
         $PageModel->setPoster($pageId, intval($_POST["setMainImage"]));
         $script = '<script>
                 $(".is_main").removeClass("is_main");
-                $(".nex_tmp").addClass("is_main");
+                $(".cel_tmp").addClass("is_main");
                 $.server_say({say: "Постер установлен!", status: "success"});
             </script>';
         System::script($script);
@@ -275,7 +275,7 @@ class Page{
         $PageModel->deleteImage($deleteImage);
 
         $script = '<script>
-            $(".nex_tmp").closest(".img_item").remove();
+            $(".cel_tmp").closest(".img_item").remove();
             $.server_say({say: "Удалено!", status: "success"});
         </script>';
         System::script($script);

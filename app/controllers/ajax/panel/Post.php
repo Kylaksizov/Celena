@@ -40,7 +40,7 @@ class Post{
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
         $category = !empty($_POST["category"]) ? $_POST["category"] : die("info::error::Выберите категорию!");
         $status = !empty($_POST["status"]) ? 1 : 0;
-        
+
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
@@ -48,7 +48,7 @@ class Post{
         if(!empty($_POST["field"])){
             $fieldsData = \app\traits\Fields::getPostFields($postId, $_POST["field"], $category);
         }
-        
+
         $addScript = '';
 
         $PostModel = new PostModel();
@@ -125,12 +125,12 @@ class Post{
                 $val = false;
 
                 switch ($fieldsData["fields"][$tag]["type"]){
-                    
+
                     case 'input': case 'textarea': case 'checkbox': case 'code': case 'date': case 'dateTime':
 
-                        $val = $field;
+                    $val = $field;
 
-                        break;
+                    break;
 
                     case 'select':
 
@@ -178,7 +178,7 @@ class Post{
                                     $val = self::saveImageField(ROOT . '/uploads/fields/' . $val[0], end($val), $resize, $quality, true);
                                 }
                             }
-                            
+
                         } else{
 
                             $val = '';
@@ -453,7 +453,7 @@ class Post{
         $PostModel->setPoster($postId, intval($_POST["setMainImage"]));
         $script = '<script>
                 $(".is_main").removeClass("is_main");
-                $(".nex_tmp").addClass("is_main");
+                $(".cel_tmp").addClass("is_main");
                 $.server_say({say: "Постер установлен!", status: "success"});
             </script>';
         System::script($script);
@@ -536,7 +536,7 @@ class Post{
         $PostModel->deleteImage($deleteImage);
 
         $script = '<script>
-            $(".nex_tmp").closest(".img_item").remove();
+            $(".cel_tmp").closest(".img_item").remove();
             $.server_say({say: "Удалено!", status: "success"});
         </script>';
         System::script($script);

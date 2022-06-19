@@ -56,7 +56,7 @@ class CelenaPlugin{
 
         $pluginInfo = ShopController::getPlugin(intval($_POST["id"]), 'json');
         $pluginInfo = json_decode($pluginInfo);
-        
+
         $result = ShopController::installPlugin($plugin_id);
         $pluginInstallZip = 'install_plugin_'.time().'.zip';
 
@@ -83,16 +83,16 @@ class CelenaPlugin{
 
                 //if(is_file($filename)){
 
-                    // получаем бренд и имя плагина
-                    if(!$pluginBrandName && strripos($filename, "app/plugins/") !== false){
-                        $pluginBrandName_ = explode("/", $filename);
-                        if(!empty($pluginBrandName_[2]) && !empty($pluginBrandName_[3])){
-                            $pluginBrandName = $pluginBrandName_[2].'/'.$pluginBrandName_[3];
-                            unset($pluginBrandName_);
-                        }
+                // получаем бренд и имя плагина
+                if(!$pluginBrandName && strripos($filename, "app/plugins/") !== false){
+                    $pluginBrandName_ = explode("/", $filename);
+                    if(!empty($pluginBrandName_[2]) && !empty($pluginBrandName_[3])){
+                        $pluginBrandName = $pluginBrandName_[2].'/'.$pluginBrandName_[3];
+                        unset($pluginBrandName_);
                     }
+                }
 
-                    $hashFileContent .= $filename."\n";
+                $hashFileContent .= $filename."\n";
                 //}
             }
 
@@ -112,7 +112,7 @@ class CelenaPlugin{
             fwrite($cache, trim($hashFileContent));
             flock($cache, LOCK_UN);
             fclose($cache);
-            
+
             // добавляем в базу
             $PluginModel = new PluginModel();
             $PluginModel->addPlugin($plugin_id, $pluginBrandName, $pluginInfo->plugin->plugin_v, $hashFile);
@@ -235,7 +235,7 @@ class CelenaPlugin{
      * @return void
      */
     private function remove(){
-        
+
         $plugin_id = intval($_POST["id"]);
         $PluginModel = new PluginModel();
         $PluginInfo = $PluginModel->getPluginByPluginId($plugin_id);
@@ -270,7 +270,12 @@ class CelenaPlugin{
 
             $PluginModel->removePlugin($plugin_id);
 
-            die("info::success::Удален!");
+            $script = '<script>
+                $.server_say({say: "Плагин удален!", status: "success"});
+                $(".cel_tmp").closest(".plugin_table").remove();
+            </script>';
+
+            System::script($script);
 
         }
 

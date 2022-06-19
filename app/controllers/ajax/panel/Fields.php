@@ -34,7 +34,7 @@ class Fields{
 
         preg_match('/edit\/(.+?)\//is', $_GET["url"], $edit);
         $editTag = !empty($edit[1]) ? $edit[1] : null;
-        
+
         $name = trim(htmlspecialchars(strip_tags($_POST["name"])));
         $tag = !empty($_POST["tag"]) ? trim(htmlspecialchars(strip_tags($_POST["tag"]))) : System::translit($name);
         $hint = !empty($_POST["hint"]) ? trim(htmlspecialchars(strip_tags($_POST["hint"]))) : '';
@@ -48,7 +48,7 @@ class Fields{
             "category" => $category,
             "type"     => $type,
         ];
-        
+
         switch ($type){
 
             case 'input':
@@ -202,7 +202,7 @@ class Fields{
 
         $FieldsModel = new FieldsModel();
         $Field = $FieldsModel->getFieldById($fieldId);
-        
+
         if(!empty($Field["val"])){
 
             $fDbSource = explode("|", $Field["val"]);
@@ -226,7 +226,7 @@ class Fields{
             unlink(ROOT . "/uploads/fields/" . str_replace("/thumbs", "", $fieldVal));
 
         $script = '<script>
-            $(".nex_tmp").parent().css({
+            $(".cel_tmp").parent().css({
                 "transform": "scale(0)",
                 "transition": ".5s"
             });

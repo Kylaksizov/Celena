@@ -174,8 +174,8 @@
         let this_ = arguments[0];
 
         // добавляем элементу временный класс
-        $(".nex_tmp").removeClass("nex_tmp");
-        this_.addClass("nex_tmp");
+        $(".cel_tmp").removeClass("cel_tmp");
+        this_.addClass("cel_tmp");
 
         let data = new FormData();
         let d1;
