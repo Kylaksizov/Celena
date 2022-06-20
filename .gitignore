@@ -1,7 +1,12 @@
 .idea
+test.svg
+img.php
+info.php
+Before__Start.txt
 uploads/*
 app/core/tmp
 app/cache/system/*
-tmp.txt
 Before__Start.txt
 UPDATES.txt
+app/core/data/config.php
+app/core/data/db_config.php

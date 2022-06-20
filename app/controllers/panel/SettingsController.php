@@ -134,6 +134,16 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Создавать миниатюры при вставке изображений через редактор Quill</h3>
+                                <div class="setDescription">Если включено, то будут создаваться уменьшенные копии изображений размерами заданными на два пункта выше.</div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="config[quill_thumbs]" value="1"'.System::check(CONFIG_SYSTEM["quill_thumbs"]).' id="ch_quill_thumbs">
+                                <label for="ch_quill_thumbs"></label>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>Шаблон сайта</h3>
                             </div>
                             <div>

@@ -268,6 +268,9 @@ class System{
 
 
 
+
+
+    
     public static function editSystemConfig($newSettings, $file = CORE . '/data/config.php'){
 
         $new_settings = '';
@@ -331,6 +334,60 @@ class System{
             if(ADMIN) die($file . ' - не найден!');
             return false;
         }
+    }
+
+
+    /**
+     * @name добавление настройки в конфиг
+     * ===================================
+     * @param $newSettings
+     * @param $file
+     * @return bool
+     */
+    public static function addSystemConfig($newSettings, $file = CORE . '/data/config.php'){
+
+        $config = file_get_contents($file);
+
+        $new_setting = '';
+
+        foreach ($newSettings as $setKey => $setVal) {
+
+            if(is_numeric($setVal)){ // если чистое число
+
+                $new_setting .= "\t\"".$setKey."\" => " . $setVal . ',' . PHP_EOL;
+
+            } else if(is_bool($setVal) === true){
+
+                if($setVal === true)
+                    $new_setting .= "\t\"".$setKey."\" => true," . PHP_EOL;
+                if($setVal === false)
+                    $new_setting .= "\t\"".$setKey."\" => false," . PHP_EOL;
+
+            } else if(is_array($setVal)){
+
+                $new_department = "";
+                foreach ($setVal as $value) {
+                    $new_department .= "\"".trim($value)."\", ";
+                }
+
+                $new_department = substr($new_department, 0, -2);
+                $new_setting .= "\t\"".$setKey."\" => [$new_department]," . PHP_EOL;
+
+            } else{
+
+                $new_setting .= "\t" . '"'.$setKey.'" => "' . $setVal . '",' . PHP_EOL;
+            }
+        }
+
+        $config = str_replace('];', $new_setting.'];' , $config);
+
+        $fp = fopen($file, "w");
+        flock($fp, LOCK_EX);
+        fwrite($fp, $config);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
+        return true;
     }
 
 

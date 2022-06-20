@@ -51,6 +51,9 @@ return [
     // качество уменьшенной копии
 	"quality_thumb" => 80,
 
+    // уменьшенные копии через редактор quill
+	"quill_thumbs" => 1,
+
     // шаблон по умолчанию
 	"template" => "Web",
 
@@ -62,16 +65,16 @@ return [
 
 	"mail_method" => "mail",
 
-    "noreply" => "noreply@kylaksizov.com",
+    "noreply" => "noreply@celena.io",
 
     // SMTP
-	"SMTPHost" => "smtp.mailtrap.io",
-	"SMTPLogin" => "55aeba55b268e6",
-	"SMTPPassword" => "077917546beb79",
+	"SMTPHost" => "",
+	"SMTPLogin" => "",
+	"SMTPPassword" => "",
 	"SMTPSecure" => "ssl",
 	"SMTPPort" => 2525,
-	"SMTPFrom" => "info@kylaksizov.com",
+	"SMTPFrom" => "",
 
-	"version" => "0.0.6",
+	"version" => "0.0.7",
 
 ];

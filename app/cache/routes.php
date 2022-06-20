@@ -3,7 +3,23 @@
 return [
 
     'panel' => [
-        '404/$' => ['controller' => 'NotFound'],
+        'products/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products'],
+		'products/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addProduct'],
+		'products/categories/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'categories'],
+		'products/categories/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addCategory'],
+		'products/brands/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'brands'],
+		'products/brands/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addBrand'],
+		'products/properties/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'properties'],
+		'products/properties/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addProperty'],
+		'orders/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders'],
+		'orders/[0-9]+/$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'order'],
+		'orders/click/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Orders', 'action' => 'click'],
+		'settings/shop/$' => ['controller' => 'plugins\Celena\Shop\Settings'],
+		'settings/promo-codes/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'promoCodes'],
+		'settings/currency/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'currency'],
+		'settings/payment-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'paymentMethods'],
+		'settings/delivery-methods/$' => ['controller' => 'plugins\Celena\Shop\Settings', 'action' => 'deliveryMethods'],
+		'404/$' => ['controller' => 'NotFound'],
 		'auth/$' => ['controller' => 'auth'],
 		'posts/(page-[0-9]+/)?$' => ['controller' => 'posts'],
 		'posts/(add/|edit/([0-9]+/)?)$' => ['controller' => 'posts', 'action' => 'add'],
@@ -36,12 +52,13 @@ return [
     
     'web' => [
         'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
+		'(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
+		'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
+		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
+		'(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
-		'(page-[0-9]+/)?$' => ['controller' => 'index'],
-		'([a-z-/0-9]+).html$' => ['controller' => 'post'],
-		'search/(page-[0-9]+/)?$' => ['controller' => 'search'],
-		'(.+?)/$' => ['controller' => 'category'],
+		'([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
     ],
     
 ];
