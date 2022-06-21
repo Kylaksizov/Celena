@@ -34,7 +34,7 @@ class Page{
 
         $title = !empty($_POST["title"]) ? trim(htmlspecialchars(strip_tags($_POST["title"]))) : die("info::error::Укажите название!");
         $url = !empty($_POST["url"]) ? System::translit(trim(htmlspecialchars(strip_tags($_POST["url"])))) : System::translit($title);
-        $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
+        $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : time();
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
         $tpl = !empty($_POST["tpl"]) ? trim($_POST["tpl"]) : '';
         $status = !empty($_POST["status"]) ? 1 : 0;
