@@ -135,9 +135,11 @@ class PostModel extends Model{
                         p.url,
                         p.created,
                         p.status,
+                        i.src AS poster,
                         pe.see
                     FROM " . PREFIX . "post p
                         LEFT JOIN " . PREFIX . "post_ex pe ON pe.pid = p.id
+                        LEFT JOIN " . PREFIX . "images i ON i.id = p.poster
                     ORDER BY p.id DESC
                     LIMIT {$pagination["start"]}, {$pagination["limit"]}
                     ", $params)->fetchAll(PDO::FETCH_ASSOC);

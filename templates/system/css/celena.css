@@ -683,6 +683,9 @@ hr{
 .pagination_edge:first-child a:hover{
     opacity: .5;
 }
+.cel_l_error{
+    color: #f00;
+}
 
 @media (min-width: 470px) {
     .modal, .modal_big{

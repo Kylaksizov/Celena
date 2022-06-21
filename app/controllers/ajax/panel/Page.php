@@ -36,9 +36,8 @@ class Page{
         $url = !empty($_POST["url"]) ? System::translit(trim(htmlspecialchars(strip_tags($_POST["url"])))) : System::translit($title);
         $created = !empty($_POST["created"]) ? strtotime($_POST["created"]) : null;
         $content = !empty($_POST["content"]) ? trim($_POST["content"]) : '';
+        $tpl = !empty($_POST["tpl"]) ? trim($_POST["tpl"]) : '';
         $status = !empty($_POST["status"]) ? 1 : 0;
-
-        $content = str_replace('<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>', '', $content);
 
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
@@ -49,7 +48,7 @@ class Page{
 
         if(!$pageId){ // если это добавление новой категории
 
-            $id = $PageModel->create($title, $meta, $content, $url, $created, $status);
+            $id = $PageModel->create($title, $meta, $content, $url, $tpl, $created, $status);
 
             if(!empty($_FILES["images"])){
                 $images = $this->uploadImages($id);
@@ -65,7 +64,7 @@ class Page{
             $script = '<script>
                 '.$addScript.'
                 $.server_say({say: "Страница создана!", status: "success"});
-                history.pushState(null, "Редактирование страницы", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/pages/edit/'.$id.'/");
+                history.pushState(null, "Редактирование страницы", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/pages/edit/'.$id.'/");
             </script>';
 
         } else{ // если редактирование
@@ -76,6 +75,7 @@ class Page{
                 'm_description' => $meta["description"],
                 'content' => $content,
                 'url' => $url,
+                'tpl' => $tpl,
                 'created' => $created,
                 'status' => $status
             ]);

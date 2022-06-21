@@ -19,7 +19,6 @@ class Custom{
         $PostModel = new PostModel();
 
         $tpl->load();
-        $tpl->include($template);
 
         if(!is_array($categories) || $categories == 'index') $limit = CONFIG_SYSTEM["count_in_cat"];
 
@@ -29,6 +28,10 @@ class Custom{
         if(!empty($News["posts"])){
 
             if($e->route["controller"] == 'category'){ // если категория
+
+                if(!empty($News["posts"][0]["tpl_min"])) $template = $News["posts"][0]["tpl_min"];
+
+                $tpl->include($template);
 
                 // CRUMBS
                 $CategoryStep = System::setKeys($News["categories"], "url");
@@ -79,7 +82,8 @@ class Custom{
                         'content' => $News["categories"][$News["posts"][0]["category_id"]]["m_description"],
                     ]
                 ]);
-            }
+                
+            } else $tpl->include($template);
 
             $buildCatLinks = (CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4') ? Functions::buildCatLinks($News["categories"]) : '';
 
@@ -99,22 +103,24 @@ class Custom{
                 $poster = !empty($row["poster"]) ? '/uploads/posts/'.$row["poster"] : '/templates/system/img/no-image.svg';
 
 
-                $tpl->set('{id}', !empty(CONFIG_SYSTEM["str_pad_id"]) ? str_pad($row["id"], CONFIG_SYSTEM["str_pad_id"], '0', STR_PAD_LEFT) : $row["id"]);
+                preg_match('/\{description(?:\slimit=\"(\d+)\")?\}/', $tpl->include[$template], $tplDescription);
+                $descriptionTag = !empty($tplDescription[0]) ? $tplDescription[0] : '{description}';
 
-                if($tpl->findTag('{vendor}'))
-                    $tpl->set('{vendor}', !empty(CONFIG_SYSTEM["str_pad_vendor"]) ? str_pad($row["vendor"], CONFIG_SYSTEM["str_pad_vendor"], '0', STR_PAD_LEFT) : $row["vendor"]);
+                if(empty($tplDescription[1])) $short = $row["short"];
+                else $short = mb_strimwidth(strip_tags($row["short"]), 0, intval($tplDescription[1]), '...');
+                $tpl->set($descriptionTag, $short);
 
+                
                 $tpl->set('{link}', $link);
                 $tpl->set('{title}', $row["title"]);
                 $tpl->set('{see}', $row["see"]);
-                $tpl->set('{description}', $row["short"]);
+
                 $tpl->set('{date}', date("d.m.Y", $row["created"]));
 
                 $tpl->set('{poster}', '//'.CONFIG_SYSTEM["home"].$poster);
 
                 $tpl->set('{images}', '');
                 $tpl->set('{rating}', '');
-                $tpl->set('{description}', '');
 
                 $tpl->push();
             }

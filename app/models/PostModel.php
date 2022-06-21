@@ -98,6 +98,7 @@ class PostModel extends Model{
                     id,
                     title,
                     url,
+                    tpl_max,
                     pid
                 FROM " . PREFIX . "categories", [])->fetchAll(PDO::FETCH_ASSOC),
                 "id"
@@ -234,6 +235,7 @@ class PostModel extends Model{
                 c.title AS category_title,
                 c.url AS category_url,
                 c.pid AS parent_category,
+                c.tpl_min,
                 p.title AS title,
                 p.short,
                 p.url,

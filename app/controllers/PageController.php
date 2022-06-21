@@ -18,14 +18,16 @@ class PageController extends Controller {
 
         $PageModel = new PageModel();
 
-        $this->view->include('page');
-
         $url = str_replace(".html", "", $this->url);
 
         $Page = $PageModel->get($url);
 
         // если страница есть
         if(!empty($Page["page"])){
+
+            $uTpl = !empty($Page["page"]["tpl"]) ? $Page["page"]["tpl"] : 'page';
+
+            $this->view->include($uTpl);
 
             // CRUMBS
             $this->view->setMain('{crumbs}', "");
@@ -73,29 +75,30 @@ class PageController extends Controller {
             $this->view->setMain('{CONTENT}', $this->view->get());
 
 
+            $title = !empty($Page["page"]["m_title"]) ? $Page["page"]["m_title"] : $Page["page"]["title"];
+
+
+            $this->view->setMeta($title, $Page["page"]["m_description"], [
+                [
+                    'property' => 'og:title',
+                    'content' => $title,
+                ],
+                [
+                    'property' => 'og:description',
+                    'content' => $Page["page"]["m_description"],
+                ]
+            ]);
+
+            $this->view->render(false);
+
+            Functions::scanTags($this);
+            $this->view->display();
 
         } else{
 
             header("Location: ".CONFIG_SYSTEM["home"]."/404/");
             View::errorCode(404);
         }
-
-
-        $this->view->setMeta($Page["page"]["m_title"], $Page["page"]["m_description"], [
-            [
-                'property' => 'og:title',
-                'content' => $Page["page"]["m_title"],
-            ],
-            [
-                'property' => 'og:description',
-                'content' => $Page["page"]["m_description"],
-            ]
-        ]);
-
-        $this->view->render(false);
-
-        Functions::scanTags($this);
-        $this->view->display();
     }
 
 }

@@ -161,6 +161,8 @@ class Step_2{
             `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
             `icon` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
             `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `tpl_min` VARCHAR(20) NOT NULL DEFAULT '',
+            `tpl_max` VARCHAR(20) NOT NULL DEFAULT '',
             `pid` int(11) DEFAULT NULL COMMENT 'parent id',
             `status` tinyint(1) NOT NULL DEFAULT 1,
             PRIMARY KEY (`id`)
@@ -213,6 +215,7 @@ class Step_2{
             `content` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
             `poster` int(11) NOT NULL DEFAULT 0,
             `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+            `tpl` VARCHAR(20) NOT NULL DEFAULT '',
             `created` INT(11) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT '1',
             PRIMARY KEY  (`id`)

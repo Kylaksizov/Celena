@@ -16,24 +16,12 @@ class NotFoundController extends Controller{
 
         $this->view->setMain('{crumbs}', '<div id="crumbs"><a href="//'.CONFIG_SYSTEM["home"].'/">'.CONFIG_SYSTEM["site_title"].'</a></div>');
 
-        $this->view->setMain('{CONTENT}', '');
+        $this->view->setMain('{CONTENT}', $this->view->get());
         $this->view->clear();
 
-        $this->view->setMeta('Главная страница', 'Описание страницы', [
-            [
-                'property' => 'og:title',
-                'content' => 'Описание страницы',
-            ],
-            [
-                'property' => 'og:description',
-                'content' => 'Для гугла',
-            ]
-        ]);
+        $this->view->setMeta('404 Not Found!', '404 Not Found!');
 
-        $this->view->render(false);
-
-        Functions::scanTags($this);
-        $this->view->display();
+        $this->view->render();
     }
 
 }

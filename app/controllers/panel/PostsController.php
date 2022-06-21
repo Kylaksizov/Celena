@@ -41,6 +41,8 @@ class PostsController extends PanelController {
 
             foreach ($Posts["posts"] as $row) {
 
+                $poster = !empty(!empty($row["poster"])) ? '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$row["poster"].'" alt="" class="poster_post">' : '<img src="//'.CONFIG_SYSTEM["home"].'/templates/system/img/no-image.svg" alt="">';
+
                 $category = '';
                 if(!empty($row["category"])){
                     $categoryArr = explode(",", $row["category"]);
@@ -51,6 +53,7 @@ class PostsController extends PanelController {
 
                 $PostContent .= '<tr>
                     <td>'.$row["id"].'</td>
+                    <td class="no_pad">'.$poster.'</td>
                     <td>
                         <a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$row["id"].'/">'.$row["title"].'</a>
                     </td>
@@ -72,6 +75,7 @@ class PostsController extends PanelController {
             <table>
                 <tr>
                     <th width="20">ID</th>
+                    <th width="50">Постер</th>
                     <th>Заголовок поста</th>
                     <th width="200">Категория</th>
                     <th width="20">Просмотров</th>

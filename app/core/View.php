@@ -62,6 +62,13 @@ class View{
                     $this->include[$view] = $this->includeSource[$view];
                     return $this->include[$view];
                 }
+
+            } else{
+
+                $this->lastInc = $view;
+                $this->includeSource[$view] = '<b class="cel_l_error">[[ шаблон: '.$view.' не найден! ]]</b>';
+                $this->include[$view] = $this->includeSource[$view];
+                return $this->include[$view];
             }
 
         } else{
@@ -176,6 +183,7 @@ class View{
 
     public function get($file = null){
         if(isset($this->include[$this->lastInc])){
+            if(empty($this->include[$this->lastInc])) return '<b class="cel_l_error">[[ шаблон: '.$this->lastInc.' не найден! ]]</b>';
             if($file) return $this->include[$file];
             else return $this->include[$this->lastInc];
         }

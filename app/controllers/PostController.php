@@ -23,16 +23,14 @@ class PostController extends Controller {
 
         $PostModel = new PostModel();
 
-        $this->view->include('post');
-
-        $fieldsQuery = [
+        /*$fieldsQuery = [
             'p.id, p.uid AS author_id, p.title, p.url, p.content, p.m_title, p.m_description, p.category',
             '{date}'       => 'p.created',
             '{poster}'     => 'p.poster',
             '{images}'     => '1',
         ];
 
-        $findTags = $this->view->findTags($fieldsQuery);
+        $findTags = $this->view->findTags($fieldsQuery);*/
 
         $url = str_replace(CONFIG_SYSTEM["seo_type_end"], "", end($this->urls));
 
@@ -50,7 +48,7 @@ class PostController extends Controller {
             }
         }
 
-        $Post = $PostModel->get($url, $findTags);
+        $Post = $PostModel->get($url);
 
         // если товар есть
         if(!empty($Post["post"])){
@@ -90,12 +88,16 @@ class PostController extends Controller {
 
             $crumbs .= '</div>';
 
+            $template = !empty($Post["categories"][$Post["post"]["category"]]["tpl_max"]) ? $Post["categories"][$Post["post"]["category"]]["tpl_max"] : 'post';
+
+            $this->view->include($template);
+
             $this->view->setMain('{crumbs}', $crumbs);
             // CRUMBS END
 
 
 
-            $poster = '//'.CONFIG_SYSTEM["home"].'/templates/'.CONFIG_SYSTEM["template"].'/img/no-image.svg';
+            $poster = '//'.CONFIG_SYSTEM["home"].'/templates/system/img/no-image.svg';
             if(!empty($Post["post"]["poster_src"])){
                 $poster = '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$Post["post"]["poster_src"];
             } else if(!empty($Post["images"])){
@@ -168,10 +170,10 @@ class PostController extends Controller {
 
             $this->view->set('{categories}', $Post["post"]["category"]);
 
-            $this->view->include["post"] = Fields::setTags($this->view->include["post"], $Post["post"]["id"]);
+            $this->view->include[$template] = Fields::setTags($this->view->include[$template], $Post["post"]["id"]);
 
             // если есть галерея, то добавляем плагин
-            if(strripos($this->view->include["post"], 'data-fancybox') !== false)
+            if(strripos($this->view->include[$template], 'data-fancybox') !== false)
                 $this->view->plugins = ['fancybox'];
 
 

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\controllers\classes\Custom;
 use app\controllers\classes\Functions;
 use app\core\Controller;
+use app\core\View;
 use Exception;
 
 
@@ -21,8 +22,14 @@ class CategoryController extends Controller {
         // если тег ля вывода продуктов присутствует
         if($this->view->findTag('{CONTENT}', 1)){
             $Custom = new Custom();
-            $news = $Custom->get($this, true, end($this->urls));
-            $this->view->setMain('{CONTENT}', $news);
+            $content = $Custom->get($this, true, end($this->urls));
+
+            if(empty($content)){
+                header("Location: ".CONFIG_SYSTEM["home"]."/404/");
+                View::errorCode(404);
+            }
+
+            $this->view->setMain('{CONTENT}', $content);
             $this->view->clear();
         }
 

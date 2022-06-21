@@ -173,11 +173,23 @@ class CategoryController extends PanelController {
                     </div>
                 </div>
                 <div class="tabs_content">
-                    <label for="" class="pr">Для плагинов (в разработке): <span class="q" title="Если пусто, то категории будут "></label>
-                    <select name="plugins[]" class="multipleSelect" multiple>
-                        <option value="1">Celena Shop</option>
-                        <option value="2">Example</option>
-                    </select>
+                    <div class="dg dg_auto">
+                        <div>
+                            <label for="" class="pr">Для плагинов (в разработке): <span class="q" title="Если пусто, то категории будут "></label>
+                            <select name="plugins[]" class="multipleSelect" multiple>
+                                <option value="1">Celena Shop</option>
+                                <option value="2">Example</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="">Шаблон анонса:</label>
+                            <input type="text" name="tpl_min" value="'.(!empty($Category["tpl_min"])?$Category["tpl_min"]:'').'" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="">Шаблон полной новости:</label>
+                            <input type="text" name="tpl_max" value="'.(!empty($Category["tpl_max"])?$Category["tpl_max"]:'').'" autocomplete="off">
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>

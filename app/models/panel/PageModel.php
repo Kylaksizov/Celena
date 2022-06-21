@@ -20,12 +20,13 @@ class PageModel extends Model{
      * @param array $meta
      * @param string $content
      * @param string|null $url
+     * @param string $tpl
      * @param int|null $created
      * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, array $meta = [], string $content = '', ?string $url = '', int $created = null, int $status = 1){
+    public function create($title, array $meta = [], string $content = '', ?string $url = '', string $tpl = '', int $created = null, int $status = 1){
 
         if($url === null) $url = System::translit($title);
         if($created === null) $created = time();
@@ -37,6 +38,7 @@ class PageModel extends Model{
             $meta["description"],
             $content,
             $url,
+            $tpl,
             $created,
             $status
         ];
@@ -48,10 +50,11 @@ class PageModel extends Model{
             m_description,
             content,
             url,
+            tpl,
             created,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);

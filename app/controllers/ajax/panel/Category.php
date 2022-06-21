@@ -30,6 +30,9 @@ class Category{
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
+        $tpl_min = !empty($_POST["tpl_min"]) ? trim(htmlspecialchars(strip_tags($_POST["tpl_min"]))) : '';
+        $tpl_max = !empty($_POST["tpl_max"]) ? trim(htmlspecialchars(strip_tags($_POST["tpl_max"]))) : '';
+
         $pid = !empty($_POST["pid"]) ? intval($_POST["pid"]) : null;
         $addScript = '';
 
@@ -39,7 +42,7 @@ class Category{
 
         if(empty($cid[1])){ // если это добавление новой категории
 
-            $id = $CategoryModel->create($title, $cont, $url, $pid, $meta, $status);
+            $id = $CategoryModel->create($title, $cont, $url, $tpl_min, $tpl_max, $pid, $meta, $status);
 
             if(!empty($_FILES["icon"])){
                 $icon = $this->uploadIcon($id);
@@ -57,7 +60,7 @@ class Category{
         } else{ // если редактирование
 
             $id = intval($cid[1]);
-            $CategoryModel->edit($id, $title, $cont, $url, $pid, $meta, $status);
+            $CategoryModel->edit($id, $title, $cont, $url, $tpl_min, $tpl_max, $pid, $meta, $status);
 
             if(!empty($_FILES["icon"])){
 

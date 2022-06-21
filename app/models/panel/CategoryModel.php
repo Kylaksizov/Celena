@@ -17,15 +17,17 @@ class CategoryModel extends Model{
      * @name добавление категории
      * ==========================
      * @param $title
-     * @param array $meta
      * @param $content
      * @param $url
+     * @param string $tpl_min
+     * @param string $tpl_max
      * @param $pid
+     * @param array $meta
      * @param int $status
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, $content, $url, $pid, array $meta = [], int $status = 1){
+    public function create($title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid, array $meta = [], int $status = 1){
 
         $params = [
             $title,
@@ -33,6 +35,8 @@ class CategoryModel extends Model{
             $meta["description"],
             $content,
             $url,
+            $tpl_min,
+            $tpl_max,
             $pid,
             $status
         ];
@@ -43,10 +47,12 @@ class CategoryModel extends Model{
             m_description,
             content,
             url,
+            tpl_min,
+            tpl_max,
             pid,
             status
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
 
         unset($params);
@@ -109,15 +115,17 @@ class CategoryModel extends Model{
      * ==============================
      * @param $id
      * @param $title
-     * @param array $meta
      * @param $content
      * @param $url
+     * @param string $tpl_min
+     * @param string $tpl_max
      * @param $pid
+     * @param array $meta
      * @param int $status
-     * @return void
+     * @return int
      * @throws Exception
      */
-    public function edit($id, $title, $content, $url, $pid, array $meta = [], int $status = 1){
+    public function edit($id, $title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid, array $meta = [], int $status = 1){
 
         return Base::run("
             UPDATE " . PREFIX . "categories SET
@@ -126,11 +134,13 @@ class CategoryModel extends Model{
                 m_description = ?,
                 content = ?,
                 url = ?,
+                tpl_min = ?,
+                tpl_max = ?,
                 pid = ?,
                 status = ?
             WHERE id = ?",
 
-            [$title, $meta["title"], $meta["description"], $content, $url, $pid, $status, $id])->rowCount();
+            [$title, $meta["title"], $meta["description"], $content, $url, $tpl_min, $tpl_max, $pid, $status, $id])->rowCount();
     }
 
 

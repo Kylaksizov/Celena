@@ -10,23 +10,10 @@ use app\models\panel\PageModel;
 class PagesController extends PanelController {
 
 
-    public function newsAction(){
-
-        $content = '';
-
-        /*$this->view->include('');
-        $this->view->set('{}', $content);
-
-        $this->view->setMain('{tag}', $this->view->get());*/
-
-        $this->view->render('');
-    }
-
-
     public function indexAction(){
 
-        $this->view->styles = ['css/addon/page.css'];
-        $this->view->scripts = ['js/addon/page.js'];
+        $this->view->styles = ['css/page.css'];
+        //$this->view->scripts = ['js/page.js'];
 
         $content = '<div class="fx">
             <h1>Статические страницы</h1>
@@ -81,9 +68,9 @@ class PagesController extends PanelController {
 
     public function addAction(){
 
-        $this->view->styles = ['css/addon/page.css'];
-        $this->view->scripts = ['js/addon/page.js'];
-        $this->view->plugins = ['datepicker', 'fancybox'];
+        $this->view->styles = ['css/page.css'];
+        //$this->view->scripts = ['js/page.js'];
+        $this->view->plugins = ['datepicker', 'fancybox', 'editor'];
 
         $title = $h1 = 'Добавление страницы';
 
@@ -133,29 +120,21 @@ class PagesController extends PanelController {
                 <div class="tabs_content active">
                     <div class="dg dg_auto">
                         <div>
-                            <div>
-                                <label for="" class="rq">Название</label>
-                                <input type="text" name="title" value="'.(!empty($Page["title"])?$Page["title"]:'').'" autocomplete="off">
-                            </div>
+                            <label for="" class="rq">Название:</label>
+                            <input type="text" name="title" value="'.(!empty($Page["title"])?$Page["title"]:'').'" autocomplete="off">
                         </div>
                         <div>
-                            <div>
-                                <div>
-                                    <label for="">Дата публикации</label>
-                                    <input type="text" name="created" class="dateTime" value="'.(!empty($Page["created"])?date("d.m.Y H:i", $Page["created"]):'').'" autocomplete="off">
-                                </div>
-                            </div>
+                            <label for="">Дата публикации:</label>
+                            <input type="text" name="created" class="dateTime" value="'.(!empty($Page["created"])?date("d.m.Y H:i", $Page["created"]):'').'" autocomplete="off">
                         </div>
                         <div>
+                            <div class="tr">
+                                <input type="checkbox" name="status" id="p_status"'.$pageStatus.' value="1"><label for="p_status">Активена</label>
+                            </div>
                             <div>
-                                <div class="tr">
-                                    <input type="checkbox" name="status" id="p_status"'.$pageStatus.' value="1"><label for="p_status">Активена</label>
-                                </div>
-                                <div>
-                                    <label for="p_images" class="upload_files">
-                                        <input type="file" name="images[]" id="p_images" multiple> выбрать изображения
-                                    </label>
-                                </div>
+                                <label for="p_images" class="upload_files">
+                                    <input type="file" name="images[]" id="p_images" multiple> выбрать изображения
+                                </label>
                             </div>
                             
                             <!-- изображения страницы -->
@@ -164,16 +143,16 @@ class PagesController extends PanelController {
                             </div>
                         </div>
                     </div>
-                    <p class="title_box hr_d">Описание</p>
+                    <p class="title_box hr_d">Описание:</p>
                     <div>
-                        <textarea name="content" id="page_content" rows="5">'.(!empty($Page["content"])?$Page["content"]:'').'</textarea>
-                        <br>
-                        <script>
-                            let editor = new FroalaEditor("#page_content", {
-                                inlineMode: true,
-                                countCharacters: false
-                            });
-                        </script>
+                        <div data-editor="content" id="page_content">'.(!empty($Page["content"])?$Page["content"]:'').'</div>
+                    </div>
+                    <br>
+                    <div class="dg dg_auto">
+                        <div>
+                            <label for="">Использовать tpl:</label>
+                            <input type="text" name="tpl" value="'.(!empty($Page["tpl"])?$Page["tpl"]:'').'" placeholder="Укажите название файла без расширения" autocomplete="off">
+                        </div>
                     </div>
                 </div>
                 
@@ -200,7 +179,7 @@ class PagesController extends PanelController {
             </div>
             
             <input type="hidden" name="page" value="1">
-            
+            <br>
             <input type="submit" class="btn" data-a="Page" value="Сохранить">
             
         </form>';
@@ -216,7 +195,7 @@ class PagesController extends PanelController {
             <a href="#" class="close"></a>
         </form>';
 
-        $this->view->render($title, $content);
+        $this->view->render(!empty($Page["title"]) ? $Page["title"] : 'Добавление страницы', $content);
     }
 
 
