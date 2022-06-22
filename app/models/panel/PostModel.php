@@ -28,7 +28,7 @@ class PostModel extends Model{
             implode(",", $categories),
             $url,
             $created,
-            null,
+            $created,
             $status
         ];
 
@@ -150,6 +150,34 @@ class PostModel extends Model{
         return $result;
     }
 
+
+    public function getFromMap(){
+
+        $result = [];
+
+        $result["categories"] = System::setKeys(
+            Base::run("SELECT
+                id,
+                url,
+                pid
+            FROM " . PREFIX . "categories", [])->fetchAll(PDO::FETCH_ASSOC),
+            "id"
+        );
+
+        $result["posts"] = Base::run("SELECT
+                c.id AS category_id,
+                c.url AS category_url,
+                c.pid AS parent_category,
+                p.id,
+                p.url,
+                p.last_modify
+            FROM " . PREFIX . "post_cat pc
+                LEFT JOIN " . PREFIX . "categories c ON c.id = pc.cid
+                LEFT JOIN " . PREFIX . "post p ON p.id = pc.pid
+            ORDER BY p.id DESC")->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 
 
     /**

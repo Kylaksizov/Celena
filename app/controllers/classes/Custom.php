@@ -37,7 +37,12 @@ class Custom{
                 $CategoryStep = System::setKeys($News["categories"], "url");
 
                 // CATEGORY NAME
-                $categoryName = !empty($CategoryStep[end($e->urls)]) ? $CategoryStep[end($e->urls)]["title"] : '';
+                if(!empty($CategoryStep[end($e->urls)])){
+                    $categoryName = $CategoryStep[end($e->urls)]["title"];
+                    define("CATEGORY", $CategoryStep[end($e->urls)]);
+                }
+                else $categoryName = '';
+
                 $e->view->setMain('{category-name}', $categoryName);
 
                 $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';

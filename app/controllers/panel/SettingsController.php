@@ -5,6 +5,8 @@ namespace app\controllers\panel;
 
 use app\core\PanelController;
 use app\core\System;
+use app\models\panel\PostModel;
+use app\traits\SiteMap;
 
 
 class SettingsController extends PanelController {
@@ -303,49 +305,46 @@ class SettingsController extends PanelController {
 
     public function seoAction(){
 
-        $content = '<h1>SEO</h1>';
+        $content = '<h1>SEO</h1>
+            <p>В разработке</p>';
 
         $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' SEO', $content);
     }
 
 
-    public function promoCodesAction(){
+    public function sitemapAction(){
 
-        $content = '<h1>Промокоды</h1>';
+        $mapLink = file_exists(ROOT . '/uploads/system/sitemap.xml') ? '<a href="//'.CONFIG_SYSTEM["home"].'/sitemap.xml" target="_blank">Открыть карту сайта</a>' : '<p>Карта сайт ещё не создана!</p>';
 
-        $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Промокоды', $content);
+        $content = '<h1>Карта сайта</h1>
+            <div class="box_">
+                '.$mapLink.'<br><br>
+                <a href="#" class="btn" data-a="Settings:generateMap=1">Сгенерировать карту сайта</a>
+            </div>';
+
+        $PostModel = new PostModel();
+        $Posts = $PostModel->getFromMap();
+        SiteMap::generation($Posts);
+
+        $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Карта сайта', $content);
     }
 
 
     public function langAction(){
 
-        $content = '<h1>Языки</h1>';
+        $content = '<h1>Языки</h1>
+            <p>В разработке</p>';
 
         $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Языки', $content);
     }
 
 
-    public function currencyAction(){
-
-        $content = '<h1>Валюта</h1>';
-
-        $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Валюта', $content);
-    }
-
-
     public function paymentMethodsAction(){
 
-        $content = '<h1>Способы оплаты</h1>';
+        $content = '<h1>Способы оплаты</h1>
+            <p>В разработке</p>';
 
         $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Способы оплаты', $content);
-    }
-
-
-    public function deliveryMethodsAction(){
-
-        $content = '<h1>Способы доставки</h1>';
-
-        $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Способы доставки', $content);
     }
 
 }

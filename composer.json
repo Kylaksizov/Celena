@@ -13,6 +13,7 @@
         "phpoffice/phpspreadsheet": "^1.8",
       "ext-pdo": "*",
         "intervention/image": "^2.7",
-      "ext-zip": "*"
+      "ext-zip": "*",
+      "ext-dom": "*"
     }
 }

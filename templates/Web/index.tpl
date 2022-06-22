@@ -18,6 +18,9 @@
 
     <main id="content">
 
+        [category="1,3"]<b>В категории 1 и 3</b>[/category]
+        [category="2"]<b>В категории 2222222222222</b>[/category]
+
         [show="index"]
             <h1>This is simple template by Celena</h1>
             <div class="custom_header">

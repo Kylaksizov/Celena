@@ -57,7 +57,12 @@ class PostController extends Controller {
             $CategoryStep = System::setKeys($Post["categories"], "url");
 
             // CATEGORY NAME
-            $categoryName = !empty($CategoryStep[end($this->urls)]) ? $CategoryStep[end($this->urls)]["title"] : '';
+            if(!empty($CategoryStep[end($this->urls)])){
+                $categoryName = $CategoryStep[end($this->urls)]["title"];
+                define("CATEGORY", $CategoryStep[end($this->urls)]);
+            }
+            else $categoryName = '';
+
             $this->view->setMain('{category-name}', $categoryName);
 
             $addCategoryLink = '//'.CONFIG_SYSTEM["home"].'/';

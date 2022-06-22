@@ -410,6 +410,41 @@ class View{
             }
         }
 
+
+        if(strripos($this->tplIndex, '[category') !== false){
+
+            // отображение контента в зависимости от типа страницы
+            preg_match_all('/(\[category\s?=\s?\"([\d\,]+)\"\])(.+?)(\[\/category\])/is', $this->tplIndex, $categories);
+
+            //if(defined("CATEGORY")){
+                
+            //} else $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "", $this->tplIndex);
+
+            // $show[0][0] - содержит все целиком
+            // $show[1][0] - содержит [category = "..."]
+            // $show[2][0] - содержит ID категории
+            // $show[3][0] - содержит то что внутри, то есть од, без тегов
+            // $show[4][0] - содержит [/category]
+
+            if(defined("CATEGORY") && !empty($categories[0][0])){
+
+                foreach ($categories[2] as $key => $ids) {
+
+                    $ids = explode(",", $ids);
+
+                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $categories[1][$key]);
+
+                    // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
+                    if(in_array(CATEGORY["id"], $ids))
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "$1", $this->tplIndex);
+                    else
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "", $this->tplIndex);
+
+                }
+
+            } else $this->tplIndex = preg_replace('/\[category\s?=\s?\"([\d\,]+)\"\](.+?)\[\/category\]/i', "", $this->tplIndex);
+        }
+
         $this->tplIndex = preg_replace('/\[show(.+?)show\]/is', "", $this->tplIndex);
         $this->tplIndex = preg_replace('/\[not-show(.+?)not-show\]/is', "", $this->tplIndex);
         $this->tplIndex = preg_replace('/\[role(.+?)role\]/is', "", $this->tplIndex);

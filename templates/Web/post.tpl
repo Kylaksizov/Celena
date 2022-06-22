@@ -1,5 +1,6 @@
 <article class="article" itemscope itemtype="http://schema.org/Article">
     <h1>{title}</h1>
+    [category="2"]<b>В категории 2</b>[/category]
     {categories}
     <img src="{poster}" alt="">
     <div class="post_content">

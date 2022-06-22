@@ -24,6 +24,7 @@ return [
 		'celenaShop/order-development/(page-[0-9]+/)?$' => ['controller' => 'orderDevelopment'],
 		'settings/$' => ['controller' => 'settings'],
 		'settings/seo/$' => ['controller' => 'settings', 'action' => 'seo'],
+		'settings/sitemap/$' => ['controller' => 'settings', 'action' => 'sitemap'],
 		'settings/lang/$' => ['controller' => 'settings', 'action' => 'lang'],
 		'system/routes/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'routes'],
 		'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'logs'],
@@ -34,6 +35,7 @@ return [
     ],
 
     'web' => [
+        'sitemap.xml$' => ['controller' => 'SiteMap'],
         '404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
 		'(page-[0-9]+/)?$' => ['controller' => 'index'],

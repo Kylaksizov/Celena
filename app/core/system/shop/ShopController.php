@@ -63,8 +63,8 @@ class ShopController{
         curl_setopt($ch, CURLOPT_POSTFIELDS, "authDev=".sha1("7")."&host=".CONFIG_SYSTEM["home"]."&celenaVersion=".CONFIG_SYSTEM["version"].($post?"&".$post:"")."&format=$format");
         //curl_setopt($ch, CURLOPT_HEADER, true);
         //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_URL, 'https://'.self::CELENA_URI.'/'.$method);
 
         $html = curl_exec($ch);

@@ -6,17 +6,17 @@ return [
 	"errors" => 0,
 
     // вести журнал ошибок
-	"db_log" => 1,
+	"db_log" => 0,
 
     // помощь разработчику
-	"dev_tools" => 1,
+	"dev_tools" => 0,
 
     // какому IP показывать ошибки независимо от настроек выше
-	"dev" => ["127.0.0.1"],
+	"dev" => [""],
 
 	"home" => "nexshop",
 
-	"ssl" => 1,
+	"ssl" => 0,
 
 	"site_title" => "Celena CMS",
 
@@ -52,7 +52,7 @@ return [
 	"quality_thumb" => 80,
 
     // уменьшенные копии через редактор quill
-	"quill_thumbs" => 1,
+	"quill_thumbs" => 0,
 
     // шаблон по умолчанию
 	"template" => "Web",
@@ -75,6 +75,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "",
 
-	"version" => "0.0.8",
+	"version" => "0.0.9",
 
 ];

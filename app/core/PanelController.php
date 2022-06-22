@@ -74,6 +74,7 @@ abstract class PanelController{
                         "Общие настройки" => "{panel}/settings/",
                         "Дополнительные поля" => "{panel}/fields/",
                         "SEO" => "{panel}/settings/seo/",
+                        "Карта сайта" => "{panel}/settings/sitemap/",
                         "Языки" => "{panel}/settings/lang/",
                     ]
                 ]

@@ -413,6 +413,7 @@ class System{
      * 'path4/$' => ['controller' => 'plugins\Celena\Example2', 'action' => 'act']
      * ]
      * ]);
+     * $position 0 - в начало, 1 - в конец
      */
     public static function addRoute(array $routes, bool $position = true){
 
