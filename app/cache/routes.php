@@ -33,6 +33,7 @@ return [
 		'system/logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'logs'],
 		'system/db-logs/(page-[0-9]+/)?$' => ['controller' => 'System', 'action' => 'dbLogs'],
 		'system/updates/$' => ['controller' => 'CelenaUpdates'],
+		'system/info/$' => ['controller' => 'System', 'action' => 'info'],
 		'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 		'settings/sitemap/$' => ['controller' => 'settings', 'action' => 'sitemap'],
         

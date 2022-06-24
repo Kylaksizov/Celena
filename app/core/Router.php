@@ -121,21 +121,21 @@ class Router{
      * @return void
      */
     public function run(){
-        
 
-        
+
+
         // install plugins, modules, ...
         if(!empty($this->urls[2]) && $this->urls[2] == 'install'){
             new InstallLocalPlugins($this);
             die();
         }
-        
 
-        
+
+
         $match = $this->match();
 
         if($match){
-            
+
             $explodeMatch = explode("\\", $match["controller"]);
 
             $panel = ($this->is_panel) ? 'panel\\' : '';
@@ -188,7 +188,7 @@ class Router{
                     }
                 }
             }
-            
+
 
             // AJAX
             if(self::isAjax()){
@@ -243,7 +243,7 @@ class Router{
                 header("Location: ".$this->panel_is()."/404/");
                 View::errorCode(404);
             }
-            
+
         } else{
 
             if(ADMIN) die('Router Not Found!');
@@ -261,7 +261,7 @@ class Router{
 
 
     private static function isAjax(){
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' || !empty($_POST["ajax"]);
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest' && !empty($_POST["ajax"]);
     }
 
 

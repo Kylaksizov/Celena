@@ -22,14 +22,17 @@ class Update{
 
         System::addRoute([
             'panel' => [
-                'templates/(page-[0-9]+/)?$' => ['controller' => 'templates'],
+                'system/info/$' => ['controller' => 'System', 'action' => 'info'],
             ]
         ]);
+
+        if(!isset(CONFIG_SYSTEM["quill_thumbs"]))
+            System::addSystemConfig(["quill_thumbs" => 0]);
 
         //System::addSystemConfig(["comments" => 1]);
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.1.0']);
+        System::editSystemConfig(["version" => '0.1.1']);
         return true;
     }
 }

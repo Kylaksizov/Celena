@@ -25,20 +25,46 @@ class Step_1{
 
         $allowed = '';
 
-        //chmod(ROOT, 0600);
-        $files = substr(sprintf('%o', fileperms(ROOT)), -4);
+        $files = [
+            ROOT . '/app/cache',
+            ROOT . '/app/core/data',
+            ROOT . '/uploads',
+            ROOT . '/templates',
+        ];
+
+        $filesContent = '';
+        foreach ($files as $file) {
+            @chmod($file, 0777);
+            $chmod = substr(sprintf('%o', fileperms($file)), -4);
+
+            $fileStatus = 'is_ok';
+
+            if($chmod != '0777'){
+                $fileStatus = 'is_no';
+                $allowed = ' disabled';
+            }
+
+            $file = str_replace(ROOT.'/', ROOT . '/<b>', $file) . '</b>';
+
+            $filesContent .= '<tr>
+                <td class="file_path">'.$file.'</td>
+                <td><b>'.$chmod.'</b></td>
+                <td><span class="'.$fileStatus.'"></span></td>
+            </tr>';
+        }
 
         $phpversion = phpversion();
         $php_uname = php_uname();
-        $dsFree = System::getNormSize(disk_free_space("/"));
-        $ds = System::getNormSize(disk_total_space("/"));
 
-        //$allowed = ' disabled';
+        $dsFree = System::getNormSize(disk_free_space(ROOT));
+        $ds = System::getNormSize(disk_total_space(ROOT));
+
+
         $errorText = !empty($allowed) ? '<p class="errorText">Исправьте проблемы и обновите страницу</p>' : '';
 
         return '<form action method="POST">
             <h1><a href="//celena.io/" id="celena_logo" target="_blank" title="Celena logo"></a> Проверка системы</h1>
-            <p class="step_description">Данный шаг ещё в процессе доработки</p>
+            <p class="step_description">Проверьте права на файлы и папки</p>
             <div class="system_test">
             
                 <table>
@@ -67,30 +93,9 @@ class Step_1{
                         <td width="20">Права</td>
                         <td width="20"></td>
                     </tr>
+                    '.$filesContent.'
                     <tr>
-                        <td>'.ROOT.'</td>
-                        <td><b>'.$files.'</b></td>
-                        <td><span class="<!--is_no-->is_ok"></span></td>
-                    </tr>
-                    <tr>
-                        <td>'.ROOT.'</td>
-                        <td><b>'.$files.'</b></td>
-                        <td><span class="is_ok"></span></td>
-                    </tr>
-                    <tr>
-                        <td>'.ROOT.'</td>
-                        <td><b>'.$files.'</b></td>
-                        <td><span class="is_ok"></span></td>
-                    </tr>
-                    <tr>
-                        <td>'.ROOT.'</td>
-                        <td><b>'.$files.'</b></td>
-                        <td><span class="is_ok"></span></td>
-                    </tr>
-                    <tr>
-                        <td>'.ROOT.'</td>
-                        <td><b>'.$files.'</b></td>
-                        <td><span class="is_ok"></span></td>
+                        <td colspan="3"><b style="color:#e77b7b"><i>Для указанных файлови папок, поставьте права 0777</i></b></td>
                     </tr>
                 </table>
                 

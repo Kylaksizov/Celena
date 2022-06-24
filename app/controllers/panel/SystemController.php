@@ -3,6 +3,7 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
+use app\core\System;
 use app\models\panel\SystemModel;
 use Exception;
 
@@ -152,6 +153,55 @@ class SystemController extends PanelController {
         }
 
         $this->view->render('Логи', $content.'</div>');
+    }
+
+
+
+
+
+    /**
+     * @name информация
+     * ================
+     * @return void
+     */
+    public function infoAction(){
+
+        $this->view->styles = ["css/info.css"];
+
+        $dsFree = System::getNormSize(disk_free_space(ROOT));
+        $ds = System::getNormSize(disk_total_space(ROOT));
+
+        $content = '<h1>Информация о системе</h1>
+        <div id="info">
+            <table>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Значение</th>
+                </tr>
+                <tr>
+                    <td>Версия PHP:</td>
+                    <td><b>'.phpversion().'</b></td>
+                </tr>
+                <tr>
+                    <td>Операционная система:</td>
+                    <td><b>'.php_uname().'</b></td>
+                </tr>
+                <tr>
+                    <td>Общий размер на диске:</td>
+                    <td><b>'.$ds.'</b></td>
+                </tr>
+                <tr>
+                    <td>Свободно на диске:</td>
+                    <td><b>'.$dsFree.'</b></td>
+                </tr>
+                <tr>
+                    <td>Максимальный вес загружаемого файла:</td>
+                    <td><b>'.ini_get('upload_max_filesize').'</b></td>
+                </tr>
+            </table>
+        </div>';
+
+        $this->view->render('Информация о системе', $content.'</div>');
     }
 
 }

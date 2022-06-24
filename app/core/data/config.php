@@ -78,6 +78,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "",
 
-	"version" => "0.1.0",
+	"version" => "0.1.1",
 
 ];
