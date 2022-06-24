@@ -7,6 +7,7 @@ use app\core\System;
 use app\core\View;
 use app\models\PostModel;
 use app\controllers\classes\Functions;
+use app\traits\Comments;
 use app\traits\Fields;
 
 
@@ -147,31 +148,27 @@ class PostController extends Controller {
             $categoryLink = implode("/", $this->urls);
 
             // FULL LINK
-            $link = $Post["post"]["url"].CONFIG_SYSTEM["seo_type_end"];
+            /*$link = $Post["post"]["url"].CONFIG_SYSTEM["seo_type_end"];
             if(CONFIG_SYSTEM["seo_type"] == '2' || CONFIG_SYSTEM["seo_type"] == '4')
                 $link = $Post["post"]["id"] . '-' . $link;
             if(CONFIG_SYSTEM["seo_type"] == '3' || CONFIG_SYSTEM["seo_type"] == '4')
                 $link = $categoryLink . '/' . $link;
-            $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
+            $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;*/
 
 
             $this->view->set('{poster}', $poster);
 
             // IMAGES
             $images = '';
-            if(!empty($findTags["{images}"]) && !empty($Post["images"])){
+            if(/*!empty($findTags["{images}"]) && */!empty($Post["images"])){
                 foreach ($Post["images"] as $image) {
                     $images .= '<figure><a href="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image["src"].'" data-fancybox="group"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image["src"].'" alt=""></a></figure>';
                 }
             }
             $this->view->set('{images}', $images);
 
-
-            $this->view->set('{rating}', '');
             $this->view->set('{content}', $Post["post"]["content"]);
 
-
-            $this->view->set('{rating-count}', '1');
 
             $this->view->set('{categories}', $Post["post"]["category"]);
 
@@ -180,6 +177,15 @@ class PostController extends Controller {
             // если есть галерея, то добавляем плагин
             if(strripos($this->view->include[$template], 'data-fancybox') !== false)
                 $this->view->plugins = ['fancybox'];
+
+
+            if(strripos($this->view->include[$template], '{comments}') !== false){
+                $this->view->set('{comments}', Comments::get($this, 'comments', $Post["post"]["id"]));
+            }
+
+            if(strripos($this->view->include[$template], '{add-comment}') !== false){
+                $this->view->set('{add-comment}', (ADMIN || (USER && !empty(USER["rules"]["addComment"]))) ? Comments::form() : '');
+            }
 
 
 

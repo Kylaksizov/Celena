@@ -21,13 +21,13 @@
 
     <div id="search_box">
         <a href="#" class="menu_t"></a>
-        <input type="search" name="search" placeholder="Поиск заявок, клиентов и т.д." autocomplete="off">
+        <input type="search" name="search" placeholder="Поиск новостей, пользователей и т.д." autocomplete="off">
     </div>
 
-    <a href="{panel}/balance/" id="balance">
+    {*<a href="{panel}/balance/" id="balance">
         <span>Баланс</span>
         <b>0 $</b>
-    </a>
+    </a>*}
 
     <div id="notification">
         <a href="#" class="ico_notify" title="Уведомления">

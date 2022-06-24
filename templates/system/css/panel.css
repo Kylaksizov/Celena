@@ -229,6 +229,13 @@ body::-webkit-scrollbar-thumb{background:#7192A9A5}
     height: 57px;
     color: #47b3ff;
     display: block;
+    position: relative;
+}
+.celena_version{
+    position: absolute;
+    top: 12px;
+    right: 63px;
+    font-size: 11px;
 }
 
 .box, .box_{
@@ -1121,6 +1128,12 @@ h1 b{
 }
 h2{
     font-size: 15px;
+}
+.page_description{
+    font-size: 13px;
+    color: #9ca9cd;
+    display: block;
+    margin: -15px 0 20px;
 }
 .title_box{
     overflow: hidden;

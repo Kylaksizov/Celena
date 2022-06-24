@@ -388,6 +388,19 @@ blockquote{
 .socials a:hover{
     opacity: 1;
 }
+.comment{
+    margin: 15px 0;
+}
+.comment_date{
+    font-size: 13px;
+}
+.comment_content{
+    background: #fff;
+    padding: 8px 10px;
+    margin-top: 4px;
+    border-radius: 4px;
+    display: inline-block;
+}
 
 @media (min-width: 480px) {
     .custom_header .news_min:nth-child(1) h3{

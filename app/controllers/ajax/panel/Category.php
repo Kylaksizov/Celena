@@ -54,7 +54,9 @@ class Category{
                 '.$addScript.'
                 $("h1").html(`Редактирование категории: <b>'.$title.'</b>`);
                 $.server_say({say: "Категория создана!", status: "success"});
-                history.pushState(null, "Редактирование категории", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/category/edit/'.$id.'/");
+                setTimeout(function(){
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/category/";
+                }, 1000)
             </script>';
 
         } else{ // если редактирование
@@ -77,6 +79,9 @@ class Category{
                 '.$addScript.'
                 $("h1").html(`Редактирование категории: <b>'.$title.'</b>`);
                 $.server_say({say: "Категория изменена!", status: "success"});
+                setTimeout(function(){
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/category/";
+                }, 1000)
             </script>';
         }
 

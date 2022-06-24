@@ -25,6 +25,8 @@ class PageController extends Controller {
         // если страница есть
         if(!empty($Page["page"])){
 
+            define("PAGE", $Page["page"]);
+
             $uTpl = !empty($Page["page"]["tpl"]) ? $Page["page"]["tpl"] : 'page';
 
             $this->view->include($uTpl);

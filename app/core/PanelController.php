@@ -64,8 +64,12 @@ abstract class PanelController{
                     "class" => "ico_users",
                     "submenu" => [
                         "Пользователи" => "{panel}/users/",
-                        "Группы" => "{panel}/users/roles/",
+                        "Группы" => "{panel}/roles/",
                     ]
+                ],
+                "Комментарии" => [
+                    "link" => "{panel}/comments/",
+                    "class" => "ico_comments"
                 ],
                 "Настройки" => [
                     "link" => "{panel}/settings/",
@@ -168,9 +172,10 @@ abstract class PanelController{
                     </ul>
                 </li>
                 <li>
-                    <a href="{panel}/celenaShop/templates/" class="ico_template">Шаблоны</a>
+                    <a href="{panel}/templates/" class="ico_template">Шаблоны</a>
                     <ul>
-                        <li><a href="{panel}/celenaShop/templates/">Шаблоны</a></li>
+                        <li><a href="{panel}/templates/">Шаблоны</a></li>
+                        <li class="menu_shop"><a href="{panel}/celenaShop/templates/">Магазин шаблонов</a></li>
                         <li><a href="{panel}/celenaShop/order-development/">Заказать разработку</a></li>
                     </ul>
                 </li>

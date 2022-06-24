@@ -128,6 +128,35 @@ class PostModel extends Model{
 
 
     /**
+     * @name получение поста по URL
+     * ============================
+     * @param $urlOrArray
+     * @return mixed
+     * @throws Exception
+     */
+    public function getPostId($urlOrArray){
+
+        if(is_array($urlOrArray)){
+
+            $where = "id = ?";
+            $params = [$urlOrArray["id"]];
+
+        } else{
+
+            $where = "url = ?";
+            $params = [$urlOrArray];
+        }
+
+        return Base::run("
+            SELECT
+                id
+            FROM " . PREFIX . "post
+            WHERE $where
+            ", $params)->fetch(PDO::FETCH_COLUMN);
+    }
+
+
+    /**
      * @name получение всех товаров
      * ============================
      * @param $categories

@@ -1,0 +1,9 @@
+23.06.2022 13:23:24 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE c.status = 0
+                LIMIT 0, 25' at line 16<br><span class="file_log">1: app\models\CommentsModel.php &#10148; 92</span><br><span class="file_log">2: app\traits\Comments.php &#10148; 32</span><br><span class="file_log">3: app\controllers\PostController.php &#10148; 183</span><br><span class="file_log">4: app\core\Router.php &#10148; 232</span>
+
+23.06.2022 13:23:35 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE c.status = 0
+                LIMIT 0, 25' at line 16<br><span class="file_log">1: app\models\CommentsModel.php &#10148; 92</span><br><span class="file_log">2: app\traits\Comments.php &#10148; 32</span><br><span class="file_log">3: app\controllers\PostController.php &#10148; 183</span><br><span class="file_log">4: app\core\Router.php &#10148; 232</span>
+
+23.06.2022 13:42:08 | SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY c.id ASC
+                LIMIT 0, 25' at line 16<br><span class="file_log">1: app\models\CommentsModel.php &#10148; 107</span><br><span class="file_log">2: app\controllers\panel\CommentsController.php &#10148; 21</span><br><span class="file_log">3: app\core\Router.php &#10148; 232</span>
+

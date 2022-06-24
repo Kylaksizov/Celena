@@ -277,6 +277,7 @@ class Router{
         if(!empty($_COOKIE["uid"]) && !empty($_COOKIE["uhash"])){
 
             $User = $this->getAuth($_COOKIE["uid"], $_COOKIE["uhash"]);
+            $User["rules"] = !empty($User["rules"]) ? json_decode($User["rules"], true) : null;
             define("USER", $User ?: FALSE);
             // если false - значит кто-то пытается подменить данные !!!!!!!!!!!!!!!!!!!!!
             if(USER === FALSE){

@@ -146,12 +146,23 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Комментарии на сайте</h3>
+                                <div class="setDescription">Разрешить оставлять комментарии на сайте.</div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="config[comments]" value="1"'.System::check(CONFIG_SYSTEM["comments"]).' id="ch_comments">
+                                <label for="ch_comments"></label>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>Шаблон сайта</h3>
                             </div>
                             <div>
                                 '.$templatesOptions.'
                             </div>
                         </div>
+                        <!--:settings_main-->
                     </div>
                 </div>
                 
@@ -228,6 +239,7 @@ class SettingsController extends PanelController {
                                 <input type="text" name="config[SMTPFrom]" value="'.CONFIG_SYSTEM["SMTPFrom"].'">
                             </div>
                         </div>
+                        <!--:settings_post-->
                     </div>
                 </div>
                 
@@ -245,6 +257,7 @@ class SettingsController extends PanelController {
                                 <label for="ch_email_confirm"></label>
                             </div>
                         </div>
+                        <!--:settings_users-->
                     </div>
                 </div>
                 
@@ -290,6 +303,7 @@ class SettingsController extends PanelController {
                                 <textarea name="config[dev]">'.implode("\r\n", CONFIG_SYSTEM["dev"]).'</textarea>
                             </div>
                         </div>
+                        <!--:settings_dev-->
                     </div>
                 </div>
                 

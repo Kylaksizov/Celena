@@ -23,17 +23,21 @@ class View{
 
 
     // подгружаем главный файл шаблона index.tpl
-    public function load($template = CONFIG_SYSTEM["template"]){
+    public function load($template = true, $repeat = false){
 
-        $this->template = $template;
-        if(file_exists(ROOT.'/templates/'.$this->template.'/index.tpl')){
+        $this->template = ($template) ? CONFIG_SYSTEM["template"] : $template;
 
-            $this->tplIndex = file_get_contents(ROOT.'/templates/'.$this->template.'/index.tpl');
+        if(!$repeat){
 
-        } else {
+            if(file_exists(ROOT.'/templates/'.$this->template.'/index.tpl')){
 
-            if(ADMIN) die('Шаблон <b>' . $this->template . '</b> не найден!');
-            View::errorCode(404);
+                $this->tplIndex = file_get_contents(ROOT.'/templates/'.$this->template.'/index.tpl');
+
+            } else {
+
+                if(ADMIN) die('Шаблон <b>' . $this->template . '</b> не найден!');
+                View::errorCode(404);
+            }
         }
     }
 
@@ -442,7 +446,32 @@ class View{
 
                 }
 
-            } else $this->tplIndex = preg_replace('/\[category\s?=\s?\"([\d\,]+)\"\](.+?)\[\/category\]/i', "", $this->tplIndex);
+            } else $this->tplIndex = preg_replace('/\[category\s?=\s?\"[\d\,]+\"\].+?\[\/category\]/i', "", $this->tplIndex);
+        }
+
+
+        if(strripos($this->tplIndex, '[page') !== false){
+
+            // отображение контента в зависимости от типа страницы
+            preg_match_all('/(\[page\s?=\s?\"(.+?)\"\])(.+?)(\[\/page\])/is', $this->tplIndex, $pages);
+
+            if(defined("PAGE") && !empty($pages[0][0])){
+
+                foreach ($pages[2] as $key => $titles) {
+
+                    $titles = explode(",", $titles);
+
+                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $pages[1][$key]);
+
+                    // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
+                    if(in_array(PAGE["title"], $titles))
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/page\]/i', "$1", $this->tplIndex);
+                    else
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/page\]/i', "", $this->tplIndex);
+
+                }
+
+            } else $this->tplIndex = preg_replace('/\[page\s?=\s?\".+?\"\].+?\[\/page\]/i', "", $this->tplIndex);
         }
 
         $this->tplIndex = preg_replace('/\[show(.+?)show\]/is', "", $this->tplIndex);

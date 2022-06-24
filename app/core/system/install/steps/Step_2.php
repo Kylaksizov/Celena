@@ -64,6 +64,7 @@ class Step_2{
             `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
             `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
             `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `avatar` VARCHAR(20) NOT NULL DEFAULT '',
             `role` tinyint(5) DEFAULT NULL,
             `ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
             `hash` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -230,7 +231,22 @@ class Step_2{
             `tag` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
             `val` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
             PRIMARY KEY  (`id`),
+            KEY `pid` (`pid`),
             KEY `tag` (`tag`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}comments` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `pid` INT(11) NULL DEFAULT NULL,
+            `plugin_id` INT(11) NULL DEFAULT NULL,
+            `uid` INT(11) NULL DEFAULT NULL COMMENT 'null - гость',
+            `comment` TEXT NOT NULL,
+            `parent_id` INT(11) NULL DEFAULT NULL,
+            `created` INT(11) NOT NULL,
+            `status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0-moder, 1-active',
+            PRIMARY KEY  (`id`),
+            KEY `pid` (`pid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
         $query->execute();
 
@@ -401,6 +417,9 @@ return [
     // качество уменьшенной копии
 	"quality_thumb" => 80,
 
+    // разрешить комментарии
+	"comments" => 80,
+
     // шаблон по умолчанию
 	"template" => "Web",
 
@@ -422,7 +441,7 @@ return [
 	"SMTPPort" => 465,
 	"SMTPFrom" => "'.$email.'",
 
-    "version" => "0.0.6",
+    "version" => "0.0.10",
 
 ];';
 

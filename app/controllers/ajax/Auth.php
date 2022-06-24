@@ -101,7 +101,7 @@ class Auth{
 
             $script = '<script>
                 $.server_say({say: "Успешная авторизация!", status: "success"});
-                window.location.href = "/'.CONFIG_SYSTEM["panel"].'/";
+                window.location.href = "/";
             </script>';
 
             System::script($script);

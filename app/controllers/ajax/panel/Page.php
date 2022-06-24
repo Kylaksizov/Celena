@@ -95,7 +95,7 @@ class Page{
                 $("h1 b").text(`'.$title.'`);
                 $.server_say({say: "Изменения сохранены!", status: "success"});
                 setTimeout(function(){
-                    window.location.reload();
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/pages/";
                 }, 1000)
             </script>';
             #TODO из-за свойств временно сделал автообновление страницы после сохранения - исправить...

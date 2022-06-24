@@ -14,30 +14,13 @@
     {field:bolyshoe-pole}
     <br>
     {field:list}
-    <br>
-    {field:html}
-    <br>
-    <p><b>{field:img1:name}:</b></p>
-    {field:img1}
-    <br>
-    {field:img2}
-    <br>
-    {field:gallery}
-    <br>
-    {field:odin-fayl}
-    <br>
-    {field:mnogo-faylov}
-    <br>
-    {field:pereklyuchately-vkl}
-    <br>
-    {field:pereklyuchately-vykl}
-    <br>
-    <b>{field:data:name}:</b>
-    {field:data}
-    <br>
-    <b>{field:data-i-vremya:name}:</b>
-    {field:data-i-vremya}
-    <br>
-    {field:spisok-mulyti}
+
+    <div class="comments">
+
+        {comments}
+
+        <h3>Добавить комментарий</h3>
+        {add-comment}
+    </div>
 
 </article>

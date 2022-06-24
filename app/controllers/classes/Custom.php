@@ -18,7 +18,7 @@ class Custom{
 
         $PostModel = new PostModel();
 
-        $tpl->load();
+        $tpl->load(true, true);
 
         if(!is_array($categories) || $categories == 'index') $limit = CONFIG_SYSTEM["count_in_cat"];
 

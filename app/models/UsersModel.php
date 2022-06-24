@@ -13,6 +13,7 @@ use PDOStatement;
 class UsersModel extends Model{
 
 
+    // НЕ УДАЛЯТЬ!
     public function __construct($conf = null){
         parent::__construct($conf);
     }
@@ -75,11 +76,12 @@ class UsersModel extends Model{
      * =============================================
      * @param $id
      * @param $hash
-     * @return mixed|null
+     * @return mixed
+     * @throws Exception
      */
     public function getAuth($id, $hash){
 
-        return self::instanceFetch("
+        return Base::run("
             SELECT
                 u.*,
                 r.name AS role_name,
@@ -89,7 +91,7 @@ class UsersModel extends Model{
             WHERE u.id = ? AND u.hash = ?
         ",
             [$id, $hash]
-        );
+        )->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -97,11 +99,12 @@ class UsersModel extends Model{
      * @name авторизация
      * =================
      * @param $email
-     * @return mixed|null
+     * @return mixed
+     * @throws Exception
      */
     public function login($email){
 
-        return self::instanceFetch("
+        return Base::run("
             SELECT
                 u.*,
                 r.name AS role_name,
@@ -111,22 +114,20 @@ class UsersModel extends Model{
             WHERE u.email = ?
         ",
             [$email]
-        );
+        )->fetch(PDO::FETCH_ASSOC);
     }
-
-
-
 
 
     /**
      * @name получение пользователя
      * ============================
      * @param $id
-     * @return mixed|null
+     * @return mixed
+     * @throws Exception
      */
     public function getUser($id = USER["id"]){
 
-        return self::instanceFetch("SELECT * FROM " . PREFIX . "users WHERE id = ?", [$id]);
+        return Base::run("SELECT * FROM " . PREFIX . "users WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -170,6 +171,87 @@ class UsersModel extends Model{
     }
 
 
+    /**
+     * @name добавление роли
+     * =====================
+     * @param $name
+     * @param $rule
+     * @return bool|string
+     * @throws Exception
+     */
+    public function addRole($name, $rule){
+
+        Base::run("INSERT INTO " . PREFIX . "roles (
+            name,
+            rules
+        ) VALUES (
+            ?, ?
+        )", [$name, $rule]);
+
+        return Base::lastInsertId();
+    }
+
+
+    /**
+     * @name редактирование роли
+     * =========================
+     * @param $id
+     * @param $name
+     * @param $rules
+     * @return int
+     * @throws Exception
+     */
+    public function editRole($id, $name, $rules){
+
+        return Base::run("UPDATE " . PREFIX . "roles SET name = ?, rules = ? WHERE id = ?", [$name, $rules, $id])->rowCount();
+    }
+
+
+
+
+    /**
+     * @name получение роли
+     * ====================
+     * @param $id
+     * @return mixed
+     * @throws Exception
+     */
+    public function getRole($id){
+
+        return Base::run("SELECT * FROM " . PREFIX . "roles WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
+
+    /**
+     * @name получение ролей
+     * =====================
+     * @return array
+     * @throws Exception
+     */
+    public function getRoles(){
+
+        $result = [];
+        $params = [];
+
+        $pagination = [
+            "start" => 0,
+            "limit" => 25,
+            "pagination" => ""
+        ];
+
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "roles ORDER BY id DESC", $params, $pagination["start"], $pagination["limit"]);
+
+        $result["roles"] = Base::run("SELECT * FROM " . PREFIX . "roles ORDER BY id DESC
+        LIMIT {$pagination["start"]}, {$pagination["limit"]}", $params)->fetchAll(PDO::FETCH_ASSOC);
+
+        $result["pagination"] = $pagination['pagination'];
+
+        return $result;
+    }
+
+
 
 
     /**
@@ -187,17 +269,16 @@ class UsersModel extends Model{
 
 
 
+    /**
+     * @name удаление роли
+     * ===================
+     * @param $id
+     * @return bool|PDOStatement
+     * @throws Exception
+     */
+    public function deleteRole($id){
 
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
+        return Base::run("DELETE FROM " . PREFIX . "roles WHERE id = ?", [$id]);
     }
 
 }

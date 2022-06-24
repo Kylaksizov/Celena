@@ -272,7 +272,7 @@ class ViewPanel{
         $this->tplIndex = str_replace('{STYLES}', $styles, $this->tplIndex);
         $this->tplIndex = str_replace('{SCRIPTS}', $scripts, $this->tplIndex);
         $this->tplIndex = str_replace('{SYSTEMS}', $systems, $this->tplIndex);
-        $this->tplIndex = str_replace('{logo}', '<a href="//'.CONFIG_SYSTEM['home'].'/'.CONFIG_SYSTEM["panel"].'/" id="celena_logo" title="Celena logo"></a> <a href="//'.CONFIG_SYSTEM['home'].'/" target="_blank" class="on_site"></a>', $this->tplIndex);
+        $this->tplIndex = str_replace('{logo}', '<a href="//'.CONFIG_SYSTEM['home'].'/'.CONFIG_SYSTEM["panel"].'/" id="celena_logo"><span class="celena_version" title="Celena version">'.CONFIG_SYSTEM['version'].'</span></a> <a href="//'.CONFIG_SYSTEM['home'].'/" target="_blank" title="Перейти на сайт" class="on_site"></a>', $this->tplIndex);
         $this->tplIndex = str_replace('{panel}', '/'.CONFIG_SYSTEM["panel"], $this->tplIndex);
         $this->tplIndex = str_replace('{THEME}', '//'.CONFIG_SYSTEM['home'].'/templates/'.$this->template, $this->tplIndex);
         $this->tplIndex = str_replace('{HOME}', '//'.CONFIG_SYSTEM['home'].'/', $this->tplIndex);

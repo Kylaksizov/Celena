@@ -91,7 +91,7 @@ class Post{
                 '.$addScript.'
                 $.server_say({say: "Новость создана!", status: "success"});
                 setTimeout(function(){
-                    window.location.href = "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/";
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/posts/";
                 }, 1000)
             </script>';
             // history.pushState(null, "Редактирование новости", "//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/posts/edit/'.$id.'/");
@@ -131,7 +131,7 @@ class Post{
                 $("h1 b").text(`'.$title.'`);
                 $.server_say({say: "Изменения сохранены!", status: "success"});
                 setTimeout(function(){
-                    window.location.reload();
+                    window.location.href = "/'.CONFIG_SYSTEM["panel"].'/posts/";
                 }, 1000)
             </script>';
             #TODO из-за свойств временно сделал автообновление страницы после сохранения - исправить...
