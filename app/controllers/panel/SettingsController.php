@@ -11,8 +11,13 @@ use app\traits\SiteMap;
 
 class SettingsController extends PanelController {
 
+    use SiteMap;
+
 
     public function indexAction(){
+
+        //$this->view->styles = ['css/settings.css'];
+        $this->view->scripts = ['js/settings.js'];
 
         $content = '<h1>Общие настройки</h1>';
 
@@ -34,13 +39,22 @@ class SettingsController extends PanelController {
                 $templatesOptions .= '<option value="'.$template.'"'.$selectedTemplate.'>'.$template.'</option>';
             }
         }
-
         $templatesOptions .= '</select>';
+
+        $mainContentDisplay = !empty(CONFIG_SYSTEM["main_content"]) ? ' style="display:block;"' : ' style="display:none;"';
+
+
+        $mainPageOptions = '<select name="config[main]" id="selectMain">
+                <option value="1">Контент</option>
+                <option value="2"'.(CONFIG_SYSTEM["main"]==2&&CONFIG_SYSTEM["main_content"]?' selected':'').'>Страница</option>
+                <option value="3"'.(CONFIG_SYSTEM["main"]==3&&CONFIG_SYSTEM["main_content"]?' selected':'').'>TPL</option>
+            </select>';
 
         $content .= '<form action="" method="POST">
             <div class="tabs">
                 <ul class="tabs_caption">
                     <li class="active">Общие настройки</li>
+                    <li>Изображения</li>
                     <li>Почта</li>
                     <li>Пользователи</li>
                     <li>Разработчикам</li>
@@ -100,6 +114,61 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Комментарии на сайте</h3>
+                                <div class="setDescription">Разрешить оставлять комментарии на сайте.</div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="config[comments]" value="1"'.System::check(CONFIG_SYSTEM["comments"]).' id="ch_comments">
+                                <label for="ch_comments"></label>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Содержимое главной страницы</h3>
+                                <div class="setDescription"><b>Контент</b> - стандартный вывод тега {CONTENT}.<br>
+                                <b>Страница</b> - определенная <a href="/'.CONFIG_SYSTEM["comments"].'/pages/">страница</a>.<br>
+                                <b>TPL</b> - файл формата tpl, созданный в шаблоне.</div>
+                            </div>
+                            <div>
+                                '.$mainPageOptions.'
+                                <input type="text" name="config[main_content]" id="main_content"'.$mainContentDisplay.' value="'.CONFIG_SYSTEM["main_content"].'" placeholder="Название страницы или tpl файла">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Шаблон сайта</h3>
+                            </div>
+                            <div>
+                                '.$templatesOptions.'
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3><b>POWER</b></h3>
+                                <div class="setDescription">Включить сайт? :D</div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="config[power]" value="1"'.System::check(CONFIG_SYSTEM["power"]).' id="ch_power">
+                                <label for="ch_power"></label>
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Текст при выключеном сайте</h3>
+                                <div class="setDescription">Текст при выключеном сайте.</div>
+                            </div>
+                            <div>
+                                <textarea name="config[power_text]" rows="3">'.CONFIG_SYSTEM["power_text"].'</textarea>
+                            </div>
+                        </div>
+                        <!--:settings_main-->
+                    </div>
+                </div>
+                
+                <div class="tabs_content">
+                    <div class="dg settings">
+                        <div class="set_item">
+                            <div>
                                 <h3>До какого размера (в px) уменьшать загружаемые изображения</h3>
                                 <div class="setDescription">Если оставить пустым, то будут загружаться оригинальные изображения.</div>
                             </div>
@@ -144,25 +213,7 @@ class SettingsController extends PanelController {
                                 <label for="ch_quill_thumbs"></label>
                             </div>
                         </div>
-                        <div class="set_item">
-                            <div>
-                                <h3>Комментарии на сайте</h3>
-                                <div class="setDescription">Разрешить оставлять комментарии на сайте.</div>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="config[comments]" value="1"'.System::check(CONFIG_SYSTEM["comments"]).' id="ch_comments">
-                                <label for="ch_comments"></label>
-                            </div>
-                        </div>
-                        <div class="set_item">
-                            <div>
-                                <h3>Шаблон сайта</h3>
-                            </div>
-                            <div>
-                                '.$templatesOptions.'
-                            </div>
-                        </div>
-                        <!--:settings_main-->
+                        <!--:settings_images-->
                     </div>
                 </div>
                 
@@ -338,7 +389,7 @@ class SettingsController extends PanelController {
 
         $PostModel = new PostModel();
         $Posts = $PostModel->getFromMap();
-        SiteMap::generation($Posts);
+        self::generationMap($Posts);
 
         $this->view->render('Настройки '.CONFIG_SYSTEM["separator"].' Карта сайта', $content);
     }

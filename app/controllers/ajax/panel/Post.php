@@ -11,6 +11,8 @@ use Intervention\Image\ImageManager;
 
 class Post{
 
+    use \app\traits\Fields;
+
     public function index(){
 
         preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $post);
@@ -45,9 +47,10 @@ class Post{
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
         $fieldsData = null;
-        if(!empty($_POST["field"])){
-            $fieldsData = \app\traits\Fields::getPostFields($postId, $_POST["field"], $category);
-        }
+        if(!empty($_POST["field"]))
+            $fieldsData = self::getPostFields($postId, $_POST["field"], $category);
+        if(!empty($_FILES["field"]))
+            $fieldsData = self::getPostFields($postId, $_FILES["field"], $category);
 
         // обработка картинок из редактора
         $shortImages = self::parseImages($short);

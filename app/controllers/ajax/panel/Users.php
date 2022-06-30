@@ -11,6 +11,8 @@ use Intervention\Image\ImageManager;
 
 class Users{
 
+    use Log;
+
     public function index(){
 
         preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $user);
@@ -78,7 +80,7 @@ class Users{
 
             if($result){
 
-                Log::add("Пользователь <b>{$User["name"]}</b> удален!", 1);
+                self::addLog("Пользователь <b>{$User["name"]}</b> удален!", 1);
 
                 $script = '<script>
                     $(\'[data-a="Users:delete='.$userId.'"]\').closest("tr").remove();

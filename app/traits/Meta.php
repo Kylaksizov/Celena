@@ -6,7 +6,7 @@ trait Meta{
 
 
 
-    public static function set(){
+    public function setMeta(){
 
         return [
             [

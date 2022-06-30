@@ -5,7 +5,7 @@ namespace app\traits;
 trait Curl {
 
 
-    public static function init($url){
+    public function initCurl($url){
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_COOKIESESSION, true);

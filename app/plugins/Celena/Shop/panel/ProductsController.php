@@ -15,6 +15,7 @@ use Exception;
 
 class ProductsController extends PanelController {
 
+    use Fields;
 
     /**
      * @name товары
@@ -322,7 +323,7 @@ class ProductsController extends PanelController {
          * @name FIELDS
          * ============
          */
-        $Fields = Fields::getFields();
+        $Fields = self::getFields();
 
         $fieldsContent = '';
 

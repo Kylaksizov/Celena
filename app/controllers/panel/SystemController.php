@@ -137,7 +137,10 @@ class SystemController extends PanelController {
 
         $this->view->styles = ["css/logs.css"];
 
-        $content = '<h1>Ошибки запросов в БД</h1>
+        $content = '<div class="fx">
+            <h1>Ошибки запросов в БД</h1>
+            <a href="#" class="btn" data-a="Systems:clear=dbLogs">Очистить</a>
+        </div>
         <div id="nex_logs">';
 
         if(file_exists(CORE . '/tmp/db_errors.txt')){

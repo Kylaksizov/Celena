@@ -13,7 +13,7 @@ trait Fields {
      * =====================================
      * @return mixed|null
      */
-    public static function getFields(){
+    public function getFields(){
 
         return file_exists(CORE . '/data/fields.json') ? json_decode(file_get_contents(CORE . '/data/fields.json'), true) : null;
     }
@@ -25,7 +25,7 @@ trait Fields {
      * @param string $tag
      * @return mixed|null
      */
-    public static function getField(string $tag){
+    public function getField(string $tag){
 
         $fields = self::getFields();
         return !empty($fields[$tag]) ? $fields[$tag] : null;
@@ -38,7 +38,7 @@ trait Fields {
      * @param string $tag
      * @return void
      */
-    public static function deleteField(string $tag){
+    public function deleteField(string $tag){
 
         $fields = self::getFields();
         if(!empty($fields[$tag])) unset($fields[$tag]);
@@ -59,7 +59,7 @@ trait Fields {
      * @param $optionValue
      * @return void|null
      */
-    public static function editField(string $tag, string $optionName, $optionValue){
+    public function editField(string $tag, string $optionName, $optionValue){
 
         $fields = self::getFields();
         if(empty($fields[$tag])) return null;
@@ -80,7 +80,7 @@ trait Fields {
      * @param array $fieldArray
      * @return void
      */
-    public static function addField(array $fieldArray){
+    public function addField(array $fieldArray){
 
         $fields = file_exists(CORE . '/data/fields.json') ? json_decode(file_get_contents(CORE . '/data/fields.json'), true) : [];
 
@@ -94,8 +94,13 @@ trait Fields {
     }
 
 
+    private function strCaseCmp($v1, $v2){
+        if ($v1 === $v2) return 0;
+        return 1;
+    }
 
-    public static function getPostFields($postId, $postFields, $categories = []){
+
+    public function getPostFields($postId, $postFields, $categories = []){
 
         $FieldsModel = new FieldsModel();
         $fieldsBase = $FieldsModel->getFieldsByPostId($postId);
@@ -105,11 +110,6 @@ trait Fields {
         $fieldsData = [];
 
         if(!empty($postFields)){
-
-            function strCaseCmp($v1, $v2){
-                if ($v1 === $v2) return 0;
-                return 1;
-            }
 
             foreach ($Fields as $field) {
 
@@ -301,7 +301,7 @@ trait Fields {
      * @return mixed
      * @throws Exception
      */
-    public static function setTags($template, $postIds = null, $plugin_id = null, $module_id = null){
+    public function setTags($template, $postIds = null, $plugin_id = null, $module_id = null){
 
         preg_match_all('/\{field\:(.*?)(\:name)?\}/is', $template, $tags);
 

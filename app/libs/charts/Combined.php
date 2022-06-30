@@ -7,10 +7,11 @@ use app\traits\panel\Chart;
 
 class Combined{
 
+    use Chart;
 
-    public static function chart($id){
+    public function create($id){
 
-        return Chart::init().'<script>
+        return self::init(['percent.js']).'<script>
 am5.ready(function() {
 
 // Data

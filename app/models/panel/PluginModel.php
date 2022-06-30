@@ -132,12 +132,6 @@ class PluginModel extends Model{
         return Base::run("DELETE FROM " . PREFIX . "plugins WHERE plugin_id = ?", [$plugin_id]);
     }
 
-
-    private function instanceFetch($query, $params = []){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
     private function instanceFetchAll($query, $params = []){
         if(!empty($this->get($query))) return $this->get($query);
         return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));

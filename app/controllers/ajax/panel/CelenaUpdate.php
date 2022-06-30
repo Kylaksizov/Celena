@@ -11,6 +11,8 @@ use ZipArchive;
 
 class CelenaUpdate{
 
+    use Log;
+
     public function index(){
 
         if(!empty($_POST["action"])) self::updateSystem();
@@ -47,7 +49,7 @@ class CelenaUpdate{
 
         } else {
 
-            Log::add("Ошибка загрузки обновления <b>$newVersion</b> с сервера!", 2);
+            self::addLog("Ошибка загрузки обновления <b>$newVersion</b> с сервера!", 2);
             die("info::error::Ошибка загрузки обновления <b>$newVersion</b> с сервера!");
         }
 
@@ -69,18 +71,18 @@ class CelenaUpdate{
                     // удаляем директорию с обновлением
                     //System::removeDir(CORE . '/system/update');
 
-                    Log::add('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
+                    self::addLog('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
                 }
 
             }  else{
 
-                Log::add('Возникла ошибка при установке обновления <b>'.$newVersion.'</b> !', 2);
+                self::addLog('Возникла ошибка при установке обновления <b>'.$newVersion.'</b> !', 2);
                 die("info::success::Ошибка при обновлении!");
             }
 
         } else{
 
-            Log::add('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
+            self::addLog('Обновление <b>'.$newVersion.'</b> успешно установлено!', 1);
         }
 
         sleep(1);

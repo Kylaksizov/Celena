@@ -5,6 +5,7 @@
 
 namespace app\core;
 
+use app\models\CommentsModel;
 use app\models\panel\PluginModel;
 
 abstract class PanelController{
@@ -69,7 +70,7 @@ abstract class PanelController{
                 ],
                 "Комментарии" => [
                     "link" => "{panel}/comments/",
-                    "class" => "ico_comments"
+                    "class" => "ico_comments",
                 ],
                 "Настройки" => [
                     "link" => "{panel}/settings/",
@@ -89,6 +90,11 @@ abstract class PanelController{
                 "link" => "#",
                 "class" => "ico_space",
                 "icon" => "",
+                "informer" => [
+                    "name" => "settings",
+                    "status" => 1, // 1-5
+                    "num" => 5,
+                ],
                 "submenu" => [
                     "Пункт меню 1" => "#",
                     "Пункт меню 2" => "#",
@@ -98,6 +104,7 @@ abstract class PanelController{
 
             $PluginModel = new PluginModel();
             $PluginsInfo = $PluginModel->getPluginField('plugin_id, name, version, status');
+
 
             if(!empty($PluginsInfo)){
 
@@ -141,16 +148,88 @@ abstract class PanelController{
 
             $addMenu = '';
 
+
+            // Informers
+            $informerSystem = 0;
+
+            if(!empty($menu["Комментарии"])){
+
+                $CommentsModel = new CommentsModel();
+                $CounterComments = $CommentsModel->getCounter();
+
+                if(!empty($CounterComments)) $menu["Комментарии"]["informer"] = [
+                    "name" => "settings",
+                    "status" => 3,
+                    "num" => $CounterComments,
+                ];
+            }
+
+            if(!CONFIG_SYSTEM["power"]){
+
+                $menu["Настройки"]["informer"] = [
+                    "name" => "settings",
+                    "num" => '<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQ4OS44ODggNDg5Ljg4OCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KCTxnPg0KCQk8cGF0aCBkPSJNMjUuMzgzLDI5MC41Yy03LjItNzcuNSwyNS45LTE0Ny43LDgwLjgtMTkyLjNjMjEuNC0xNy40LDUzLjQtMi41LDUzLjQsMjVsMCwwYzAsMTAuMS00LjgsMTkuNC0xMi42LDI1LjcgICAgYy0zOC45LDMxLjctNjIuMyw4MS43LTU2LjYsMTM2LjljNy40LDcxLjksNjUsMTMwLjEsMTM2LjgsMTM4LjFjOTMuNywxMC41LDE3My4zLTYyLjksMTczLjMtMTU0LjVjMC00OC42LTIyLjUtOTIuMS01Ny42LTEyMC42ICAgIGMtNy44LTYuMy0xMi41LTE1LjYtMTIuNS0yNS42bDAsMGMwLTI3LjIsMzEuNS00Mi42LDUyLjctMjUuNmM1MC4yLDQwLjUsODIuNCwxMDIuNCw4Mi40LDE3MS44YzAsMTI2LjktMTA3LjgsMjI5LjItMjM2LjcsMjE5LjkgICAgQzEyMi4xODMsNDgxLjgsMzUuMjgzLDM5Ni45LDI1LjM4MywyOTAuNXogTTI0NC44ODMsMGMtMTgsMC0zMi41LDE0LjYtMzIuNSwzMi41djE0OS43YzAsMTgsMTQuNiwzMi41LDMyLjUsMzIuNSAgICBzMzIuNS0xNC42LDMyLjUtMzIuNVYzMi41QzI3Ny4zODMsMTQuNiwyNjIuODgzLDAsMjQ0Ljg4MywweiIgZmlsbD0iI2Y3NTk1OSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9IiI+PC9wYXRoPg0KCTwvZz4NCjwvZz4NCjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8L2c+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPC9nPg0KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjwvZz4NCjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8L2c+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPC9nPg0KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjwvZz4NCjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8L2c+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPC9nPg0KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjwvZz4NCjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8L2c+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPC9nPg0KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjwvZz4NCjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8L2c+DQo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPC9nPg0KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjwvZz4NCjwvZz48L3N2Zz4=">',
+                ];
+            }
+
+            $dbErrors = 0;
+            if(file_exists(CORE . '/tmp/db_errors.txt') && filesize(CORE . '/tmp/db_errors.txt') > 5){
+                $informerSystem++;
+                $dbErrors = 1;
+            }
+            // Informers END
+
+
             foreach ($menu as $titleMenu => $itemMenu) {
+
+                if(!empty($itemMenu["informer"])){
+
+                    $informerStatus = "";
+                    if(!empty($itemMenu["informer"]["status"])){
+                        switch ($itemMenu["informer"]["status"]){
+                            case 1: $informerStatus = "informer_1"; break;
+                            case 2: $informerStatus = "informer_2"; break;
+                            case 3: $informerStatus = "informer_3"; break;
+                            case 4: $informerStatus = "informer_4"; break;
+                            case 5: $informerStatus = "informer_5"; break;
+                        }
+                    }
+
+                    if(!is_numeric($itemMenu["informer"]["num"])) $informerStatus .= ' informer_symbol';
+
+                    $titleMenu .= '<span data-informer="'.$itemMenu["informer"]["name"].'" class="'.$informerStatus.'">'.$itemMenu["informer"]["num"].'</span>';
+                }
 
                 $addMenu .= '<li><a href="'.$itemMenu["link"].'" class="'.$itemMenu["class"].'">'.$titleMenu.'</a>';
 
                 if(!empty($itemMenu["submenu"])){
 
                     $addMenu .= '<ul>';
-                    foreach ($itemMenu["submenu"] as $titleSubmenu => $link) {
+                    foreach ($itemMenu["submenu"] as $titleSubmenu => $submenu) {
 
-                        $addMenu .= '<li><a href="'.$link.'">'.$titleSubmenu.'</a>';
+                        if(is_array($submenu)){
+
+                            if(!empty($submenu["informer"])){
+
+                                $informerStatus = "";
+                                if(!empty($submenu["informer"]["status"])){
+                                    switch ($submenu["informer"]["status"]){
+                                        case 1: $informerStatus = "informer_1"; break;
+                                        case 2: $informerStatus = "informer_2"; break;
+                                        case 3: $informerStatus = "informer_3"; break;
+                                        case 4: $informerStatus = "informer_4"; break;
+                                        case 5: $informerStatus = "informer_5"; break;
+                                    }
+                                }
+
+                                if(!is_numeric($submenu["informer"]["num"])) $informerStatus .= ' informer_symbol';
+
+                                $titleSubmenu .= '<span data-informer="'.$itemMenu["informer"]["name"].'" class="'.$informerStatus.'">'.$submenu["informer"]["num"].'</span>';
+                            }
+
+                            $addMenu .= '<li><a href="'.$submenu["link"].'" class="'.(!empty($submenu["class"])?$submenu["class"]:'').'">'.$titleSubmenu.'</a>';
+
+                        } else $addMenu .= '<li><a href="'.$submenu.'">'.$titleSubmenu.'</a>';
                     }
                     $addMenu .= '</ul>';
                 }
@@ -180,11 +259,11 @@ abstract class PanelController{
                     </ul>
                 </li>
                 <li>
-                    <a href="#" class="ico_system">Система</a>
+                    <a href="#" class="ico_system">Система'.($informerSystem?'<span data-informer="system" class="informer_5">'.$informerSystem.'</span>':'').'</a>
                     <ul>
                         <li><a href="{panel}/system/routes/">Роуты</a></li>
                         <li><a href="{panel}/system/logs/">Журнал логов</a></li>
-                        <li><a href="{panel}/system/db-logs/">Ошибки базы</a></li>
+                        <li><a href="{panel}/system/db-logs/">Ошибки базы'.($dbErrors?'<span data-informer="dbErrors" class="informer_symbol informer_5">⚠</span>':'').'</a></li>
                         <li><a href="{panel}/system/updates/">Обновление <b>Celena</b></a></li>
                         <li><a href="{panel}/system/info/">Информация</a></li>
                     </ul>
@@ -193,6 +272,7 @@ abstract class PanelController{
             </ul>';
 
             $this->view->setMain('{menu}', $menuResult);
+            unset($menu, $addMenu, $menuResult);
             /**
              * @name MENU END
              * ==============

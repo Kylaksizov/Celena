@@ -4,8 +4,8 @@ namespace app\core;
 
 use app\core\system\plugins\InstallLocalPlugins;
 use app\models\panel\PluginModel;
-use app\models\panel\SystemModel;
 use app\traits\Users;
+use Exception;
 
 class Router{
 
@@ -265,11 +265,11 @@ class Router{
     }
 
 
-
     /**
      * @name получаем инфу о пользователе
      * ==================================
      * @return void
+     * @throws Exception
      */
     protected function getAuthUser(){
 

@@ -45,20 +45,18 @@ class PropertyModel extends Model{
         ];
 
         Base::run("INSERT INTO " . PREFIX . "properties (
-            title,
-            url,
-            f_type,
-            cid,
-            option,
-            sep,
-            req_p,
-            req,
-            position
+            `title`,
+            `url`,
+            `f_type`,
+            `cid`,
+            `option`,
+            `sep`,
+            `req_p`,
+            `req`,
+            `position`
         ) VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?, ?
         )", $params);
-
-        unset($params);
 
         return Base::lastInsertId();
     }
@@ -84,15 +82,13 @@ class PropertyModel extends Model{
         ];
 
         Base::run("INSERT INTO " . PREFIX . "properties_v (
-            pid,
-            val,
-            def,
-            position
+            `pid`,
+            `val`,
+            `def`,
+            `position`
         ) VALUES (
             ?, ?, ?, ?
         )", $params);
-
-        unset($params);
 
         return Base::lastInsertId();
     }

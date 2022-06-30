@@ -27,7 +27,7 @@ class CategoryModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function create($title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid, array $meta = [], int $status = 1){
+    public function create($title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid = null, array $meta = [], int $status = 1){
 
         $params = [
             $title,
@@ -125,7 +125,7 @@ class CategoryModel extends Model{
      * @return int
      * @throws Exception
      */
-    public function edit($id, $title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid, array $meta = [], int $status = 1){
+    public function edit($id, $title, $content, $url, string $tpl_min = '', string $tpl_max = '', $pid = null, array $meta = [], int $status = 1){
 
         return Base::run("
             UPDATE " . PREFIX . "categories SET

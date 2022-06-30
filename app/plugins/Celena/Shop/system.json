@@ -15,10 +15,15 @@
         "Свойства": "{panel}/products/properties/"
       }
     },
-    "Заказы и покупки <span data-informer=\"orders\" class=\"informer_active\">3</span>": {
+    "Заказы и покупки": {
       "link": "{panel}/orders/",
       "class": "ico_cart",
       "icon": "",
+      "informer": {
+        "name": "orders",
+        "status": "5",
+        "num": 17
+      },
       "submenu": {
         "Заказы": "{panel}/orders/",
         "Быстрые заказы": "{panel}/orders/click/"

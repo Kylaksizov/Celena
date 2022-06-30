@@ -20,7 +20,7 @@ class PageController extends Controller {
 
         $url = str_replace(".html", "", $this->url);
 
-        $Page = $PageModel->get($url);
+        $Page = $PageModel->get($url, defined("PAGE_TITLE") ? PAGE_TITLE : false);
 
         // если страница есть
         if(!empty($Page["page"])){

@@ -13,6 +13,8 @@ use app\traits\Fields;
 
 class PostController extends Controller {
 
+    use Fields;
+    use Comments;
 
 
     public function indexAction(){
@@ -172,7 +174,7 @@ class PostController extends Controller {
 
             $this->view->set('{categories}', $Post["post"]["category"]);
 
-            $this->view->include[$template] = Fields::setTags($this->view->include[$template], $Post["post"]["id"]);
+            $this->view->include[$template] = self::setTags($this->view->include[$template], $Post["post"]["id"]);
 
             // если есть галерея, то добавляем плагин
             if(strripos($this->view->include[$template], 'data-fancybox') !== false)
@@ -180,11 +182,11 @@ class PostController extends Controller {
 
 
             if(strripos($this->view->include[$template], '{comments}') !== false){
-                $this->view->set('{comments}', Comments::get($this, 'comments', $Post["post"]["id"]));
+                $this->view->set('{comments}', self::getComments($this, 'comments', $Post["post"]["id"]));
             }
 
             if(strripos($this->view->include[$template], '{add-comment}') !== false){
-                $this->view->set('{add-comment}', (ADMIN || (USER && !empty(USER["rules"]["addComment"]))) ? Comments::form() : '');
+                $this->view->set('{add-comment}', (ADMIN || (USER && !empty(USER["rules"]["addComment"]))) ? self::commentForm() : '');
             }
 
 

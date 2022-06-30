@@ -5,11 +5,14 @@ namespace app\plugins\Celena\Shop\ajax\panel;
 use app\core\System;
 use app\models\panel\FieldsModel;
 use app\models\plugins\Celena\Shop\panel\ProductModel;
+use app\traits\Fields;
 use Exception;
 use Intervention\Image\ImageManager;
 
 
 class ProductShop{
+
+    use Fields;
 
     public function index(){
 
@@ -53,9 +56,10 @@ class ProductShop{
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
         $fieldsData = null;
-        if(!empty($_POST["field"])){
-            $fieldsData = \app\traits\Fields::getPostFields($productId, $_POST["field"], $category);
-        }
+        if(!empty($_POST["field"]))
+            $fieldsData = self::getPostFields($productId, $_POST["field"], $category);
+        if(!empty($_FILES["field"]))
+            $fieldsData = self::getPostFields($productId, $_FILES["field"], $category);
 
         $addScript = '';
 

@@ -95,7 +95,7 @@ class CustomProducts{
                     $link = $buildCatLinks[$row["category_id"]]["urls"].'/' . $link;
                 if(CONFIG_SYSTEM["seo_type"] == '4')
                     $link = $buildCatLinks[$row["category_id"]]["urls"].'/' . $row["id"] . '-' . $link;
-                $link = '//'.CONFIG_SYSTEM["home"].'/'.$link;
+                $link = '//'.CONFIG_SYSTEM["home"].'/p/'.$link;
 
 
                 $poster = !empty($row["poster"]) ? $row["poster"] : 'no-image.png';

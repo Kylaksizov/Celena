@@ -1114,6 +1114,109 @@ table:not(.table-condensed) td {
     opacity: 1;
 }
 
+#menu{
+    background: var(--bg-global);
+    box-shadow: var(--shadow);
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+#menu nav > ul > li{
+    display: block;
+    font-size: 14px;
+    position: relative;
+}
+#menu nav > ul > li > ul{
+    background: #edf0fb;
+    box-shadow: 0 3px 5px #c6cbe1 inset;
+    display: none;
+}
+#menu li a{
+    color: var(--main-color-p);
+    display: block;
+    padding: 12px 15px 12px 45px;
+    position: relative;
+}
+#menu nav > ul > li > ul > li a{
+    font-size: 13px;
+    padding: 10px 10px 10px 55px;
+}
+#menu nav > ul > li > ul > li a:before{
+    content: "";
+    background: #dce0eb;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 25px;
+}
+#menu nav > ul > li > ul > li a:after{
+    content: "";
+    background: #dce0eb;
+    width: 5px;
+    height: 5px;
+    border-radius: 10px;
+    position: absolute;
+    top: 14px;
+    left: 23px;
+}
+#menu nav > ul > li > ul > li a:hover{
+    background: #e6ebf7;
+}
+#menu nav > ul > li > ul > li a.active:after{
+    background-color: #00aff7;
+}
+#menu nav > ul > li > ul > li a [data-informer]{
+    background: none !important;
+    top: 8px;
+}
+#menu li a:hover{
+    background-color: #f3f6ff;
+    color: #4d516a;
+}
+#menu nav > ul > li > a.active, #menu nav > ul > li > ul > li > a.active{
+    color: #00aff7;
+}
+#menu nav > ul > li.active{
+    background: linear-gradient(45deg, #ecf0fa, transparent);
+}
+#menu nav > ul > li.active:after{
+    content: "";
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI2LjgxOTRtbSIgaGVpZ2h0PSIxNy4xMTE0bW0iIHZlcnNpb249IjEuMSIgc3R5bGU9InNoYXBlLXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IHRleHQtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgaW1hZ2UtcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgZmlsbC1ydWxlOmV2ZW5vZGQ7IGNsaXAtcnVsZTpldmVub2RkIgp2aWV3Qm94PSIwIDAgNTQxLjU0IDEzNTguODUiCiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiA8ZGVmcz4KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgogICA8IVtDREFUQVsKICAgIC5maWwxIHtmaWxsOiMwMEFGRjd9CiAgICAuZmlsMCB7ZmlsbDojRUNGMEZBfQogICBdXT4KICA8L3N0eWxlPgogPC9kZWZzPgogPGcgaWQ9ItCh0LvQvtC5X3gwMDIwXzEiPgogIDxtZXRhZGF0YSBpZD0iQ29yZWxDb3JwSURfMENvcmVsLUxheWVyIi8+CiAgPHBhdGggY2xhc3M9ImZpbDAiIGQ9Ik00MTkuODMgMC4wNmMwLDMyOS4xOCAtNDE5LjgzLDM0NC45MiAtNDE5LjgzLDY4MS40NiAwLDMzNi41NSA0MTkuODMsMjcxLjA0IDQxOS44Myw2NzcuMjVsMTIxLjY2IDAuMDcgMC4wNSAtMTM1OC44NSAtMTIxLjcxIDAuMDZ6Ii8+CiAgPGNpcmNsZSBjbGFzcz0iZmlsMSIgY3g9IjIyNi43MyIgY3k9IjY3OC45MSIgcj0iMTA4LjU2Ii8+CiA8L2c+Cjwvc3ZnPg==") no-repeat center center;
+    background-size: 20px;
+    width: 26px;
+    height: 65px;
+    position: absolute;
+    top: -9px;
+    right: -7px;
+}
+#space{
+    margin: 57px 0 0 250px;
+    padding: 20px;
+    animation: spaceIn .5s forwards cubic-bezier(0, 0, 0.7, 1);
+    animation-delay: .2s;
+    opacity: 0;
+}
+@keyframes spaceIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+.company_name{
+    background: #f5f8ff;
+    font-weight: 700;
+    font-size: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 h1, h2{
     font-size: 17px;
@@ -1453,7 +1556,32 @@ h2{
     opacity: 1;
 }
 
+[data-informer]{
+    background: #9ea5b9;
+    text-align: center;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    border-radius: 20px;
+    position: absolute;
+    top: 13px;
+    right: 2px;
+    z-index: 10;
+}
+[data-informer].informer_1{background:#47b3ff}
+[data-informer].informer_2{background:#88cb44}
+[data-informer].informer_3{background:#ffb91d}
+[data-informer].informer_4{background:#ff833a}
+[data-informer].informer_5{background:#f75959}
 
+.informer_symbol{background:#fff!important;font-size:23px}
+.informer_symbol.informer_1{color:#47b3ff}
+.informer_symbol.informer_2{color:#88cb44}
+.informer_symbol.informer_3{color:#ffb91d}
+.informer_symbol.informer_4{color:#ff833a}
+.informer_symbol.informer_5{color:#f75959}
 
 
 

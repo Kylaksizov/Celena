@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\controllers\classes\Custom;
 use app\controllers\classes\Functions;
+use app\controllers\PageController;
 use app\core\Controller;
 
 
@@ -13,16 +14,30 @@ class IndexController extends Controller {
     public function indexAction(){
 
         Functions::preTreatment($this);
+        
 
 
         // если тег ля вывода продуктов присутствует
-        $news = '';
-        if($this->view->findTag('{CONTENT}', 1)){
+        if(CONFIG_SYSTEM["main"] == 1 && $this->view->findTag('{CONTENT}', 1)){
+
             $Custom = new Custom();
-            $news = $Custom->get($this, 1, 'index', 'custom');
+            $news = $Custom->get($this, 1, 'index');
+            $this->view->setMain('{CONTENT}', $news);
+
+        } else if(CONFIG_SYSTEM["main"] == 2 && !empty(CONFIG_SYSTEM["main_content"])){
+
+            // определяем константу с именем страницы
+            define("PAGE_TITLE", CONFIG_SYSTEM["main_content"]);
+
+            $PageController = new PageController($this->route, false);
+            $PageController->indexAction();
+
+        } else if(CONFIG_SYSTEM["main"] == 3 && !empty(CONFIG_SYSTEM["main_content"])){
+
+            $this->view->include(CONFIG_SYSTEM["main_content"]);
+            $this->view->setMain('{CONTENT}', $this->view->get());
         }
 
-        $this->view->setMain('{CONTENT}', $news);
         $this->view->clear();
 
         $this->view->setMain('{crumbs}', '');

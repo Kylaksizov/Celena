@@ -13,6 +13,8 @@ use app\traits\Log;
  */
 class Init implements InitPlugin {
 
+    use Log;
+
 
     // install...
     public function install()
@@ -344,15 +346,16 @@ class Init implements InitPlugin {
                 'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
                 '(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
             ]
-        ], 0);
-        $resultAdd = System::addRoute([
-            'web' => [
-                '([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
-            ]
         ], 1);
 
+        $resultAdd = System::addRoute([
+            'web' => [
+                'p/([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
+            ]
+        ], 0);
+
         if(!$resultAdd){
-            Log::add('Не удалось добавить роуты при установке плагина', 2);
+            self::addLog('Не удалось добавить роуты при установке плагина', 2);
             return 'Не удалось добавить роуты';
         }
     }
@@ -383,7 +386,7 @@ class Init implements InitPlugin {
             ],
             'web' => [
                 '(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
-                '([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
+                'p/([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
                 'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
                 'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
                 '(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
@@ -391,7 +394,7 @@ class Init implements InitPlugin {
         ]);
 
         if(!$resultRemoved){
-            Log::add('Не удалось удалить роуты при удалении плагина', 2);
+            self::addLog('Не удалось удалить роуты при удалении плагина', 2);
             return 'Не удалось удалить роуты';
         }
     }

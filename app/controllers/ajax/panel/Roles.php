@@ -3,9 +3,7 @@
 namespace app\controllers\ajax\panel;
 
 use app\core\System;
-use app\models\panel\PostModel;
 use app\models\UsersModel;
-use app\traits\SiteMap;
 use Exception;
 
 class Roles{

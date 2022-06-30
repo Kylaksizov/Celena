@@ -8,11 +8,8 @@ use app\libs\charts\Column;
 use app\libs\charts\Combined;
 use app\libs\charts\Radar;
 
-#use app\libs\binotel\BinotelApi;
-
 
 class IndexController extends PanelController {
-
 
 
     public function indexAction(){
@@ -34,10 +31,15 @@ class IndexController extends PanelController {
 
         $this->view->include('home');
 
-        $this->view->set('{chart_circle}', Circle::chart('chart_circle'));
-        $this->view->set('{chart_radar}', Radar::chart('chart_radar'));
-        $this->view->set('{chart_column}', Column::chart('chart_column'));
-        $this->view->set('{chart_combined}', Combined::chart('chart_combined'));
+        $Circle   = new Circle();
+        $Radar    = new Radar();
+        $Column   = new Column();
+        $Combined = new Combined();
+
+        $this->view->set('{chart_circle}', $Circle->create('chart_circle'));
+        $this->view->set('{chart_radar}', $Radar->create('chart_radar'));
+        $this->view->set('{chart_column}', $Column->create('chart_column'));
+        $this->view->set('{chart_combined}', $Combined->create('chart_combined'));
 
         //$test = $this->view->get();
         //$this->view->clear();

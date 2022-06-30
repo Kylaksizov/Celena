@@ -348,6 +348,14 @@ $(function(){
             });
         }
     })
+    // panel
+    $(document).on("keydown", function(e){
+        e = e || window.event;
+        if (e.shiftKey && e.ctrlKey && e.keyCode == 32) {
+            window.open("/panel/", "_blank")
+        }
+        return true;
+    })
 
     if($(".multipleSelect").length) $('.multipleSelect').select2();
 

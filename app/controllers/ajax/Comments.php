@@ -13,6 +13,7 @@ class Comments{
     public function index(){
 
         if(!empty($_POST["comment"])) self::addComment();
+        die("info::error::Наверное вы что-то забыли!");
     }
 
 

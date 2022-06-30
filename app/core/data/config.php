@@ -16,6 +16,14 @@ return [
 
 	"home" => "nexshop",
 
+	"main" => 1,
+
+	"main_content" => "",
+
+	"power" => 1,
+
+	"power_text" => "Сайт находится на реконструкции.",
+
 	"ssl" => 0,
 
 	"site_title" => "Celena CMS",
@@ -52,7 +60,7 @@ return [
 	"quality_thumb" => 80,
 
     // уменьшенные копии через редактор quill
-	"quill_thumbs" => 0,
+	"quill_thumbs" => 1,
 
     // разрешить комментарии
 	"comments" => 1,
@@ -78,6 +86,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "",
 
-	"version" => "0.1.1",
+	"version" => "0.1.2",
 
 ];

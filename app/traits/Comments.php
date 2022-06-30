@@ -22,7 +22,7 @@ trait Comments {
      * @return string
      * @throws Exception
      */
-    public static function get($e, string $template = 'comments', $post_id = null, $plugin_id = null, int $status = 1, string $sort = 'ASC'){
+    public function getComments($e, string $template = 'comments', $post_id = null, $plugin_id = null, int $status = 1, string $sort = 'ASC'){
 
         $result = '';
 
@@ -58,7 +58,7 @@ trait Comments {
      * ===========================
      * @return string
      */
-    public static function form(){
+    public function commentForm(){
 
         return '<form action method="POST">
             <textarea name="comment" rows="4" placeholder="Ваш комментарий"></textarea>

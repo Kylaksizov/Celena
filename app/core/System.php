@@ -214,7 +214,7 @@ class System{
         $count = Base::run($sql, $params)->fetch(PDO::FETCH_COLUMN);
         $start_from = @ceil($count / $limit);
         $result["start"] = abs($page_number_ * $limit);
-        
+
         $path = (strripos($_SERVER["REQUEST_URI"], "?") !== false) ? strstr($_SERVER["REQUEST_URI"], "?") : '';
 
         // если записей больше чем лимит, то выводим пагинацию
@@ -270,7 +270,7 @@ class System{
 
 
 
-    
+
     public static function editSystemConfig($newSettings, $file = CORE . '/data/config.php'){
 
         $new_settings = '';
@@ -419,7 +419,7 @@ class System{
 
         $resultRoutes = "";
         $file = ROOT . '/app/cache/routes.php';
-        
+
         $realRoutes = require $file;
 
         $addPanelRouteBefore = "";
@@ -490,7 +490,7 @@ return [
             $action = !empty($controllerAction["action"]) ? ", 'action' => '{$controllerAction["action"]}'" : "";
             $result .= "'$path' => ['controller' => '{$controllerAction["controller"]}'$action],\n\t\t";
         }
-        
+
         return trim($result);
     }
 
@@ -501,16 +501,16 @@ return [
      * @param array $routes
      * @return bool
      * @example
-        System::removeRoute([
-            'panel' => [
-                'path/$',
-                'path2/$'
-            ],
-            'web' => [
-                'path3/$',
-                'path4/$'
-            ]
-        ]);
+    System::removeRoute([
+    'panel' => [
+    'path/$',
+    'path2/$'
+    ],
+    'web' => [
+    'path3/$',
+    'path4/$'
+    ]
+    ]);
      */
     public static function removeRoute(array $routes){
 
@@ -533,6 +533,7 @@ return [
         }
 
         // по умолчанию
+        if(empty($realRoutes["web"]["(page-[0-9]+/)?$"])) $realRoutes["web"]["sitemap.xml$"] = ["controller" => "siteMap"];
         if(empty($realRoutes["web"]["(page-[0-9]+/)?$"])) $realRoutes["web"]["(page-[0-9]+/)?$"] = ["controller" => "index"];
         if(empty($realRoutes["web"]["([a-z-0-9]+).html$"])) $realRoutes["web"]["([a-z-0-9]+).html$"] = ["controller" => "page"];
         if(empty($realRoutes["web"]["([a-z-/0-9]+).html$"])) $realRoutes["web"]["([a-z-/0-9]+).html$"] = ["controller" => "post"];
@@ -566,6 +567,6 @@ return [
 
 
 
-    
+
 
 }

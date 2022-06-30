@@ -12,6 +12,7 @@ use app\traits\Fields;
 
 class ProductController extends Controller {
 
+    use Fields;
 
 
     public function indexAction(){
@@ -343,7 +344,7 @@ class ProductController extends Controller {
             $this->view->set('{old-price}', $Product["product"]["price"]);
             $this->view->set('{stock}', !empty($Product["product"]["stock"]) ? $Product["product"]["stock"] : '');
 
-            $this->view->include["product"] = Fields::setTags($this->view->include["product"], $Product["product"]["id"]);
+            $this->view->include["product"] = self::setTags($this->view->include["product"], $Product["product"]["id"]);
 
             $edit = '';
             if(ADMIN) $edit = '<a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/edit/'.$Product["product"]["id"].'/" target="_blank" class="edit_goods" title="Редактировать"></a>';

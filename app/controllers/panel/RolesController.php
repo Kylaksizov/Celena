@@ -4,7 +4,6 @@
 namespace app\controllers\panel;
 
 use app\core\PanelController;
-use app\core\System;
 use app\models\UsersModel;
 
 

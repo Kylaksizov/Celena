@@ -14,25 +14,34 @@ class PageModel extends Model{
 
 
     /**
-     * @name получение одного товара
-     * =============================
-     * @param string|array $urlOrArray
+     * @name получение одной страницы
+     * ==============================
+     * @param $urlOrArray
+     * @param $title
      * @return array
      * @throws Exception
      */
-    public function get($urlOrArray){
+    public function get($urlOrArray, $title = false){
 
         $result = [];
 
-        if(is_array($urlOrArray)){
+        if($title){
 
-            $where = "id = ?";
-            $params = [$urlOrArray["id"]];
+            $where = "title = ?";
+            $params = [$title];
 
         } else{
 
-            $where = "url = ?";
-            $params = [$urlOrArray];
+            if(is_array($urlOrArray)){
+
+                $where = "id = ?";
+                $params = [$urlOrArray["id"]];
+
+            } else{
+
+                $where = "url = ?";
+                $params = [$urlOrArray];
+            }
         }
 
         $result["page"] = Base::run("
@@ -61,18 +70,6 @@ class PageModel extends Model{
         }
 
         return $result;
-    }
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
     }
 
 }

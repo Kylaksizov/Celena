@@ -19,6 +19,14 @@ class View{
     public function __construct($route){
 
         $this->route = $route;
+
+        if(!CONFIG_SYSTEM["power"]){
+            $this->tplIndex = file_get_contents(ROOT.'/templates/'.CONFIG_SYSTEM["template"].'/power.tpl');
+            $this->tplIndex = str_replace('{power_text}', CONFIG_SYSTEM["power_text"], $this->tplIndex);
+            self::setMeta("Сайт выключен");
+            self::render();
+            die();
+        }
     }
 
 

@@ -26,13 +26,12 @@ trait Users{
     }
 
 
-
-
     /**
      * @name получение информации о пользователе
      * =========================================
      * @param $id
-     * @return mixed|null
+     * @return mixed
+     * @throws Exception
      */
     public function getUser($id){
         
@@ -41,14 +40,13 @@ trait Users{
     }
 
 
-
-
     /**
      * @name получение авторизированого пользователя
      * =============================================
      * @param $id
      * @param $hash
-     * @return mixed|null
+     * @return mixed
+     * @throws Exception
      */
     public function getAuth($id, $hash){
 

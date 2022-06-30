@@ -6,10 +6,11 @@ use app\traits\panel\Chart;
 
 class Circle{
 
+    use Chart;
 
-    public static function chart($id){
+    public function create($id){
 
-        return Chart::init(['percent.js']).'<script>
+        return self::init(['percent.js']).'<script>
 am5.ready(function() {
 
 // Create root element

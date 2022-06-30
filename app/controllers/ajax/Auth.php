@@ -9,6 +9,7 @@ use app\traits\Mail;
 
 class Auth{
 
+    use Mail, Log;
 
 
     public function index(){
@@ -55,7 +56,7 @@ class Auth{
                     <br>
                     <p>Если это были не Вы, проигнорируйте данное сообщение.</p>';
 
-                Mail::send($email, $theme, $body);
+                self::sendMail($email, $theme, $body);
 
                 die("info::success::Вам отправлено письмо для подтверждения!");
 
@@ -75,7 +76,7 @@ class Auth{
 
         } else{
 
-            Log::add('Не удалось зарегистрировать пользователя!<br>Почта: '.$email, 2);
+            self::addLog('Не удалось зарегистрировать пользователя!<br>Почта: '.$email, 2);
             die("info::error::Такая почта уже зарегистрирована на сайте!");
         }
     }

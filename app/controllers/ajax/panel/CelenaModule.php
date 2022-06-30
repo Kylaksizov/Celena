@@ -14,6 +14,8 @@ use Intervention\Image\ImageManager;
 
 class CelenaModule{
 
+    use Log, Functions;
+
 
     public function index(){
 
@@ -160,7 +162,7 @@ class CelenaModule{
             Modules::buildRoutes($ModuleInfo["routes"]); // перестраиваем роуты
 
             if(!empty($ModuleInfo["base_on"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_on"]));
-            Log::add('Модуль <b>'.$ModuleInfo["name"].'</b> включен', 1);
+            self::addLog('Модуль <b>'.$ModuleInfo["name"].'</b> включен', 1);
 
             $script = '<script>
                 $.server_say({say: "Плагин активирован!", status: "success"});
@@ -171,7 +173,7 @@ class CelenaModule{
 
             if(!empty($ModuleInfo["base_off"])) Base::run(str_replace("{prefix}", PREFIX, $ModuleInfo["base_off"]));
 
-            Log::add('Модуль <b>'.$ModuleInfo["name"].'</b> отключен', 1);
+            self::addLog('Модуль <b>'.$ModuleInfo["name"].'</b> отключен', 1);
 
             $script = '<script>
                 $.server_say({say: "Плагин отключен!", status: "success"});
@@ -238,7 +240,7 @@ class CelenaModule{
 
                 Modules::initialize();
 
-                Log::add('Модуль <b>'.$ModuleInfo[0]["name"].'</b> удален', 1);
+                self::addLog('Модуль <b>'.$ModuleInfo[0]["name"].'</b> удален', 1);
 
                 $script = '<script>
                     $(\'[data-a="CelenaModule:action=remove&id='.$module_id.'"]\').closest(".module_table").remove();
@@ -280,7 +282,7 @@ class CelenaModule{
             if(!file_exists($dir)) mkdir($dir, 0777, true);
 
             //$milliseconds = round(microtime(true) * 1000);
-            $image_name = Functions::generationCode(3).'_'.uniqid()./*'_'.System::translit(strstr($_FILES["icon"]["name"], ".", true)).*/'.'.$ext;
+            $image_name = self::generationCode(3).'_'.uniqid()./*'_'.System::translit(strstr($_FILES["icon"]["name"], ".", true)).*/'.'.$ext;
 
             $imageSize = getimagesize($_FILES["icon"]["tmp_name"]);
 

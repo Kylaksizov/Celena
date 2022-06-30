@@ -4,7 +4,6 @@ namespace app\controllers\ajax\panel;
 
 
 use app\core\System;
-use app\core\system\DeclareNames;
 use app\core\system\shop\ShopController;
 use app\models\panel\PluginModel;
 use app\traits\Log;
@@ -12,6 +11,8 @@ use Exception;
 use ZipArchive;
 
 class CelenaPlugin{
+
+    use Log;
 
     public function index(){
 
@@ -122,7 +123,7 @@ class CelenaPlugin{
 
         } else {
 
-            Log::add("Ошибка загрузки плагина с сервера!", 2);
+            self::addLog("Ошибка загрузки плагина с сервера!", 2);
             die("info::error::Ошибка загрузки плагина с сервера!");
         }
 
@@ -152,13 +153,13 @@ class CelenaPlugin{
 
                 } else{
 
-                    Log::add("Ошибка <b style='color:#e82a2a'>$installed</b> при установке плагина <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
+                    self::addLog("Ошибка <b style='color:#e82a2a'>$installed</b> при установке плагина <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
                     die("info::error::Отсутствует при установке!<br>Обратитесь к разработчику плагина.");
                 }
 
             } else{
 
-                Log::add("Отсутствует метод установки в плагине <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
+                self::addLog("Отсутствует метод установки в плагине <b>$pluginBrandName</b>! Обратитесь к разработчику плагина.", 2);
                 die("info::error::Отсутствует метод установки!<br>Обратитесь к разработчику плагина.");
             }
         }
@@ -199,7 +200,7 @@ class CelenaPlugin{
             $pluginPath = 'app\plugins\\'.str_replace('/', '\\', $PluginInfo["name"]).'\Init';
 
             if(!class_exists($pluginPath)){
-                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> отсутствует клас Init', 2);
+                self::addLog('В плагине <b>'.$PluginInfo["name"].'</b> отсутствует клас Init', 2);
                 die("info::error::Ошибка плагина!<br>Смотрите логи...");
             }
 
@@ -207,7 +208,7 @@ class CelenaPlugin{
             $resultPower = ($power) ? $PluginInit->powerOn() : $PluginInit->powerOff();
 
             if($resultPower !== true){
-                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при включении', 2);
+                self::addLog('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при включении', 2);
                 die("info::error::Ошибка плагина!<br>Смотрите логи...");
             }
 
@@ -215,11 +216,17 @@ class CelenaPlugin{
                 $script = '<script>
                     $.server_say({say: "Плагин активирован!", status: "success"});
                     $(\'[data-a="CelenaPlugin:action=enable&id='.$pluginId.'"]\').replaceWith(`<a href="#" class="btn btn_plugin_deactivate" data-a="CelenaPlugin:action=disable&id='.$pluginId.'">Выключить</a>`);
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1000)
                 </script>';
             } else{
                 $script = '<script>
                     $.server_say({say: "Плагин отключен!", status: "success"});
                     $(\'[data-a="CelenaPlugin:action=disable&id='.$pluginId.'"]\').replaceWith(`<a href="#" class="btn btn_plugin_activate" data-a="CelenaPlugin:action=enable&id='.$pluginId.'">Активировать</a>`);
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1000)
                 </script>';
             }
 
@@ -252,7 +259,7 @@ class CelenaPlugin{
             $resultClassDelete = $pluginClass->delete();
 
             if($resultClassDelete !== true){
-                Log::add('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при удалении', 2);
+                self::addLog('В плагине <b>'.$PluginInfo["name"].'</b> произошла ошибка при удалении', 2);
                 die("info::error::Ошибка при удалении плагина!<br>Смотрите логи...");
             }
 

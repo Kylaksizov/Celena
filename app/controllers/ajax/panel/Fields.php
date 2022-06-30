@@ -9,6 +9,8 @@ use Exception;
 
 class Fields{
 
+    use \app\traits\Fields;
+
     public function index(){
 
         /*preg_match('/edit\/([0-9]+)\//is', $_GET["url"], $post);
@@ -117,7 +119,7 @@ class Fields{
         $resultField[$tag]["rq"] = !empty($_POST["required"]) ? 1 : 0;
         $resultField[$tag]["status"] = !empty($_POST["status"]) ? 1 : 0;
 
-        \app\traits\Fields::addField($resultField);
+        self::addField($resultField);
 
         $titleSay = $editTag ? 'Поле отредактировано' : 'Новое поле создано!';
 
@@ -156,7 +158,7 @@ class Fields{
 
         } else {
 
-            \app\traits\Fields::deleteField($fieldTag);
+            self::deleteField($fieldTag);
 
             $script = '<script>
                 $(\'[data-a="Fields:delete='.$fieldTag.'"]\').closest("tr").remove();
@@ -179,7 +181,7 @@ class Fields{
         $tag = trim(htmlspecialchars(strip_tags($_POST["tag"])));
         $statusField = ($_POST["statusField"] == 'true') ? 1 : 0;
 
-        \app\traits\Fields::editField($tag, "status", $statusField);
+        self::editField($tag, "status", $statusField);
 
         $script = '<script>
             $.server_say({say: "Статус изменен!", status: "success"});

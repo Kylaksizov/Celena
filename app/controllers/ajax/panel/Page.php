@@ -42,6 +42,10 @@ class Page{
         $meta["title"] = !empty($_POST["meta"]["title"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["title"]))) : '';
         $meta["description"] = !empty($_POST["meta"]["description"]) ? trim(htmlspecialchars(strip_tags($_POST["meta"]["description"]))) : '';
 
+        // обработка картинок из редактора
+        $contentImages = self::parseImages($content);
+        $content = $contentImages["content"];
+
         $addScript = '';
 
         $PageModel = new PageModel();
@@ -102,6 +106,81 @@ class Page{
         }
 
         System::script($script);
+    }
+
+
+
+    private function parseImages($content){
+
+        $resultContent = $content;
+        $imagesForDb = [];
+
+        preg_match_all('/<img\ssrc=\"data\:image\/(jpeg|png);base64,([^"]*)\">/i', $content, $images);
+
+        if(!empty($images[2])){
+
+            foreach ($images[2] as $key => $imageContent) {
+
+                $fileName = round(microtime(true) * 1000) . '.' . $images[1][$key];
+
+                $dir_rel = date("Y-m", time());
+                $filePath = ROOT . '/uploads/posts/' . $dir_rel;
+                if(!file_exists($filePath)) mkdir($filePath, 0777, true);
+
+                $imagesForDb[] = $dir_rel.'/'.$fileName;
+
+                $imageContent = base64_decode($imageContent);
+
+
+                if(!empty(CONFIG_SYSTEM["origin_image"])){
+
+                    $image = new ImageManager();
+                    $img = $image->make($imageContent)->resize(
+                        intval(CONFIG_SYSTEM["origin_image"]),
+                        null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                    });
+                    $img->orientate();
+                    $img->save($filePath . '/' . $fileName, (!empty(CONFIG_SYSTEM["quality_image"]) ? intval(CONFIG_SYSTEM["quality_image"]) : 100));
+
+                } else {
+
+                    $fp = fopen($filePath.'/'.$fileName, 'wb');
+                    fwrite($fp, $imageContent);
+                    fclose($fp);
+                }
+
+                $imageResult = '<img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$dir_rel.'/'.$fileName.'" alt="">';
+
+
+                // если требуется создание миниатюры
+                if(CONFIG_SYSTEM["thumb"] && CONFIG_SYSTEM["quill_thumbs"]){
+
+                    if(!file_exists($filePath.'/thumbs')) mkdir($filePath.'/thumbs', 0777, true);
+
+                    $image = new ImageManager();
+                    $img = $image->make($imageContent)->resize(
+                        intval(CONFIG_SYSTEM["thumb"]),
+                        null,
+                        function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize(); // увеличивать только если оно больше чем нужно
+                        });
+                    $img->orientate();
+                    $img->save($filePath . '/thumbs/' . $fileName, (!empty(CONFIG_SYSTEM["quality_thumb"]) ? intval(CONFIG_SYSTEM["quality_thumb"]) : 100));
+
+                    $imageResult = '<a href="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$dir_rel.'/'.$fileName.'"><img src="//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$dir_rel.'/thumbs/'.$fileName.'" alt=""></a>';
+                }
+
+                $resultContent = str_replace($images[0][$key], $imageResult, $resultContent);
+            }
+        }
+
+        return [
+            "content" => $resultContent,
+            "images"  => $imagesForDb
+        ];
     }
 
 

@@ -13,6 +13,7 @@ use Exception;
 
 class PostsController extends PanelController {
 
+    use Fields;
 
     /**
      * @name посты
@@ -140,7 +141,7 @@ class PostsController extends PanelController {
         if(!empty($Post["images"])){
             foreach ($Post["images"] as $image) {
 
-                $thumb = !empty(CONFIG_SYSTEM["thumb"]) ? '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.str_replace('/', '/thumbs/', $image["src"]) : '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image["src"];
+                $thumb = (!empty(CONFIG_SYSTEM["thumb"]) && !empty(CONFIG_SYSTEM["quill_thumbs"])) ? '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.str_replace('/', '/thumbs/', $image["src"]) : '//'.CONFIG_SYSTEM["home"].'/uploads/posts/'.$image["src"];
 
                 $is_main = ($Post["posts"]["poster"] == $image["id"]) ? ' is_main' : '';
 
@@ -165,7 +166,7 @@ class PostsController extends PanelController {
          * @name FIELDS
          * ============
          */
-        $Fields = Fields::getFields();
+        $Fields = self::getFields();
 
         $fieldsContent = '';
 

@@ -8,6 +8,8 @@ use app\traits\SiteMap;
 
 class Settings{
 
+    use SiteMap;
+
     public function index(){
 
         if(!empty($_POST["config"])) self::saveConfig();
@@ -22,6 +24,7 @@ class Settings{
      */
     private static function saveConfig(){
 
+        if(empty($_POST["config"]["power"])) $_POST["config"]["power"] = 0;
         if(empty($_POST["config"]["errors"])) $_POST["config"]["errors"] = 0;
         if(empty($_POST["config"]["db_log"])) $_POST["config"]["db_log"] = 0;
         if(empty($_POST["config"]["dev_tools"])) $_POST["config"]["dev_tools"] = 0;
@@ -48,7 +51,7 @@ class Settings{
 
         $PostModel = new PostModel();
         $Posts = $PostModel->getFromMap();
-        SiteMap::generation($Posts);
+        self::generationMap($Posts);
 
         die("info::success::Карта сгенерирована!");
     }

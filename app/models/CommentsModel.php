@@ -25,7 +25,7 @@ class CommentsModel extends Model{
      * @return bool|string
      * @throws Exception
      */
-    public function add($pid = null, $plugin_id = null, $uid = USER["id"], $comment, $parent_id = null, $status = 0){
+    public function add($pid = null, $plugin_id = null, $uid = USER["id"], $comment = '', $parent_id = null, $status = 0){
 
         Base::run("INSERT INTO " . PREFIX . "comments (
             pid,
@@ -86,7 +86,7 @@ class CommentsModel extends Model{
             "pagination" => ""
         ];
 
-        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "comments c", $params, $pagination["start"], $pagination["limit"]);
+        $pagination = System::pagination("SELECT COUNT(1) AS count FROM " . PREFIX . "comments c $where", $params, $pagination["start"], $pagination["limit"]);
 
         $result["comments"] = Base::run(
             "SELECT
@@ -111,6 +111,13 @@ class CommentsModel extends Model{
         $result["pagination"] = $pagination['pagination'];
 
         return $result;
+    }
+
+
+
+    public function getCounter(){
+
+        return Base::run("SELECT COUNT(*) FROM " . PREFIX . "comments WHERE status = 0")->fetchColumn();
     }
 
 

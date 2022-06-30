@@ -48,7 +48,7 @@ class PropertyShop{
             $script = '<script>
                 $("h1").html(`Редактирование свойства для товаров: <b>'.$title.'</b>`);
                 $.server_say({say: "Свойство создано!", status: "success"});
-                history.pushState(null, "Редактирование свойства", "'.CONFIG_SYSTEM["home"].CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$id.'/");
+                history.pushState(null, "Редактирование свойства", "/'.CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$id.'/");
             </script>';
 
         // редактирование

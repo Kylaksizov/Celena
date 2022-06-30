@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 trait Mail{
 
 
-    public static function send($to, $theme, $body, $files = []){
+    public function sendMail($to, $theme, $body, $files = []){
 
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';

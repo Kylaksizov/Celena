@@ -12,6 +12,7 @@ use Exception;
 
 class FieldsController extends PanelController {
 
+    use Fields;
 
     /**
      * @name посты
@@ -30,7 +31,7 @@ class FieldsController extends PanelController {
             <a href="/'.CONFIG_SYSTEM["panel"].'/fields/add/" class="btn">Добавить поле</a>
         </div>';
 
-        $Fields = Fields::getFields();
+        $Fields = self::getFields();
 
         $fieldsContent = '';
 
@@ -117,7 +118,7 @@ class FieldsController extends PanelController {
 
         if(!empty($this->urls[3])){
             
-            $Field = Fields::getField($this->urls[3]);
+            $Field = self::getField($this->urls[3]);
             $h1 = 'Редактирование поля: <b>'.$Field["name"].'</b>';
         }
 

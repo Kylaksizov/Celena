@@ -7,10 +7,11 @@ use app\traits\panel\Chart;
 
 class Radar{
 
+    use Chart;
 
-    public static function chart($id){
+    public function create($id){
 
-        return Chart::init(['radar.js']).'<script>
+        return self::init(['percent.js']).'<script>
 am5.ready(function() {
 
 // Create root element

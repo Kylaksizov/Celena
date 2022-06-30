@@ -13,7 +13,7 @@ namespace app\traits;
 trait Auth{
 
 
-    public static function google_init($type = 'reg'): string{
+    public function google_init($type = 'reg'): string{
 
         $params = array(
             'client_id'     => CONFIG_SYSTEM["auth"]["googleClientId"],
@@ -33,7 +33,7 @@ trait Auth{
     }
 
 
-    public static function google_callback(){
+    public function google_callback(){
 
         if (!empty($_GET['code'])) {
             // Отправляем код для получения токена (POST-запрос).

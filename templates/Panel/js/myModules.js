@@ -63,7 +63,7 @@ $(function(){
                 <div class="fx ai_c">
                     <div class="fpb">
                         <label for="">Путь к файлу:</label>
-                        <input type="text" name="filePath[`+fileId+`]" class="filePath" placeholder="controllers/...">
+                        <input type="text" name="filePath[`+fileId+`]" class="filePath" placeholder="app/...">
                     </div>
                     <a href="#" class="remove remove_file"></a>
                 </div>

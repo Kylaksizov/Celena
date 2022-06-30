@@ -5,7 +5,7 @@ namespace app\traits\panel;
 trait Chart{
 
 
-    public static function start(){
+    public function startChart(){
 
         $inc = '';
         if(!defined('CHART')) {
@@ -24,9 +24,9 @@ trait Chart{
     }
 
 
-    public static function init($moules = []){
+    public function init($moules = []){
 
-        $inc = self::start();
+        $inc = self::startChart();
 
         if(!empty($moules)){
 

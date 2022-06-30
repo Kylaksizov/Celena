@@ -12,7 +12,7 @@ class Update{
 
         //Base::run("ALTER TABLE `".PREFIX."users` ADD `avatar` VARCHAR(20) NOT NULL DEFAULT '' AFTER `password`");
 
-        //System::removeDir(CORE . "/interface");
+        System::removeDir(APP . "/libs/binotel");
 
         /*System::removeRoute([
             'panel' => [
@@ -20,19 +20,21 @@ class Update{
             ]
         ]);*/
 
-        System::addRoute([
+        /*System::addRoute([
             'panel' => [
                 'system/info/$' => ['controller' => 'System', 'action' => 'info'],
             ]
+        ]);*/
+
+        System::addSystemConfig([
+            "power" => 1,
+            "main" => 1,
+            "main_content" => "",
+            "power_text" => "Сайт находится на реконструкции."
         ]);
 
-        if(!isset(CONFIG_SYSTEM["quill_thumbs"]))
-            System::addSystemConfig(["quill_thumbs" => 0]);
-
-        //System::addSystemConfig(["comments" => 1]);
-
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.1.1']);
+        System::editSystemConfig(["version" => '0.1.2']);
         return true;
     }
 }

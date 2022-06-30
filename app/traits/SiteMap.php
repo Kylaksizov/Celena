@@ -8,7 +8,7 @@ use DOMDocument;
 trait SiteMap{
 
 
-    public static function generation($source){
+    public function generationMap($source){
 
         $dom = new DOMDocument('1.0', 'UTF-8');
 
@@ -61,7 +61,7 @@ trait SiteMap{
     }
 
 
-    public static function get(){
+    public function getMap(){
 
         if(file_exists(ROOT . '/uploads/system/sitemap.xml')){
 

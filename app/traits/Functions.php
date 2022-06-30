@@ -17,7 +17,7 @@ trait Functions{
      * @param $divider
      * @return string
      */
-    public static function generationCode($countChar = 16, $uppercase = true, $divider = false){
+    public function generationCode($countChar = 16, $uppercase = true, $divider = false){
         $chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         if(!$uppercase) $chars .= 'abcdefghijklmmnopqrstuvwxyz';
         $hashpromo = '';
@@ -47,7 +47,7 @@ trait Functions{
      * @param $number
      * @return string
      */
-    public static function generationPassword($number = 8){
+    public function generationPassword($number = 8){
         $arr = array('a','b','c','d','e','f',
             'g','h','i','j','k','l',
             'm','n','o','p','r','s',
@@ -80,7 +80,7 @@ trait Functions{
      * @param $data
      * @return string
      */
-    public static function check($data){
+    public function check($data){
         if($data) return ' checked';
         else return '';
     }
