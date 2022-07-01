@@ -184,13 +184,13 @@ class PropertyModel extends Model{
         $params = [];
 
         foreach ($fields as $fieldName => $val) {
-            $set .= "$fieldName = ?, ";
+            $set .= "`$fieldName` = ?, ";
             array_push($params, $val);
         }
         $set = trim($set, ", ");
         array_push($params, $id);
 
-        return Base::run("UPDATE " . PREFIX . "properties SET $set WHERE id = ?", $params)->rowCount();
+        return Base::run("UPDATE " . PREFIX . "properties SET $set WHERE `id` = ?", $params)->rowCount();
     }
 
 
@@ -242,23 +242,8 @@ class PropertyModel extends Model{
 
         Base::run("DELETE FROM " . PREFIX . "properties_prop WHERE id_prop = ?", [$id]);
         Base::run("DELETE FROM " . PREFIX . "properties_v WHERE pid = ?", [$id]);
+        Base::run("DELETE FROM " . PREFIX . "product_prop WHERE id_p = ?", [$id]);
         return Base::run("DELETE FROM " . PREFIX . "properties WHERE id = ?", [$id]);
-    }
-
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
     }
 
 }

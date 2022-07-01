@@ -105,7 +105,7 @@ $(function(){
             let display = thisElement.attr("data-display");
 
             if(categories == "" && display == '1'){ // если не заданы категории и включен вывод
-                thisElement.removeClass("dn");
+                thisElement.removeClass("dn").show();
                 addField(thisElement);
             }
 
@@ -113,14 +113,14 @@ $(function(){
                 categories = categories.split(",");
                 categorySelected.forEach(function(item) {
                     if(categories.includes(item)){
-                        thisElement.removeClass("dn");
+                        thisElement.removeClass("dn").show();
                         if(display == '1') addField(thisElement);
                         else{
                             // ???
                         }
                     }
                 });
-            }
+            } else thisElement.removeClass("dn").show();
         })
     }
 

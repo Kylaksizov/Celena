@@ -8,6 +8,7 @@ use app\traits\Mail;
 
 class Cart{
 
+    use Mail;
 
 
     public function index(){
@@ -72,7 +73,7 @@ class Cart{
             $theme = 'Новый заказ № ' . $orderId;
             $body = 'На сайте оформлен новый заказ на сумму: <b>'.$total.' '.CONFIG_PLUGIN["currency"].'</b>';
 
-            Mail::send(CONFIG_SYSTEM["admin_email"], $theme, $body);
+            self::sendMail(CONFIG_SYSTEM["admin_email"], $theme, $body);
 
             //  отправляем сообщение покупателю в
 

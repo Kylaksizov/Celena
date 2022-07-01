@@ -46,7 +46,6 @@ abstract class PanelController{
                     "class" => "ico_news",
                     "submenu" => [
                         "Добавить новость" => "{panel}/posts/add/",
-                        "Категории" => "{panel}/category/",
                     ]
                 ],
                 "Страницы" => [

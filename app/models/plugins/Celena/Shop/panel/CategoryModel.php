@@ -170,20 +170,4 @@ class CategoryModel extends Model{
         return Base::run("DELETE FROM " . PREFIX . "categories WHERE id = ?", [$id]);
     }
 
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
-    }
-
 }

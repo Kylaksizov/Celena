@@ -11,7 +11,7 @@ $(function(){
                 <label for="is_def_`+timestamp+`"></label>
             </div>
         </div>`);
-        $(".p_val:last input").focus();
+        $(".p_val:last input:first").focus();
     }
 
     // добавление значения
@@ -33,7 +33,6 @@ $(function(){
             if($(".p_val").length > 1 && $(this).val().length == 0){
                 event.preventDefault();
                 event.stopPropagation();
-                $(this).closest(".p_val").prev().find('[name="val[]"]').focus();
                 $(this).closest(".p_val").remove();
                 return false
             }

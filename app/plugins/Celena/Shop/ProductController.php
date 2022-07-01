@@ -270,7 +270,7 @@ class ProductController extends Controller {
 
                                 $allowedNext = true;
 
-                                $priceProp = (CONFIG_SYSTEM["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
+                                $priceProp = (CONFIG_PLUGIN["penny"]) ? floatval($prop["price"]) : round($prop["price"]);
 
                                 if($prop["pv"] === null) $calc = 'new';
                                 else $calc = $prop["pv"];
@@ -360,11 +360,12 @@ class ProductController extends Controller {
             View::errorCode(404);
         }
 
+        $title = !empty($Product["product"]["m_title"]) ? $Product["product"]["m_title"] : $Product["product"]["title"];
 
-        $this->view->setMeta($Product["product"]["m_title"], $Product["product"]["m_description"], [
+        $this->view->setMeta($title, $Product["product"]["m_description"], [
             [
                 'property' => 'og:title',
-                'content' => $Product["product"]["m_title"],
+                'content' => $title,
             ],
             [
                 'property' => 'og:description',

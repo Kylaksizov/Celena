@@ -58,7 +58,7 @@ class ProductsController extends PanelController {
 
                 $productsContent .= '<tr>
                     <td>'.$row["id"].'</td>
-                    <td>
+                    <td class="no_pad">
                         '.$img.'
                     </td>
                     <td>
@@ -120,7 +120,6 @@ class ProductsController extends PanelController {
 
         $Categories = $CategoryModel->getAll(true);
         $Properties = $ProductModel->getPropertiesAll(true);
-
 
         // Property
         $propertiesSelect = '<select name="" id="propertiesAll">
@@ -1069,7 +1068,7 @@ class ProductsController extends PanelController {
                     <td><a href="//'.CONFIG_SYSTEM["home"].'/'.CONFIG_SYSTEM["panel"].'/products/properties/edit/'.$row["id"].'/">'.$row["title"].'</a></td>
                     <td>
                         <ul class="tc">
-                            <li><a href="#" class="remove"></a></li>
+                            <li><a href="#" class="remove" data-a="PropertyShop:delete='.$row["id"].'"></a></li>
                         </ul>
                     </td>
                 </tr>';

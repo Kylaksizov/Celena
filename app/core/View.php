@@ -185,6 +185,7 @@ class View{
      * @return void
      */
     public function setMain($search, $replace){
+        if(is_null($replace)) $replace = '';
         $this->tplIndex = str_replace($search, $replace, $this->tplIndex);
     }
 

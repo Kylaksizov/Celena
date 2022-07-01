@@ -13,6 +13,7 @@ class PropertyShop{
     public function index(){
 
         if(!empty($_POST["title"])) self::createProperty(); // создание редактирование свойств
+        if(!empty($_POST["delete"])) self::delete(); // удаление свойств
     }
 
 
@@ -97,6 +98,42 @@ class PropertyShop{
         }
 
         System::script($script);
+    }
+
+
+
+    public function delete(){
+
+        $propertyId = intval($_POST["delete"]);
+
+        if(empty($_POST['confirm'])){
+            $script = '<script>
+                $.confirm("Вы уверены, что хотите удалить?", function(e){
+                    if(e) $.ajaxSend($(this), {"ajax": "PropertyShop", "delete": "'.$propertyId.'", "confirm": 1});
+                })
+            </script>';
+
+            die(System::script($script));
+        }
+
+        if(!empty($_POST['confirm'])){
+
+            $PropertyModel = new PropertyModel();
+            $result = $PropertyModel->delete($propertyId);
+
+            if($result){
+
+                $script = '<script>
+                    $(\'[data-a="PropertyShop:delete='.$propertyId.'"]\').closest("tr").remove();
+                    $.server_say({say: "Удалено!", status: "success"});
+                </script>';
+                System::script($script);
+
+            } else{
+
+                die("info::error::Не удалось удалить свойство!");
+            }
+        }
     }
 
 }

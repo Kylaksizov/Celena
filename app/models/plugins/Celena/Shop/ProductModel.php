@@ -625,20 +625,4 @@ class ProductModel extends Model{
         return Base::run("UPDATE " . PREFIX . "products SET $set WHERE id = ?", $params)->rowCount();
     }*/
 
-
-
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
-    }
-
 }

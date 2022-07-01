@@ -69,6 +69,14 @@ class Init implements InitPlugin {
             KEY `cid` (`cid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+        Base::run("CREATE TABLE " . PREFIX . "products_ex (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `pid` int(11) NOT NULL,
+            `see` bigint NOT NULL DEFAULT 0,
+            PRIMARY KEY (`id`),
+            KEY `pid` (`pid`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
         Base::run("CREATE TABLE " . PREFIX . "products (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `uid` int(11) NOT NULL,
@@ -306,6 +314,7 @@ class Init implements InitPlugin {
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_ex");
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "orders_status");
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "products");
+        Base::run("DROP TABLE IF EXISTS " . PREFIX . "products_ex");
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "products_cat");
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "product_prop");
         Base::run("DROP TABLE IF EXISTS " . PREFIX . "properties");
@@ -321,7 +330,7 @@ class Init implements InitPlugin {
     private function addRoutes(){
 
         // добавление роутов
-        $resultAdd = System::addRoute([
+        System::addRoute([
             'panel' => [
                 'products/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products'],
                 'products/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addProduct'],

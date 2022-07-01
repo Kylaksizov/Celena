@@ -66,7 +66,7 @@ return [
 	"comments" => 1,
 
     // шаблон по умолчанию
-	"template" => "Web",
+	"template" => "CelenaShop",
 
     // подтверждение почты
 	"email_confirm" => 0,
@@ -86,6 +86,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "",
 
-	"version" => "0.1.2",
+	"version" => "0.1.3",
 
 ];

@@ -13,11 +13,13 @@ use PDOStatement;
 
 class OrderModel extends Model{
 
+    use \app\traits\Functions;
+
 
     public function create($buyer_id = null, $order_id = null, $name = '', $email = '', $tel = '', $address = '', $payment_id = 0, $prod_ids = [], $total = 0, $comment = '', $paid = 0, $status = 0){
 
         if(!$buyer_id) $buyer_id = USER ? USER["id"] : 0;
-        if(!$order_id) $order_id = \app\traits\Functions::generationCode(2).time();
+        if(!$order_id) $order_id = self::generationCode(2).time();
         if(empty($prod_ids)) return false;
 
         $hash = sha1(round(microtime(true) * 1000));
@@ -216,19 +218,6 @@ class OrderModel extends Model{
     public function getStatuses(){
 
         return System::setKeys(Base::run("SELECT * FROM " . PREFIX . "orders_status ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC), "id");
-    }
-
-
-
-
-    private function instanceFetch($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetch(PDO::FETCH_ASSOC));
-    }
-
-    private function instanceFetchAll($query, $params){
-        if(!empty($this->get($query))) return $this->get($query);
-        return $this->set($query, Base::run($query, $params)->fetchAll(PDO::FETCH_ASSOC));
     }
 
 }

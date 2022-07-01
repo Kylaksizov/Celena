@@ -87,6 +87,7 @@ class Functions{
                     $categories = !empty($customIndex[2][$tplKey]) ? explode(",", $customIndex[2][$tplKey]) : [];
 
                     $res = $Custom->get($e, false, $categories, $customIndex[4][$tplKey], intval($customIndex[6][$tplKey]), $customIndex[8][$tplKey], $customIndex[10][$tplKey]);
+                    if(is_null($res)) $res = '';
                     $e->view->tplIndex = str_replace($tag, $res, $e->view->tplIndex);
                 }
             }
