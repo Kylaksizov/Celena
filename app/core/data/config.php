@@ -30,6 +30,8 @@ return [
 
 	"site_description" => "Новый движок для создания блогов, магазинов и многих других приложений.",
 
+	"crumbs_title" => "Celena",
+
 	"panel" => "panel",
 
     // ЧПУ: 1 - link
@@ -42,7 +44,7 @@ return [
     "seo_type_end" => ".html",
 
     // разделитель чпу
-    "separator" => "&nbsp;&nbsp;&#10148;&nbsp;&nbsp;",
+	"separator" => "  ➤  ",
 
     // кол-во товаров в категории
 	"count_in_cat" => 12,
@@ -66,7 +68,7 @@ return [
 	"comments" => 1,
 
     // шаблон по умолчанию
-	"template" => "CelenaShop",
+	"template" => "Web",
 
     // подтверждение почты
 	"email_confirm" => 0,
@@ -86,6 +88,6 @@ return [
 	"SMTPPort" => 2525,
 	"SMTPFrom" => "",
 
-	"version" => "0.1.3",
+	"version" => "0.1.4",
 
 ];

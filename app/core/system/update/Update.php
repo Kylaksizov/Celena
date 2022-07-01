@@ -26,15 +26,12 @@ class Update{
             ]
         ]);*/
 
-        /*System::addSystemConfig([
-            "power" => 1,
-            "main" => 1,
-            "main_content" => "",
-            "power_text" => "Сайт находится на реконструкции."
-        ]);*/
+        System::addSystemConfig([
+            "crumbs_title" => "Celena",
+        ]);
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.1.3']);
+        System::editSystemConfig(["version" => '0.1.4']);
         return true;
     }
 }

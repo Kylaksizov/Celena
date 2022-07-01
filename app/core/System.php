@@ -446,12 +446,20 @@ class System{
      * ]);
      * $position 0 - в начало, 1 - в конец
      */
-    public static function addRoute(array $routes, bool $position = true){
+    public static function addRoute(array $routes, bool $position = true, $newRoutes = false){
 
+        $resultRoutesSource = [];
         $resultRoutes = "";
         $file = ROOT . '/app/cache/routes.php';
 
-        $realRoutes = require $file;
+        if(!$newRoutes){
+
+            $realRoutes = require $file;
+
+            if(!empty($routes["panel"])) $resultRoutesSource["panel"] = array_merge($realRoutes["panel"], $routes["panel"]);
+            if(!empty($routes["web"])) $resultRoutesSource["web"] = array_merge($realRoutes["web"], $routes["web"]);
+
+        } else $realRoutes = $newRoutes;
 
         $addPanelRouteBefore = "";
         $addPanelRouteAfter = "";
@@ -504,7 +512,7 @@ return [
         flock($fp, LOCK_UN);
         fclose($fp);
 
-        return true;
+        return $resultRoutesSource;
     }
 
 

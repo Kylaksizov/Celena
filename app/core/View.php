@@ -439,7 +439,7 @@ class View{
             // $show[3][0] - содержит то что внутри, то есть од, без тегов
             // $show[4][0] - содержит [/category]
 
-            if(defined("CATEGORY") && !empty($categories[0][0])){
+            if(!empty($categories[0][0])){
 
                 foreach ($categories[2] as $key => $ids) {
 
@@ -448,7 +448,7 @@ class View{
                     $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $categories[1][$key]);
 
                     // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
-                    if(in_array(CATEGORY["id"], $ids))
+                    if(defined("CATEGORY") && in_array(CATEGORY["id"], $ids))
                         $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "$1", $this->tplIndex);
                     else
                         $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "", $this->tplIndex);

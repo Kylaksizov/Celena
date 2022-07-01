@@ -72,21 +72,19 @@ class PostsController extends PanelController {
 
         } else $PostContent = '<tr class="tc"><td colspan="6">Постов нет</td></tr>';
 
-        $content .= '<div class="">
-            <table>
-                <tr>
-                    <th width="20">ID</th>
-                    <th width="50">Постер</th>
-                    <th>Заголовок поста</th>
-                    <th width="200">Категория</th>
-                    <th width="20">Просмотров</th>
-                    <th width="130">Дата публикации</th>
-                    <th width="30">Статус</th>
-                    <th width="50"></th>
-                </tr>
-                '.$PostContent.'
-            </table>
-        </div>'.$Posts["pagination"];
+        $content .= '<table>
+            <tr>
+                <th width="20">ID</th>
+                <th width="50">Постер</th>
+                <th>Заголовок поста</th>
+                <th width="200">Категория</th>
+                <th width="20">Просмотров</th>
+                <th width="130">Дата публикации</th>
+                <th width="30">Статус</th>
+                <th width="50"></th>
+            </tr>
+            '.$PostContent.'
+        </table>'.$Posts["pagination"];
 
         $this->view->render('Посты', $content);
     }

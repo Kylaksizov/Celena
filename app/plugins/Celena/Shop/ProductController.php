@@ -82,7 +82,7 @@ class ProductController extends Controller {
             $crumbs = '<div id="crumbs">';
             if(count($CategoryStep) > 1){
 
-                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
+                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>';
 
                 foreach ($this->urls as $url) {
 
@@ -94,7 +94,7 @@ class ProductController extends Controller {
 
             } else{
 
-                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
+                $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
             }
 
             $crumbs .= '</div>';

@@ -63,8 +63,8 @@ return [
 		'([a-z-/0-9]+).html$' => ['controller' => 'post'],
 		'(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Index'],
 		'search/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Search'],
-		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
 		'(.+?)/$' => ['controller' => 'plugins\Celena\Shop\Category'],
+		'cart/$' => ['controller' => 'plugins\Celena\Shop\Cart'],
     ],
     
 ];

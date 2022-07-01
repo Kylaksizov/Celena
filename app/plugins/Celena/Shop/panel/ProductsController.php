@@ -79,21 +79,19 @@ class ProductsController extends PanelController {
 
         } else $productsContent = '<tr class="tc"><td colspan="6">Товаров нет</td></tr>';
 
-        $content .= '<div class="">
-            <table>
-                <tr>
-                    <th width="20">#</th>
-                    <th width="100">Изображение</th>
-                    <th>Наименование<span class="br_min">категория</span></th>
-                    <th width="100">Цена</th>
-                    <th width="130">Дата публикации</th>
-                    <th width="70">Кол-во</th>
-                    <th width="30">Статус</th>
-                    <th width="50"></th>
-                </tr>
-                '.$productsContent.'
-            </table>
-        </div>';
+        $content .= '<table>
+            <tr>
+                <th width="20">#</th>
+                <th width="100">Изображение</th>
+                <th>Наименование<span class="br_min">категория</span></th>
+                <th width="100">Цена</th>
+                <th width="130">Дата публикации</th>
+                <th width="70">Кол-во</th>
+                <th width="30">Статус</th>
+                <th width="50"></th>
+            </tr>
+            '.$productsContent.'
+        </table>' . $Products["pagination"];
 
         $this->view->render('Товары', $content);
     }

@@ -33,6 +33,8 @@ class CustomProducts{
                 // CRUMBS
                 $CategoryStep = System::setKeys($Products["categories"], "url");
 
+                if(!defined("CATEGORY")) define("CATEGORY", $CategoryStep[end($e->urls)]);
+                
                 // CATEGORY NAME
                 $categoryName = !empty($CategoryStep[end($e->urls)]) ? $CategoryStep[end($e->urls)]["title"] : '';
                 $e->view->setMain('{category-name}', $categoryName);
@@ -42,7 +44,7 @@ class CustomProducts{
                 $crumbs = '<div id="crumbs">';
                 if(count($CategoryStep) > 1){
 
-                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
+                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>';
 
                     foreach ($e->urls as $url) {
 
@@ -58,7 +60,7 @@ class CustomProducts{
                     array_pop($catLink);
                     $catLink = implode("/", $catLink);
 
-                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
+                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
                 }
 
                 $crumbs .= '</div>';

@@ -80,6 +80,22 @@ class SettingsController extends PanelController {
                         </div>
                         <div class="set_item">
                             <div>
+                                <h3>Краткое название для хлебных крошек</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[crumbs_title]" value="'.CONFIG_SYSTEM["crumbs_title"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
+                                <h3>Разделитель для хлебных крошек</h3>
+                            </div>
+                            <div>
+                                <input type="text" name="config[separator]" value="'.CONFIG_SYSTEM["separator"].'">
+                            </div>
+                        </div>
+                        <div class="set_item">
+                            <div>
                                 <h3>Адрес сайта</h3>
                                 <div class="setDescription">Указывать нужно без слешей. Например: <b>site.com</b></div>
                             </div>

@@ -330,7 +330,7 @@ class Init implements InitPlugin {
     private function addRoutes(){
 
         // добавление роутов
-        System::addRoute([
+        $resultAdd = System::addRoute([
             'panel' => [
                 'products/(page-[0-9]+/)?$' => ['controller' => 'plugins\Celena\Shop\Products'],
                 'products/(add/|edit/([0-9]+/)?)$' => ['controller' => 'plugins\Celena\Shop\Products', 'action' => 'addProduct'],
@@ -361,7 +361,7 @@ class Init implements InitPlugin {
             'web' => [
                 'p/([a-z-/0-9]+).html$' => ['controller' => 'plugins\Celena\Shop\Product'],
             ]
-        ], 0);
+        ], 0, $resultAdd);
 
         if(!$resultAdd){
             self::addLog('Не удалось добавить роуты при установке плагина', 2);
