@@ -227,19 +227,21 @@
                 return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
             }
 
-            //if(/*this_.parents("form").length == 0*/this_.attr('data-a') != undefined && this_.attr('data-a').length > 0){
+            let realCelenaPath = (this_.attr('data-s') != undefined && this_.attr('data-s').length) ? true : false;
+            let atrName = realCelenaPath ? 'data-s' : 'data-a';
 
             // если в атрибуте data-a что-то задано
-            if(this_.attr('data-a') != undefined && this_.attr('data-a').length > 0){
+            if(this_.attr(atrName) != undefined && this_.attr(atrName).length > 0){
 
                 let method = '';
 
-                if(this_.attr('data-a').indexOf(':') + 1){
-                    let tmp = this_.attr('data-a').split(":");
+                if(this_.attr(atrName).indexOf(':') + 1){
+                    let tmp = this_.attr(atrName).split(":");
                     method = tmp[0];
                     params = tmp[1];
+                    console.log(1);
                 } else{
-                    method = this_.attr('data-a');
+                    method = this_.attr(atrName);
                     params = this_.parents("form").serialize();
                 }
 
@@ -258,6 +260,8 @@
                         params += `&`+textareaName+`=`+desc;
                     })
                 }
+
+                if(realCelenaPath) params += `&celena=1`;
 
                 data.append("ajax", method);
                 data.append("params", params);
@@ -364,7 +368,7 @@ $(function(){
     }
 
     // отправка любой формы через AJAX
-    $(document).on("click", '[data-a]:not(.data-stop)', function(){
+    $(document).on("click", '[data-a]:not(.data-stop), [data-s]:not(.data-stop)', function(){
 
         // проверяем есть ли поля с required
         let allowed_send = true;

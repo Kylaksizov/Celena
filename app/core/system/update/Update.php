@@ -26,12 +26,12 @@ class Update{
             ]
         ]);*/
 
-        System::addSystemConfig([
+        /*System::addSystemConfig([
             "crumbs_title" => "Celena",
-        ]);
+        ]);*/
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.1.4']);
+        System::editSystemConfig(["version" => '0.1.5']);
         return true;
     }
 }

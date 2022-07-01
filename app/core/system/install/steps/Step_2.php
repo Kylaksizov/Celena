@@ -3,12 +3,15 @@
 namespace app\core\system\install\steps;
 
 use app\core\system\install\steps\addon\FillBase;
+use app\traits\Functions;
 use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
 
 class Step_2{
+
+    use Functions;
 
 
     public function __construct() {}
@@ -260,7 +263,7 @@ class Step_2{
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
         $PANEL_PASSWORD = sha1(md5($PANEL_PASSWORD).':NEX');
-        $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(\app\traits\Functions::generationCode()), time(), 1]);
+        $query->execute([$PANEL_NAME, $PANEL_EMAIL, $PANEL_PASSWORD, 1, $_SERVER["REMOTE_ADDR"], sha1(self::generationCode()), time(), 1]);
 
         FillBase::fill($db, $PREFIX);
         # ===============
@@ -382,6 +385,14 @@ return [
 
 	"home" => "'.$home.'",
 
+	"main" => 1,
+
+	"main_content" => "",
+
+	"power" => 1,
+
+	"power_text" => "Сайт находится на реконструкции.",
+
 	"ssl" => 1,
 
 	"site_title" => "Celena CMS",
@@ -400,7 +411,7 @@ return [
     "seo_type_end" => ".html",
 
     // разделитель чпу
-    "separator" => "&nbsp;&nbsp;&#10148;&nbsp;&nbsp;",
+	"separator" => "  ➤  ",
 
     // кол-во товаров в категории
 	"count_in_cat" => 12,
@@ -444,7 +455,7 @@ return [
 	"SMTPPort" => 465,
 	"SMTPFrom" => "'.$email.'",
 
-    "version" => "0.0.10",
+    "version" => "0.1.5",
 
 ];';
 

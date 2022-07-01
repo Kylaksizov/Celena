@@ -17,7 +17,7 @@ class Functions{
 
         if(!USER){
 
-            $e->view->include('login');
+            $e->view->include('login', false, true);
             //$this->view->set('{reg}', $Auth);
 
             $new_password = '';
@@ -35,7 +35,7 @@ class Functions{
                             <input type="password" name="password_repeat" placeholder="Повторите пароль">
                             <input type="hidden" name="action" value="member_pass_start">
                             <input type="hidden" name="new_password" value="'.$member_test.'"><br>
-                            <input type="submit" class="btn" data-a="Registration" value="Восстановить">
+                            <input type="submit" class="btn" data-s="Registration" value="Восстановить">
                         </form>
                     </div>';
 
@@ -52,8 +52,6 @@ class Functions{
             $e->view->setMain('{login}', $login);
 
         } else $e->view->setMain('{login}', '');
-
-        $e->view->setMain('{sort}', '');
     }
 
 

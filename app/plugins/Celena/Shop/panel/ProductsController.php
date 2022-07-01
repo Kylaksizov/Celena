@@ -434,7 +434,7 @@ class ProductsController extends PanelController {
                                 $fields_images .= '<div title="'.$imageData[3].'">
                                     <img src="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/'.$imageData[0].'" alt="'.$imageData[3].'">
                                     <a href="#editPhoto" class="edit_image open_modal" data-src="'.$imageData[0].'"></a>
-                                    <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '"></a>
+                                    <a href="#" class="delete_field_file" data-s="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '"></a>
                                 </div>';
                             }
 
@@ -448,7 +448,7 @@ class ProductsController extends PanelController {
                                     $fields_images .= '<div title="'.$imageData[3].'">
                                         <img src="//' . CONFIG_SYSTEM["home"] . '/uploads/fields/'.$imageData[0].'" alt="'.$imageData[3].'">
                                         <a href="#editPhoto" class="edit_image open_modal" data-src="'.$imageData[0].'"></a>
-                                        <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
+                                        <a href="#" class="delete_field_file" data-s="Fields:deleteFieldB='.$imageData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
                                     </div>';
                                 }
                             }
@@ -500,7 +500,7 @@ class ProductsController extends PanelController {
                                         <span class="fileName">'.$fileData[2].'</span>
                                     </a>
                                     <a href="#editPhoto" class="edit_image open_modal" data-src="'.$fileData[0].'"></a>
-                                    <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
+                                    <a href="#" class="delete_field_file" data-s="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
                                 </div>';
                             }
 
@@ -517,7 +517,7 @@ class ProductsController extends PanelController {
                                             <span class="fileName">'.$fileData[2].'</span>
                                         </a>
                                         <a href="#editPhoto" class="edit_image open_modal" data-src="'.$fileData[0].'"></a>
-                                        <a href="#" class="delete_field_file" data-a="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
+                                        <a href="#" class="delete_field_file" data-s="Fields:deleteFieldB='.$fileData[0].'&fieldId=' . $Product["fields"][$field["tag"]]["id"] . '""></a>
                                     </div>';
                                 }
                             }

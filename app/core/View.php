@@ -54,12 +54,13 @@ class View{
      * @name подключаем другие файлы
      * =============================
      * @param $view
-     * @param bool $cache
+     * @param $cache
+     * @param $realTemplate
      * @return false|string|void
      */
-    public function include($view, $cache = false){
+    public function include($view, $cache = false, $realTemplate = false){
 
-        $viewPlugin = (!empty($this->route["plugin"]->system->status) && $this->route["plugin"]->system->status !== false) ? 'plugins/'.$this->route["plugin"]->system->name.'/' : '';
+        $viewPlugin = (!empty($this->route["plugin"]->system->status) && $this->route["plugin"]->system->status !== false && !$realTemplate) ? 'plugins/'.$this->route["plugin"]->system->name.'/' : '';
 
         if($view != $this->lastInc || $cache){
 
@@ -429,16 +430,6 @@ class View{
             // отображение контента в зависимости от типа страницы
             preg_match_all('/(\[category\s?=\s?\"([\d\,]+)\"\])(.+?)(\[\/category\])/is', $this->tplIndex, $categories);
 
-            //if(defined("CATEGORY")){
-                
-            //} else $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/category\]/i', "", $this->tplIndex);
-
-            // $show[0][0] - содержит все целиком
-            // $show[1][0] - содержит [category = "..."]
-            // $show[2][0] - содержит ID категории
-            // $show[3][0] - содержит то что внутри, то есть од, без тегов
-            // $show[4][0] - содержит [/category]
-
             if(!empty($categories[0][0])){
 
                 foreach ($categories[2] as $key => $ids) {
@@ -456,6 +447,31 @@ class View{
                 }
 
             } else $this->tplIndex = preg_replace('/\[category\s?=\s?\"[\d\,]+\"\].+?\[\/category\]/i', "", $this->tplIndex);
+        }
+
+
+        if(strripos($this->tplIndex, '[not-category') !== false){
+
+            // отображение контента в зависимости от типа страницы
+            preg_match_all('/(\[not-category\s?=\s?\"([\d\,]+)\"\])(.+?)(\[\/not-category\])/is', $this->tplIndex, $categories);
+
+            if(!empty($categories[0][0])){
+
+                foreach ($categories[2] as $key => $ids) {
+
+                    $ids = explode(",", $ids);
+
+                    $pattern = str_replace(["\"", "[", "]", " ", "/"], ["\\\"", "\[", "\]", "\s+", "\/"], $categories[1][$key]);
+
+                    // если тип страницы совпадает с указанным значением в теге, то показываем код внутри тегов
+                    if(defined("CATEGORY") && in_array(CATEGORY["id"], $ids))
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/not-category\]/i', "", $this->tplIndex);
+                    else
+                        $this->tplIndex = preg_replace('/'.$pattern.'([^[]+)\[\/not-category\]/i', "$1", $this->tplIndex);
+
+                }
+
+            } else $this->tplIndex = preg_replace('/\[not-category\s?=\s?\"[\d\,]+\"\].+?\[\/not-category\]/i', "", $this->tplIndex);
         }
 
 

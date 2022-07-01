@@ -32,7 +32,7 @@ class Functions{
                             <input type="password" name="password_repeat" placeholder="Повторите пароль">
                             <input type="hidden" name="action" value="member_pass_start">
                             <input type="hidden" name="new_password" value="'.$member_test.'"><br>
-                            <input type="submit" class="btn" data-a="Registration" value="Восстановить">
+                            <input type="submit" class="btn" data-s="Registration" value="Восстановить">
                         </form>
                     </div>';
 

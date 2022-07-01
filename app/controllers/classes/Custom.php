@@ -50,7 +50,7 @@ class Custom{
                 $crumbs = '<div id="crumbs">';
                 if(count($CategoryStep) > 1){
 
-                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>';
+                    $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>';
 
                     foreach ($e->urls as $url) {
 
@@ -69,7 +69,7 @@ class Custom{
                     } else $catLink = $catLink[0];
 
                     if(!empty($CategoryStep[$catLink]["title"]))
-                        $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["site_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
+                        $crumbs .= '<a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<a href="//' . CONFIG_SYSTEM["home"] . '/'. $catLink . '/">' . $CategoryStep[$catLink]["title"] . '</a>';
                 }
 
                 $crumbs .= '</div>';

@@ -31,11 +31,11 @@ class PageController extends Controller {
 
             $this->view->include($uTpl);
 
-            // CRUMBS
-            $this->view->setMain('{crumbs}', "");
+            $crumbs = '<div id="crumbs">
+                <a href="//' . CONFIG_SYSTEM["home"] . '/">' . CONFIG_SYSTEM["crumbs_title"] . '</a>' . CONFIG_SYSTEM["separator"] . '<span>' . $Page["page"]["title"] . '</span></div>';
+
+            $this->view->setMain('{crumbs}', $crumbs);
             // CRUMBS END
-
-
 
             $poster = '//'.CONFIG_SYSTEM["home"].'/templates/'.CONFIG_SYSTEM["template"].'/img/no-image.svg';
             if(!empty($Page["page"]["src"])){

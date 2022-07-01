@@ -76,7 +76,7 @@ class ProductModel extends Model{
 
         $product_id =  Base::lastInsertId();
 
-        if(!empty($categories)){
+        if(!empty($categories) && $product_id){
             foreach ($categories as $categoryId) {
                 Base::run("INSERT INTO " . PREFIX . "products_cat (pid, cid) VALUES (?, ?)", [$product_id, $categoryId]);
             }

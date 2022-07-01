@@ -17,7 +17,7 @@
 <section class="cont"[show="post"] id="article"[/show]>
 
     <main id="content">
-        [category="1,2"]{include file="test.tpl"}[/category]
+        [not-category="1"]{include file="test.tpl"}[/not-category]
         [category="1,3"]<b>В категории 1 и 3</b>[/category]
         [category="2"]<b>В категории 2222222222222</b>[/category]
 

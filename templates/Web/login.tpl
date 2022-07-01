@@ -9,7 +9,7 @@
         {reg}*}
         <div class="fx ai_c">
             <a href="#member_pass" class="member_password open_modal">Забыли пароль?</a>
-            <input type="submit" class="btn" data-a="Auth" value="Вход">
+            <input type="submit" class="btn" data-s="Auth" value="Вход">
         </div>
     </form>
     <a href="#" class="close"></a>
@@ -20,7 +20,7 @@
     <form action="#" method="POST">
         <input type="email" name="email" placeholder="E-mail">
         <input type="hidden" name="action" value="member_pass_finish"><br>
-        <input type="submit" class="btn" data-a="Auth" value="Восстановить">
+        <input type="submit" class="btn" data-s="Auth" value="Восстановить">
     </form>
     <a href="#" class="close"></a>
 </div>
@@ -36,7 +36,7 @@
         <input type="hidden" name="action" value="registration">
         <label for="agree">Регистрируясь, вы соглашаетесь с условиями сайта</label>
         <br>
-        <input type="submit" class="btn" data-a="Auth" value="Зарегистрироваться">
+        <input type="submit" class="btn" data-s="Auth" value="Зарегистрироваться">
     </form>
     <a href="#" class="close"></a>
 </div>

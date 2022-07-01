@@ -66,7 +66,7 @@ class SettingsController extends PanelController {
                                 <h3>Название сайта</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[site_title]" value="'.CONFIG_SYSTEM["site_title"].'">
+                                <input type="text" name="config[site_title]" value="'.htmlspecialchars(CONFIG_SYSTEM["site_title"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -75,7 +75,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">До 250 символов.</div>
                             </div>
                             <div>
-                                <textarea name="config[site_description]">'.CONFIG_SYSTEM["site_description"].'</textarea>
+                                <textarea name="config[site_description]">'.htmlspecialchars(CONFIG_SYSTEM["site_description"]).'</textarea>
                             </div>
                         </div>
                         <div class="set_item">
@@ -83,7 +83,7 @@ class SettingsController extends PanelController {
                                 <h3>Краткое название для хлебных крошек</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[crumbs_title]" value="'.CONFIG_SYSTEM["crumbs_title"].'">
+                                <input type="text" name="config[crumbs_title]" value="'.htmlspecialchars(CONFIG_SYSTEM["crumbs_title"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -91,7 +91,7 @@ class SettingsController extends PanelController {
                                 <h3>Разделитель для хлебных крошек</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[separator]" value="'.CONFIG_SYSTEM["separator"].'">
+                                <input type="text" name="config[separator]" value="'.htmlspecialchars(CONFIG_SYSTEM["separator"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -100,7 +100,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Указывать нужно без слешей. Например: <b>site.com</b></div>
                             </div>
                             <div>
-                                <input type="text" name="config[home]" value="'.CONFIG_SYSTEM["home"].'">
+                                <input type="text" name="config[home]" value="'.htmlspecialchars(CONFIG_SYSTEM["home"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -108,7 +108,7 @@ class SettingsController extends PanelController {
                                 <h3>Адрес панели</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[panel]" value="'.CONFIG_SYSTEM["panel"].'">
+                                <input type="text" name="config[panel]" value="'.htmlspecialchars(CONFIG_SYSTEM["panel"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -125,7 +125,7 @@ class SettingsController extends PanelController {
                                 <h3>Количество постов в категориях</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[count_in_cat]" value="'.CONFIG_SYSTEM["count_in_cat"].'">
+                                <input type="text" name="config[count_in_cat]" value="'.htmlspecialchars(CONFIG_SYSTEM["count_in_cat"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -142,12 +142,12 @@ class SettingsController extends PanelController {
                             <div>
                                 <h3>Содержимое главной страницы</h3>
                                 <div class="setDescription"><b>Контент</b> - стандартный вывод тега {CONTENT}.<br>
-                                <b>Страница</b> - определенная <a href="/'.CONFIG_SYSTEM["comments"].'/pages/">страница</a>.<br>
+                                <b>Страница</b> - определенная <a href="/'.CONFIG_SYSTEM["panel"].'/pages/">страница</a>.<br>
                                 <b>TPL</b> - файл формата tpl, созданный в шаблоне.</div>
                             </div>
                             <div>
                                 '.$mainPageOptions.'
-                                <input type="text" name="config[main_content]" id="main_content"'.$mainContentDisplay.' value="'.CONFIG_SYSTEM["main_content"].'" placeholder="Название страницы или tpl файла">
+                                <input type="text" name="config[main_content]" id="main_content"'.$mainContentDisplay.' value="'.htmlspecialchars(CONFIG_SYSTEM["main_content"]).'" placeholder="Название страницы или tpl файла">
                             </div>
                         </div>
                         <div class="set_item">
@@ -174,7 +174,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Текст при выключеном сайте.</div>
                             </div>
                             <div>
-                                <textarea name="config[power_text]" rows="3">'.CONFIG_SYSTEM["power_text"].'</textarea>
+                                <textarea name="config[power_text]" rows="3">'.htmlspecialchars(CONFIG_SYSTEM["power_text"]).'</textarea>
                             </div>
                         </div>
                         <!--:settings_main-->
@@ -189,7 +189,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Если оставить пустым, то будут загружаться оригинальные изображения.</div>
                             </div>
                             <div>
-                                <input type="text" name="config[origin_image]" value="'.CONFIG_SYSTEM["origin_image"].'">
+                                <input type="text" name="config[origin_image]" value="'.htmlspecialchars(CONFIG_SYSTEM["origin_image"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -198,7 +198,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Если оставить пустым, качество будет оставаться исходным.</div>
                             </div>
                             <div>
-                                <input type="text" name="config[quality_image]" value="'.CONFIG_SYSTEM["quality_image"].'">
+                                <input type="text" name="config[quality_image]" value="'.htmlspecialchars(CONFIG_SYSTEM["quality_image"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -207,7 +207,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Если оставить пустым, уменьшеная копия создаваться не будет.</div>
                             </div>
                             <div>
-                                <input type="text" name="config[thumb]" value="'.CONFIG_SYSTEM["thumb"].'">
+                                <input type="text" name="config[thumb]" value="'.htmlspecialchars(CONFIG_SYSTEM["thumb"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -216,7 +216,7 @@ class SettingsController extends PanelController {
                                 <div class="setDescription">Если оставить пустым, качество будет оставаться исходным.</div>
                             </div>
                             <div>
-                                <input type="text" name="config[quality_thumb]" value="'.CONFIG_SYSTEM["quality_thumb"].'">
+                                <input type="text" name="config[quality_thumb]" value="'.htmlspecialchars(CONFIG_SYSTEM["quality_thumb"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -241,7 +241,7 @@ class SettingsController extends PanelController {
                                 <h3>Email администратора</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[admin_email]" value="'.CONFIG_SYSTEM["admin_email"].'">
+                                <input type="text" name="config[admin_email]" value="'.htmlspecialchars(CONFIG_SYSTEM["admin_email"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -260,7 +260,7 @@ class SettingsController extends PanelController {
                                 <h3>SMTP хост</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[SMTPHost]" value="'.CONFIG_SYSTEM["SMTPHost"].'">
+                                <input type="text" name="config[SMTPHost]" value="'.htmlspecialchars(CONFIG_SYSTEM["SMTPHost"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -268,7 +268,7 @@ class SettingsController extends PanelController {
                                 <h3>SMTP логин</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[SMTPLogin]" value="'.CONFIG_SYSTEM["SMTPLogin"].'">
+                                <input type="text" name="config[SMTPLogin]" value="'.htmlspecialchars(CONFIG_SYSTEM["SMTPLogin"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -276,7 +276,7 @@ class SettingsController extends PanelController {
                                 <h3>SMTP пароль</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[SMTPPassword]" value="'.CONFIG_SYSTEM["SMTPPassword"].'">
+                                <input type="text" name="config[SMTPPassword]" value="'.htmlspecialchars(CONFIG_SYSTEM["SMTPPassword"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -295,7 +295,7 @@ class SettingsController extends PanelController {
                                 <h3>SMTP порт</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[SMTPPort]" value="'.CONFIG_SYSTEM["SMTPPort"].'">
+                                <input type="text" name="config[SMTPPort]" value="'.htmlspecialchars(CONFIG_SYSTEM["SMTPPort"]).'">
                             </div>
                         </div>
                         <div class="set_item">
@@ -303,7 +303,7 @@ class SettingsController extends PanelController {
                                 <h3>Отправлять от email</h3>
                             </div>
                             <div>
-                                <input type="text" name="config[SMTPFrom]" value="'.CONFIG_SYSTEM["SMTPFrom"].'">
+                                <input type="text" name="config[SMTPFrom]" value="'.htmlspecialchars(CONFIG_SYSTEM["SMTPFrom"]).'">
                             </div>
                         </div>
                         <!--:settings_post-->
