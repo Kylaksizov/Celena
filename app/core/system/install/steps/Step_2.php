@@ -61,6 +61,7 @@ class Step_2{
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}images");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}log");
         $db->exec("DROP TABLE IF EXISTS {$PREFIX}fields");
+        $db->exec("DROP TABLE IF EXISTS {$PREFIX}notify");
 
         $query = $db->prepare("CREATE TABLE `{$PREFIX}users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -251,6 +252,18 @@ class Step_2{
             PRIMARY KEY  (`id`),
             KEY `pid` (`pid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        $query->execute();
+
+        $query = $db->prepare("CREATE TABLE `{$PREFIX}notify` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `title` VARCHAR(30) NOT NULL,
+            `message` VARCHAR(300) NOT NULL,
+            `link` VARCHAR(200) NOT NULL DEFAULT '',
+            `created` INT(11) NOT NULL,
+            `see` TINYINT(1) NOT NULL DEFAULT '0',
+            `status` TINYINT(1) NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB;");
         $query->execute();
 
 

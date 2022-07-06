@@ -7,8 +7,11 @@ namespace app\core;
 
 use app\models\CommentsModel;
 use app\models\panel\PluginModel;
+use app\traits\panel\Notify;
 
 abstract class PanelController{
+
+    use Notify;
 
     public $urls;
     public $plugin;
@@ -176,6 +179,7 @@ abstract class PanelController{
                 $informerSystem++;
                 $dbErrors = 1;
             }
+            if(!empty(CONFIG_SYSTEM["system_update"])) $informerSystem = "♻️";
             // Informers END
 
 
@@ -241,7 +245,7 @@ abstract class PanelController{
                 <li id="home_link"><a href="{panel}/" class="ico_space">Рабочий стол</a></li>
                 '.$addMenu.'
                 <li>
-                    <a href="{panel}/plugins/" class="ico_applications">Плагины и модули</a>
+                    <a href="{panel}/plugins/" class="ico_applications">Плагины и модули'.(!empty(CONFIG_SYSTEM["plugins_update"])?'<span class="update_icon"></span>':'').'</a>
                     <ul>
                         <li><a href="{panel}/plugins/">Плагины</a></li>
                         <li><a href="{panel}/modules/">Модули</a></li>
@@ -258,12 +262,12 @@ abstract class PanelController{
                     </ul>
                 </li>
                 <li>
-                    <a href="#" class="ico_system">Система'.($informerSystem?'<span data-informer="system" class="informer_5">'.$informerSystem.'</span>':'').'</a>
+                    <a href="#" class="ico_system">Система'.(!empty(CONFIG_SYSTEM["system_update"])?'<span class="update_icon"></span>':($informerSystem?'<span data-informer="system" class="informer_5">'.$informerSystem.'</span>':'')).'</a>
                     <ul>
                         <li><a href="{panel}/system/routes/">Роуты</a></li>
                         <li><a href="{panel}/system/logs/">Журнал логов</a></li>
-                        <li><a href="{panel}/system/db-logs/">Ошибки базы'.($dbErrors?'<span data-informer="dbErrors" class="informer_symbol informer_5">⚠</span>':'').'</a></li>
-                        <li><a href="{panel}/system/updates/">Обновление <b>Celena</b></a></li>
+                        <li><a href="{panel}/system/db-logs/">Ошибки базы'.($dbErrors?'<span data-informer="dbErrors" class="informer_symbol informer_5">⚠️</span>':'').'</a></li>
+                        <li><a href="{panel}/system/updates/">Обновление <b>Celena</b>'.(!empty(CONFIG_SYSTEM["system_update"])?'<span class="update_icon"></span>':'').'</a></li>
                         <li><a href="{panel}/system/info/">Информация</a></li>
                     </ul>
                 </li>
@@ -271,6 +275,44 @@ abstract class PanelController{
             </ul>';
 
             $this->view->setMain('{menu}', $menuResult);
+
+
+            //self::addNotify("Плагин", "Доступно обновление Celena 1.0.0");
+            $Notify = self::getNotify();
+
+            $notify = '<div id="notification">
+                <a href="#" class="ico_notify" title="Уведомления"></a>
+            </div>';
+
+            if(!empty($Notify)){
+
+                $newMessages = 0;
+                $messages = '';
+                foreach ($Notify as $row) {
+
+                    if($row["see"] == 0) $newMessages++;
+                    $newNotifyClass = ($row["see"] == 1) ?  'notify_see' : '';
+
+                    $link = !empty($row["link"]) ? str_replace(['{home}', '{panel}'], [CONFIG_SYSTEM["home"], CONFIG_SYSTEM["panel"]], $row["link"]) : '';
+
+                    $messages .= '<li class="'.$newNotifyClass.' notify_'.$row["status"].'">
+                        <a href="#" data-s="Notify:see='.$row["id"].'&link='.$link.'">
+                            <span class="new_lead">'.$row["title"].'</span>
+                            <p>'.$row["message"].'</p>
+                        </a>
+                    </li>';
+                }
+
+                $notify = '<div id="notification">
+                <a href="#" class="ico_notify" title="Уведомления">
+                    '.(!empty($newMessages) ? '<span>'.$newMessages.'</span>' : '').'
+                </a>
+                <ul class="esc">'.$messages.'</ul>
+                </div>';
+            }
+
+            $this->view->setMain('{notify}', $notify);
+
             unset($menu, $addMenu, $menuResult);
             /**
              * @name MENU END

@@ -238,7 +238,7 @@
                 if(this_.attr(atrName).indexOf(':') + 1){
                     let tmp = this_.attr(atrName).split(":");
                     method = tmp[0];
-                    params = tmp[1];
+                    params = tmp[1]/*.replace(":", "selDots")*/;
                     console.log(1);
                 } else{
                     method = this_.attr(atrName);
@@ -262,6 +262,8 @@
                 }
 
                 if(realCelenaPath) params += `&celena=1`;
+                
+                console.log(params);
 
                 data.append("ajax", method);
                 data.append("params", params);

@@ -33,6 +33,18 @@ class PluginModel extends Model{
         return Base::run("SELECT plugin_id FROM " . PREFIX . "plugins")->fetchAll(PDO::FETCH_COLUMN);
     }
 
+
+    /**
+     * @name получение всех id плагинов
+     * ================================
+     * @return array|false
+     * @throws Exception
+     */
+    public function getMyPluginsInfo($fields = "plugin_id"){
+
+        return Base::run("SELECT $fields FROM " . PREFIX . "plugins")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * @return array
      * @throws Exception
@@ -123,6 +135,13 @@ class PluginModel extends Model{
     public function power($id, $action){
 
         return Base::run("UPDATE " . PREFIX . "plugins SET status = ? WHERE id = ?", [$action, $id])->rowCount();
+    }
+
+
+
+    public function updateVersion($id, $newVersion){
+
+        return Base::run("UPDATE " . PREFIX . "plugins SET version = ? WHERE plugin_id = ?", [$newVersion, $id])->rowCount();
     }
 
 

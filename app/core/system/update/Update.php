@@ -9,8 +9,16 @@ class Update{
 
     public function update(){
 
-
-        //Base::run("ALTER TABLE `".PREFIX."users` ADD `avatar` VARCHAR(20) NOT NULL DEFAULT '' AFTER `password`");
+        Base::run("CREATE TABLE `".PREFIX."notify` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `title` VARCHAR(30) NOT NULL,
+            `message` VARCHAR(300) NOT NULL,
+            `link` VARCHAR(200) NOT NULL DEFAULT '',
+            `created` INT(11) NOT NULL,
+            `see` TINYINT(1) NOT NULL DEFAULT '0',
+            `status` TINYINT(1) NOT NULL DEFAULT '1',
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB;");
 
         //System::removeDir(APP . "/libs/binotel");
 
@@ -31,7 +39,8 @@ class Update{
         ]);*/
 
         // обязательное изменение версии !
-        System::editSystemConfig(["version" => '0.1.5']);
+        System::editSystemConfig(["version" => '0.1.6']);
+        //System::editSystemConfig(["system_update" => 1], true); // удаляем инфу об обновлении
         return true;
     }
 }

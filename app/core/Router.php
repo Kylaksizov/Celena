@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\system\Cron;
 use app\core\system\plugins\InstallLocalPlugins;
 use app\models\panel\PluginModel;
 use app\traits\Users;
@@ -77,6 +78,9 @@ class Router{
                 header("Location: /".CONFIG_SYSTEM["panel"]."/auth/");
                 die();
             }
+
+            // test updates
+            new Cron();
 
             $this->is_panel = true;
             $route_type = 'panel';
@@ -200,6 +204,8 @@ class Router{
 
                 if($this->plugin && empty($_POST["celena"])) $path = 'app\plugins\\'.str_replace('/', '\\', $this->plugin->system->name).'\ajax\\'.$panel.$ajax_file;
                 else $path = 'app\controllers\ajax\\'.$panel.$ajax_file;
+
+                if(isset($_POST["celena"])) unset($_POST["celena"]);
 
                 if(class_exists($path)){
 

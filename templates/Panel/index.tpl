@@ -29,49 +29,7 @@
         <b>0 $</b>
     </a>*}
 
-    <div id="notification">
-        <a href="#" class="ico_notify" title="Уведомления">
-            <span>3</span>
-        </a>
-        <ul class="esc">
-            <li class="new_notify">
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-            <li class="new_notify">
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-            <li class="new_notify">
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="new_lead">Новый лид №15</span>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </a>
-            </li>
-        </ul>
-    </div>
+    {notify}
 
     <div class="profile_header">
         <a href="#" class="open_profile_setting">

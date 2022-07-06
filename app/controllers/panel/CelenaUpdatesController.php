@@ -17,6 +17,16 @@ class CelenaUpdatesController extends PanelController {
 
         $content = ShopController::getUpdate();
 
+        if(!$content){
+
+            $content = '<h1>Обновление системы Celena</h1>
+                <div class="box_ tc">
+                    <p style="background:#81c937;color:#fff;padding:7px 10px;display:inline-block;border-radius:2px;">Вы используете последнюю версию <b> '.CONFIG_SYSTEM["version"].'</b></p>
+                    <br><br>
+                    <p>обновление не требуется.</p>
+                </div>';
+        }
+
         $this->view->render('Обновления Celena', $content);
     }
 

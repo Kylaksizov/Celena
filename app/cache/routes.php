@@ -36,11 +36,13 @@ return [
 		'system/info/$' => ['controller' => 'System', 'action' => 'info'],
 		'support/(page-[0-9]+/)?$' => ['controller' => 'support'],
 		'settings/sitemap/$' => ['controller' => 'settings', 'action' => 'sitemap'],
+		'examplePlugin/$' => ['controller' => 'plugins\Celena\Example\Index'],
         
     ],
     
     'web' => [
-        'sitemap.xml$' => ['controller' => 'siteMap'],
+        'example/$' => ['controller' => 'plugins\Celena\Example\Index'],
+		'sitemap.xml$' => ['controller' => 'siteMap'],
 		'404/$' => ['controller' => 'NotFound'],
 		'([a-z-0-9]+).html$' => ['controller' => 'page'],
 		'([a-z-/0-9]+).html$' => ['controller' => 'post'],

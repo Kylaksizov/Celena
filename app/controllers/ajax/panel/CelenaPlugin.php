@@ -23,7 +23,8 @@ class CelenaPlugin{
                 case 'install':   self::install(); break;
                 case 'enable':    self::power(true); break;
                 case 'disable':   self::power(false); break;
-                case 'remove':   self::remove(); break;
+                case 'update':    self::update(); break;
+                case 'remove':    self::remove(); break;
             }
         }
 
@@ -233,6 +234,91 @@ class CelenaPlugin{
             System::script($script);
 
         } else die("info::error::Не удалось активировать плагин!");
+    }
+
+
+    /**
+     * @name обновление плагина
+     * ========================
+     * @return void
+     * @throws Exception
+     */
+    private function update(){
+
+        $pluginId = intval($_POST["plugin_id"]);
+        $pluginPath = trim(strip_tags($_POST["plugin_path"]));
+        $pluginVersion = trim(strip_tags($_POST["plugin_version"]));
+
+        $NewZipSystem = ShopController::installUpdatePlugin($pluginId, $pluginVersion);
+
+        $updateZip = 'update_plugin_'.round(microtime(true) * 1000).'.zip';
+
+        $fp = fopen(ROOT . '/' . $updateZip, "w");
+        fwrite($fp, $NewZipSystem);
+        fclose($fp);
+
+        $zip = new ZipArchive;
+        if ($zip->open(ROOT . '/' . $updateZip) === TRUE) {
+
+            $zip->extractTo(ROOT . '/');
+            $zip->close();
+
+        } else {
+
+            self::addLog("Ошибка загрузки обновления плагина <b>$pluginPath</b> с сервера!", 2);
+            die("info::error::Ошибка загрузки обновления плагина <b>$pluginPath</b> с сервера!");
+        }
+
+        // удаляем временный архив
+        unlink(ROOT . '/' . $updateZip);
+
+        $Update = 'app\plugins\\'.str_replace("/", "\\", $pluginPath).'\Init';
+
+        if(class_exists($Update)){
+
+            $UpdateClass = new $Update();
+
+            if(method_exists($UpdateClass, 'update')){
+
+                $updated = $UpdateClass->update();
+
+                if($updated === true){
+
+                    // удаляем директорию с обновлением
+                    //System::removeDir(CORE . '/system/update');
+
+                    $pluginSystem = json_decode(file_get_contents(APP . '/plugins/'.$pluginPath.'/system.json'));
+
+                    $PluginModel = new PluginModel();
+                    $PluginModel->updateVersion($pluginId, $pluginSystem->version);
+
+                    $plugins_update = json_decode(CONFIG_SYSTEM["plugins_update"], true);
+
+                    if(!empty($plugins_update[$pluginId])) unset($plugins_update[$pluginId]);
+
+                    if(!empty($plugins_update)) System::editSystemConfig(["plugins_update" => $plugins_update]);
+                    else System::editSystemConfig(["plugins_update" => $plugins_update], true);
+
+                    //self::addLog('Обновление плагина <b>'.$pluginPath.'</b> успешно установлено!', 1);
+                }
+
+            } /*else{
+
+                self::addLog('Возникла ошибка при установке обновления плагина <b>'.$pluginPath.'</b> !', 2);
+                die("info::success::Ошибка при обновлении плагина!");
+            }*/
+
+        } else{
+
+            self::addLog('Обновление плагина <b>'.$pluginPath.'</b> успешно установлено!', 1);
+        }
+
+        $script = '<script>
+            $.server_say({say: "Обновление плагина <b>'.$pluginPath.'</b> успешно установлено!", status: "success"});
+            $(".cel_tmp").remove();
+        </script>';
+
+        System::script($script);
     }
 
 

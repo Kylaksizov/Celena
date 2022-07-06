@@ -302,7 +302,7 @@ class System{
 
 
 
-    public static function editSystemConfig($newSettings, $file = CORE . '/data/config.php'){
+    public static function editSystemConfig($newSettings, $delete = false, $file = CORE . '/data/config.php'){
 
         $new_settings = '';
 
@@ -315,6 +315,8 @@ class System{
                 preg_match('#\"(.+?)\"#is', $divided[0], $sets_name);
 
                 if($sets_name && isset($newSettings[$sets_name[1]]) && array_key_exists($sets_name[1], $newSettings)){ // если такая настройка найдена
+
+                    if($delete) continue;
 
                     $newSettings[$sets_name[1]] = str_replace(array("\r\n", "\n", "\r", '"'), array('\n', '\n', '\n', '\"'), $newSettings[$sets_name[1]]);
 
@@ -383,6 +385,8 @@ class System{
 
         foreach ($newSettings as $setKey => $setVal) {
 
+            $setVal = str_replace(array("\r\n", "\n", "\r", '"'), array('\n', '\n', '\n', '\"'), $setVal);
+
             if(is_numeric($setVal)){ // если чистое число
 
                 $new_setting .= "\t\"".$setKey."\" => " . $setVal . ',' . PHP_EOL;
@@ -423,9 +427,16 @@ class System{
 
 
 
-    public static function editPluginConfig($newSettings){
+    public static function addPluginConfig($newSettings, $plugin_name = PLUGIN_NAME){
 
-        return self::editSystemConfig($newSettings, APP . '/plugins/'.PLUGIN_NAME.'/config.php');
+        return self::addSystemConfig($newSettings, APP . '/plugins/'.$plugin_name.'/config.php');
+    }
+
+
+
+    public static function editPluginConfig($newSettings, $plugin_name = PLUGIN_NAME){
+
+        return self::editSystemConfig($newSettings, false, APP . '/plugins/'.$plugin_name.'/config.php');
     }
 
 
